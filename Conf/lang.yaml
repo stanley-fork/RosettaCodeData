@@ -23,19 +23,19 @@ Acornsoft Lisp: .lisp
 Action!: .action
 ActionScript: .as
 Acurity Architect: .acurity
-Ada: .ada
+Ada: .adb
 Adina: .adina
-Agda: .agda
 Agda2: .agda2
+Agda: .agda
 Agena: .agena
 AHDL: .ahdl
 AIDED NATURAL LANGUAGE: .aided
 Aikido: .aikido
 Aime: .aime
 Algae: .algae
-ALGOL: .alg
 ALGOL 60: .alg
 ALGOL 68: .alg
+ALGOL: .alg
 ALGOL-M: .alg
 ALGOL W: .alg
 Alice ML: .alice
@@ -74,7 +74,7 @@ ASP: .asp
 AspectC++: .acpp
 AspectJ: .aspectj
 ASP.Net: .asp
-Assembly: .as
+Assembly: .asm
 AssemblyScript: .asmscript
 Astro: .astro
 Asymptote: .asymptote
@@ -83,15 +83,14 @@ ATS: .ats
 AutoHotkey: .ahk
 Autohotkey V2: .ahk
 AutoHotKey V2: .ahk
-AutoIt: .autoit
-AutoLISP: .l
+AutoIt: .au3
+AutoLISP: .lsp
 Avail: .avail
 AWK: .awk
 Axe: .axe
 Axiom: .axiom
 Axum: .axum
 Ayrch: .ayrch
-B: .b
 B4J: .b4j
 B4X: .b4x
 Babel: .pb
@@ -100,12 +99,13 @@ BaCon: .bacon
 Bait: .bait
 Ballerina: .ballerina
 Bas: .bas
-BASIC: .basic
 Basic09: .basic
 BASIC256: .basic
+BASIC: .basic
 Batari Basic: .basic
 Batch File: .bat
 Battlestar: .battlestar
+B: .b
 BBC BASIC: .basic
 Bc: .bc
 BCPL: .bcpl
@@ -113,6 +113,7 @@ Beads: .beads
 Beef: .beef
 Beeswax: .beeswax
 Befunge: .bf
+Berkeley Logo: .logo
 Beta: .beta
 Biferno: .biferno
 Binary Lambda Calculus: .blc
@@ -136,25 +137,26 @@ Brat: .brat
 Brlcad: .brlcad
 Bruijn: .bruijn
 Burlesque: .blq
-C++: .cpp
-C: .c
 C0H: .c0h
 C1R: .c1r
 C2: .c2
 C3: .c3
 CafeOBJ: .cafeobj
+Calc: .calc
 Calcscript: .calc
 Caml: .caml
 Casio BASIC: .basic
 Cat: .cat
 CB80: .cb80
 CBASIC: .basic
+C: .c
 C++/CLI: .cpp
+C++: .cpp
 Cduce: .cduce
 Cecil: .cecil
 Ceylon: .ceylon
 CFEngine: .cfengine
-Chapel: .chapel
+Chapel: .chpl
 Chef: .chef
 Cherrycake: .cherrycake
 Chipmunk Basic: .basic
@@ -174,7 +176,7 @@ CLIPS: .clips
 Clojure: .clj
 CLU: .clu
 CMake: .cmake
-COBOL: .cobol
+COBOL: .cob
 Cobra: .cobra
 Coco: .coco
 Coconut: .coconut
@@ -194,13 +196,12 @@ Cowgol: .cowgol
 Crack: .crack
 Craft Basic: .basic
 Creative Basic: .basic
-Curto: .curto
 Crystal: .cr
 C sharp: .cs
 C Shell: .csh
 Cubescript: .cube
 Curry: .curry
-D: .d
+Curto: .curto
 Dafny: .dafny
 Dao: .dao
 Dart: .dart
@@ -209,6 +210,7 @@ DataWeave: .dw
 DBL: .dbl
 Dc: .dc
 DCL: .dcl
+D: .d
 DDNC: .ddnc
 Delphi: .pas
 Deluge: .deluge
@@ -222,6 +224,7 @@ DMS: .dms
 Dodo0: .dodo0
 Draco: .draco
 Dragon: .dragon
+Dragonstone: .dragonstone
 DreamBerd: .dreamberd
 Dt: .dt
 DuckDB: .duckdb
@@ -230,7 +233,6 @@ DWScript: .dw
 Dyalect: .dyalect
 Dylan: .dylan
 Dylan.NET: .dylan
-E: .e
 EasyLang: .easy
 EC: .ec
 EchoLisp: .l
@@ -238,6 +240,7 @@ ECL: .ecl
 Ecstasy: .ecstasy
 Ed: .ed
 EDSAC order code: .edsac
+E: .e
 Eero: .eero
 Efene: .efene
 Egel: .egel
@@ -253,7 +256,7 @@ Elisa: .elisa
 Elixir: .ex
 ELLA: .ella
 Elm: .elm
-Emacs Lisp: .l
+Emacs Lisp: .el
 EMal: .emal
 Emojicode: .emojicode
 Enguage: .enguage
@@ -264,29 +267,29 @@ ERRE: .erre
 Es: .es
 ESQL: .esql
 Euler: .euler
-Euphoria: .ex
+Euphoria: .eu
 Evaldraw: .evaldraw
 Excel: .excel
 Explore: .explore
 Extended BrainF***: .ebf
 Extended Color BASIC: .basic
 Ezhil: .ezhil
-F: .f
 Factor: .factor
 Falcon: .falcon
 'FALSE': .false
-Fan: .fan
 Fancy: .fancy
+Fan: .fan
 Fantom: .fantom
 FAUST: .faust
 FBSL: .fbsl
-Fe: .fe
 FeatureC++: .cpp
+Fe: .fe
 Felix: .felix
 Fennel: .fennel
 Ferite: .ferite
 Fermat: .fermat
 Fexl: .fexl
+F: .f
 Fhidwfe: .fhidwfe
 Fish: .fish
 FLORA-2: .flora2
@@ -337,10 +340,10 @@ GlovePIE: .glovepie
 GLSL: .glsl
 GML: .gml
 Gnuplot: .gnuplot
-Go!: .go
-Go: .go
 Goaldi: .goaldi
 Goboscript: .gobo
+Go!: .go
+Go: .go
 Golfscript: .golf
 Golo: .golo
 Goo: .goo
@@ -357,7 +360,7 @@ Halon: .halon
 Harbour: .harbour
 Hare: .hare
 Haskell: .hs
-Haxe: .haxe
+Haxe: .hx
 Heron: .heron
 Hexiscript: .hexi
 HicEst: .hicest
@@ -371,10 +374,10 @@ HQ9+: .hq9+
 Huginn: .huginn
 Hy: .hy
 HyperTalk: .ht
-I: .i
 Icon: .icon
 IDL: .idl
 Idris: .idris
+I: .i
 Imp77: .imp77
 Inform 6: '.inf'
 Inform 7: '.inf'
@@ -390,18 +393,19 @@ Iptscrae: .iptscrae
 Isabelle: .isabelle
 IS-BASIC: .basic
 IWBASIC: .basic
-J: .j
 Jabaco: .jabaco
 Jack: .jack
 Jacquard Loom: .jacquard
+Jactl: .jactl
 Jakt: .jakt
 JAMES II/Rule-based Cellular Automata: .james
 Janet: .janet
-Java: .java
 JavaFX Script: .javafx
+Java: .java
 JavaScript: .js
 JCL: .jcl
 Jinja: .jinja
+J: .j
 JoCaml: .jocaml
 JOVIAL: .jovial
 Joy: .joy
@@ -411,7 +415,6 @@ JSE: .jse
 Jsish: .jsish
 JudoScript: .judo
 Julia: .jl
-K: .k
 Kabap: .kabap
 Kamailio Script: .kamailio
 Kantalo: .kantalo
@@ -421,6 +424,7 @@ Keg: .keg
 KeyList Databasing: .keylist
 Kite: .kite
 Kitten: .kitten
+K: .k
 KL1: .kl1
 Klingphix: .klingphix
 Klong: .klong
@@ -430,14 +434,14 @@ KonsolScript: .konsol
 Kotlin: .kts
 KQL: .kql
 Ksh: .ksh
-L++: .l++
 LabVIEW: .labview
 Labyrinth: .labyrinth
 Lambda Prolog: .pro
 Lambdatalk: .lambdatalk
-Lang: .lang
 Lang5: .lang5
+Lang: .lang
 Langur: .langur
+Lapyst: .lapyst
 Lasso: .lasso
 LAST: .last
 LaTeX: .tex
@@ -463,6 +467,7 @@ Little: .little
 Little Man Computer: .lmc
 LiveCode: .livecode
 LiveScript: .live
+L++: .l++
 LLP: .llp
 LLVM: .llvm
 Lobster: .lobster
@@ -475,8 +480,8 @@ Lolli: .lolli
 Lotus 123 Macro Scripting: .lotus123
 LotusScript: .lotus
 Lout: .lout
-LSE: .lse
 LSE64: .lse64
+LSE: .lse
 LSL: .lsl
 LSTS: .lsts
 Lua: .lua
@@ -518,19 +523,19 @@ Metapost: .metapost
 MGS: .mgs
 Mia: .mia
 Microsoft Small Basic: .basic
-Min: .min
 MINIL: .minil
 Minimal BASIC: .basic
 MiniScript: .mini
 MiniZinc: .minizinc
+Min: .min
 MIPS Assembly: .mips
 Mirah: .mirah
 Miranda: .miranda
 MIRC Scripting Language: .mirc
 Mirelle: .mirelle
-ML: .ml
 ML/I: .mli
 MLite: .mlite
+ML: .ml
 MMIX: .mmix
 Mn: .mn
 Modula-2: .mod2
@@ -542,6 +547,8 @@ Monkey: .monkey
 Monte: .monte
 MontiLang: .monti
 MOO: .moo
+MoonBit: .moonbit
+MoonRock: .moonrock
 MoonScript: .moon
 Morfa: .morfa
 Mosaic: .mosaic
@@ -589,15 +596,15 @@ N/t/roff: .ntroff
 Nu: .nu
 Nutt: .nutt
 Nyquist: .nyquist
-OASYS: .oasys
 OASYS Assembler: .oasys
-Oberon: .oberon
+OASYS: .oasys
 Oberon-07: .oberon
+Oberon: .oberon
 Objeck: .objeck
 ObjectIcon: .oi
 Objective-C: .m
-Object Pascal: .pas
 Object Pascal Implementations: .pas
+Object Pascal: .pas
 OCaml: .ml
 Occam: .occam
 Octave: .octave
@@ -608,8 +615,8 @@ Omega: .omega
 OmniMark: .xom
 Onyx: .onyx
 Onyx (wasm): .onyx
-OOC: .ooc
 OOCalc: .oocalc
+OOC: .ooc
 OoRexx: .rexx
 Opa: .opa
 OpenC++: .openc++
@@ -628,8 +635,8 @@ Panoramic: .panoramic
 ParaCL: .paracl
 Pare: .pare
 PARI/GP: .parigp
-Pascal: .pas
 PascalABC.NET: .pas
+Pascal: .pas
 Pascal-P: .pas
 PASM: .pasm
 PDP-11 Assembly: .pdp11
@@ -639,12 +646,12 @@ Pentium Assembly: .pentium
 PeopleCode: .peoplecode
 PepsiScript: .pepsi
 Peri: .peri
-Perl: .pl
 Perl5i: .p5i
 Perl 6: .pl6
+Perl: .pl
 Peylang: .peylang
-Phix: .phix
 Phixmonti: .phixmonti
+Phix: .phix
 PHL: .phl
 PHP: .php
 Picat: .picat
@@ -661,8 +668,8 @@ Plain English: .plain
 PlainTeX: .tex
 Plan: .plan
 PL/B: .plb
-PL/I: .pli
 PL/I-80: .pli
+PL/I: .pli
 PL/M: .plm
 PL/pgSQL: .sql
 PL/SQL: .sql
@@ -680,7 +687,7 @@ POV-Ray: .povray
 PowerBASIC: .basic
 Powerbuilder: .powerbuilder
 PowerPC Assembly: .ppc
-PowerShell: .psh
+PowerShell: .ps1
 PPL: .ppl
 Processing: .processing
 Processing Python mode: .processing-py
@@ -691,43 +698,43 @@ ProgressBASIC: .basic
 Prolog: .pro
 PROMAL: .promal
 PSQL: .psql
-Pure: .pure
 PureBasic: .basic
 Pure Data: .puredata
+Pure: .pure
 Purity: .purity
 Pyret: .arr
 Python: .py
-Q: .q
 QB64: .qb64
 QBasic: .basic
 Qi: .qi
 .QL: .ql
 QL SuperBASIC: .basic
 Qore: .qore
+Q: .q
 Quackery: .quackery
 QuakeC: .c
 QuickBASIC: .basic
 Quill: .quill
 Quite BASIC: .basic
 Quorum: .quorum
-R: .r
-Ra: .ra
 Racket: .rkt
 Raku: .raku
 RapidQ: .rapidq
 Rapira: .rapira
+Ra: .ra
 Rascal: .rascal
 RASEL: .rasel
 RATFOR: .ratfor
 Raven: .raven
 REALbasic: .basic
 Reason: .re
+Rebol: .rebol
 REBOL: .rebol
 Red: .red
 Reduce: .reduce
 Refal: .refal
 Relation: .relation
-ReScript: .re
+ReScript: .res
 Retro: .retro
 Revolution: .rev
 REXX: .rexx
@@ -739,23 +746,26 @@ RISC-V Assembly: .asm
 RLaB: .rlab
 RLSL: .rlsl
 Robotic: .robotic
-Roc: .roc
 Rockstar: .rockstar
-RPG: .rpg
+Rocq: .rocq
+Roc: .roc
 RPGIV: .rpgiv
-RPL: .rpl
+RPG: .rpg
 RPL/2: .rpl2
+RPL: .rpl
+R: .r
 RTL/2: .rtl2
 RTSL: .rtsl
 Rubylog: .rubylog
 Ruby: .rb
 Run BASIC: .basic
 Rust: .rs
-S++: .s++
+Rye: .rye
 Sage: .sage
 Salmon: .salmon
-SAS: .sas
+SapbotVM: .sapbot
 SASL: .sasl
+SAS: .sas
 Sass/SCSS: .sass
 Sather: .sa
 S-BASIC: .basic
@@ -772,14 +782,15 @@ Seed7: .seed7
 Self: .self
 SenseTalk: .sensetalk
 SequenceL: .sequencel
-SETL: .setl
 Setl4: .setl4
 Set lang: .set
+SETL: .setl
 Shale: .shale
 SheerPower 4GL: .4gl
 Shen: .shen
 Shiny: .shiny
 Sidef: .sidef
+SIL: .sil
 SimpleCode: .simplecode
 SimpleLang: .simple
 SIMPOL: .simpol
@@ -796,8 +807,8 @@ Smalltalk: .st
 Smart BASIC: .basic
 SMEQL: .smeql
 SmileBASIC: .basic
-Snobol: .sno
 SNOBOL4: .sno
+Snobol: .sno
 SNUSP: .snusp
 Soar: .soar
 Soda: .soda
@@ -805,14 +816,15 @@ SoneKing Assembly: .soneking
 SPAD: .spad
 SPARC Assembly: .sparc
 SparForte: .sparforte
-SPARK: .spark
 Sparkling: .sparkling
+SPARK: .spark
 Spin: .spin
 SPL: .spl
 SPSS: .spss
-SQL: .sql
 SQL PL: .sql
+SQL: .sql
 Squirrel: .nut
+S++: .s++
 SSEM: .ssem
 Standard ML: .ml
 Star: .star
@@ -840,16 +852,16 @@ TechBASIC: .basic
 Teco: .teco
 TeLa: .tela
 Tern: .tern
-Terra: .terra
 Terraform: .terraform
+Terra: .terra
 TestML: .tml
 Thistle: .thistle
 Thyrd: .thyrd
-TI BASIC: .basic
 TI-57: .ti57
 TI-83 BASIC: .basic
 TI-83 Hex Assembly: .asm
 TI-89 BASIC: .basic
+TI BASIC: .basic
 Tiny BASIC: .basic
 Tiny Craft Basic: .basic
 TIS-100: .tis100
@@ -886,28 +898,26 @@ Unison: .u
 UnixPipes: .up
 UNIX Shell: .sh
 Unlambda: .unlambda
-Ursa: .ursa
-Ursala: .ursala
 Ursalang: .ursa
+Ursala: .ursala
+Ursa: .ursa
 UScript: .u
 UserRPL: .rpl
 UTFool: .utfool
 Uxntal: .uxnatl
-V: .v
-V (Vlang): .v
 Vala: .vala
 Vale: .vale
 VAX Assembly: .vax
 VB6: .vb6
 VBA: .vba
-VBScript: .vb
+VBScript: .vbs
 Vedit macro language: .vedit
 Verbexx: .verbexx
 Verilog: .v
-VHDL: .vhdl
+VHDL: .vhd
 Vim Script: .vim
-Visual Basic: .vb
 Visual Basic .NET: .vb
+Visual Basic: .vb
 Visual FoxPro: .fvp
 Visual Objects: .vobj
 Visual Prolog: .pro
@@ -916,6 +926,8 @@ Vorpal: .vorpal
 Vox: .vox
 VRML: .vrml
 VTL-2: .vtl-2
+V: .v
+V (Vlang): .v
 Vyxal: .vyxal
 Waduzitdo: .waduzitdo
 Wart: .wart
@@ -934,37 +946,37 @@ Wren: .wren
 X10: .x10
 X86-64 Assembly: .x86-64
 X86 Assembly: .x86
-X-script: .x
 Xanadu: .xanadu
 XBase: .xbase
 XBasic: .basic
 XBS: .xbs
 XEec: .xeec
-XL: .xl
 XLISP: .l
+XL: .xl
 Xojo: .xojo
 XPath 2.0: .xpath
 XPL0: .xpl0
 XProc: .xproc
 XProfan: .xprofan
 XQuery: .xquery
-XS: .xs
-XSLT: .xslt
+X-script: .x
 XSLT 1.0: .xslt
 XSLT 2.0: .xslt
+XSLT: .xslt
+XS: .xs
 XTalk: .xtalk
 XUL: .xul
-Ya: .ya
 Yabasic: .basic
 Yacas: .yacas
 YAMLScript: .ys
+Ya: .ya
 Yorick: .yorick
 Z80 Assembly: .z80
 ZED: .zed
 Zig: .zig
 Zkl: .zkl
-Zoea: .zoea
 Zoea Visual: .zoea
+Zoea: .zoea
 Zonnon: .zonnon
 Zoomscript: .zoom
 ZPL: .zpl

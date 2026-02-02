@@ -7,7 +7,7 @@ every heading := 11.25 * (i := 0 to 32) do {
       1: heading +:= 5.62
       2: heading -:= 5.62
       }
-   write(right(i+1,3)," ",left(direction(heading),20)," ",fix(heading,,7,2))
+   write(right(i%32+1,3)," ",left(direction(heading),20)," ",fix(heading,,7,2))
    }
 end
 
@@ -17,10 +17,10 @@ initial {
    every put(dirs := [],
              replacem(!["N","NbE","N-NE","NEbN","NE","NEbE","E-NE","EbN",
                         "E","EbS","E-SE","SEbE","SE","SEbS","S-SE","SbE",
-	                     "S","SbW","S-SW","SWbS","SW","SWbW","W-SW","WbS",
-	                    "W","WbN","W-NW","NWbW","NW","NWbN","N-NW","NbW"],
+                        "S","SbW","S-SW","SWbS","SW","SWbW","W-SW","WbS",
+                        "W","WbN","W-NW","NWbW","NW","NWbN","N-NW","NbW"],
                        "N","north","E","east","W","west","S","south","b"," by "))
    }
 
-   return dirs[round(((((d%360)+360)%360)/11.25)%32 + 1)]
+   return dirs[round(((((d%360)+360)%360)/11.25))%32 + 1]
 end

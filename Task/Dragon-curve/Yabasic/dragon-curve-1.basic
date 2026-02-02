@@ -15,30 +15,30 @@ clear window
 dragon()
 
 sub dragon()
-	if level<=0 then
-		yn = sin(rotation)*insize + y
-		xn = cos(rotation)*insize + x
-		if iter*2<iters then
-			color 0,iter*qiter,255-iter*qiter
-		else
-			color qiter*iter-255,(iters-iter)*qiter,0
-		end if
-		line x,y,xn,yn
-		iter = iter + 1
-		x = xn : y = yn
-		return
-	end if
-	insize = insize/SQ
-	rotation = rotation + rq*QPI
-	level = level - 1
-	rqs(level) = rq : rq = 1
-	dragon()
-	rotation = rotation - rqs(level)*QPI*2
-	rq = -1
-	dragon()
-	rq = rqs(level)
-	rotation = rotation + rq*QPI
-	level = level + 1
-	insize = insize*SQ
-	return
+    if level<=0 then
+        yn = sin(rotation)*insize + y
+        xn = cos(rotation)*insize + x
+        if iter*2<iters then
+            color 0,iter*qiter,255-iter*qiter
+        else
+            color qiter*iter-255,(iters-iter)*qiter,0
+        end if
+        line x,y,xn,yn
+        iter = iter + 1
+        x = xn : y = yn
+        return
+    end if
+    insize = insize/SQ
+    rotation = rotation + rq*QPI
+    level = level - 1
+    rqs(level) = rq : rq = 1
+    dragon()
+    rotation = rotation - rqs(level)*QPI*2
+    rq = -1
+    dragon()
+    rq = rqs(level)
+    rotation = rotation + rq*QPI
+    level = level + 1
+    insize = insize*SQ
+    return
 end sub

@@ -1,33 +1,29 @@
 # Build and solve a maze.
-# Experimental!
-W ← 10
-H ← 6
+W ← 16
+H ← 8
 
-GetWall ← -:⊡1:÷2/-.
+GetWall ← -⊃⋅∘∘⊡1⊃⋅∘∘÷2⊸/-
 # ([here, next], maze) -> (maze')
 BreakWall ← ⍜(⊡|⋅@ )GetWall
 
-Nfour ← +⊙¤[¯2_0 2_0 0_2 0_¯2] # Gives N4
-Shuffle ← ⊏⍏[⍥⚂]⧻.
-# (pos maze) -> T if it's already a star.
-IsVisited ← ≠@.⊡
-MarkAsVisited ← ⟜(⍜⊡⋅@.)
-# (pos) -> (bool)
-InBounds ← ▽⊸≡(↧⊃(/↧≥1_1|/↧< +1 × 2 H_W))
+N₄      ← +⊙¤[¯2_0 2_0 0_2 0_¯2]
+Shuffle ← ⊏⍏⍥⚂⊸⧻
+# (pos maze) -> T if it's already seen (or out of bounds).
+IsVisited     ← ≠@\s⬚@\s⊡
+MarkAsVisited ← ⟜(⍜⊡⋅@\s)
 # (here, maze) -> (maze')
 Walk ← |2 (
   MarkAsVisited
   # (here, maze) -> ([[here, next] x(up to)4], maze)
-  ≡⊟¤⟜(Shuffle InBounds Nfour)
-
+  ≡⊟¤⟜(Shuffle N₄)
   # Update maze for each in turn. For each, if it
   # still isn't visited, break the wall, recurse into it.
-  ∧(⨬(◌|Walk⊡1⟜BreakWall)IsVisited◌°⊟,,)
+  ∧(⨬(◌|Walk⊡1⟜BreakWall)IsVisited◌°⊟⊃⊙∘⊙∘)
 )
 
 # Generate a maze.
 Maze ← (
-  ↘¯1☇1↯(+1H)⊟⊂/⊂↯W"+-" @+⊂/⊂↯W"| " @| # Build a filled maze.
-  Walk 1_1                             # Walk around breaking walls.
+  ↘¯1♭₂↯(+1H)⊟⊂/⊂↯W"+-" @+⊂/⊂↯W"|." @| # Build a filled maze.
+  Walk 1_1                             # Walk around eating dots and breaking walls.
 )
 Maze

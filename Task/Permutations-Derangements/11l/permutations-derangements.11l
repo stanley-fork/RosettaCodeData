@@ -17,7 +17,7 @@ L(d) derangements(n)
    print(‘  ’d)
 
 print("\nTable of n vs counted vs calculated derangements")
-L(n) 10
+L(n) 0.<10
    print(‘#2 #<6 #.’.format(n, derangements(n).len, subfact(n)))
 
 n = 20

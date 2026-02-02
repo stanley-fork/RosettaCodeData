@@ -1,46 +1,44 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+with javascript_semantics
+include mpfr.e
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">isqrt</span><span style="color: #0000FF;">(</span><span style="color: #004080;">mpz</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_cmp_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)<</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">crash</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Argument cannot be negative."</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">mpz</span> <span style="color: #000000;">q</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>
-         <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">),</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(),</span>
-         <span style="color: #000000;">z</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">while</span> <span style="color: #7060A8;">mpz_cmp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)<=</span> <span style="color: #000000;">0</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">mpz_mul_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">,</span><span style="color: #000000;">q</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">while</span> <span style="color: #7060A8;">mpz_cmp_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)></span><span style="color: #000000;">0</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">assert</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mpz_fdiv_q_ui</span><span style="color: #0000FF;">(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">q</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpz_sub</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpz_sub</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">q</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">assert</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mpz_fdiv_q_ui</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_cmp_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">>=</span> <span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpz_add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,</span><span style="color: #000000;">q</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">star</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mpz_cmp_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?</span><span style="color: #008000;">"*"</span><span style="color: #0000FF;">:</span><span style="color: #008000;">" "</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #004600;">true</span><span style="color: #0000FF;">))&</span><span style="color: #000000;">star</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function isqrt(mpz x)
+    if mpz_cmp_si(x,0)<0 then
+        crash("Argument cannot be negative.")
+    end if
+    mpz q = mpz_init(1),
+        r = mpz_init(0),
+        t = mpz_init(),
+        z = mpz_init_set(x)
+    while mpz_cmp(q,x)<= 0 do
+        mpz_mul_si(q,q,4)
+    end while
+    while mpz_cmp_si(q,1)>0 do
+        assert(mpz_fdiv_q_ui(q, q, 4)=0)
+        mpz_sub(t,z,r)
+        mpz_sub(t,t,q)
+        assert(mpz_fdiv_q_ui(r, r, 2)=0)
+        if mpz_cmp_si(t,0) >= 0 then
+            mpz_set(z,t)
+            mpz_add(r,r,q)
+        end if
+    end while
+    string star = iff(mpz_cmp_si(z,0)=0?"*":" ")
+    return shorten(mpz_get_str(r,10,true))&star
+end function
 
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"The integer square roots of integers from 0 to 65 are:\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">65</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s "</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #7060A8;">trim</span><span style="color: #0000FF;">(</span><span style="color: #000000;">isqrt</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)))})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n\npower                          7 ^ power                                               integer square root\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"-----  ---------------------------------------------------------   ----------------------------------------------------------\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">mpz</span> <span style="color: #000000;">pow7</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">7</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">9000</span> <span style="color: #008080;">do</span>
-     <span style="color: #008080;">if</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">73</span>  <span style="color: #008080;">and</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">or</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;"><</span><span style="color: #000000;">100</span>  <span style="color: #008080;">and</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">or</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;"><</span><span style="color: #000000;">1000</span> <span style="color: #008080;">and</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">100</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">or</span>             <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1000</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%4d  %58s %61s\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span> <span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pow7</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)),</span><span style="color: #000000;">isqrt</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pow7</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #7060A8;">mpz_mul_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pow7</span><span style="color: #0000FF;">,</span><span style="color: #000000;">pow7</span><span style="color: #0000FF;">,</span><span style="color: #000000;">7</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+printf(1,"The integer square roots of integers from 0 to 65 are:\n")
+for i=0 to 65 do
+    printf(1,"%s ", {trim(isqrt(mpz_init(i)))})
+end for
+printf(1,"\n\npower %24s 7 ^ power %45s integer square root\n",{" "," "})
+printf(1,"-----  %s   %s\n",{repeat('-',57),repeat('-',58)})
+mpz pow7 = mpz_init(7)
+for i=1 to 9000 do
+    if (i<=73  and remainder(i,2)=1)
+    or (i<100  and remainder(i,10)=5)
+    or (i<1000 and remainder(i,100)=0)
+    or             remainder(i,1000)=0 then
+        printf(1,"%4d  %58s %61s\n", {i, shorten(mpz_get_str(pow7,10,true)),isqrt(pow7)})
+    end if
+    mpz_mul_si(pow7,pow7,7)
+end for

@@ -1,6 +1,7 @@
-include Settings
+-- 23 Aug 2025
+include Setting
 
-say 'HIGHER-ORDER FUNCTIONS - 2 Mar 2025'
+say 'HIGHER-ORDER FUNCTIONS'
 say version
 say
 call Calculate '1/x',6
@@ -13,11 +14,9 @@ call Calculate 'x**2-3*x+Arcsin(x)-Sinh(x)/x-Pi()+E()',1/3
 exit
 
 Calculate:
-procedure
+procedure expose Memo.
 parse arg ff,xx
 say ff 'for x='xx 'makes' Eval(ff,xx)+0
 return
 
-include Functions
-include Constants
-include Abend
+include Math

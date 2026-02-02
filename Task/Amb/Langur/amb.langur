@@ -10,6 +10,6 @@ val alljoin = fn words: for[=true] i of len(words)-1 {
 }
 
 # amb expects 2 or more arguments
-val amb = fn ...[2..] words: if alljoin(words) { join words, by=" " }
+val amb = fn words...[2..]: if alljoin(words) { join words, delim=" " }
 
-writeln join(mapX(wordsets..., by=amb) -> filter, by="\n")
+writeln join(mapX(wordsets..., by=amb) -> filter, delim="\n")

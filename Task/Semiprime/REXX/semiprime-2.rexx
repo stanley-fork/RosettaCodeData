@@ -1,6 +1,7 @@
-include Settings
+-- 24 Aug 2025
+include Setting
 
-say 'SEMIPRIME - 4 Mar 2025'
+say 'SEMIPRIME'
 say version
 say
 numeric digits 100
@@ -30,7 +31,4 @@ say Format(Time('e'),,3) 'seconds'
 say
 return
 
-include Functions
-include Numbers
-include Sequences
-include Abend
+include Math

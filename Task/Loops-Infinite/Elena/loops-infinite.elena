@@ -1,7 +1,7 @@
-public program()
+public Program()
 {
     while (true)
     {
-        console.writeLine("spam")
+        Console.writeLine("spam")
     }
 }

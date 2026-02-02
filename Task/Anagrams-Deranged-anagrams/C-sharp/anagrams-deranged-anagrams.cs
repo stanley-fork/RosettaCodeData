@@ -8,9 +8,9 @@ public static void Main()
         select deranged[0] + " " + deranged[1];
     Console.WriteLine(query.FirstOrDefault());
 }
-	
+
 static string AnagramKey(string word) => new string(word.OrderBy(c => c).ToArray());
-	
+
 static string[] FindDeranged(IEnumerable<string> anagrams) => (
     from first in anagrams
     from second in anagrams

@@ -1,23 +1,44 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">total</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">prim</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">maxPeri</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">10</span>
+with javascript_semantics
+function count_triplets(atom max_perimeter)
+    integer limit = floor(sqrt(max_perimeter/2))+1
+    atom total = 0, primitive = 0, t0 = time(), t1 = t0+1
+    // The formulas below generate primitive triples if:
+    //   0 < n < m
+    //   m and n are relatively prime (gcd == 1)
+    //   m + n is odd
+    for m=2 to limit do
+        for n=1+odd(m) to m-1 by 2 do
+--          if gcd(m,n)=1 then
+                -- inlined for a 5-fold speedup:
+                integer u = m, v = n, t
+                do
+                    t = u
+                    u = v
+                    v = rmdr(t,v)
+                until v=0
+            if u=1 then
+                -- a = m*m - n*n
+                -- b = 2*m*n
+                -- c = m*m + n*n
+                -- perimeter = a + b + c
+                atom perimeter = 2*m*(m+n)
+                if perimeter <= max_perimeter then
+                    primitive += 1
+                    total += floor(max_perimeter/perimeter)
+                end if
+            end if
+        end for
+        if time()>t1 then
+            progress("m:%d/%d (%d%%)\r",{m,limit,m/limit*100})
+            t1 = time()+1
+        end if
+    end for
+    string e = elapsed_short(time()-t0,1," (%s)")
+    return {max_perimeter, total, primitive, e}
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">tri</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">s0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s2</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s0</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">s1</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">s2</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">p</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">maxPeri</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">prim</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #000000;">total</span> <span style="color: #0000FF;">+=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">maxPeri</span><span style="color: #0000FF;">/</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">tri</span><span style="color: #0000FF;">(</span> <span style="color: #000000;">s0</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*(-</span><span style="color: #000000;">s1</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">*(</span> <span style="color: #000000;">s0</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">s1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">*(</span> <span style="color: #000000;">s0</span><span style="color: #0000FF;">-</span><span style="color: #000000;">s1</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">);</span>
-         <span style="color: #000000;">tri</span><span style="color: #0000FF;">(</span> <span style="color: #000000;">s0</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*(</span> <span style="color: #000000;">s1</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">*(</span> <span style="color: #000000;">s0</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">s1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">*(</span> <span style="color: #000000;">s0</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s1</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">);</span>
-         <span style="color: #000000;">tri</span><span style="color: #0000FF;">(-</span><span style="color: #000000;">s0</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*(</span> <span style="color: #000000;">s1</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">*(-</span><span style="color: #000000;">s0</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">s1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">*(-</span><span style="color: #000000;">s0</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s1</span><span style="color: #0000FF;">+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">s2</span><span style="color: #0000FF;">);</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
-
- <span style="color: #008080;">while</span> <span style="color: #000000;">maxPeri</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">1e8</span> <span style="color: #008080;">do</span>
-     <span style="color: #000000;">prim</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">;</span>
-     <span style="color: #000000;">total</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">;</span>
-     <span style="color: #000000;">tri</span><span style="color: #0000FF;">(</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">5</span><span style="color: #0000FF;">);</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Up to %d: %d triples, %d primitives.\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">maxPeri</span><span style="color: #0000FF;">,</span><span style="color: #000000;">total</span><span style="color: #0000FF;">,</span><span style="color: #000000;">prim</span><span style="color: #0000FF;">})</span>
-     <span style="color: #000000;">maxPeri</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">10</span><span style="color: #0000FF;">;</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-<!--
+integer limit = iff(platform()=JS?9:10)
+for max_perimeter in sq_power(10,tagset(limit)) do
+    printf(1,"Up to %,d: %,d triples, %,d primitives%s.\n",
+              count_triplets(max_perimeter))
+end for

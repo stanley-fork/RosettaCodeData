@@ -17,4 +17,3 @@ An '''ultra-useful prime''' is a member of the sequence where each <span style="
 
 * [[oeis:A058220|OEIS:A058220 - Ultra-useful primes: smallest k such that 2^(2^n) - k is prime]]
  
-

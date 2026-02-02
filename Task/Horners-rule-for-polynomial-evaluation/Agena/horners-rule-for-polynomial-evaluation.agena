@@ -2,7 +2,7 @@ scope # Horner's rule for polynominal evaluation
 
     # returns the value of the polynominal defined by coefficients,
     #         the coefficients should be in order with x^0 first, x^n last
-    local procedure Horner( coefficients :: sequence, x :: number ) :: number
+    local proc Horner( coefficients :: sequence, x :: number ) :: number
         local xValue := 0;
         for i from size coefficients to 1 by - 1 do xValue := ( xValue * x ) + coefficients[ i ] od;
         return xValue

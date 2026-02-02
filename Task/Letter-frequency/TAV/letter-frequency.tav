@@ -1,8 +1,8 @@
 main (parms):+
-  text =: <'In olden times when wishing still helped one,
-    there lived a king whose daughters were all beautiful.
-    But the youngest was so beautiful that the sun itself,
-    which has seen so much, was astonished whenever it shone in her face.'
+  text =: "In olden times when wishing still helped one, "
+  text =_ "there lived a king whose daughters were all beautiful. "
+  text =_ "But the youngest was so beautiful that the sun itself, "
+  text =_ "which has seen so much, was astonished whenever it shone in her face."
   lc =: new map
   ?# c =: string text give characters
     ? string #ASCIIletters has character c

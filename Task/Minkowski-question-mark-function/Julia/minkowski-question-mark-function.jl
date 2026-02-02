@@ -11,9 +11,9 @@ end
 function questionmark_inv(x)
     y, bits = fldmod(x, 1)
     lo, hi = [0, 1], [1, 1]
-    while (y + /(lo...)) < (y + /(hi...))
-        bit, bits = fldmod(2bits, 1)
-        bit > 0 ? (lo .+= hi) : (hi .+= lo)
+    while bits ≉ 0
+        bits, bit = modf(2bits)
+        bit ≥ 1 ? (lo .+= hi) : (hi .+= lo)
     end
     y + /(lo...)
 end

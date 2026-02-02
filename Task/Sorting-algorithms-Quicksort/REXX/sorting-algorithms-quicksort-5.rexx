@@ -1,6 +1,7 @@
-include Settings
+-- 24 Aug 2025
+include Setting
 
-say 'QUICKSORT - 4 Mar 2025'
+say 'QUICKSORT'
 say version
 say
 numeric digits 9

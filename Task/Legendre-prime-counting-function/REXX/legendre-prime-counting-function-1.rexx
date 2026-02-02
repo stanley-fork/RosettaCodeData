@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'LEGENDRE PRIME COUNTER (NO MEMOIZATION)'
 say version
@@ -30,6 +30,4 @@ if xx <= p then
    return 1
 return Phi(xx,yy-1)-Phi(xx%p,yy-1)
 
-include Abend
-include Functions
-include Sequences
+include Math

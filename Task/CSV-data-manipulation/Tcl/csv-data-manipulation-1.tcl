@@ -13,9 +13,9 @@ proc addSumColumn {filename {title "SUM"}} {
     set sumcol [$m columns]
     $m add column $title
     for {set i 1} {$i < [$m rows]} {incr i} {
-	# Fill out a dummy value
-	$m set cell $sumcol $i 0
-	$m set cell $sumcol $i [tcl::mathop::+ {*}[$m get row $i]]
+   # Fill out a dummy value
+   $m set cell $sumcol $i 0
+   $m set cell $sumcol $i [tcl::mathop::+ {*}[$m get row $i]]
     }
 
     # Write the CSV out

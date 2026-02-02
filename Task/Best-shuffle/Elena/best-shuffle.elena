@@ -35,7 +35,7 @@ extension op
    }
 }
 
-public program()
+public Program()
 {
    new string[]{"abracadabra", "seesaw", "grrrrrr", "pop", "up", "a"}.forEach::(s)
    {

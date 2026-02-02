@@ -5,7 +5,7 @@ Gen: 4  |  Fitness: 322  |  KI8M5LAS�GJ�IS�SP�@)D�V@
 JCP
 Gen: 5  |  Fitness: 295  |  UAUR08AS�GJ�IS�8HG*�+�=C?UB(
 Gen: 6  |  Fitness: 259  |  VCUQH35S�HR4.L�ISJQ%J�OC*T=E
-Gen: 7  |  Fitness: 226  |  LFB8GPET(LODKQ�KQ<K	E*PEMA6I
+Gen: 7  |  Fitness: 226  |  LFB8GPET(LODKQ�KQ<K E*PEMA6I
 Gen: 8  |  Fitness: 192  |  EPKOLCIR�QQ�NF�QG:B(D/U>BQGF
 Gen: 9  |  Fitness: 159  |  N8R7?SOU�NO$OK O?K?!;�MB?QHG
 Gen: 10  |  Fitness: 146  |  TGN@EQR4)PS%IS#TFJQ%A!U>BVLI

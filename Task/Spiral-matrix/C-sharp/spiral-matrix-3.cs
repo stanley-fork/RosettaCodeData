@@ -52,17 +52,17 @@ namespace spiralmat
             {
                 for (int j = 1; j <= n; j++)
                     Console.Write("{0,3:D} ",
-		                  ob.func(n, i, j)
-				  + Convert.ToInt32(
-				    ((j >= i) && (i == lev))
-				      ? ((j - i) + 1)
-				      : ((j == ((n + 1) - lev) && (i > lev) && (i <= j)))
-				        ? (n - 2 * (lev - 1) + (i - 1) - (n - j))
-					: ((i == ((n + 1) - lev) && (j < i)))
-					  ? ((n - 2 * (lev - 1)) + ((n - 2 * (lev - 1)) - 1) + (i - j))
-					  : ((j == lev) && (i > lev) && (i < ((n + 1) - lev)))
-					    ? ((n - 2 * (lev - 1)) + ((n - 2 * (lev - 1)) - 1) + ((n - 2 * (lev - 1)) - 1) + (((n + 1) - lev) - i))
-					    : 0));
+                        ob.func(n, i, j)
+              + Convert.ToInt32(
+                ((j >= i) && (i == lev))
+                  ? ((j - i) + 1)
+                  : ((j == ((n + 1) - lev) && (i > lev) && (i <= j)))
+                    ? (n - 2 * (lev - 1) + (i - 1) - (n - j))
+               : ((i == ((n + 1) - lev) && (j < i)))
+                 ? ((n - 2 * (lev - 1)) + ((n - 2 * (lev - 1)) - 1) + (i - j))
+                 : ((j == lev) && (i > lev) && (i < ((n + 1) - lev)))
+                   ? ((n - 2 * (lev - 1)) + ((n - 2 * (lev - 1)) - 1) + ((n - 2 * (lev - 1)) - 1) + (((n + 1) - lev) - i))
+                   : 0));
                 Console.WriteLine();
             }
             Console.ReadKey();

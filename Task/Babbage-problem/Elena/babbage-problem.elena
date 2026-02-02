@@ -1,7 +1,7 @@
 import extensions;
 import system'math;
 
-public program()
+public Program()
 {
     var n := 1;
 

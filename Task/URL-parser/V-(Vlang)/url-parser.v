@@ -14,7 +14,7 @@ const urls = ['jdbc:mysql://test_user:ouupppssss@localhost:3306/sakila?profileSQ
 
 fn main() {
     for url in urls {
-        u := urllib.parse(url)?
+        u := urllib.parse(url)!
         println(u)
         print_url(u)
     }

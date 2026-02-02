@@ -61,18 +61,18 @@ sealed class Trit
    string toPrintable() = _value.toPrintable() \ back("maybe");
 }
 
-public program()
+public Program()
 {
     List<Trit> values := new Trit[]{true, nilValue, false};
     values.forEach::(left)
     {
-        console.printLine("¬",left," = ", left.Inverted);
+        Console.printLine("¬",left," = ", left.Inverted);
         values.forEach::(right)
         {
-            console.printLine(left, " & ", right, " = ", left && right);
-            console.printLine(left, " | ", right, " = ", left || right);
-            console.printLine(left, " → ", right, " = ", left.implies(right));
-            console.printLine(left, " ≡ ", right, " = ", left.equivalent(right))
+            Console.printLine(left, " & ", right, " = ", left && right);
+            Console.printLine(left, " | ", right, " = ", left || right);
+            Console.printLine(left, " → ", right, " = ", left.implies(right));
+            Console.printLine(left, " ≡ ", right, " = ", left.equivalent(right))
         }
     }
 }

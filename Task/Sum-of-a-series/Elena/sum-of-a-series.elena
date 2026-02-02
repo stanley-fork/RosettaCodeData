@@ -5,5 +5,5 @@ public program()
 {
     var sum := new Range(1, 1000).selectBy::(x => 1.0r / (x * x)).summarize(new Real());
 
-    console.printLine(sum)
+    Console.printLine(sum)
 }

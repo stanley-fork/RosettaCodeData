@@ -5,24 +5,24 @@ proc plausible {description x y} {
     variable PLAUSIBILITY_RATIO
     puts "  Checking plausibility of: $description"
     if {$x > $PLAUSIBILITY_RATIO * $y} {
-	set conclusion "PLAUSIBLE"
-	set fmt "As we have counts of %i vs %i words, a ratio of %.1f times"
-	set result true
+   set conclusion "PLAUSIBLE"
+   set fmt "As we have counts of %i vs %i words, a ratio of %.1f times"
+   set result true
     } elseif {$x > $y} {
-	set conclusion "IMPLAUSIBLE"
-	set fmt "As although we have counts of %i vs %i words,"
-	append fmt " a ratio of %.1f times does not make it plausible"
-	set result false
+   set conclusion "IMPLAUSIBLE"
+   set fmt "As although we have counts of %i vs %i words,"
+   append fmt " a ratio of %.1f times does not make it plausible"
+   set result false
     } else {
-	set conclusion "IMPLAUSIBLE, probably contra-indicated"
-	set fmt "As we have counts of %i vs %i words, a ratio of %.1f times"
-	set result false
+   set conclusion "IMPLAUSIBLE, probably contra-indicated"
+   set fmt "As we have counts of %i vs %i words, a ratio of %.1f times"
+   set result false
     }
     puts [format "    %s.\n    $fmt" $conclusion $x $y [expr {double($x)/$y}]]
     return $result
 }
 
-set t [http::geturl http://wiki.puzzlers.org/pub/wordlists/unixdict.txt]
+set t [http::geturl https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt]
 set words [split [http::data $t] "\n"]
 http::cleanup $t
 foreach {name pattern} {ie (?:^|[^c])ie ei (?:^|[^c])ei cie cie cei cei} {
@@ -39,4 +39,4 @@ if {
     puts "\nOVERALL IT IS IMPLAUSIBLE!"
 }
 puts "\n(To be plausible, one word count must exceed another by\
-	$PLAUSIBILITY_RATIO times)"
+   $PLAUSIBILITY_RATIO times)"

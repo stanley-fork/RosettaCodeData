@@ -1,1 +1,0 @@
-Name : String := "Rosetta Code";

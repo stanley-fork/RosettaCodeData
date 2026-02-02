@@ -1,56 +1,51 @@
-/*REXX pgm displays top 10 words in a file (includes foreign letters),  case is ignored.*/
-parse arg fID top .                              /*obtain optional arguments from the CL*/
-if fID=='' | fID==","  then fID= 'les_mes.txt'   /*None specified? Then use the default.*/
-if top=='' | top==","  then top= 10              /*  "      "        "   "   "     "    */
-call init                                        /*initialize varied bunch of variables.*/
-call rdr
-say right('word', 40)  " "  center(' rank ', 6)  "  count "   /*display title for output*/
-say right('════', 40)  " "  center('══════', 6)  " ═══════"   /*   "    title separator.*/
-
-     do  until otops==tops | tops>top            /*process enough words to satisfy  TOP.*/
-     WL=;         mk= 0;    otops= tops          /*initialize the word list (to a NULL).*/
-
-          do n=1  for c;    z= !.n;      k= @.z  /*process the list of words in the file*/
-          if k==mk  then WL= WL z                /*handle cases of tied number of words.*/
-          if k> mk  then do;  mk=k;  WL=z;  end  /*this word count is the current max.  */
-          end   /*n*/
-
-     wr= max( length(' rank '), length(top) )    /*find the maximum length of the rank #*/
-
-          do d=1  for words(WL);  y= word(WL, d) /*process all words in the  word list. */
-          if d==1  then w= max(10, length(@.y) ) /*use length of the first number used. */
-          say right(y, 40)         right( commas(tops), wr)          right(commas(@.y), w)
-          @.y= .                                 /*nullify word count for next go 'round*/
-          end   /*d*/                            /* [↑]  this allows a non-sorted list. */
-
-     tops= tops + words(WL)                      /*correctly handle any  tied  rankings.*/
-     end        /*until*/
-exit                                             /*stick a fork in it,  we're all done. */
-/*──────────────────────────────────────────────────────────────────────────────────────*/
-commas: parse arg ?;  do jc=length(?)-3  to 1  by -3; ?=insert(',', ?, jc); end;  return ?
-16bit:  do k=1 for xs; _=word(x,k); $=changestr('├'left(_,1),$,right(_,1)); end;  return
-/*──────────────────────────────────────────────────────────────────────────────────────*/
-init:   x= 'Çà åÅ çÇ êÉ ëÉ áà óâ ªæ ºç ¿è ⌐é ¬ê ½ë «î »ï ▒ñ ┤ô ╣ù ╗û ╝ü';     xs= words(x)
-        abcL="abcdefghijklmnopqrstuvwxyz'"       /*lowercase letters of Latin alphabet. */
-        abcU= abcL;            upper abcU        /*uppercase version of Latin alphabet. */
-        accL= 'üéâÄàÅÇêëèïîìéæôÖòûùÿáíóúÑ'       /*some lowercase accented characters.  */
-        accU= 'ÜéâäàåçêëèïîìÉÆôöòûùÿáíóúñ'       /*  "  uppercase    "         "        */
-        accG= 'αßΓπΣσµτΦΘΩδφε'                   /*  "  upper/lowercase Greek letters.  */
-        ll= abcL || abcL ||accL ||accL || accG               /*chars of  after letters. */
-        uu= abcL || abcU ||accL ||accU || accG || xrange()   /*  "    " before    "     */
-        @.= 0;    q= "'";    totW= 0;    !.= @.;    c= 0;    tops= 1;          return
-/*──────────────────────────────────────────────────────────────────────────────────────*/
-rdr:   do #=0  while lines(fID)\==0; $=linein(fID) /*loop whilst there're lines in file.*/
-       if pos('├', $) \== 0  then call 16bit       /*are there any  16-bit  characters ?*/
-       $= translate( $, ll, uu)                    /*trans. uppercase letters to lower. */
-          do while $ \= '';    parse var  $  z  $  /*process each word in the  $  line. */
-          parse var  z     z1  2  zr  ''  -1  zL   /*obtain: first, middle, & last char.*/
-          if z1==q  then do; z=zr; if z==''  then iterate; end /*starts with apostrophe?*/
-          if zL==q  then z= strip(left(z, length(z) - 1))      /*ends     "       "    ?*/
-          if z==''  then iterate                               /*if Z is now null, skip.*/
-          if @.z==0  then do;  c=c+1; !.c=z;  end  /*bump word cnt; assign word to array*/
-          totW= totW + 1;      @.z= @.z + 1        /*bump total words; bump a word count*/
-          end   /*while*/
-       end      /*#*/
-    say commas(totW)     ' words found  ('commas(c)    "unique)  in "    commas(#),
-                         ' records read from file: '     fID;        say;          return
+/*REXX program   reads  and  displays  a  count  of words a file.  Word case is ignored.*/
+Call time 'R'
+abc='abcdefghijklmnopqrstuvwxyz'
+abcABC=abc||translate(abc)
+parse arg fID_top                                /*obtain optional arguments from the CL*/
+Parse Var fid_top fid ',' top
+if fID=='' then fID= 'mis.TXT'                   /* Use default if not specified        */
+if top=='' then top= 10                          /* Use default if not specified        */
+occ.=0                                           /* occurrences of word (stem) in file  */
+wn=0
+Do While lines(fid)>0                            /*loop whilst there are lines in file. */
+  line=linein(fID)
+  line=translate(line,abc||abc,abcABC||xrange('00'x,'ff'x)) /*use only lowercase letters*/
+  Do While line<>''
+    Parse Var line word line                       /* take a word                         */
+    If occ.word=0 Then Do                          /* not yet in word list                */
+      wn=wn+1
+      word.wn=word
+      End
+    occ.word=occ.word+1
+    End
+  End
+Say 'We found' wn 'different words'
+say right('word',40) ' rank   count '            /* header                              */
+say right('----',40) '------ -------'            /* separator.                          */
+tops=0
+Do Until tops>=top | tops>=wn                    /*process enough words to satisfy  TOP.*/
+  max_occ=0
+  tl=''                                          /*initialize (possibly) a list of words*/
+  Do wi=1 To wn                                  /*process the list of words in the file*/
+    word=word.wi                                 /* take a word from the list           */
+    Select
+      When occ.word>max_occ Then Do              /* most occurrences so far             */
+        tl=word                                  /* candidate for output                */
+        max_occ=occ.word                         /* current maximum occurrences         */
+        End
+      When occ.word=max_occ Then Do              /* tied                                */
+        tl=tl word                               /* add to output candidate             */
+        End
+      Otherwise                                  /* no candidate (yet)                  */
+        Nop
+      End
+    End
+    do d=1 for words(tl)
+      word=word(tl,d)
+      say right(word,40) right(tops+1,4) right(occ.word,8)
+      occ.word=0                                /*nullify this word count for next time*/
+      End
+    tops=tops+words(tl)                         /*correctly handle the tied rankings.  */
+  end
+Say time('E') 'seconds elapsed'

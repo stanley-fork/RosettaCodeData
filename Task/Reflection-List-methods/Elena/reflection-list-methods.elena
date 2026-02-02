@@ -9,12 +9,12 @@ class MyClass
     myMethod2(x) {}
 }
 
-public program()
+public Program()
 {
     var o := new MyClass();
 
     o.__getClass().__getMessages().forEach::(p)
     {
-        console.printLine("o.",p)
+        Console.printLine("o.",p)
     }
 }

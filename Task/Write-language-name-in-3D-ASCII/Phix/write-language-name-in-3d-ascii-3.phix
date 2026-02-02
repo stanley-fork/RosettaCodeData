@@ -1,21 +1,17 @@
-(phixonline)-->
- <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"""
-    __    ________
-   /_/\  / ______ \
-   \ \ \/ /\____/ /\ __
-    \ \ \/ /   / / //_/\
-     \ \ \/___/ / / \_\/_  __
-     /\ \______/ /    /_/\/ /\
-    / /\  ____ \ \    \ \ \/ /
-   / / /\ \ \ \ \ \    \_\  /
-  / / /  \ \ \ \ \ \   / /  \
- /_/ /    \ \ \ \ \ \ /_/ /\ \
- \_\/      \_\/  \_\/ \_\/\_\/
- """</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- or if you prefer something a little more cryptic (same output):</span>
- <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"   __    ________\n  /_/\\  / ______ \\\n  \\ \\ \\/ /\\____/ /\\ __\n   "</span><span style="color: #0000FF;">&</span>
-        <span style="color: #008000;">"\\ \\ \\/ /   / / //_/\\\n    \\ \\ \\/___/ / / \\_\\/_  __\n    /\\ \\__"</span><span style="color: #0000FF;">&</span>
-        <span style="color: #008000;">"____/ /    /_/\\/ /\\\n   / /\\  ____ \\ \\    \\ \\ \\/ /\n  / / /\\ \\ "</span><span style="color: #0000FF;">&</span>
-        <span style="color: #008000;">"\\ \\ \\ \\    \\_\\  /\n / / /  \\ \\ \\ \\ \\ \\   / /  \\\n/_/ /    \\"</span><span style="color: #0000FF;">&</span>
-        <span style="color: #008000;">" \\ \\ \\ \\ \\ /_/ /\\ \\\n\\_\\/      \\_\\/  \\_\\/ \\_\\/\\_\\/\n"</span><span style="color: #0000FF;">)</span>
-<!--
+puts(1,`
+   __    ________
+  /_/\  / ______ \
+  \ \ \/ /\____/ /\ __
+   \ \ \/ /   / / //_/\
+    \ \ \/___/ / / \_\/_  __
+    /\ \______/ /    /_/\/ /\
+   / /\  ____ \ \    \ \ \/ /
+  / / /\ \ \ \ \ \    \_\  /
+ / / /  \ \ \ \ \ \   / /  \
+/_/ /    \ \ \ \ \ \ /_/ /\ \
+\_\/      \_\/  \_\/ \_\/\_\/
+`)
+-- or if you prefer something a little more cryptic (same output):
+puts(1,substitute_all(sprintf(join(repeat("%023a",13),""),columnize({repeat(5,13),{68669128406254,157935485787520,
+    993509215256720,198701173910414,7948908284711,7224274028808526,6323623063378,8877105814626126,503857930469085,
+    862280375162760,99269582032552,993397286292000,51272813551684}})),tagset('4','0')," /\\_\n"))

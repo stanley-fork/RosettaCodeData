@@ -2,3 +2,10 @@
 
 ==Citations==
 * [http://en.wikipedia.org/wiki/Component_Pascal Wikipedia:Component Pascal]
+
+===See also===
+* [[Oberon-07]]
+* [[Oberon-2]]
+* [[Zonnon]]
+* [[Modula-2]]
+* [[Modula-3]]

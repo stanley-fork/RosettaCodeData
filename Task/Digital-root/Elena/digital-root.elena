@@ -20,7 +20,7 @@ extension op
     }
 }
 
-public program()
+public Program()
 {
     new long[]{627615l, 39390l, 588225l, 393900588225l}.forEach::(num)
     {

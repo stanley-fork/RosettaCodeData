@@ -42,7 +42,7 @@ fn to_continued(r fractions.Fraction) []int {
     return res
 }
 
-fn get_term_number(cf []int) ?int {
+fn get_term_number(cf []int) !int {
     mut b := ""
     mut d := "1"
     for n in cf {
@@ -53,7 +53,7 @@ fn get_term_number(cf []int) ?int {
             d = "1"
         }
     }
-    i := strconv.parse_int(b, 2, 64)?
+    i := strconv.parse_int(b, 2, 64)!
     return int(i)
 }
 
@@ -74,7 +74,7 @@ fn commatize(n int) string {
 
 fn main() {
     cw := calkin_wilf(20)
-    println("The first 20 terms of the Calkin-Wilf sequnence are:")
+    println("The first 20 terms of the Calkin-Wilf sequence are:")
     for i := 1; i <= 20; i++ {
         println("${i:2}: ${cw[i-1]}")
     }

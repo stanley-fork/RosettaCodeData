@@ -34,7 +34,7 @@ def updateRow( header, row, updates ) =
   updates( r )
   vector( r(f) | f <- header )
 
-def update( table, updates ) =		
+def update( table, updates ) =
   Table( table.header, (updateRow(table.header, r, updates) | r <- table.rows).toList() )
 
 def addColumn( table, column, updates ) =

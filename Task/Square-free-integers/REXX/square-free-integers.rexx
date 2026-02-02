@@ -1,6 +1,7 @@
-include Settings
+-- 24 Aug 2025
+include Setting
 
-say 'SQUARE-FREE INTEGERS - 6 Mar 2025'
+say 'SQUARE-FREE INTEGERS'
 say version
 say
 numeric digits 5
@@ -74,7 +75,4 @@ say '--------------'
 say Format(Time('e'),,3) 'seconds'
 return
 
-include Numbers
-include Sequences
-include Functions
-include Abend
+include Math

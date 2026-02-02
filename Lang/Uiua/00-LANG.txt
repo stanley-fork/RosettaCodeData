@@ -7,8 +7,9 @@
 |LCT=yes}}
 {{language programming paradigm|array}}
 {{language programming paradigm|functional|array}}
+From [https://www.uiua.org uiua.org]:
 
-Uiua (''wee-wuh'') is a general purpose, stack-based, array-oriented programming language with a focus on simplicity, beauty, and tacit code.
+"Uiua (''wee-wuh'') is a general purpose, stack-based, array-oriented programming language with a focus on simplicity, beauty, and tacit code.
 
 Uiua has a simple, context-free, LL(3) grammar. Code runs from right to left, top to bottom, with only one precedence rule. As operators are to the left of their operands, Uiua code reads a little bit like a Lisp, but with fewer parentheses.
 
@@ -18,7 +19,10 @@ Uiua's one and only composite data type, the array, is based on those of APL, J,
 
 Unlike other array languages, Uiua does not have monadic and dyadic versions of each glyph. Every glyph does only one thing, so you don't need to parse an entire expression to know which version it is.
 
-Find out more, and run code in your browser at https://www.uiua.org
+Find out more, and run code in your browser at [https://www.uiua.org https://www.uiua.org]."
+
+===Note===
+The Uiua programming language uses a custom font and colorful syntax highlighting to increase the readability of its code. As such syntax highlighting is not possible to display on this wiki, it is recommended to paste code into [https://www.uiua.org/pad the online Uiua pad] (or a [https://www.uiua.org/install#editor-support supported editor]) to view code more easily.
 
 ==Todo==
 [https://rosettacode.org/wiki/Tasks_not_implemented_in_Uiua Tasks not implemented in Uiua]

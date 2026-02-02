@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 arg xx
 if xx = '' then
    xx = 1500000
@@ -25,9 +25,4 @@ say
 call Timer
 exit
 
-include Numbers
-include Functions
-include Special
-include Sequences
-include Helper
-include Abend
+include Math

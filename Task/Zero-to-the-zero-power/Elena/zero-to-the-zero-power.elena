@@ -1,6 +1,6 @@
 import extensions;
 
-public program()
+public Program()
 {
-    console.printLine("0^0 is ",0.power(0))
+    Console.printLine("0^0 is ",0.power(0))
 }

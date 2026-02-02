@@ -15,11 +15,4 @@ Damm:
     If z=d Then Say '   valid checksum digit '  z  " for "  x
     Else Say ' invalid checksum digit '  z  " for "  x    '   (should be'  d")"
     End   /*j*/
-  Return  /syntaxhighlight>
-{{out|output|text=&nbsp; when using the (internal) default inputs:}}
-<pre>
-   valid checksum digit  4  for  5724
- invalid checksum digit  7  for  5727    (should be 4)
-   valid checksum digit  6  for  112946
- invalid checksum digit  0  for  112940    (should be 6)
-</pre>
+  Return

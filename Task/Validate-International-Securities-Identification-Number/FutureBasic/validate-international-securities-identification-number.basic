@@ -1,5 +1,7 @@
 //
 // Validate International Securities Identification Number
+// Using FutureBasic 7.0.33, December 2024 R.W.
+//
 // At entry ISIN string
 // Exits with Boolean Valid or Invalid
 //

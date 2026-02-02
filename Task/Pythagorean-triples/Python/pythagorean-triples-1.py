@@ -1,5 +1,4 @@
-from fractions import gcd
-
+from math import gcd
 
 def pt1(maxperimeter=100):
     '''

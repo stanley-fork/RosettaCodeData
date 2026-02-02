@@ -1,51 +1,49 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">nobr</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">neat</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">ni</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">blocks</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">blocks</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">neat</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">b</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">blocks</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-         <span style="color: #000000;">blocks</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">blocks</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">..$]</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">l</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #7060A8;">sum</span><span style="color: #0000FF;">(</span><span style="color: #000000;">blocks</span><span style="color: #0000FF;">)+</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">blocks</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span>
-                 <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">neat</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">l</span><span style="color: #0000FF;">-</span><span style="color: #000000;">b</span><span style="color: #0000FF;">*</span><span style="color: #000000;">2</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">ni</span> <span style="color: #008080;">to</span> <span style="color: #000000;">e</span> <span style="color: #008080;">by</span> <span style="color: #000000;">2</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">i</span> <span style="color: #008080;">to</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">b</span><span style="color: #0000FF;">*</span><span style="color: #000000;">2</span><span style="color: #0000FF;">-</span><span style="color: #000000;">2</span> <span style="color: #008080;">by</span> <span style="color: #000000;">2</span> <span style="color: #008080;">do</span>
-                 <span style="color: #000000;">neat</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ch</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">nobr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">neat</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">b</span><span style="color: #0000FF;">*</span><span style="color: #000000;">2</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">blocks</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">neat</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">' '</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+function nobr(sequence res, string neat, integer ni, integer ch, sequence blocks)
+    if length(blocks)=0 then
+        res = append(res,neat)
+    else
+        integer b = blocks[1]
+        blocks = blocks[2..$]
+        integer l = (sum(blocks)+length(blocks)-1)*2,
+                e = length(neat)-l-b*2
+        for i=ni to e by 2 do
+            for j=i to i+b*2-2 by 2 do
+                neat[j] = ch
+            end for
+            res = nobr(res,neat,i+b*2+2,ch+1,blocks)
+            neat[i] = ' '
+        end for
+    end if
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">nonoblock</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">len</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">blocks</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">neat</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"|"</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #000000;">len</span><span style="color: #0000FF;">),</span><span style="color: #008000;">'|'</span><span style="color: #0000FF;">)&</span><span style="color: #008000;">"|"</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">nobr</span><span style="color: #0000FF;">({},</span><span style="color: #000000;">neat</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'A'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">blocks</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function nonoblock(integer len, sequence blocks)
+    string neat = "|"&join(repeat(' ',len),'|')&"|"
+    return nobr({},neat,2,'A',blocks)
+end function
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">tests</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">}},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,{}},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">8</span><span style="color: #0000FF;">}},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">15</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">}},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">}},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">}},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">}},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">}}}</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">len</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">blocks</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #0000FF;">{</span><span style="color: #000000;">len</span><span style="color: #0000FF;">,</span><span style="color: #000000;">blocks</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tests</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">ti</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d cells with blocks %s"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">len</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprint</span><span style="color: #0000FF;">(</span><span style="color: #000000;">blocks</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s\n%s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">'='</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">))})</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">nonoblock</span><span style="color: #0000FF;">(</span><span style="color: #000000;">len</span><span style="color: #0000FF;">,</span><span style="color: #000000;">blocks</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"No solutions.\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">ri</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%3d:  %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">ri</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">ri</span><span style="color: #0000FF;">]})</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+sequence tests = {{5,{2,1}},
+                  {5,{}},
+                  {10,{8}},
+                  {15,{2, 3, 2, 3}},
+                  {10,{4, 3}},
+                  {5,{2,1}},
+                  {10,{3, 1}},
+                  {5,{2, 3}}}
+integer len
+sequence blocks, res
+for i=1 to length(tests) do
+    {len,blocks} = tests[i]
+    string ti = sprintf("%d cells with blocks %s",{len,sprint(blocks)})
+    printf(1,"%s\n%s\n",{ti,repeat('=',length(ti))})
+    res = nonoblock(len,blocks)
+    if length(res)=0 then
+        printf(1,"No solutions.\n")
+    else
+        for ri=1 to length(res) do
+            printf(1,"%3d:  %s\n",{ri,res[ri]})
+        end for
+    end if
+    printf(1,"\n")
+end for

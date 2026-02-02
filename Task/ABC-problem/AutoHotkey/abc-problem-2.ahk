@@ -34,5 +34,5 @@ CONFUSE
 )"
 
 loop, parse, wordlist, `n
-	out .= A_LoopField " - " isWordPossible(blocks, A_LoopField) "`n"
+   out .= A_LoopField " - " isWordPossible(blocks, A_LoopField) "`n"
 msgbox % out

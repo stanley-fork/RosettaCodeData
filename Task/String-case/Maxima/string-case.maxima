@@ -1,2 +1,4 @@
-supcase('alphaBETA');
-sdowncase('alphaBETA');
+str: "alphaBETA"$
+supcase(str);
+sdowncase(str);
+sinvertcase(str);

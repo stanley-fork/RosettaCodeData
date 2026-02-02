@@ -1,7 +1,5 @@
-val isCusip = fn(s) {
-    if s is not string or len(s) != 9 {
-        return false
-    }
+val isCusip = fn(s string) {
+    if len(s) != 9 : return false
 
     val basechars = '0'..'9' ~ 'A'..'Z' ~ "*@#"
 

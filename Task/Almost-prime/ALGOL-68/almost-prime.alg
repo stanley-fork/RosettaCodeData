@@ -10,8 +10,8 @@ COMMENT
    BEGIN
       INT tf := 2, residue := n, count := 1;
       WHILE tf < residue DO
-	 INT remainder = residue MOD tf;
-	 ( remainder = 0 | count +:= 1; residue %:= tf | tf +:= 1 )
+         INT remainder = residue MOD tf;
+         ( remainder = 0 | count +:= 1; residue %:= tf | tf +:= 1 )
       OD;
       count
    END;
@@ -25,8 +25,8 @@ COMMENT
       INT k := num facs(i);
       IF k <= classes
       THEN
-	 INT c = 1 + count OF table[k];
-	 ( c <= examples | (data OF table[k])[c] := i; count OF table[k] := c )
+         INT c = 1 + count OF table[k];
+         ( c <= examples | (data OF table[k])[c] := i; count OF table[k] := c )
       FI;
       INT sum := 0;
       FOR i TO classes DO sum +:= count OF table[i] OD;

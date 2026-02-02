@@ -4,7 +4,7 @@ F run_utm(halt, state, Char blank; rules_in, [Char] &tape = [Char](); =pos = 0)
       tape.append(blank)
    I pos < 0
       pos += tape.len
-   V rules = Dict(rules_in, r -> ((r[0], Char(r[1])), (Char(r[2]), r[3], r[4])))
+   V rules = Dict(rules_in, r -> ((r[0], Char(string' r[1])), (Char(string' r[2]), r[3], r[4])))
 
    L
       print(st.ljust(4), end' ‘ ’)
@@ -39,8 +39,8 @@ run_utm(
    halt' ‘qf’,
    state' ‘q0’,
    blank' Char(‘B’),
-   rules_in' [‘q0 1 1 right q0’.split(‘ ’, group_delimiters' 1B),
-              ‘q0 B 1 stay  qf’.split(‘ ’, group_delimiters' 1B)],
+   rules_in' [‘q0 1 1 right q0’.split_sg(),
+              ‘q0 B 1 stay  qf’.split_sg()],
    tape' &[‘1’, ‘1’, ‘1’]
    )
 
@@ -50,12 +50,12 @@ run_utm(
    state' ‘a’,
    blank' Char(‘0’),
    rules_in'
-      [‘a 0 1 right b’.split(‘ ’, group_delimiters' 1B),
-       ‘a 1 1 left  c’.split(‘ ’, group_delimiters' 1B),
-       ‘b 0 1 left  a’.split(‘ ’, group_delimiters' 1B),
-       ‘b 1 1 right b’.split(‘ ’, group_delimiters' 1B),
-       ‘c 0 1 left  b’.split(‘ ’, group_delimiters' 1B),
-       ‘c 1 1 stay  halt’.split(‘ ’, group_delimiters' 1B)]
+      [‘a 0 1 right b’.split_sg(),
+       ‘a 1 1 left  c’.split_sg(),
+       ‘b 0 1 left  a’.split_sg(),
+       ‘b 1 1 right b’.split_sg(),
+       ‘c 0 1 left  b’.split_sg(),
+       ‘c 1 1 stay  halt’.split_sg()]
    )
 
 print("\nsorting test\n")
@@ -64,19 +64,19 @@ run_utm(
    state' ‘A’,
    blank' Char(‘0’),
    rules_in'
-      [‘A 1 1 right A’.split(‘ ’, group_delimiters' 1B),
-       ‘A 2 3 right B’.split(‘ ’, group_delimiters' 1B),
-       ‘A 0 0 left  E’.split(‘ ’, group_delimiters' 1B),
-       ‘B 1 1 right B’.split(‘ ’, group_delimiters' 1B),
-       ‘B 2 2 right B’.split(‘ ’, group_delimiters' 1B),
-       ‘B 0 0 left  C’.split(‘ ’, group_delimiters' 1B),
-       ‘C 1 2 left  D’.split(‘ ’, group_delimiters' 1B),
-       ‘C 2 2 left  C’.split(‘ ’, group_delimiters' 1B),
-       ‘C 3 2 left  E’.split(‘ ’, group_delimiters' 1B),
-       ‘D 1 1 left  D’.split(‘ ’, group_delimiters' 1B),
-       ‘D 2 2 left  D’.split(‘ ’, group_delimiters' 1B),
-       ‘D 3 1 right A’.split(‘ ’, group_delimiters' 1B),
-       ‘E 1 1 left  E’.split(‘ ’, group_delimiters' 1B),
-       ‘E 0 0 right STOP’.split(‘ ’, group_delimiters' 1B)],
+      [‘A 1 1 right A’.split_sg(),
+       ‘A 2 3 right B’.split_sg(),
+       ‘A 0 0 left  E’.split_sg(),
+       ‘B 1 1 right B’.split_sg(),
+       ‘B 2 2 right B’.split_sg(),
+       ‘B 0 0 left  C’.split_sg(),
+       ‘C 1 2 left  D’.split_sg(),
+       ‘C 2 2 left  C’.split_sg(),
+       ‘C 3 2 left  E’.split_sg(),
+       ‘D 1 1 left  D’.split_sg(),
+       ‘D 2 2 left  D’.split_sg(),
+       ‘D 3 1 right A’.split_sg(),
+       ‘E 1 1 left  E’.split_sg(),
+       ‘E 0 0 right STOP’.split_sg()],
    tape' &‘2 2 2 1 2 2 1 2 1 2 1 2 1 2’.split(‘ ’).map(Char)
    )

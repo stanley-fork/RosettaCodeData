@@ -1,6 +1,7 @@
-include Settings
+-- 23 Aug 2025
+include Setting
 
-say 'ALMOST PRIME - 3 Mar 2025'
+say 'ALMOST PRIME'
 say version
 say
 arg n k m
@@ -33,7 +34,4 @@ end
 say Format(Time('e'),,3) 'seconds'
 exit
 
-include Numbers
-include Sequences
-include Functions
-include Abend
+include Math

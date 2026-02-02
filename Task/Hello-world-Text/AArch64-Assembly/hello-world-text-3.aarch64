@@ -19,3 +19,4 @@ writez:                // extern long writez(char *str);
     ret                // return from function.
                        // return value (x0) is number of characters written.
 msg: .asciz "Hello world!\n" // .asciz means null-terminated string. Assembler adds the 0
+.align 4

@@ -1,60 +1,62 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">reverse_n</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">></span><span style="color: #000000;">0</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">*</span><span style="color: #000000;">10</span> <span style="color: #0000FF;">+</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">/</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">e</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+function reverse_n(atom s)
+    atom e = 0
+    while s>0 do
+        e = e*10 + remainder(s,10)
+        s = floor(s/10)
+    end while
+    return e
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">mx</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1000</span><span style="color: #0000FF;">,</span>
-          <span style="color: #000000;">data</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">20</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"%7d "</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">86</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">100</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"%8d "</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">991</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1000</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"%10d "</span><span style="color: #0000FF;">}}</span>
+constant mx = 1000,
+         data = {{1, 20, repeat("%6d",3)&
+                         repeat("%7d",13)&
+                         repeat("%8d",4)},
+                 {86, 100, repeat("%9d",15)},
+                 {991, 1000, repeat("%11d",10)}}
 
- <span style="color: #008080;">include</span> <span style="color: #000000;">builtins</span><span style="color: #0000FF;">\</span><span style="color: #7060A8;">ordinal</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+include builtins\ordinal.e
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">digit</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">results</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">count</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">pow</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">fl</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">*</span><span style="color: #000000;">11</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">nd</span><span style="color: #0000FF;">=</span><span style="color: #000000;">3</span> <span style="color: #008080;">to</span> <span style="color: #000000;">15</span> <span style="color: #008080;">do</span> <span style="color: #000080;font-style:italic;">-- (number of digits, usually quits early)
-         -- (obvs. 64-bit phix is fine with 19 digits, but 32-bit ain't)</span>
-         <span style="color: #004080;">bool</span> <span style="color: #000000;">odd</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">nd</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)==</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">=</span><span style="color: #000000;">d</span><span style="color: #0000FF;">*</span><span style="color: #000000;">pow</span> <span style="color: #008080;">to</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">d</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">pow</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>   <span style="color: #000080;font-style:italic;">-- (eg 300 to 399)</span>
-             <span style="color: #004080;">integer</span> <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">reverse_n</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">m</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">odd</span><span style="color: #0000FF;">?</span><span style="color: #000000;">9</span><span style="color: #0000FF;">:</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>  <span style="color: #000080;font-style:italic;">-- (1 or 10 iterations)</span>
-                 <span style="color: #004080;">atom</span> <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">e</span> <span style="color: #0000FF;">+</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">odd</span> <span style="color: #0000FF;">?</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">*</span><span style="color: #000000;">pow</span><span style="color: #0000FF;">*</span><span style="color: #000000;">100</span><span style="color: #0000FF;">+</span><span style="color: #000000;">m</span><span style="color: #0000FF;">*</span><span style="color: #000000;">pow</span><span style="color: #0000FF;">*</span><span style="color: #000000;">10</span>
-                                      <span style="color: #0000FF;">:</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">*</span><span style="color: #000000;">pow</span><span style="color: #0000FF;">*</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">if</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fl</span><span style="color: #0000FF;">)==</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>  <span style="color: #000080;font-style:italic;">-- gapful!</span>
-                     <span style="color: #000000;">count</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-                     <span style="color: #000000;">results</span><span style="color: #0000FF;">[</span><span style="color: #000000;">count</span><span style="color: #0000FF;">][</span><span style="color: #000000;">d</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">p</span>
-                     <span style="color: #008080;">if</span> <span style="color: #000000;">count</span><span style="color: #0000FF;">==</span><span style="color: #000000;">mx</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">results</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">odd</span> <span style="color: #008080;">then</span> <span style="color: #000000;">pow</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">10</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">count</span><span style="color: #0000FF;"><</span><span style="color: #000000;">mx</span> <span style="color: #008080;">then</span> <span style="color: #0000FF;">?</span><span style="color: #000000;">9</span><span style="color: #0000FF;">/</span><span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span> <span style="color: #000080;font-style:italic;">-- oh dear...</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">results</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function digit(sequence results, integer d)
+    integer count = 0, pow = 1, fl = d*11
+    for nd=3 to 15 do -- (number of digits, usually quits early)
+        -- (obvs. 64-bit phix is fine with 19 digits, but 32-bit ain't)
+        bool odd = (remainder(nd,2)==1)
+        for s=d*pow to (d+1)*pow-1 do   -- (eg 300 to 399)
+            integer e = reverse_n(s)
+            for m=0 to iff(odd?9:0) do  -- (1 or 10 iterations)
+                atom p = e + iff(odd ? s*pow*100+m*pow*10
+                                     : s*pow*10)
+                if remainder(p,fl)==0 then  -- gapful!
+                    count += 1
+                    results[count][d] = p
+                    if count==mx then return results end if
+                end if
+            end for
+        end for
+        if odd then pow *= 10 end if
+    end for
+    if count<mx then ?9/0 end if -- oh dear...
+    return results
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">main</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">results</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">({},</span><span style="color: #000000;">9</span><span style="color: #0000FF;">),</span><span style="color: #000000;">mx</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">9</span> <span style="color: #008080;">do</span> <span style="color: #000080;font-style:italic;">-- (the start/end digit)</span>
-         <span style="color: #000000;">results</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">digit</span><span style="color: #0000FF;">(</span><span style="color: #000000;">results</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
+procedure main()
+    sequence results = repeat(repeat({},9),mx)
+    for d=1 to 9 do -- (the start/end digit)
+        results = digit(results,d)
+    end for
 
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">data</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #0000FF;">{</span><span style="color: #004080;">integer</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">fmt</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">data</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%,d%s to %,d%s palindromic gapful numbers (&gt; 100) ending with:\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">ord</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">),</span><span style="color: #000000;">e</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">ord</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">)})</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">9</span> <span style="color: #008080;">do</span>
-             <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d: "</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">s</span> <span style="color: #008080;">to</span> <span style="color: #000000;">e</span> <span style="color: #008080;">do</span>
-                 <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">,</span><span style="color: #000000;">results</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">][</span><span style="color: #000000;">d</span><span style="color: #0000FF;">])</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-             <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
- <span style="color: #000000;">main</span><span style="color: #0000FF;">()</span>
-<!--
+    for i=1 to length(data) do
+        {integer s, integer e, sequence fmts} = data[i]
+        printf(1,"%,d%s to %,d%s palindromic gapful numbers (> 100) ending with:\n", {s,ord(s),e,ord(e)})
+        for d=1 to 9 do
+            printf(1,"%d:",d)
+            for j=s to e do
+                printf(1,fmts[j-s+1],results[j][d])
+            end for
+            printf(1,"\n")
+        end for
+        printf(1,"\n")
+    end for
+end procedure
+main()

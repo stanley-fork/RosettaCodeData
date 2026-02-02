@@ -1,1 +1,2 @@
-'c putc
+$a n:put nl
+#97 c:put nl

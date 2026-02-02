@@ -1,7 +1,7 @@
-#!/bin/dash				
+#!/bin/dash
 
 #  Babbage problem:
-#  	What is the smallest (positive) integer whose square ends in the digits 269,696?
+#   What is the smallest (positive) integer whose square ends in the digits 269,696?
 #
 #  He found the second to smallest number (99736 instead of 25264) using pencil and paper,
 #  and would not have wasted hours of computing time on his (planned) Analytical Engine (AE).
@@ -47,38 +47,38 @@ done
 a=1
 
 # first workfile contains just the number 0
-echo 0 >$wrk	
+echo 0 >$wrk
 
 # test all workfile numbers with another digit in front
-while test $a -lt $m		# until the increment excees the modulus
-do mm=$((a*10))			# modulus in this round
-   ee=$((e % mm))		# ending in this round
-   cat $wrk |			# numbers from current workfile
+while test $a -lt $m        # until the increment excees the modulus
+do mm=$((a*10))         # modulus in this round
+   ee=$((e % mm))       # ending in this round
+   cat $wrk |           # numbers from current workfile
       while read x
-      do y=$x			# first number to test is the number read
-	 while test $y -le $((x+mm-1))		
-	 do z=$(($y * $y))	# calculate the square
-	    z=$(($z % $mm))	# ending in this round
-	    if test $z -eq $ee	
-	    then echo $y	# candidate for next round
-	    fi
-	    y=$(($y + $a))	# advance leftmost digit
-	 done
-      done  >$wrk.new		# create new workfile
+      do y=$x           # first number to test is the number read
+     while test $y -le $((x+mm-1))
+     do z=$(($y * $y))  # calculate the square
+        z=$(($z % $mm)) # ending in this round
+        if test $z -eq $ee
+        then echo $y    # candidate for next round
+        fi
+        y=$(($y + $a))  # advance leftmost digit
+     done
+      done  >$wrk.new       # create new workfile
    # next round
-   a=$((a*10))			# another leftmost digit
-   mv $wrk.new $wrk		# cycle workfiles
+   a=$((a*10))          # another leftmost digit
+   mv $wrk.new $wrk     # cycle workfiles
 done
 
 # find each number in the last workfile  if x*x mod m = e
 # ending in $e and modulus in $m
-cat $wrk |			# numbers from last workfile
+cat $wrk |          # numbers from last workfile
    while read x
-   do y=$(($x * $x))		# check
+   do y=$(($x * $x))        # check
       y=$(($y % $m))
       if test $y -eq $e
-      then echo $x		# solution found
+      then echo $x      # solution found
       fi
    done |
-   sort -n |    		# numbers in ascending order
-   head -n 1 			# show only smallest
+   sort -n |            # numbers in ascending order
+   head -n 1            # show only smallest

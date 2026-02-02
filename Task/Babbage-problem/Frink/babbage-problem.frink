@@ -11,7 +11,7 @@ while true
     {
        // This prints i and i²
        println[i + "² = " + i²]
-       exit[] 	 // This terminates the program if a solution is found.
+       exit[]    // This terminates the program if a solution is found.
     }
     i = i + 1
 }

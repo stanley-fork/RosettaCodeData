@@ -1,13 +1,11 @@
-(notonline)-->
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span> <span style="color: #000080;font-style:italic;">-- (no class in p2js)</span>
- <span style="color: #008080;">class</span> <span style="color: #000000;">test</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">msg</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"this is a test"</span>
-     <span style="color: #008080;">procedure</span> <span style="color: #000000;">show</span><span style="color: #0000FF;">()</span> <span style="color: #0000FF;">?</span><span style="color: #7060A8;">this</span><span style="color: #0000FF;">.</span><span style="color: #000000;">msg</span> <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
-     <span style="color: #008080;">procedure</span> <span style="color: #000000;">inst</span><span style="color: #0000FF;">()</span> <span style="color: #0000FF;">?</span><span style="color: #008000;">"this is dynamic"</span> <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">class</span>
- <span style="color: #000000;">test</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">new</span><span style="color: #0000FF;">()</span>
- <span style="color: #000000;">t</span><span style="color: #0000FF;">.</span><span style="color: #000000;">show</span><span style="color: #0000FF;">()</span>            <span style="color: #000080;font-style:italic;">-- prints "this is a test"</span>
- <span style="color: #000000;">t</span><span style="color: #0000FF;">.</span><span style="color: #000000;">inst</span><span style="color: #0000FF;">()</span>            <span style="color: #000080;font-style:italic;">-- prints "this is dynamic"</span>
- <span style="color: #000000;">t</span><span style="color: #0000FF;">.</span><span style="color: #000000;">inst</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">.</span><span style="color: #000000;">show</span>
- <span style="color: #000000;">t</span><span style="color: #0000FF;">.</span><span style="color: #000000;">inst</span><span style="color: #0000FF;">()</span>            <span style="color: #000080;font-style:italic;">-- prints "this is a test"</span>
-<!--
+without js -- (no class in p2js)
+class test
+    string msg = "this is a test"
+    procedure show() ?this.msg end procedure
+    procedure inst() ?"this is dynamic" end procedure
+end class
+test t = new()
+t.show()            -- prints "this is a test"
+t.inst()            -- prints "this is dynamic"
+t.inst = t.show
+t.inst()            -- prints "this is a test"

@@ -11,3 +11,11 @@ function vdc(n, base)
     end
     return m
 end
+for b = 2, 5 do
+    io.write( "base ", b, ":  " )
+    for n = 0, 9 do
+        local m = vdc(n, b)
+        io.write(string.format("%0.4f  ", m))
+    end
+    print()
+end

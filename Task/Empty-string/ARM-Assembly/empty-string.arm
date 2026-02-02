@@ -34,7 +34,7 @@ main:                /* entry of program  */
 
     ldr r0,iAdrszNotEmptyString
     bl affichageMess
-	/* second string */
+    /* second string */
 2:
     @ load string 1
     ldr r1,iAdrszString1
@@ -64,20 +64,19 @@ iAdrszEmptyString:       .int szEmptyString
 /******************************************************************/
 /* r0 contains the address of the message */
 affichageMess:
-    push {fp,lr}    			/* save  registres */
-    push {r0,r1,r2,r7}    		/* save others registers */
-    mov r2,#0   				/* counter length */
-1:      	/* loop length calculation */
-    ldrb r1,[r0,r2]  			/* read octet start position + index */
-    cmp r1,#0       			/* if 0 its over */
-    addne r2,r2,#1   			/* else add 1 in the length */
-    bne 1b          			/* and loop */
+    push {fp,lr}                /* save  registres */
+    push {r0,r1,r2,r7}          /* save others registers */
+    mov r2,#0                   /* counter length */
+1:          /* loop length calculation */
+    ldrb r1,[r0,r2]             /* read octet start position + index */
+    cmp r1,#0                   /* if 0 its over */
+    addne r2,r2,#1              /* else add 1 in the length */
+    bne 1b                      /* and loop */
                                 /* so here r2 contains the length of the message */
-    mov r1,r0        			/* address message in r1 */
-    mov r0,#STDOUT      		/* code to write to the standard output Linux */
+    mov r1,r0                   /* address message in r1 */
+    mov r0,#STDOUT              /* code to write to the standard output Linux */
     mov r7, #WRITE             /* code call system "write" */
     swi #0                      /* call systeme */
-    pop {r0,r1,r2,r7}     		/* restaur others registers */
-    pop {fp,lr}    				/* restaur des  2 registres */
-    bx lr	        			/* return  */
-	
+    pop {r0,r1,r2,r7}           /* restaur others registers */
+    pop {fp,lr}                 /* restaur des  2 registres */
+    bx lr                       /* return  */

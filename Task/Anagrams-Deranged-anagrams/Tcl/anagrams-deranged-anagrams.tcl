@@ -14,7 +14,7 @@ foreach word $wordlist {
 # Deranged test
 proc deranged? {l1 l2} {
     foreach c1 $l1 c2 $l2 {
-	if {$c1 eq $c2} {return 0}
+    if {$c1 eq $c2} {return 0}
     }
     return 1
 }
@@ -22,11 +22,11 @@ proc deranged? {l1 l2} {
 # Get a deranged pair from an anagram set, if one exists
 proc getDeranged {words} {
     foreach l1 [lrange $words 0 end-1] {
-	foreach l2 [lrange $words 1 end] {
-	    if {[deranged? $l1 $l2]} {
-		return [list $l1 $l2 1]
-	    }
-	}
+    foreach l2 [lrange $words 1 end] {
+        if {[deranged? $l1 $l2]} {
+        return [list $l1 $l2 1]
+        }
+    }
     }
     return {{} {} 0}
 }
@@ -38,8 +38,8 @@ set max 0
 dict for {k words} $w {
     incr count [expr {[llength $words] > 1}]
     if {[llength $k] > $max && [lassign [getDeranged $words] l1 l2]} {
-	set max [llength $l1]
-	lappend candidates [join $l1 ""],[join $l2 ""]
+    set max [llength $l1]
+    lappend candidates [join $l1 ""],[join $l2 ""]
     }
 }
 

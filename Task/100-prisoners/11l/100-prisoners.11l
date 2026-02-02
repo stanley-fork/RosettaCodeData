@@ -5,7 +5,7 @@ F play_random(n)
    L 0 .< n
       random:shuffle(&in_drawer)
       V found = 0B
-      L(prisoner) 100
+      L(prisoner) 0.<100
          found = 0B
          L(reveal) random:sample(sampler, 50)
             V card = in_drawer[reveal]
@@ -24,7 +24,7 @@ F play_optimal(n)
    L 0 .< n
       random:shuffle(&in_drawer)
       V found = 0B
-      L(prisoner) 100
+      L(prisoner) 0.<100
          V reveal = prisoner
          found = 0B
          L 50

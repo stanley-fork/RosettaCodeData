@@ -29,5 +29,5 @@ showSample k =
               chunksOf 5 $
                 take
                   (read (ws !! 1))
-                  [read (ws !! 5) :: Int ..]
+                  $ filter isGapful [read (ws !! 5) :: Int ..]
           )

@@ -36,7 +36,7 @@ END IsGameWon;
 BEGIN
   Randomize(0);
   NWins := 0;
-  FOR Game := 0 TO NGames DO
+  FOR Game := 1 TO NGames DO
     IF IsGameWon(FALSE) THEN
       NWins := NWins + 1
     END
@@ -46,7 +46,7 @@ BEGIN
   WriteString('% of games.');
   WriteLn;
   NWins := 0;
-  FOR Game := 0 TO NGames DO
+  FOR Game := 1 TO NGames DO
     IF IsGameWon(TRUE) THEN
       NWins := NWins + 1
     END

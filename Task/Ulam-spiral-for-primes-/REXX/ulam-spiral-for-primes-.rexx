@@ -1,5 +1,6 @@
--- 25 Apr 2025
-include Settings
+-- 10 Oct 2025
+-- Use characterset Western European OEM850
+include Setting
 arg size','init
 
 say 'ULAM SPIRAL'
@@ -10,7 +11,6 @@ call Corners
 call Spiral
 call Pack
 call Display
-call Timer
 exit
 
 Parameters:
@@ -92,7 +92,5 @@ say
 say init 'starting point,' tot 'numbers,' hp 'primes,' bigp 'largest prime'
 return
 
-include Functions
-include Numbers
-include Helper
-include Abend
+-- Prime
+include Ntheory

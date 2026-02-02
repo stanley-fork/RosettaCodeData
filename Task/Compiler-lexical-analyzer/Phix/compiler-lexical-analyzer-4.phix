@@ -1,54 +1,48 @@
--->
- <span style="color: #000080;font-style:italic;">--
- -- demo\rosetta\Compiler\extra.e
- -- =============================
- --
- --  Routines to reload human-readable files (deviation from task requirement)
- --</span>
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span> <span style="color: #000080;font-style:italic;">-- (file i/o)
+-- demo\rosetta\Compiler\extra.e
+--  Routines to reload human-readable files (deviation from task requirement)
+without js -- (file i/o)
 
- --The following can be used to load .lex files, as created by lex.exw:
- -- (in place of the existing get_tok() in parse.e)</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">line</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">trim</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">gets</span><span style="color: #0000FF;">(</span><span style="color: #000000;">input_file</span><span style="color: #0000FF;">))</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #000000;">line</span><span style="color: #0000FF;">,</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #000000;">limit</span><span style="color: #0000FF;">:=</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,</span><span style="color: #000000;">no_empty</span><span style="color: #0000FF;">:=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">],</span><span style="color: #000000;">tkNames</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #0000FF;">?</span><span style="color: #000000;">9</span><span style="color: #0000FF;">/</span><span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">k</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">tok</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+--The following can be used to load .lex files, as created by lex.exw:
+-- (in place of the existing get_tok() in parse.e)
+function get_tok()
+    string line = trim(gets(input_file))
+    sequence tok = split(line,' ',limit:=4,no_empty:=1)
+    integer k = find(tok[3],tkNames)
+    if k=0 then ?9/0 end if
+    tok[3] = k
+    return tok
+end function
 
 
- <span style="color: #000080;font-style:italic;">--The following can be used to load .ast files, as created by parse.exw:
- -- (in place of the existing lex()/parse() pairs in cgen.exw and interp.exw)</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">load_ast</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">line</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">trim</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">gets</span><span style="color: #0000FF;">(</span><span style="color: #000000;">input_file</span><span style="color: #0000FF;">))</span>
-     <span style="color: #000080;font-style:italic;">-- Each line has at least one token</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">node</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #000000;">line</span><span style="color: #0000FF;">,</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #000000;">limit</span><span style="color: #0000FF;">:=</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">no_empty</span><span style="color: #0000FF;">:=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
+--The following can be used to load .ast files, as created by parse.exw:
+-- (in place of the existing lex()/parse() pairs in cgen.exw and interp.exw)
+function load_ast()
+    string line = trim(gets(input_file))
+    -- Each line has at least one token
+    sequence node = split(line,' ',limit:=2,no_empty:=1)
 
-     <span style="color: #004080;">string</span> <span style="color: #000000;">node_type</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">node</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
+    string node_type = node[1]
 
-     <span style="color: #008080;">if</span> <span style="color: #000000;">node_type</span> <span style="color: #0000FF;">==</span> <span style="color: #008000;">";"</span> <span style="color: #008080;">then</span> <span style="color: #000080;font-style:italic;">-- a terminal node</span>
-         <span style="color: #008080;">return</span> <span style="color: #004600;">NULL</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+    if node_type == ";" then -- a terminal node
+        return NULL
+    end if
 
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">n_type</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">node_type</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tkNames</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n_type</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #0000FF;">?</span><span style="color: #000000;">9</span><span style="color: #0000FF;">/</span><span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+    integer n_type = find(node_type,tkNames)
+    if n_type=0 then ?9/0 end if
 
-     <span style="color: #000080;font-style:italic;">-- A line with two tokens is a leaf node
-     -- Leaf nodes are: Identifier, Integer, String
-     -- The 2nd token is the value</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">node</span><span style="color: #0000FF;">)></span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">node</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">n_type</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">n_type</span><span style="color: #0000FF;">=</span><span style="color: #000000;">tk_Integer</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">node</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">to_integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">node</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">])</span>
-         <span style="color: #008080;">elsif</span> <span style="color: #000000;">n_type</span><span style="color: #0000FF;">=</span><span style="color: #000000;">tk_String</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">node</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">unquote</span><span style="color: #0000FF;">(</span><span style="color: #000000;">node</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">])</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">node</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">left</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">load_ast</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">right</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">load_ast</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">n_type</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">left</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">right</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
-<!--
+    -- A line with two tokens is a leaf node
+    -- Leaf nodes are: Identifier, Integer, String
+    -- The 2nd token is the value
+    if length(node)>1 then
+        node[1] = n_type
+        if n_type=tk_Integer then
+            node[2] = to_integer(node[2])
+        elsif n_type=tk_String then
+            node[2] = unquote(node[2])
+        end if
+        return node
+    end if
+    object left = load_ast()
+    object right = load_ast()
+    return {n_type, left, right}
+end function

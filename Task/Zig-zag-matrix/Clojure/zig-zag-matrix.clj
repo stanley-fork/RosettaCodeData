@@ -3,14 +3,14 @@
    (when-let [n (first sizes)]
      (when-let [s (seq coll)]
        (cons (take n coll)
-	     (partitions (next sizes) (drop n coll)))))))
+        (partitions (next sizes) (drop n coll)))))))
 
 (defn take-from [n colls]
   (lazy-seq
    (when-let [s (seq colls)]
      (let [[first-n rest-n] (split-at n s)]
        (cons (map first first-n)
-	     (take-from n (concat (filter seq (map rest first-n)) rest-n)))))))
+        (take-from n (concat (filter seq (map rest first-n)) rest-n)))))))
 
 (defn zig-zag [n]
   (->> (partitions (concat (range 1 (inc n)) (range (dec n) 0 -1)) (range (* n n)))

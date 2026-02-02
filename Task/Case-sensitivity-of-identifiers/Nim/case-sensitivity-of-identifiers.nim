@@ -3,7 +3,7 @@ var dog, Dog: string
 
 if dog == Dog:
   if dog == DOG:
-    echo "There is only one dog, ", DOG)
+    echo "There is only one dog, ", DOG
   else:
     echo "There are two dogs: ", dog, " and ", DOG
 elif Dog == DOG :

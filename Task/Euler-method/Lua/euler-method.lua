@@ -10,8 +10,8 @@ NewtonCooling = function( t ) return -k * ( t - TR ) end
 function Euler( f, y0, n, h )
     local y = y0
     for x = 0, n, h do
-	print( "", x, y )
- 	y = y + h * f( y )
+    print( "", x, y )
+    y = y + h * f( y )
     end
 end
 

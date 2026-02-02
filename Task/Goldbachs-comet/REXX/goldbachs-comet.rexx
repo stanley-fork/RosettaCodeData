@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'GOLDBACH''S COMET'
 say version
@@ -55,6 +55,4 @@ do i = 2 to x%2
 end
 return y/1
 
-include Abend
-include Functions
-include Sequences
+include Math

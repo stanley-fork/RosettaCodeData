@@ -1,1 +1,0 @@
-string.endsWith(suffix);

@@ -1,6 +1,7 @@
-include Settings
+-- 23 Aug 2025
+include Setting
 
-say 'HEAPSORT - 4 Mar 2025'
+say 'HEAPSORT'
 say version
 say
 call Generate

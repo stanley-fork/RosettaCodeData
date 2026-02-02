@@ -119,56 +119,58 @@ type
 implementation
 
     proc DebugList(const List: L; const Msg: String);
-    begin
-      Pipe(List).Debug(Msg); // Convert TList<V> to TCollPipe once
-    end;
+        _
+          Pipe(List).Debug(Msg); // Convert TList<V> to TCollPipe once
+        __;
 
     Fn SortAndDebug(const List: L; Compare: TCompareFunc; const Msg: String): L;
-    _
-      Result := Pipe(List)
-        .Sort(Compare)
-        .Debug(Msg)
-        .ToArray;
-    __;
+        _
+          Result := Pipe(List)
+            .Sort(Compare)
+            .Debug(Msg)
+            .ToArray;
+        __;
 
     Fn TCollPipe.Count: Integer;
-    _
-        Result := FData.Count;
-    __;
+        _
+            Result := FData.Count;
+        __;
 
     Fn TCollPipe.GroupBy(KeyFunc: TMapperFunc): spec TDictionary<V, L>;
-    var
-        i: Integer;
-        key: V;
-        group: L;
-    _
-        Result := spec TDictionary<V, L>.Create;
-        for i := 0 to FData.Count - 1 do
+
+        var
+            i: Integer;
+            key: V;
+            group: L;
         _
-            key := KeyFunc(FData[i], i);
-            if not Result.TryGetValue(key, group) then
+            Result := spec TDictionary<V, L>.Create;
+            for i := 0 to FData.Count - 1 do
             _
-                group := L.Create;
-                Result.Add(key, group);
+                key := KeyFunc(FData[i], i);
+                if not Result.TryGetValue(key, group) then
+                    _
+                        group := L.Create;
+                        Result.Add(key, group);
+                    __;
+                group.Add(FData[i]);
             __;
-            group.Add(FData[i]);
         __;
-    __;
 
     Fn TCollPipe.ForAll(Predicate: TPredicateFunc): Boolean;
-    var
-        i: Integer;
-    _
-        Result := True;
-        for i := 0 to FData.Count - 1 do
+
+        var
+            i: Integer;
         _
-            if not Predicate(FData[i], i) then
+            Result := True;
+            for i := 0 to FData.Count - 1 do
             _
-                Result := False;
-                Exit;
+                if not Predicate(FData[i], i) then
+                    _
+                        Result := False;
+                        Exit;
+                    __;
             __;
         __;
-    __;
 
 
     Fn   List( const Elements: array of V ): L ;
@@ -212,14 +214,15 @@ implementation
 
 
     Fn TCollPipe.Sort( Compare: TCompareFunc ): TCollPipe;
-    var
-        NewList: L;
-    _
-        NewList := L.Create;
-        NewList.AddRange(FData);
-        NewList.Sort(spec TComparer<V>.Construct(Compare));
-        Result := TCollPipe.Create(NewList);
-    __ ;
+
+        var
+            NewList: L;
+        _
+            NewList := L.Create;
+            NewList.AddRange(FData);
+            NewList.Sort(spec TComparer<V>.Construct(Compare));
+            Result := TCollPipe.Create(NewList);
+        __ ;
 
 
 
@@ -290,8 +293,7 @@ implementation
                 Result := Func( Result, Arr[ i ], i ) ;
         __ ;
 
-end.    ( * )     unit MRF3   ( * )
-
+end.    (*)     unit MRF3   (*)
 ======================================================================
 program testMRF3;
 

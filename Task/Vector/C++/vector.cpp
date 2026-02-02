@@ -1,67 +1,33 @@
-#include <iostream>
-#include <cmath>
-#include <cassert>
-using namespace std;
+/*
+ * CXXFLAGS=-march=native -O3 -std=<c|gnu>++23 -mfpmath=<your SIMD implementation>
+ * compatible with every compiler and any SIMD platform.
+ * Based on aligned vector type using cstdout not iostream.
+ */
+#include "vec.hpp"
 
-#define PI 3.14159265359
+using f32   = float;
+using f32x2 = vec<f32,2>;
 
-class Vector
+inline bool print_test(f32x2 a, f32x2 b);
+
+int main(int argc, char** argv)
 {
-public:
-    Vector(double ix, double iy, char mode)
-    {
-        if(mode=='a')
-        {
-            x=ix*cos(iy);
-            y=ix*sin(iy);
-        }
-        else
-        {
-            x=ix;
-            y=iy;
-        }
-    }
-    Vector(double ix,double iy)
-    {
-        x=ix;
-        y=iy;
-    }
-    Vector operator+(const Vector& first)
-    {
-        return Vector(x+first.x,y+first.y);
-    }
-    Vector operator-(Vector first)
-    {
-        return Vector(x-first.x,y-first.y);
-    }
-    Vector operator*(double scalar)
-    {
-        return Vector(x*scalar,y*scalar);
-    }
-    Vector operator/(double scalar)
-    {
-        return Vector(x/scalar,y/scalar);
-    }
-    bool operator==(Vector first)
-    {
-        return (x==first.x&&y==first.y);
-    }
-    void v_print()
-    {
-        cout << "X: " << x << " Y: " << y;
-    }
-    double x,y;
-};
+    f32x2 a = f32x2{ cosf(  M_PIf/6), sinf(  M_PIf/6) } * 3;
+    f32x2 b = f32x2{ cosf(2*M_PIf/3), sinf(2*M_PIf/3) } * 5;
 
-int main()
+    exit(print_test(a,b) ? EXIT_SUCCESS : EXIT_FAILURE);
+}
+
+inline bool print_test(f32x2 a, f32x2 b)
 {
-    Vector vec1(0,1);
-    Vector vec2(2,2);
-    Vector vec3(sqrt(2),45*PI/180,'a');
-    vec3.v_print();
-    assert(vec1+vec2==Vector(2,3));
-    assert(vec1-vec2==Vector(-2,-1));
-    assert(vec1*5==Vector(0,5));
-    assert(vec2/2==Vector(1,1));
-    return 0;
+    a.print(); fputs(" + ", stdout); b.print(); fputs(" = ", stdout);
+    (a + b).println();
+    a.print(); fputs(" - ", stdout); b.print(); fputs(" = ", stdout);
+    (a - b).println();
+
+    a.print(); fputs(" * 3                              = ", stdout);
+    (a * 3.0f).println();
+    b.print(); fputs(" / 2.5                            = ", stdout);
+    (b / 2.5f).println();
+    return true;
 }

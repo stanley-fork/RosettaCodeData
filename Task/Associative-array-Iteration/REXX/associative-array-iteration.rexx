@@ -1,5 +1,5 @@
--- 8 Aug 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'ASSOCIATIVE ARRAY: ITERATION'
 say version
@@ -39,7 +39,7 @@ do w = 1 to words(list)
    say 'The former capital of' stna.a '('a')' 'was' stca.a
 end
 say
--- Loop through aux array...'
+-- Loop through array...'
 say 'Using an array...'
 do w = 1 to arra.0
    a=arra.w
@@ -47,10 +47,7 @@ do w = 1 to arra.0
 end
 say
 -- Show all vars
-say 'Variables...'
-if pos('Regina',version) > 0 then
-   call Library
-call SysDumpVariables
+call DumpVariables
 exit
 
 SetStateCap:
@@ -64,9 +61,4 @@ list=list code
 w=w+1; arra.w=code
 return
 
-Library:
-call RxFuncAdd 'SysLoadFuncs','RegUtil','SysLoadFuncs'
-call SysLoadFuncs
-return
-
-include Abend
+include Math

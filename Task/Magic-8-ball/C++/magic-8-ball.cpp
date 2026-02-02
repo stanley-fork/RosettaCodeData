@@ -1,12 +1,11 @@
-#include <array>
-#include <cstdlib>
-#include <ctime>
 #include <iostream>
+#include <random>
 #include <string>
+#include <unordered_set>
+#include <vector>
 
-int main()
-{
-    constexpr std::array<const char*, 20> answers = {
+int main() {
+    const std::vector<std::string> answers = {
         "It is certain.",
         "It is decidedly so.",
         "Without a doubt.",
@@ -29,16 +28,27 @@ int main()
         "Very doubtful."
     };
 
-    std::string input;
-    std::srand(std::time(nullptr));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(0, answers.size()-1);
+
+    std::unordered_set<std::string> askedQuestions;
+    std::string line;
+
     while (true) {
-        std::cout << "\n? : ";
-        std::getline(std::cin, input);
-
-        if (input.empty()) {
+        std::cout << "Ask your question: " << std::flush;
+        if (!std::getline(std::cin, line))
             break;
-        }
 
-        std::cout << answers[std::rand() % answers.size()] << '\n';
+        if (line.empty())
+            break;
+
+        if (askedQuestions.contains(line))
+            std::cout << "Your question has already been answered\n";
+        else {
+            std::string answer = answers[dist(gen)];
+            std::cout << answer << "\n";
+            askedQuestions.insert(std::move(line));
+        }
     }
 }

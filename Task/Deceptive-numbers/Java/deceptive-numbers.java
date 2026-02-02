@@ -3,7 +3,7 @@ public final class DeceptiveNumbers {
 	public static void main(String[] aArgs) {
 		int n = 7;
 		int count = 0;
-		while ( count < 100 ) {
+		while ( count < 200 ) {
 			if ( isDeceptive(n) ) {
 				System.out.print(String.format("%6d%s", n, ( ++count % 10 == 0 ? "\n" : " " )));
 			}
@@ -13,7 +13,7 @@ public final class DeceptiveNumbers {
 	
 	private static boolean isDeceptive(int aN) {
 		if ( aN % 2 != 0 && aN % 3 != 0 && aN % 5 != 0 && modulusPower(10, aN - 1, aN) == 1 ) {
-			for ( int divisor = 7; divisor < Math.sqrt(aN); divisor += 6 ) {
+			for ( int divisor = 7; divisor <= Math.sqrt(aN); divisor += 6 ) {
 				if ( aN % divisor == 0 || aN % ( divisor + 4 ) == 0 ) {
 					return true;
 				}

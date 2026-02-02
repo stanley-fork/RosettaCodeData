@@ -4,17 +4,17 @@
 
 
 (define (segmented sieve left delta  (p 2) (first 0))
-	(define segment (make-bit-vector-1 delta))
-	(define right (+ left (1- delta)))
-	 (define pmax (sqrt right))
-	  (while p
-	  #:break (> p pmax)
-	 (set! first (+ left (modulo (- p (modulo left p)) p )))
-			
- 	(for   [(q (in-range first (1+ right) p))]
-	(bit-vector-set! segment (- q left) #f))	
+   (define segment (make-bit-vector-1 delta))
+   (define right (+ left (1- delta)))
+    (define pmax (sqrt right))
+     (while p
+     #:break (> p pmax)
+    (set! first (+ left (modulo (- p (modulo left p)) p )))
+
+   (for   [(q (in-range first (1+ right) p))]
+   (bit-vector-set! segment (- q left) #f))
         (set! p (bit-vector-scan-1 sieve (1+ p))))
-	segment)
+   segment)
 
 (define (seg-range nmin delta)
     (s-range (segmented s-primes nmin delta) 0 delta nmin))

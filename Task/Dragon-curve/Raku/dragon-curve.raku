@@ -3,7 +3,7 @@ use SVG;
 role Lindenmayer {
     has %.rules;
     method succ {
-	    self.comb.map( { %!rules{$^c} // $c } ).join but Lindenmayer(%!rules)
+        self.comb.map( { %!rules{$^c} // $c } ).join but Lindenmayer(%!rules)
     }
 }
 

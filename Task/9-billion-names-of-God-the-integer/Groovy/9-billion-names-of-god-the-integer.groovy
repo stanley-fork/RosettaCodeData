@@ -1,4 +1,4 @@
-def partitions(c)
+static def partitions(c)
 {
 
     def p=[];

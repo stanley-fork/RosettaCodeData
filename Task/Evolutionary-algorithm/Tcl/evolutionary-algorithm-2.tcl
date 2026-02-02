@@ -13,7 +13,7 @@ set C 100
 proc fitnessByEquality {target s} {
     set count 0
     foreach c1 $s c2 $target {
-	if {$c1 eq $c2} {incr count}
+    if {$c1 eq $c2} {incr count}
     }
     return [expr {$count / double([llength $target])}]
 }
@@ -29,7 +29,7 @@ proc mutationRate {individual} {
 # Mutate a string at a particular rate (per character)
 proc mutate {parent rate} {
     foreach c $parent {
-	lappend child [expr {rand() <= $rate ? randchar() : $c}]
+    lappend child [expr {rand() <= $rate ? randchar() : $c}]
     }
     return $child
 }
@@ -37,7 +37,7 @@ proc mutate {parent rate} {
 # Pretty printer
 proc prettyPrint {iterations parent} {
     puts [format "#%-4i, fitness %5.1f%%, '%s'" $iterations \
-	[expr {[fitness $parent]*100}] [join $parent {}]]
+    [expr {[fitness $parent]*100}] [join $parent {}]]
 }
 
 # The evolutionary algorithm itself
@@ -48,18 +48,18 @@ proc evolve {initialString} {
     set parent [split $initialString {}]
 
     for {set iterations 0} {[fitness $parent] < 1} {incr iterations} {
-	set rate [mutationRate $parent]
+    set rate [mutationRate $parent]
 
-	if {$iterations % 100 == 0} {
-	    prettyPrint $iterations $parent
-	}
+    if {$iterations % 100 == 0} {
+        prettyPrint $iterations $parent
+    }
 
-	set copies [list [list $parent [fitness $parent]]]
-	for {set i 0} {$i < $C} {incr i} {
-	    lappend copies [list \
-		    [set copy [mutate $parent $rate]] [fitness $copy]]
-	}
-	set parent [lindex [lsort -real -decreasing -index 1 $copies] 0 0]
+    set copies [list [list $parent [fitness $parent]]]
+    for {set i 0} {$i < $C} {incr i} {
+        lappend copies [list \
+            [set copy [mutate $parent $rate]] [fitness $copy]]
+    }
+    set parent [lindex [lsort -real -decreasing -index 1 $copies] 0 0]
     }
     puts ""
     prettyPrint $iterations $parent

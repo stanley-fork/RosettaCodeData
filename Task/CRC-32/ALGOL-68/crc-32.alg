@@ -32,7 +32,7 @@ PROC update_crc = (BITS crc, STRING buf) BITS:
 
  PROC hex = (BITS x) STRING :
    BEGIN
-      PROC hexdig = (BITS x) CHAR: REPR (IF ABS x ≤ 9 THEN ABS x + ABS "0"
+      PROC hexdig = (BITS x) CHAR: REPR (IF ABS x <= 9 THEN ABS x + ABS "0"
                                          ELSE ABS x - 10 + ABS "a"
 					 FI);
       STRING h := "";
@@ -40,7 +40,7 @@ PROC update_crc = (BITS crc, STRING buf) BITS:
 	 h := "0"
       ELSE
 	 BITS n := x;
-	 WHILE h := hexdig (n AND 16rf) + h; n ≠ 16r0 DO
+	 WHILE h := hexdig (n AND 16rf) + h; n /= 16r0 DO
 	    n := n SHR 4
 	 OD
       FI;

@@ -1,7 +1,5 @@
-(phixonline)-->
- <span style="color: #004080;">string</span> <span style="color: #000000;">tm</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"0"</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">8</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tm</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">tm</span> <span style="color: #0000FF;">&=</span> <span style="color: #7060A8;">sq_sub</span><span style="color: #0000FF;">(</span><span style="color: #008000;">'0'</span><span style="color: #0000FF;">+</span><span style="color: #008000;">'1'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tm</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+string tm = "0"
+for i=1 to 8 do
+    printf(1,"%s\n",tm)
+    tm &= sq_sub('0'+'1',tm)
+end for

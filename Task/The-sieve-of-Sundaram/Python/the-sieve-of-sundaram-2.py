@@ -1,85 +1,76 @@
-'''Sieve of Sundaram'''
+#!/bin/python3
+def SieveSundaramKDNMH105(n=100059960):
+	"""
+	Sieve of Sundaram,
+	parameter n: upper limit of the domain to be sieved for prime numbers
+	returns: list of prime numbers <= n
+	
+	This Sieve of Sundaram has been enhanced to have vastly fewer culls and vastly less checking for primes at harvest time.
+	Improvements include:
+		Limiting the upper limit of the multiplier i to the square root of the upper limit of the domain.
+		Corrected comment: Only mark with multipliers i which have not been already culled. This means that (2*i+1) is a prime number.
+		Starting from i^2.
+		Conceptually arrange the numbers as a 2D array with 15 or 105 columns. About half the columns would always be entirely marked. Knowing that, and which ones, they can be ignored at harvest time, and so also can be ignored at culling time.
 
-from math import floor, log, sqrt
-from itertools import islice
+	When finding primes up to 100 million, not culling or harvesting the all-composite columns provides about 1.5x the performance rate.
+	
+	# Do not mark nor harvest 57 of 105 columns, listed below
+	# Do mark and harvest from the remaining columns
+	
+	# enhancements by David A, Kra extend and improve upon:
+	#   https://www.geeksforgeeks.org/sieve-sundaram-print-primes-smaller-n/
+	#   and https://en.wikipedia.org/wiki/Sieve_of_Sundaram
+	#   see also https://iq.opengenus.org/sieve-of-sundaram/
+	"""
+	# local constants
+	C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13,C14,C15=list(range(16))
+	C105=105
+	T:bool=True
+	F:bool=False
+	
+	# These are for the 15 column version:
+	# (These are well known.)
+	#DMHF15=[C0, C3, C5, C6, C8, C9, C11, C14] # Do Mark and Harvest From these columns
+	#DNMHFset=set([C1, C2, C4, C7, C10, C12, C13]) # Do Not Mark or Harvest From these columns
+	
+	# for the 105 column version:
+	# Do Not Mark or Harvest From these columns:
+	# These were discovered experimentally.
+	DNMHFset=set([ 1, 2, 3, 4, 7, 10, 12, 13, 16, 17, 19, 22, 24, 25, 27, 28, 31, 32, 34, 37, 38, 40, 42, 43, 45, 46, 47, 49, 52, 55, 57, 58, 59, 61, 62, 64, 66, 67, 70, 72, 73, 76, 77, 79, 80, 82, 85, 87, 88, 91, 92, 94, 97, 100, 101, 102, 103])
+	#Do Mark and Harvest From these columns:
+	DMHF=[i for i in range(105) if i not in DNMHFset]
+	nNew:int = int((n - C1) / C2)
 
+	###	MARK aka CULL
+	marked=bytearray(1)
+	marked[0]=T
+	marked*=(nNew+C1)
+	marked[C0]=F  # 1 is not prime
+	
+	stop:int=nNew+C1
+	maxi:int=C2+int(nNew**0.5)
 
-# sundaram :: Int -> [Int]
-def sundaram(n):
-    '''Sundaram prime numbers up to n'''
-    m = (n - 1) // 2
-    exclusions = {
-        2 * i * j + i + j
-        for i in range(1, 1 + floor(sqrt(m / 2)))
-        for j in range(
-            i, 1 + floor((m - i) / (1 + (2 * i)))
-        )
-    }
-    return [
-        1 + (2 * x) for x in range(1, 1 + m)
-        if not x in exclusions
-    ]
+	for i in range(C3,maxi):
+	# faster than
+	#	for rowstart in range(C0,len(marked)-C15,C15):
+	#		for col in DMHF:
+	#			i=rowstart+col
+		if i%C105 in DNMHFset: continue # skip entries in the Do Not Mark & Harvest set
+		if not marked[i]: continue  # only mark with primes
+		# use a slice instead of a loop
+		start:int= i+i+C2*i*i # starts with j=i
+		step:int= C1+i+i # (1+2*i) is (i+(j+1)+2i(j+1)) and (i+j+2ij)
+		lenslice:int  = (stop - start + step - C1 ) // step
+		marked[start:stop:step]= [F]* lenslice
+				
+	### HARVEST
+	r=[C2, C3, C5]
+	marked.extend([F]*C105) #lazy solution to out of bounds error
+	for rowstart in range(C0,len(marked)-C105,C105):
+		rowstartx2p1=rowstart+rowstart+C1
+		r.extend([rowstartx2p1+j+j for j in DMHF if marked[rowstart+j] ])
+	return r
 
-
-# nPrimesBySundaram :: Int -> [Int]
-def nPrimesBySundaram(n):
-    '''First n primes, by sieve of Sundaram.
-    '''
-    return list(islice(
-        sundaram(
-            # Probable limit
-            int((2.4 * n * log(n)) // 2)
-        ),
-        int(n)
-    ))
-
-
-# ------------------------- TEST -------------------------
-# main :: IO ()
-def main():
-    '''First 100 Sundaram primes,
-       and millionth Sundaram prime.
-    '''
-    print("First hundred Sundaram primes, starting at 3:\n")
-    print(table(10)([
-        str(s) for s in nPrimesBySundaram(100)
-    ]))
-    print("\n\nMillionth Sundaram prime, starting at 3:")
-    print(
-        f'\n\t{nPrimesBySundaram(1E6)[-1]}'
-    )
-
-
-# ----------------------- GENERIC ------------------------
-
-# chunksOf :: Int -> [a] -> [[a]]
-def chunksOf(n):
-    '''A series of lists of length n, subdividing the
-       contents of xs. Where the length of xs is not evenly
-       divisible, the final list will be shorter than n.
-    '''
-    def go(xs):
-        return (
-            xs[i:n + i] for i in range(0, len(xs), n)
-        ) if 0 < n else None
-    return go
-
-
-# table :: Int -> [String] -> String
-def table(n):
-    '''A list of strings formatted as
-       right-justified rows of n columns.
-    '''
-    def go(xs):
-        w = len(xs[-1])
-        return '\n'.join(
-            ' '.join(row) for row in chunksOf(n)([
-                s.rjust(w, ' ') for s in xs
-            ])
-        )
-    return go
-
-
-# MAIN ---
-if __name__ == '__main__':
-    main()
+# USAGE
+primes=SieveSundaramKDNMH105((n:=1000))
+print(n,len(primes),primes)

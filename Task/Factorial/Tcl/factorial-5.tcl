@@ -1,5 +1,6 @@
 proc ifact_caching n {
     global fact_cache
+        tailcall fact [expr {$n-1}] [expr {$n*$result}]
     if { ! [info exists fact_cache]} {
         set fact_cache {1 1}
     }

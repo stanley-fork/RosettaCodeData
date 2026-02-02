@@ -2,29 +2,18 @@ BEGIN
     # find the numbers the string 123456789 ( with "+/-" optionally inserted  #
     # before each digit ) can generate                                        #
 
-    # experimentation shows that the largest hundred numbers that can be      #
-    # generated are are greater than or equal to 56795                        #
-    # as we can't declare an array with bounds -123456789 : 123456789 in      #
-    # Algol 68G, we use -60000 : 60000 and keep counts for the top hundred    #
+    PR read "sort.incl.a68" PR                    # include sorting utilities #
 
-    INT max number = 60 000;
-    [ - max number : max number ]STRING solutions;
-    [ - max number : max number ]INT    count;
-    FOR i FROM LWB solutions TO UPB solutions DO solutions[ i ] := ""; count[ i ] := 0 OD;
+    # calculate the numbers we can generate and the strings leading to them   #
+    # as noted by other solutions, at most 13122 (2*3^8) can be generated     #
 
-    # calculate the numbers ( up to max number ) we can generate and the strings leading to them  #
-    # also determine the largest numbers we can generate #
-    [ 100 ]INT largest;
-    [ 100 ]INT largest count;
-    INT impossible number = - 999 999 999;
-    FOR i FROM LWB largest TO UPB largest DO
-        largest      [ i ] := impossible number;
-        largest count[ i ] := 0
-    OD;
+    INT max expr = 2 * 3^8;
+    [ 1 : max expr ]INT    value;
+    [ 1 : max expr ]STRING expression;
+    INT expr pos := 0;
     [ 1 : 18 ]CHAR sum string := ".1.2.3.4.5.6.7.8.9";
     []CHAR sign char = []CHAR( "-", " ", "+" )[ AT -1 ];
-    # we don't distinguish between strings starting "+1" and starting " 1" #
-    FOR s1 FROM -1 TO 0 DO
+    FOR s1 FROM -1 TO 0 DO # we don't distinguish between strings starting "+1" and starting " 1" #
        sum string[  1 ] := sign char[ s1 ];
        FOR s2 FROM -1 TO 1 DO
           sum string[  3 ] := sign char[ s2 ];
@@ -52,28 +41,10 @@ BEGIN
                                IF s7 = 0 THEN part *:= 10 +:= 7 * SIGN part ELSE number +:= part; part := 7 * s7 FI;
                                IF s8 = 0 THEN part *:= 10 +:= 8 * SIGN part ELSE number +:= part; part := 8 * s8 FI;
                                IF s9 = 0 THEN part *:= 10 +:= 9 * SIGN part ELSE number +:= part; part := 9 * s9 FI;
-                               number +:= part;
-                               IF  number >= LWB solutions AND number <= UPB solutions THEN
-                                   solutions[ number ] +:= ";" + sum string;
-                                   count    [ number ] +:= 1
-                               FI;
-                               BOOL inserted := FALSE;
-                               FOR l pos FROM LWB largest TO UPB largest WHILE NOT inserted DO
-                                  IF number > largest[ l pos ] THEN
-                                     # found a new larger number #
-                                     FOR m pos FROM UPB largest BY -1 TO l pos + 1 DO
-                                        largest      [ m pos ] := largest      [ m pos - 1 ];
-                                        largest count[ m pos ] := largest count[ m pos - 1 ]
-                                     OD;
-                                     largest      [ l pos ] := number;
-                                     largest count[ l pos ] := 1;
-                                     inserted := TRUE
-                                  ELIF number = largest[ l pos ] THEN
-                                     # have another way of generating this number #
-                                     largest count[ l pos ] +:= 1;
-                                     inserted := TRUE
-                                  FI
-                               OD
+                               number   +:= part;
+                               expr pos +:= 1;
+                               expression[ expr pos ] := sum string;
+                               value[      expr pos ] := number
                             OD
                          OD
                       OD
@@ -85,45 +56,66 @@ BEGIN
     OD;
 
     # show the solutions for 100 #
-    print( ( "100 has ", whole( count[ 100 ], 0 ), " solutions:" ) );
-    STRING s := solutions[ 100 ];
-    FOR s pos FROM LWB s TO UPB s DO
-        IF   s[ s pos ] = ";" THEN print( ( newline, "        " ) )
-        ELIF s[ s pos ] /= " " THEN print( ( s[ s pos ] ) )
+    INT count 100 := 0;
+    FOR x pos FROM LWB value TO UPB value DO
+        IF value[ x pos ] = 100 THEN count 100 +:= 1 FI
+    OD;
+    print( ( "100 has ", whole( count 100, 0 ), " solutions:", newline ) );
+    FOR x pos FROM LWB value TO UPB value DO
+        IF value[ x pos ] = 100 THEN
+            print( ( "        " ) );
+            STRING s = expression[ x pos ];
+            FOR s pos FROM LWB s TO UPB s DO IF s[ s pos ] /= " " THEN print( ( s[ s pos ] ) ) FI OD;
+            print( ( newline ) )
         FI
     OD;
-    print( ( newline ) );
+
+    QUICKSORT value; # sort the values (the expressions will now be out of order) #
+
     # find the number with the most solutions #
-    INT max solutions := 0;
-    INT number with max := LWB count - 1;
-    FOR n FROM 0 TO max number DO
-        IF count[ n ] > max solutions THEN
-            max solutions := count[ n ];
-            number with max := n
+    INT this count := 1, max count := 1, max count value := value[ LWB value ];
+    FOR v pos FROM LWB value + 1 TO UPB value DO
+        IF value[ v pos ] = value[ v pos - 1 ] THEN
+            this count +:= 1
+        ELSE
+            IF this count > max count AND value[ v pos - 1 ] >= 0 THEN
+                max count       := this count;
+                max count value := value[ v pos - 1 ]
+            FI;
+            this count := 1
         FI
     OD;
-    FOR n FROM LWB largest count TO UPB largest count DO
-        IF largest count[ n ] > max solutions THEN
-            max solutions := largest count[ n ];
-            number with max := largest[ n ]
-        FI
-    OD;
-    print( ( whole( number with max, 0 ), " has the maximum number of solutions: " ) );
-    print( ( whole( max solutions, 0 ), newline ) );
-    # find the smallest positive number that has no solutions #
-    BOOL have solutions := TRUE;
-    FOR n FROM 0 TO max number
-    WHILE IF NOT ( have solutions := count[ n ] > 0 )
-          THEN print( ( whole( n, 0 ), " is the lowest positive number with no solutions", newline ) )
-          FI;
-          have solutions
-    DO SKIP OD;
-    IF have solutions
-    THEN print( ( "All positive numbers up to ", whole( max number, 0 ), " have solutions", newline ) )
+    IF this count > max count THEN
+        # the final value has the maximum count #
+        max count       := this count;
+        max count value := value[ UPB value ]
     FI;
+    print( ( whole( max count value, 0 ), " has the maximum number of solutions: " ) );
+    print( ( whole( max count, 0 ), newline ) );
+
+    # find the smallest positive number that has no solutions #
+    BOOL have solution := TRUE;
+    INT  missing value := 1;
+    FOR v pos FROM LWB value TO UPB value WHILE have solution DO
+        IF value[ v pos ] > 0 THEN
+            IF value[ v pos ] /= value[ v pos - 1 ] THEN
+                have solution := value[ v pos ] = missing value;
+                IF have solution THEN
+                    missing value +:= 1
+                FI
+            FI
+        FI
+    OD;
+    print( ( whole( missing value, 0 ), " is the lowest positive number with no solutions", newline ) );
+
+    # show the ten largest numbers that can be generated #
     print( ( "The 10 largest numbers that can be generated are:", newline ) );
-    FOR t pos FROM 1 TO 10 DO
-        print( ( " ", whole( largest[ t pos ], 0 ) ) )
+    INT shown := 0;
+    FOR v pos FROM UPB value - 1 BY -1 TO LWB value WHILE shown < 10 DO
+        IF value[ v pos ] /= value[ v pos + 1 ] THEN
+            print( ( " ", whole( value[ v pos + 1 ], 0 ) ) );
+            shown +:= 1
+        FI
     OD;
     print( ( newline ) )
 

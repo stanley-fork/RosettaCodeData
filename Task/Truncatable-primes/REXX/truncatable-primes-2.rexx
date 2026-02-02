@@ -1,5 +1,5 @@
--- 25 Apr 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 arg xx
 say 'TRUNCATABLE PRIMES'
 say version
@@ -42,9 +42,4 @@ say 'Right' r1
 say
 return
 
-include Sequences
-include Helper
-include Numbers
-include Functions
-include Constants
-include Abend
+include Math

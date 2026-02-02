@@ -1,113 +1,97 @@
 #include <atomic>
+#include <cstdint>
 #include <cstdio>
-#include <cstring>
 #include <future>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <openssl/sha.h>
+#pragma GCC diagnostic pop
+
+// g++ -O3 -march=native pbf.cpp -o pbf -lssl -lcrypto
 
 struct sha256 {
     unsigned char digest[SHA256_DIGEST_LENGTH];
-    void compute(const char* str, int len) {
-        SHA256((const unsigned char*)str, len, digest);
-    }
     bool parse(const std::string& hash) {
-        if (hash.length() != 2 * SHA256_DIGEST_LENGTH) {
-            std::cerr << "Invalid SHA-256 hash\n";
-            return false;
-        }
-        const char* p = hash.c_str();
-        for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i, p += 2) {
+        if (hash.length() != 64) return false;
+        for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i) {
             unsigned int x;
-            if (sscanf(p, "%2x", &x) != 1) {
-                std::cerr << "Cannot parse SHA-256 hash\n";
-                return false;
-            }
+            if (sscanf(&hash[i * 2], "%2x", &x) != 1) return false;
             digest[i] = x;
         }
         return true;
     }
 };
 
-bool operator==(const sha256& a, const sha256& b) {
-    return memcmp(a.digest, b.digest, SHA256_DIGEST_LENGTH) == 0;
-}
-
-bool next_password(std::string& passwd, size_t start) {
-    size_t len = passwd.length();
-    for (size_t i = len - 1; i >= start; --i) {
-        char c = passwd[i];
-        if (c < 'z') {
-            ++passwd[i];
-            return true;
-        }
-        passwd[i] = 'a';
-    }
-    return false;
+inline bool operator==(const sha256& a, const sha256& b) {
+    auto ap = (const uint64_t*)a.digest, bp = (const uint64_t*)b.digest;
+    return ap[0] == bp[0] && ap[1] == bp[1] && ap[2] == bp[2] && ap[3] == bp[3];
 }
 
 class password_finder {
-public:
-    password_finder(int);
-    void find_passwords(const std::vector<std::string>&);
-
-private:
     int length;
-    void find_passwords(char);
     std::vector<std::string> hashes;
     std::vector<sha256> digests;
     std::atomic<size_t> count;
+    void find_passwords(char);
+public:
+    password_finder(int len) : length(len) {}
+    void find_passwords(const std::vector<std::string>&);
 };
 
-password_finder::password_finder(int len) : length(len) {}
-
 void password_finder::find_passwords(char ch) {
-    std::string passwd(length, 'a');
-    passwd[0] = ch;
-    sha256 digest;
-    while (count > 0) {
-        digest.compute(passwd.c_str(), length);
-        for (int m = 0; m < hashes.size(); ++m) {
-            if (digest == digests[m]) {
-                --count;
-                std::ostringstream out;
-                out << "password: " << passwd << ", hash: " << hashes[m]
-                    << '\n';
-                std::cout << out.str();
+    char passwd[6] = {ch, 'a', 'a', 'a', 'a', '\0'};
+    unsigned char digest_buf[SHA256_DIGEST_LENGTH];
+    const uint64_t* targets[3];
+    for (size_t i = 0; i < hashes.size(); ++i)
+        targets[i] = (const uint64_t*)digests[i].digest;
+
+    SHA256_CTX ctx;
+    do {
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        SHA256_Init(&ctx);
+        SHA256_Update(&ctx, passwd, 5);
+        SHA256_Final(digest_buf, &ctx);
+        #pragma GCC diagnostic pop
+        auto dp = (const uint64_t*)digest_buf;
+
+        for (size_t m = 0; m < hashes.size(); ++m) {
+            auto tp = targets[m];
+            if (dp[0] == tp[0] && dp[1] == tp[1] && dp[2] == tp[2] && dp[3] == tp[3]) {
+                if (count.fetch_sub(1, std::memory_order_relaxed) > 0)
+                    printf("password: %s, hash: %s\n", passwd, hashes[m].c_str());
+                if (count == 0) return;
                 break;
             }
         }
-        if (!next_password(passwd, 1))
-            break;
-    }
+
+        for (int i = 4; i >= 1; --i) {
+            if (passwd[i] < 'z') { ++passwd[i]; goto next; }
+            passwd[i] = 'a';
+        }
+        return;
+        next:;
+    } while (count > 0);
 }
 
 void password_finder::find_passwords(const std::vector<std::string>& h) {
     hashes = h;
     digests.resize(hashes.size());
-    for (int i = 0; i < hashes.size(); ++i) {
-        if (!digests[i].parse(hashes[i]))
-            return;
-    }
+    for (size_t i = 0; i < hashes.size(); ++i)
+        if (!digests[i].parse(hashes[i])) return;
     count = hashes.size();
     std::vector<std::future<void>> futures;
-    const int n = 26;
-    for (int i = 0; i < n; ++i) {
-        char c = 'a' + i;
-        futures.push_back(
-            std::async(std::launch::async, [this, c]() { find_passwords(c); }));
-    }
+    for (char c = 'a'; c <= 'z'; ++c)
+        futures.push_back(std::async(std::launch::async, [this, c]() { find_passwords(c); }));
 }
 
 int main() {
-    std::vector<std::string> hashes{
+    password_finder(5).find_passwords({
         "1115dd800feaacefdf481f1f9070374a2a81e27880f187396db67958b207cbad",
         "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b",
-        "74e1bb62f8dabb8125a58852b63bdf6eaef667cb56ac7f7cdba6d7305c50a22f"};
-    password_finder pf(5);
-    pf.find_passwords(hashes);
-    return 0;
+        "74e1bb62f8dabb8125a58852b63bdf6eaef667cb56ac7f7cdba6d7305c50a22f"});
 }

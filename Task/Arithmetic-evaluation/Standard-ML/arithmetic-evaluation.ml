@@ -1,10 +1,10 @@
 (* AST *)
 datatype expression =
-	  Con of int				(* constant *)
-	| Add of expression * expression	(* addition *)
-	| Mul of expression * expression	(* multiplication *)
-	| Sub of expression * expression	(* subtraction *)
-	| Div of expression * expression	(* division *)
+      Con of int                (* constant *)
+    | Add of expression * expression    (* addition *)
+    | Mul of expression * expression    (* multiplication *)
+    | Sub of expression * expression    (* subtraction *)
+    | Div of expression * expression    (* division *)
 
 (* Evaluator *)
 fun eval (Con x)      = x
@@ -15,13 +15,13 @@ fun eval (Con x)      = x
 
 (* Lexer *)
 datatype token =
-	  CON of int
-	| ADD
-	| MUL
-	| SUB
-	| DIV
-	| LPAR
-	| RPAR
+      CON of int
+    | ADD
+    | MUL
+    | SUB
+    | DIV
+    | LPAR
+    | RPAR
 
 fun lex nil = nil
   | lex (#"+" :: cs) = ADD :: lex cs
@@ -43,7 +43,7 @@ exception Error of string
 
 fun match (a,ts) t = if null ts orelse hd ts <> t
                      then raise Error "match"
-		     else (a, tl ts)
+             else (a, tl ts)
 
 fun extend (a,ts) p f = let val (a',tr) = p ts in (f(a,a'), tr) end
 
@@ -64,6 +64,6 @@ and parseP (CON c :: ts) = (Con c, ts)
 
 (* Test *)
 fun lex_parse_eval (str:string) =
-	case parseE (lex (explode str)) of
-	   (exp, nil) => eval exp
-	 | _          => raise Error "not parseable stuff at the end"
+    case parseE (lex (explode str)) of
+       (exp, nil) => eval exp
+     | _          => raise Error "not parseable stuff at the end"

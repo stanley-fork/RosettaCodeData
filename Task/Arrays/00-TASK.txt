@@ -18,8 +18,11 @@ Please merge code in from these obsolete tasks:
 :::* &nbsp; [[Assigning Values to an Array]]
 :::* &nbsp; [[Retrieving an Element of an Array]]
 
-
 ;Related tasks:
+
+* &nbsp; [[Array]]
+* &nbsp; [[Vector]]
+* &nbsp; [[Sum and product of an array]]
 * &nbsp; [[Collections]]
 * &nbsp; [[Creating an Associative Array]]
 * &nbsp; [[Two-dimensional array (runtime)]]

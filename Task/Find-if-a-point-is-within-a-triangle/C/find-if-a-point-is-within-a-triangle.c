@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 const double EPS = 0.001;
 const double EPS_SQUARE = 0.000001;
@@ -17,10 +18,10 @@ bool naivePointInTriangle(double x1, double y1, double x2, double y2, double x3,
 }
 
 bool pointInTriangleBoundingBox(double x1, double y1, double x2, double y2, double x3, double y3, double x, double y) {
-    double xMin = min(x1, min(x2, x3)) - EPS;
-    double xMax = max(x1, max(x2, x3)) + EPS;
-    double yMin = min(y1, min(y2, y3)) - EPS;
-    double yMax = max(y1, max(y2, y3)) + EPS;
+    double xMin = fmin(x1, fmin(x2, x3)) - EPS;
+    double xMax = fmax(x1, fmax(x2, x3)) + EPS;
+    double yMin = fmin(y1, fmin(y2, y3)) - EPS;
+    double yMax = fmax(y1, fmax(y2, y3)) + EPS;
     return !(x < xMin || xMax < x || y < yMin || yMax < y);
 }
 

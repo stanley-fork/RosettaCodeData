@@ -1,7 +1,7 @@
 # the standard mode COMPLEX is a two element vector #
 MODE VECTOR = COMPLEX;
 # the operations required for the task plus many others are provided as standard for COMPLEX and REAL items #
-# the to components are fields called "re" and "im" #
+# the two components are fields called "re" and "im" #
 # we can define a "pretty-print" operator: #
 # returns a formatted representation of the vector #
 OP TOSTRING = ( VECTOR a )STRING: "[" + TOSTRING re OF a + ", " + TOSTRING im OF a + "]";

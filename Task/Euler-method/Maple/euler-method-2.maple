@@ -1,16 +1,16 @@
 f := y -> (-0.07) * (y - 20):
 
 EulerMethod := proc(f, start_time, end_time, y0, h) # y0: initial value  #h: step size
-	local cur, y, rate:
-	cur := start_time;
-	y := y0;
-	while cur <= end_time do
-		printf("%g %g\n", cur, y);
-		cur := cur + h;
-		rate := f(y);
-		y := y + h * rate;
-	end do;
-	return y;
+    local cur, y, rate:
+    cur := start_time;
+    y := y0;
+    while cur <= end_time do
+        printf("%g %g\n", cur, y);
+        cur := cur + h;
+        rate := f(y);
+        y := y + h * rate;
+    end do;
+    return y;
 end proc:
 
 # step size = 2

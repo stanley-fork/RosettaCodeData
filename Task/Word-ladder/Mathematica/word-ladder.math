@@ -1,15 +1,14 @@
-db=DeleteDuplicates[RemoveDiacritics[ToLowerCase[Select[DictionaryLookup[],StringLength/*EqualTo[3]]]]];
-sel=Select[Subsets[db,{2}],HammingDistance[#[[1]],#[[2]]]==1&];
-g=Graph[db,UndirectedEdge@@@sel];
-FindShortestPath[g,"boy","man"]
+words = ReadList["unixdict.txt", Word];
 
-db=DeleteDuplicates[RemoveDiacritics[ToLowerCase[Select[DictionaryLookup[],StringLength/*EqualTo[4]]]]];
-sel=Select[Subsets[db,{2}],HammingDistance[#[[1]],#[[2]]]==1&];
-g=Graph[db,UndirectedEdge@@@sel];
-FindShortestPath[g,"girl","lady"]
-FindShortestPath[g,"john","jane"]
+wordLadder[words_, start_, target_] := Module[{wordSelection, graph, path, noSolution = "impossible"},
+    If[StringLength[start] != StringLength[target], Return[noSolution]];
+    wordSelection = Select[words, StringLength[#] == StringLength[start]&];
+    graph = UndirectedEdge @@@ Select[Subsets[wordSelection, {2}], HammingDistance @@ # == 1 &];
+    If[! SubsetQ[VertexList[graph], {start, target}], Return[noSolution]];
+    path = FindShortestPath[graph, start, target];
+    If[path == {}, Return[noSolution]];
+    path];
 
-db=DeleteDuplicates[RemoveDiacritics[ToLowerCase[Select[DictionaryLookup[],StringLength/*EqualTo[5]]]]];
-sel=Select[Subsets[db,{2}],HammingDistance[#[[1]],#[[2]]]==1&];
-g=Graph[db,UndirectedEdge@@@sel];
-FindShortestPath[g,"child","adult"]
+tests = {{"boy", "man"}, {"girl", "lady"}, {"john", "jane"}, {"child", "adult"}};
+Map[{#[[1]] <> " -> " <> #[[2]] <> ": ", wordLadder[words, #[[1]], #[[2]]]}&, tests] //
+    TableForm[#, TableDepth -> 2]&

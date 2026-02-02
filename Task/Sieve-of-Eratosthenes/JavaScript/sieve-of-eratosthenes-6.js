@@ -21,10 +21,10 @@ function eratosthenes(limit) {
     return primes;
 }
 var primes = eratosthenes(100);
-	output='';
+   output='';
         for (var i = 0; i < primes.length; i++) {
-		output+=primes[i];	
-		if (i < primes.length-1) output+=',';
+      output+=primes[i];
+      if (i < primes.length-1) output+=',';
         }
 document.write(output);
 </script>

@@ -19,6 +19,13 @@
   def isOdd_bAnd(n)
     (n & 1) != 0
   end
+# Using integer predicates
+  def isEven_even(n)
+    n.even?
+  end
+  def isOdd_odd(n)
+    n.odd?
+  end
 
 puts isEven_bShift(7)
 puts isOdd_bShift(7)
@@ -28,3 +35,6 @@ puts isOdd_mod(12)
 
 puts isEven_bAnd(21)
 puts isOdd_bAnd(21)
+
+puts isEven_even(32)
+puts isOdd_odd(32)

@@ -47,7 +47,7 @@ singleton Exceptions
     }
 }
 
-public program()
+public Program()
 {
     Exceptions.foo()
 }

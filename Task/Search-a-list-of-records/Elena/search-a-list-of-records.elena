@@ -1,9 +1,9 @@
 import extensions;
 import system'routines;
 
-public program()
+public Program()
 {
-    var dataset := new object[]
+    auto dataset := new object[]
     {
         new { Name = "Lagos";  Population = 21.0r; },
         new { Name = "Cairo";  Population = 15.2r; },
@@ -18,11 +18,11 @@ public program()
     };
 
     var index := dataset.selectBy::(r => r.Name).toArray().indexOfElement("Dar Es Salaam");
-    console.printLine(index);
+    Console.printLine(index);
 
     var name := dataset.filterBy::(c => c.Population < 5.0r).toArray().FirstMember.Name;
-    console.printLine(name);
+    Console.printLine(name);
 
     var namePopulation := dataset.filterBy::(c => c.Name.startingWith("A")).toArray().FirstMember.Population;
-    console.printLine(namePopulation)
+    Console.printLine(namePopulation)
 }

@@ -24,10 +24,10 @@ extension op
     }
 }
 
-public program()
+public Program()
 {
     var list := new string[]{"this", "is", "a", "test", "of", "generic", "selection", "sort"};
 
-    console.printLine("before:",list.asEnumerable());
-    console.printLine("after:",list.selectionSort().asEnumerable())
+    Console.printLine("before:",list.asEnumerable());
+    Console.printLine("after:",list.selectionSort().asEnumerable())
 }

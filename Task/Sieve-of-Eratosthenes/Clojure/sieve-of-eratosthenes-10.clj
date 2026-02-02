@@ -8,9 +8,9 @@
         cmpsts (long-array (inc lmt)),
         cullp (fn [i]
                 (let [p (long (+ i i 3))]
-	                (loop [i (bit-shift-right (- (* p p) 3) 1)]
-	                  (if (<= i ndx)
-	                    (do (let [w (bit-shift-right i 6)]
+                   (loop [i (bit-shift-right (- (* p p) 3) 1)]
+                     (if (<= i ndx)
+                       (do (let [w (bit-shift-right i 6)]
                             (aset cmpsts w (bit-or (aget cmpsts w)
                                                    (bit-shift-left 1 (bit-and i 63)))))
                           (recur (+ i p))))))),

@@ -4,7 +4,7 @@ F fivenum(array)
    V n4 = floor((n + 3.0) / 2.0) / 2.0
    V d = [1.0, n4, (n + 1) / 2, n + 1 - n4, Float(n)]
    [Float] sum_array
-   L(e) 5
+   L(e) 0.<5
       V fl = Int(floor(d[e] - 1))
       V ce = Int(ceil(d[e] - 1))
       sum_array.append(0.5 * (x[fl] + x[ce]))

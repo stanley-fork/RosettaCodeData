@@ -1,4 +1,6 @@
 //
+// Using FutureBasic 7.0.34, July 2025 R.W
+//
 // Calculate months having 5 Fridays,
 //                   5 Saturdays, and 5 Sundays
 //                   from year 1900 through 2100

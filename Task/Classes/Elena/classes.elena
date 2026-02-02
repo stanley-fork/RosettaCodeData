@@ -2,11 +2,11 @@ import extensions;
 
 class MyClass
 {
-    int Variable : prop;
+    int Variable : prop(_variable);
 
     someMethod()
     {
-        Variable := 1
+        _variable := 1
     }
 
     constructor()
@@ -14,7 +14,7 @@ class MyClass
     }
 }
 
-public program()
+public Program()
 {
     // instantiate the class
     var instance := new MyClass();

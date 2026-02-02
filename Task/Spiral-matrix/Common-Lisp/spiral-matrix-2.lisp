@@ -3,8 +3,8 @@
     (if (= 1 n) row
       ;; first row, plus (n-1) x m spiral rotated 90 degrees
       (append row (map 'list #'reverse
-		       (apply #'mapcar #'list
-			      (spiral (1- n) m (+ start m))))))))
+             (apply #'mapcar #'list
+               (spiral (1- n) m (+ start m))))))))
 
 ;; test
 (loop for row in (spiral 4 3) do

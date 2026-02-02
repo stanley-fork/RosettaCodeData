@@ -1,64 +1,62 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
+with javascript_semantics
 
- <span style="color: #008080;">include</span> <span style="color: #7060A8;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+include mpfr.e
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">fun</span><span style="color: #0000FF;">(</span><span style="color: #004080;">mpz</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- {a,b} = {b,c*b+a}  (and t gets trashed)</span>
-     <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpz_mul_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpz_add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure fun(mpz a,b,t, integer c)
+-- {a,b} = {b,c*b+a}  (and t gets trashed)
+    mpz_set(t,a)
+    mpz_set(a,b)
+    mpz_mul_si(b,b,c)
+    mpz_add(b,b,t)
+end procedure
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">SolvePell</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">sqrt</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)),</span> <span style="color: #000000;">y</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">z</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">*</span><span style="color: #000000;">2</span>
- <span style="color: #004080;">mpz</span> <span style="color: #000000;">e1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">e2</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(),</span>
-     <span style="color: #000000;">f1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(),</span>  <span style="color: #000000;">f2</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">),</span>   <span style="color: #000000;">u</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(),</span>
-     <span style="color: #000000;">a</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>   <span style="color: #000000;">b</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">*</span><span style="color: #000000;">x</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">n</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">while</span> <span style="color: #7060A8;">mpz_cmp_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">y</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">*</span><span style="color: #000000;">z</span> <span style="color: #0000FF;">-</span> <span style="color: #000000;">y</span>
-             <span style="color: #000000;">z</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">((</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">y</span><span style="color: #0000FF;">*</span><span style="color: #000000;">y</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">((</span><span style="color: #000000;">x</span><span style="color: #0000FF;">+</span><span style="color: #000000;">y</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">fun</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">e2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r</span><span style="color: #0000FF;">)</span>          <span style="color: #000080;font-style:italic;">-- {e1,e2} = {e2,r*e2+e1}</span>
-             <span style="color: #000000;">fun</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">f2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r</span><span style="color: #0000FF;">)</span>          <span style="color: #000080;font-style:italic;">-- {f1,f2} = {f2,r*r2+f1}</span>
-             <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">f2</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">e2</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">fun</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>            <span style="color: #000080;font-style:italic;">-- {b,a} = {f2,x*f2+e2}</span>
-             <span style="color: #7060A8;">mpz_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpz_mul_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">u</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpz_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">u</span><span style="color: #0000FF;">,</span><span style="color: #000000;">u</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpz_sub</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">u</span><span style="color: #0000FF;">)</span>          <span style="color: #000080;font-style:italic;">-- t = a^2-n*b^2</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function SolvePell(integer n)
+integer x = floor(sqrt(n)), y = x, z = 1, r = x*2
+mpz e1 = mpz_init(1), e2 = mpz_init(),
+    f1 = mpz_init(),  f2 = mpz_init(1),
+    t = mpz_init(0),   u = mpz_init(),
+    a = mpz_init(1),   b = mpz_init(0)
+    if x*x!=n then
+        while mpz_cmp_si(t,1)!=0 do
+            y = r*z - y
+            z = floor((n-y*y)/z)
+            r = floor((x+y)/z)
+            fun(e1,e2,t,r)          -- {e1,e2} = {e2,r*e2+e1}
+            fun(f1,f2,t,r)          -- {f1,f2} = {f2,r*r2+f1}
+            mpz_set(a,f2)
+            mpz_set(b,e2)
+            fun(b,a,t,x)            -- {b,a} = {f2,x*f2+e2}
+            mpz_mul(t,a,a)
+            mpz_mul_si(u,b,n)
+            mpz_mul(u,u,b)
+            mpz_sub(t,t,u)          -- t = a^2-n*b^2
+        end while
+    end if
+    return {a, b}
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">split_into_chunks</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">one</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">rest</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">one</span><span style="color: #0000FF;">]}</span>
-     <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">one</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..$]</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">l</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">l</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">min</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">,</span><span style="color: #000000;">rest</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">k</span><span style="color: #0000FF;">])</span>
-         <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..$]</span>
-         <span style="color: #000000;">l</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">k</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #000000;">29</span><span style="color: #0000FF;">))&</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #000000;">17</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function split_into_chunks(string x, integer one, rest)
+    sequence res = {x[1..one]}
+    x = x[one+1..$]
+    integer l = length(x)
+    while l do
+        integer k = min(l,rest)
+        res = append(res,x[1..k])
+        x = x[k+1..$]
+        l -= k
+    end while
+    return join(res,"\n"&repeat(' ',29))&"\n"&repeat(' ',17)
+end function
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">ns</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">61</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">109</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">181</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">277</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">8941</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ns</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ns</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-     <span style="color: #004080;">mpz</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">y</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">SolvePell</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">xs</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span><span style="color: #000000;">comma_fill</span><span style="color: #0000FF;">:=</span><span style="color: #004600;">true</span><span style="color: #0000FF;">),</span>
-            <span style="color: #000000;">ys</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,</span><span style="color: #000000;">comma_fill</span><span style="color: #0000FF;">:=</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xs</span><span style="color: #0000FF;">)></span><span style="color: #000000;">97</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">xs</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">split_into_chunks</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xs</span><span style="color: #0000FF;">,</span><span style="color: #000000;">98</span><span style="color: #0000FF;">,</span><span style="color: #000000;">96</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">ys</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">split_into_chunks</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ys</span><span style="color: #0000FF;">,</span><span style="color: #000000;">99</span><span style="color: #0000FF;">,</span><span style="color: #000000;">96</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"x^2 - %3d*y^2 = 1 for x = %27s and y = %25s\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">xs</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">ys</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+sequence ns = {4, 61, 109, 181, 277, 8941}
+for i=1 to length(ns) do
+    integer n = ns[i]
+    mpz {x, y} = SolvePell(n)
+    string xs = mpz_get_str(x,comma_fill:=true),
+           ys = mpz_get_str(y,comma_fill:=true)
+    if length(xs)>97 then
+        xs = split_into_chunks(xs,98,96)
+        ys = split_into_chunks(ys,99,96)
+    end if
+    printf(1,"x^2 - %3d*y^2 = 1 for x = %27s and y = %25s\n", {n, xs, ys})
+end for

@@ -29,7 +29,6 @@ var m
 m = Fn.new { |i, w|
     if (i < 0 || w == 0) return [[], 0, 0]
     if (wants[i][1] > w) return m.call(i-1, w)
-    System.write("") // guard against VM recursion bug
     var res = m.call(i-1, w)
     var i0 = res[0]
     var w0 = res[1]

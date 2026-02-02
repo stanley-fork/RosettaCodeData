@@ -8,7 +8,7 @@ fill(n)
     = RangeEnumerator.new(1,n).selectBy::(x => new Foo()).toArray();
 
 // testing
-public program()
+public Program()
 {
     var foos := fill(10);
 }

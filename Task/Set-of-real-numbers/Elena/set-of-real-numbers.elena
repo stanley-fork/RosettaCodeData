@@ -12,7 +12,7 @@ extension setOp
         = (val => self(val) && (func(val)).Inverted );
 }
 
-public program()
+public Program()
 {
     // union
     var set := (x => x >= 0.0r && x <= 1.0r ).union::(x => x >= 0.0r && x < 2.0r );

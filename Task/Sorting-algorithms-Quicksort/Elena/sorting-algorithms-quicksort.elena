@@ -40,10 +40,10 @@ extension op
     }
 }
 
-public program()
+public Program()
 {
     var list := new int[]{3, 14, 1, 5, 9, 2, 6, 3};
 
-    console.printLine("before:", list.asEnumerable());
-    console.printLine("after :", list.quickSort().asEnumerable());
+    Console.printLine("before:", list.asEnumerable());
+    Console.printLine("after :", list.quickSort().asEnumerable());
 }

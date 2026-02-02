@@ -1,7 +1,7 @@
 import system'routines.
 import extensions.
 
-public program
+public Program
 {
     var a1 := new string[]{"a","b","c"};
     var a2 := new string[]{"A","B","C"};
@@ -10,7 +10,7 @@ public program
                        .zipBy(a3, (first,second => first + second.toString() ));
 
     zipped.forEach::(e)
-        { console.writeLine:e };
+        { Console.writeLine:e };
 
-    console.readChar();
+    Console.readChar();
 }

@@ -8,14 +8,14 @@ IC(' ', COUNT, #3*9+1) NI(#2) IN
 REPEAT(12/#3) {
     REPEAT (#3) {
         BS(BF)
-	CALL("DRAW_CALENDAR")
-	RCB(10, 1, EOB_POS, COLSET, 1, 21)
-	BQ(OK)
-	#5 = CP
-	RI(10)
-	GP(#5)
-	EOL IC(9)
-	#1++
+   CALL("DRAW_CALENDAR")
+   RCB(10, 1, EOB_POS, COLSET, 1, 21)
+   BQ(OK)
+   #5 = CP
+   RI(10)
+   GP(#5)
+   EOL IC(9)
+   #1++
     }
     EOF IN(2)
 }

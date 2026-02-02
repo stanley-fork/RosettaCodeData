@@ -2,7 +2,7 @@ import extensions;
 import system'routines;
 import system'collections;
 
-public program()
+public Program()
 {
     var n := console.write("Enter the matrix size:").readLine().toInt();
 

@@ -1,3 +1,46 @@
+##
+# Show how to implement big number multiplication (even though Icon and Unicon
+# handle big numbers transparently...)
+global dpw, maxs
+
 procedure main()
-   write(2^64*2^64)
+   dpw := 10
+   maxs := 10^dpw
+   every (n1|n2) := cvt2bn(2^64)
+   write(2^64)
+   write(2^64*2^64)  # How one really does multiply in Icon and Unicon
+   write(bn2str(bnmult(n1,n2)))  # How this challenge wants it done
+end
+
+procedure bnmult(n1,n2)
+   n := [0]
+   k := 1
+   if *n1 > *n2 then n1 :=: n2
+   every i := 1 to *n1 do {
+      every j := 1 to *n2 do {
+         if k > *n then put(n,0)
+         x := n1[i]*n2[j]
+         r := x/maxs
+         n[k] +:= x%maxs
+         if r > 0 then {
+            if k = *n then put(n,0)
+            n[k+1] +:= r
+            }
+         k +:= 1
+         }
+      k := i+1
+      }
+   return n
+end
+
+procedure cvt2bn(n)
+   bn := []
+   while (n > 0, put(bn,n%maxs), n /:= maxs)
+   return bn
+end
+
+procedure bn2str(bn)
+   s := ""||bn[-1]
+   every s ||:= right(bn[*bn-1 to 1 by -1],dpw,"0")
+   return s
 end

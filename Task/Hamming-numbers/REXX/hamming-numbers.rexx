@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'HAMMING NUMBERS'
 say version
@@ -14,12 +14,12 @@ say Time('e')/1 'seconds'
 exit
 
 ShowFirstN:
-procedure expose hamm.
+procedure expose Hamm.
 arg xx
 xx = xx/1
 say 'First' xx 'Hamming numbers are'
 do i = 1 to xx
-   call Charout ,Right(hamm.i,5)
+   call Charout ,Right(Hamm.i,5)
    if i//10 = 0 then
       say
 end
@@ -27,14 +27,12 @@ say
 return
 
 ShowNth:
-procedure expose hamm.
+procedure expose Hamm.
 arg xx
 xx = xx/1
 say xx'th Hamming number is'
-say hamm.xx '('Length(hamm.xx) 'digits)'
+say Hamm.xx '('Length(Hamm.xx) 'digits)'
 say
 return
 
-include Sequences
-include Functions
-include Abend
+include Math

@@ -2,9 +2,9 @@ import system'io;
 import system'routines;
 import extensions'routines;
 
-public program()
+public Program()
 {
     var dir := Directory.assign("c:\MyDir");
 
-    dir.getFiles("a.*").forEach(printingLn);
+    dir.getFiles("a.*").forEach(PrintingLn);
 }

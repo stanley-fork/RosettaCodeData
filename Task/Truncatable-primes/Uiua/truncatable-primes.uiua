@@ -1,7 +1,8 @@
-Mag ← 6
+Mag     ← 6
 IsPrime ← =1⧻°/×
-RAdd ← ♭⊞(+×10):1_3_7_9                   # Add suffixes
-LAdd ← ♭⊞+×⍜(ₙ10|⌈)⊢,+1⇡9                 # Add prefixes
-LastTP! ← ⊡¯1⍥(▽⊸≡IsPrime^!)-1Mag 2_3_5_7 # Build and filter
+RAdd    ← ♭⊞(+×10):1_3_7_9                # Add suffixes
+LAdd    ← ♭⊞+×⍜(⌝˜ⁿ10|⌈)⊢:⊙.+1⇡9          # Add prefixes
+LastTP! ← ⊡¯1⍥(▽⊸≡IsPrime^0)-1Mag 2_3_5_7 # Build and filter
+
 $"Right truncating: _"LastTP!RAdd
 $"Left truncating: _"LastTP!LAdd

@@ -1,6 +1,6 @@
 scope # Yellowstone sequence - translation of the Pluto sample
 
-    local procedure yellowstone( n :: number ) :: table
+    local proc yellowstone( n :: number ) :: table
         local a, m := [ 1, 2, 3 ], [ true, true, true ];
         for x from 4 to n do
             a[ x ], m[ x ] := 0, false

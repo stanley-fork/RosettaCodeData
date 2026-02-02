@@ -7,7 +7,7 @@ sortThree(ref object a, ref object b, ref object c)
     if (b > c) { exchange(ref b, ref c) }
 }
 
-public program()
+public Program()
 {
     var x := 5;
     var y := 1;
@@ -20,6 +20,6 @@ public program()
     sortThree(ref x,ref y,ref z);
     sortThree(ref a,ref b,ref c);
 
-    console.printLine(x,",",y,",",z);
-    console.printLine(a,",",b,",",c)
+    Console.printLine(x,",",y,",",z);
+    Console.printLine(a,",",b,",",c)
 }

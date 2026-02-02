@@ -1,69 +1,67 @@
-(notonline)-->
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span> <span style="color: #000080;font-style:italic;">-- file i/o</span>
- <span style="color: #008080;">enum</span> <span style="color: #000000;">Airport_ID</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Name</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">City</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Country</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">IATA</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">ICAO</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Latitude</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Longitude</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Altitude</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Timezone</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">DST</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Tz_Olson</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Type</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Source</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">tabulate</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">trim</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">),</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ri</span> <span style="color: #008080;">in</span> <span style="color: #000000;">s</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">ri</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ri</span><span style="color: #0000FF;">,</span><span style="color: #008000;">','</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ri</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">14</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">ri</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">","</span><span style="color: #0000FF;">&</span><span style="color: #000000;">ri</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span>
-             <span style="color: #000000;">ri</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">..</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">j</span> <span style="color: #008080;">in</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">Airport_ID</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Latitude</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Longitude</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Altitude</span><span style="color: #0000FF;">}</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">ri</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">to_number</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ri</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">])</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">j</span> <span style="color: #008080;">in</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">Name</span><span style="color: #0000FF;">,</span><span style="color: #000000;">City</span><span style="color: #0000FF;">,</span><span style="color: #000000;">Country</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ICAO</span><span style="color: #0000FF;">}</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">ri</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">trim</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ri</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">],</span><span style="color: #008000;">`"`</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ri</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+without js -- file i/o
+enum Airport_ID, Name, City, Country, IATA, ICAO, Latitude, Longitude, Altitude, Timezone, DST, Tz_Olson, Type, Source
+function tabulate(sequence s)
+    s = split(trim(s),"\n")
+    for i,ri in s do
+        ri = split(ri,',')
+        if length(ri)!=14 then
+            ri[2] &= ","&ri[3]
+            ri[3..3] = {}
+        end if
+        for j in {Airport_ID, Latitude, Longitude, Altitude} do
+            ri[j] = to_number(ri[j])
+        end for
+        for j in {Name,City,Country,ICAO} do
+            ri[j] = trim(ri[j],`"`)
+        end for
+        s[i] = ri
+    end for
+    return s
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">airports</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tabulate</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">get_text</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"airports.dat"</span><span style="color: #0000FF;">))</span>
+constant airports = tabulate(get_text("airports.dat"))
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">distance</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">lat1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">lon1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">lat2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">lon2</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">units</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">dist</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">lat1</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">lat2</span> <span style="color: #008080;">or</span> <span style="color: #000000;">lon1</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">lon2</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">radlat1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">lat1</span><span style="color: #0000FF;">*</span><span style="color: #004600;">PI</span><span style="color: #0000FF;">/</span><span style="color: #000000;">180</span><span style="color: #0000FF;">,</span>
-              <span style="color: #000000;">radlat2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">lat2</span><span style="color: #0000FF;">*</span><span style="color: #004600;">PI</span><span style="color: #0000FF;">/</span><span style="color: #000000;">180</span><span style="color: #0000FF;">,</span>
-              <span style="color: #000000;">radtheta</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">lon1</span><span style="color: #0000FF;">-</span><span style="color: #000000;">lon2</span><span style="color: #0000FF;">)*</span><span style="color: #004600;">PI</span><span style="color: #0000FF;">/</span><span style="color: #000000;">180</span>
-         <span style="color: #000000;">dist</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sin</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat1</span><span style="color: #0000FF;">)*</span><span style="color: #7060A8;">sin</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">+</span> <span style="color: #7060A8;">cos</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat1</span><span style="color: #0000FF;">)*</span><span style="color: #7060A8;">cos</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat2</span><span style="color: #0000FF;">)*</span><span style="color: #7060A8;">cos</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radtheta</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">dist</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">arccos</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">min</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dist</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">))*</span><span style="color: #000000;">180</span><span style="color: #0000FF;">/</span><span style="color: #004600;">PI</span> <span style="color: #0000FF;">*</span> <span style="color: #000000;">60</span><span style="color: #0000FF;">*</span><span style="color: #000000;">1.1515576</span> <span style="color: #000080;font-style:italic;">-- in Statute Miles</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">units</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'K'</span> <span style="color: #008080;">then</span> <span style="color: #000000;">dist</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">1.609344</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>     <span style="color: #000080;font-style:italic;">-- in Kilometres</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">units</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'N'</span> <span style="color: #008080;">then</span> <span style="color: #000000;">dist</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">0.868976</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>    <span style="color: #000080;font-style:italic;">-- in Nautical Miles</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">dist</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function distance(atom lat1, lon1, lat2, lon2, integer units)
+    atom dist = 0
+    if lat1!=lat2 or lon1!=lon2 then
+        atom radlat1 = lat1*PI/180,
+             radlat2 = lat2*PI/180,
+             radtheta = (lon1-lon2)*PI/180
+        dist = sin(radlat1)*sin(radlat2) + cos(radlat1)*cos(radlat2)*cos(radtheta)
+        dist = arccos(min(dist,1))*180/PI * 60*1.1515576 -- in Statute Miles
+        if units = 'K' then dist *= 1.609344 end if     -- in Kilometres
+        if units = 'N' then dist *= 0.868976 end if    -- in Nautical Miles
+    end if
+    return dist
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">bearing</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">lat1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">lon1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">lat2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">lon2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">bear</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">NULL</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">lat1</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">lat2</span> <span style="color: #008080;">or</span> <span style="color: #000000;">lon1</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">lon2</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">radlat1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">lat1</span><span style="color: #0000FF;">*</span><span style="color: #004600;">PI</span><span style="color: #0000FF;">/</span><span style="color: #000000;">180</span><span style="color: #0000FF;">,</span>
-              <span style="color: #000000;">radlat2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">lat2</span><span style="color: #0000FF;">*</span><span style="color: #004600;">PI</span><span style="color: #0000FF;">/</span><span style="color: #000000;">180</span><span style="color: #0000FF;">,</span>
-              <span style="color: #000000;">raddlon</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">lon2</span><span style="color: #0000FF;">-</span><span style="color: #000000;">lon1</span><span style="color: #0000FF;">)*</span><span style="color: #004600;">PI</span><span style="color: #0000FF;">/</span><span style="color: #000000;">180</span><span style="color: #0000FF;">,</span>
-              <span style="color: #000000;">y</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sin</span><span style="color: #0000FF;">(</span><span style="color: #000000;">raddlon</span><span style="color: #0000FF;">)*</span><span style="color: #7060A8;">cos</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat2</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">cos</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat1</span><span style="color: #0000FF;">)*</span><span style="color: #7060A8;">sin</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">-</span> <span style="color: #7060A8;">sin</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat1</span><span style="color: #0000FF;">)*</span><span style="color: #7060A8;">cos</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radlat2</span><span style="color: #0000FF;">)*</span><span style="color: #7060A8;">cos</span><span style="color: #0000FF;">(</span><span style="color: #000000;">raddlon</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">bear</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">atan2</span><span style="color: #0000FF;">(</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">180</span><span style="color: #0000FF;">/</span><span style="color: #004600;">PI</span><span style="color: #0000FF;">+</span><span style="color: #000000;">360</span><span style="color: #0000FF;">,</span><span style="color: #000000;">360</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">bear</span><span style="color: #0000FF;">;</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function bearing(atom lat1, lon1, lat2, lon2)
+    atom bear = NULL
+    if lat1!=lat2 or lon1!=lon2 then
+        atom radlat1 = lat1*PI/180,
+             radlat2 = lat2*PI/180,
+             raddlon = (lon2-lon1)*PI/180,
+             y = sin(raddlon)*cos(radlat2),
+             x = cos(radlat1)*sin(radlat2) - sin(radlat1)*cos(radlat2)*cos(raddlon)
+        bear = remainder(atan2(y, x)*180/PI+360,360)
+    end if
+    return bear;
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">query</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">lat</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lon</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">rows</span><span style="color: #0000FF;">=</span><span style="color: #000000;">20</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">a</span> <span style="color: #008080;">in</span> <span style="color: #000000;">airports</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">lat2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Latitude</span><span style="color: #0000FF;">],</span>
-              <span style="color: #000000;">lon2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Longitude</span><span style="color: #0000FF;">],</span>
-              <span style="color: #000000;">dist</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">round</span><span style="color: #0000FF;">(</span><span style="color: #000000;">distance</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lat</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lon</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lat2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lon2</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'N'</span><span style="color: #0000FF;">),</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">bear</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">round</span><span style="color: #0000FF;">(</span><span style="color: #000000;">bearing</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lat</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lon</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lat2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lon2</span><span style="color: #0000FF;">))</span>
-         <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Name</span><span style="color: #0000FF;">],</span><span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Country</span><span style="color: #0000FF;">],</span><span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">ICAO</span><span style="color: #0000FF;">],</span><span style="color: #000000;">dist</span><span style="color: #0000FF;">,</span><span style="color: #000000;">bear</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sort_columns</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">4</span><span style="color: #0000FF;">})[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">rows</span><span style="color: #0000FF;">]</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"                Name                 |    Country     | ICAO | Distance in NM | Bearing in ° \n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"-------------------------------------+----------------+------+----------------+--------------\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">:=</span><span style="color: #008000;">" %-36s| %-15s| %4s |           %4.1f |          %3d"</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"(%d rows)\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">rows</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure query(atom lat,lon, integer rows=20)
+    sequence r = {}
+    for a in airports do
+        atom lat2 = a[Latitude],
+             lon2 = a[Longitude],
+             dist = round(distance(lat,lon,lat2,lon2,'N'),10),
+             bear = round(bearing(lat,lon,lat2,lon2))
+        r = append(r,{a[Name],a[Country],a[ICAO],dist,bear})
+    end for
+    r = sort_columns(r,{4})[1..rows]
+    printf(1,"                Name                 |    Country     | ICAO | Distance in NM | Bearing in ° \n")
+    printf(1,"-------------------------------------+----------------+------+----------------+--------------\n")
+    printf(1,"%s\n",{join(r,"\n",fmt:=" %-36s| %-15s| %4s |           %4.1f |          %3d")})
+    printf(1,"(%d rows)\n",rows)
+end procedure
 
- <span style="color: #000000;">query</span><span style="color: #0000FF;">(</span><span style="color: #000000;">51.514669</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2.198581</span><span style="color: #0000FF;">)</span>
-<!--
+query(51.514669, 2.198581)

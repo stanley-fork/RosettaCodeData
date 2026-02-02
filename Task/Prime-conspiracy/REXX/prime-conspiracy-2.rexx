@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 numeric digits 10
 arg xx
 if xx = '' then
@@ -60,8 +60,4 @@ end
 say
 return
 
-include Sequences
-include Functions
-include Special
-include Constants
-include Abend
+include Math

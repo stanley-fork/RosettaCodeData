@@ -28,11 +28,11 @@ var T: integer;
 begin
 Result:=0;
 repeat
-	begin
-	T:=N mod 10;
-	N:=N div 10;
-	Result:=Result+T;
-	end
+   begin
+   T:=N mod 10;
+   N:=N div 10;
+   Result:=Result+T;
+   end
 until N<1;
 end;
 
@@ -48,15 +48,15 @@ Cnt:=0;
 S:='';
 for N:=1 to 500-1 do
  if IsPrime(N) then
-	begin
-	Sum:=SumDigits(N);
-	if IsPrime(Sum) then
-		begin
-		Inc(Cnt);
-		S:=S+Format('%6d',[N]);
-		if (Cnt mod 8)=0 then S:=S+CRLF;
-		end;
-	end;
+   begin
+   Sum:=SumDigits(N);
+   if IsPrime(Sum) then
+      begin
+      Inc(Cnt);
+      S:=S+Format('%6d',[N]);
+      if (Cnt mod 8)=0 then S:=S+CRLF;
+      end;
+   end;
 Memo.Lines.Add(S);
 Memo.Lines.Add('Count = '+IntToStr(Cnt));
 end;

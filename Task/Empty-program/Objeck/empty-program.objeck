@@ -2,4 +2,5 @@ bundle Default {
   class Empty {
     function : Main(args : String[]) ~ Nil {
     }
+  }
 }

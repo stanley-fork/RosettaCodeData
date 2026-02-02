@@ -1,37 +1,38 @@
 proto md5($msg) returns Blob is export {*}
-multi md5(Str $msg) { md5 $msg.encode }
+multi md5(Str $msg) { samewith $msg.encode }
 multi md5(Blob $msg) {
-  [~] map { buf8.new.write-uint32: 0, $_, LittleEndian },
+    reduce { $^buf.write-uint32: $buf.end + 1, $^int, LittleEndian },
+    buf8.new,
     |reduce -> Blob $blob, blob32 $X {
-      blob32.new: $blob Z+
+        blob32.new: $blob Z+
         reduce -> $b, $i {
-          blob32.new:
+            blob32.new:
             $b[3],
             $b[1] +
-              -> uint32 \x, \n { (x +< n) +| (x +> (32-n)) }(
-              ($b[0] + (BEGIN Array.new:
-              { ($^x +& $^y) +| (+^$x +& $^z) },
-              { ($^x +& $^z) +| ($^y +& +^$z) },
-              { $^x +^ $^y +^ $^z },
-              { $^y +^ ($^x +| +^$^z) }
-              )[$i div 16](|$b[1..3]) +
-              (BEGIN blob32.new: map &floor ∘ * * 2**32 ∘ &abs ∘ &sin ∘ * + 1, ^64)[$i] +
-              $X[(BEGIN Blob.new: 16 X[R%] flat ($++, 5*$++ + 1, 3*$++ + 5, 7*$++) Xxx 16)[$i]]
-              ) mod 2**32,
-              (BEGIN flat < 7 12 17 22 5 9 14 20 4 11 16 23 6 10 15 21 >.rotor(4) Xxx 4)[$i]
+            -> uint32 \x, \n { (x +< n) +| (x +> (32-n)) }(
+                ($b[0] + (
+                        { ($^x +& $^y) +| (+^$x +& $^z) },
+                        { ($^x +& $^z) +| ($^y +& +^$z) },
+                        { $^x +^ $^y +^ $^z },
+                        { $^y +^ ($^x +| +^$^z) }
+                    )[$i div 16](|$b[1..3]) +
+                    (blob32.new: map &floor ∘ * * 2**32 ∘ &abs ∘ &sin ∘ * + 1, ^64)[$i] +
+                    $X[(Blob.new: 16 X[R%] flat ($++, 5*$++ + 1, 3*$++ + 5, 7*$++) Xxx 16)[$i]]
+                ) mod 2**32,
+                (flat < 7 12 17 22 5 9 14 20 4 11 16 23 6 10 15 21 >.rotor(4) Xxx 4)[$i]
             ),
-            $b[1],
-            $b[2]
+        $b[1],
+        $b[2]
         }, $blob, |^64;
     },
-    (BEGIN blob32.new: 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476),
+    (blob32.new: 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476),
     |map { blob32.new: @$_ },
-      {
+    {
         $^b.push(blob8.new(@$_).read-uint32(0)) for (@$msg, 0x80, 0x00 xx (-($msg.elems + 1 + 8) % 64))
-            .flat.rotor(4);
+        .flat.rotor(4);
         $b.write-uint64: $b.elems, 8*$msg.elems, LittleEndian;
         $b;
-      }(buf32.new)
+    }(buf32.new)
     .rotor(16);
 }
 

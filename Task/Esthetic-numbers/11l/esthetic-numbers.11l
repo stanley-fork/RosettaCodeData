@@ -28,7 +28,7 @@ F listEsths(Int64 n1, n2, m1, m2; perLine, all)
          @dfs(n, m, i1)
          @dfs(n, m, i2)
 
-   L(i) 10
+   L(i) 0.<10
       dfs(n2, m2, i)
 
    print(‘Base 10: ’esths.len‘ esthetic numbers between ’n1‘ and ’m1‘:’)

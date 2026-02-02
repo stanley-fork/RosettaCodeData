@@ -3,8 +3,8 @@ V adfgvx = ‘ADFGVX’
 F encrypt(plainText, polybius, key)
    V s = ‘’
    L(ch) plainText
-      L(r) 6
-         L(c) 6
+      L(r) 0.<6
+         L(c) 0.<6
             I polybius[r][c] == ch
                s ‘’= :adfgvx[r]‘’:adfgvx[c]
 
@@ -43,8 +43,8 @@ F decrypt(cipherText, polybius, key)
 V polybius = [[Char("\0")] * 6] * 6
 V alphabet = ‘ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789’
 random:shuffle(&alphabet)
-L(r) 6
-   L(c) 6
+L(r) 0.<6
+   L(c) 0.<6
       polybius[r][c] = alphabet[6 * r + c]
 
 print("6 x 6 Polybius square:\n")

@@ -16,7 +16,7 @@ It is common to list the Cullen and Woodall primes by the value of '''n''' rathe
 
 * Write procedures to find Cullen numbers and Woodall numbers. 
 
-* Use those procedures to find and show here, on this page the first 20 of each.
+* Use those procedures to find and show here, on this page, the first 20 of each.
 
 
 ;Stretch

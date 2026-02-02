@@ -17,7 +17,7 @@ namespace Roman
 			case 'D':  return 500;
 			case 'M':  return 1000;
 		}
-		throw exception("Invalid character");
+		throw invalid_argument("Invalid character");
 	}
 
 	int ToInt(const string& s)

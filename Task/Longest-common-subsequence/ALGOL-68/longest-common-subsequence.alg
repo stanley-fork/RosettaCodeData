@@ -12,5 +12,6 @@ BEGIN PROC lcs = (STRING s, t) STRING:
            (UPB u > UPB v | u | v)
       FI;
 
-      print((lcs ("thisisatest", "testing123testing"), new line))
+      print ((lcs ("1234", "1224533324"), new line));
+      print ((lcs ("thisisatest", "testing123testing"), new line))
 END

@@ -38,9 +38,9 @@ extension op : String
     }
 }
 
-const string testcase = "one^|uno||three^^^^|four^^^|^cuatro|";
+const string Testcase = "one^|uno||three^^^^|four^^^|^cuatro|";
 
-public program()
+public Program()
 {
-    testcase.tokenize("|", "^").forEach(printingLn)
+    Testcase.tokenize("|", "^").forEach(PrintingLn)
 }

@@ -1,9 +1,9 @@
 mean(v)={
   vecsum(v)/#v
 };
-stdev(v,mu="")={
+stdev(v,mu="")={ \\ This is the population standard deviation; for the sample standard deviation, replace #v with (#v-1) for Bessel's correction.
   if(mu=="",mu=mean(v));
-  sqrt(sum(i=1,#v,(v[i]-mu)^2))/#v
+  sqrt(sum(i=1,#v,(v[i]-mu)^2)/#v)
 };
 histogram(v,bins=16,low=0,high=1)={
   my(u=vector(bins),width=(high-low)/bins);

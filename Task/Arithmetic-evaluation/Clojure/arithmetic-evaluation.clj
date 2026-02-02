@@ -1,13 +1,13 @@
 (def precedence '{* 0, / 0
-		  + 1, - 1})
+          + 1, - 1})
 
 (defn order-ops
   "((A x B) y C) or (A x (B y C)) depending on precedence of x and y"
   [[A x B y C & more]]
   (let [ret (if (<=  (precedence x)
-		     (precedence y))
-	      (list (list A x B) y C)
-	      (list A x (list B y C)))]
+             (precedence y))
+          (list (list A x B) y C)
+          (list A x (list B y C)))]
     (if more
       (recur (concat ret more))
       ret)))
@@ -18,10 +18,10 @@
   (clojure.walk/postwalk
    #(if (seq? %)
       (let [c (count %)]
-	(cond (even? c) (throw (Exception. "Must be an odd number of forms"))
-	      (= c 1) (first %)
-	      (= c 3) %
-	      (>= c 5) (order-ops %)))
+    (cond (even? c) (throw (Exception. "Must be an odd number of forms"))
+          (= c 1) (first %)
+          (= c 3) %
+          (>= c 5) (order-ops %)))
       %)
    s))
 
@@ -34,16 +34,16 @@
       add-parens))
 
 (def ops {'* *
-	  '+ +
-	  '- -
-	  '/ /})
+      '+ +
+      '- -
+      '/ /})
 
 (def eval-ast
      (partial clojure.walk/postwalk
-	      #(if (seq? %)
-		 (let [[a o b] %]
-		   ((ops o) a b))
-		 %)))
+          #(if (seq? %)
+         (let [[a o b] %]
+           ((ops o) a b))
+         %)))
 
 (defn evaluate [s]
   "Parse and evaluate an infix arithmetic expression"

@@ -5,25 +5,25 @@
 int isBal(const char*s,int l){
     signed c=0;
     while(l--)
-	if(s[l]==']') ++c;
-	else if(s[l]=='[') if(--c<0) break;
+    if(s[l]==']') ++c;
+    else if(s[l]=='[') if(--c<0) break;
     return !c;
 }
 
 void shuffle(char*s,int h){
     int x,t,i=h;
     while(i--){
-	t=s[x=rand()%h];
-	s[x]=s[i];
-	s[i]=t;
+    t=s[x=rand()%h];
+    s[x]=s[i];
+    s[i]=t;
     }
 }
 
 void genSeq(char*s,int n){
     if(n){
-	memset(s,'[',n);
-	memset(s+n,']',n);
-	shuffle(s,n*2);
+    memset(s,'[',n);
+    memset(s+n,']',n);
+    shuffle(s,n*2);
     }
     s[n*2]=0;
 }

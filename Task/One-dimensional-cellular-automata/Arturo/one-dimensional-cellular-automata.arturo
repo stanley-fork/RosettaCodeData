@@ -1,13 +1,13 @@
 evolve: function [arr][
     ary: [0] ++ arr ++ [0]
-    ret: new []
+    ret: []
     loop 1..(size ary)-2 'i [
         a: ary\[i-1]
         b: ary\[i]
         c: ary\[i+1]
 
-        if? 2 = a+b+c -> 'ret ++ 1
-        else          -> 'ret ++ 0
+        switch 2 = a+b+c -> 'ret ++ 1
+                         -> 'ret ++ 0
     ]
     ret
 ]

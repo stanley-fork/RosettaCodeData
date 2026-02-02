@@ -1,3 +1,15 @@
+LDA $E000                ; terribly unreliable, oh well
+CMP #$4C                 ;is this an Apple II?
+BNE Commodore_64         ;no
+
+BIT $C01A                ;status of text/graphics
+BMI isTerminal
+RTS
+
+Commodore_64
 LDA $D011                ;screen control register 1
 AND #%00100000           ;bit 5 clear = text mode, bit 5 set = gfx mode
 BEQ isTerminal
+RTS
+
+isTerminal

@@ -1,6 +1,6 @@
 F do_work(x)
    V n = x
-   L(i) 10000000
+   L(i) 0.<10000000
       n += i
    R n
 

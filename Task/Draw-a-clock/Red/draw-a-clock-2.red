@@ -1,6 +1,6 @@
 Red [
-	Needs: 'View
-	Purpose: {simple analog clock based on Nenad Rakocevic's eve-clock.red,
+    Needs: 'View
+    Purpose: {simple analog clock based on Nenad Rakocevic's eve-clock.red,
 see http://www.red-lang.org/2016/07/eve-style-clock-demo-in-red-livecoded.html}
 ]
 

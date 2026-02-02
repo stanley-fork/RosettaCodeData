@@ -1,6 +1,6 @@
 import system'collections;
 
-public program()
+public Program()
 {
    var c := nil;                  // declaring variable.
    var a := 3;                    // declaring and initializing variables

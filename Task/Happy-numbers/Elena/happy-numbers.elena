@@ -27,7 +27,7 @@ isHappy(int n)
     ^ true
 }
 
-public program()
+public Program()
 {
     auto happynums  := new List<int>(8);
     int num := 1;

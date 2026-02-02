@@ -1,28 +1,26 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">rdp</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">atom</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">)<</span><span style="color: #000000;">2</span> <span style="color: #008080;">then</span> <span style="color: #7060A8;">crash</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"not enough points to simplify"</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">idx</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">0</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">dMax</span> <span style="color: #0000FF;">:=</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span>
-     <span style="color: #0000FF;">{</span><span style="color: #000000;">p1x</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p1y</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span>
-     <span style="color: #0000FF;">{</span><span style="color: #000000;">p2x</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p2y</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">[$],</span>
-     <span style="color: #000000;">x21</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">p2x</span> <span style="color: #0000FF;">-</span> <span style="color: #000000;">p1x</span><span style="color: #0000FF;">,</span>
-     <span style="color: #000000;">y21</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">p2y</span> <span style="color: #0000FF;">-</span> <span style="color: #000000;">p1y</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">atom</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">px</span><span style="color: #0000FF;">,</span><span style="color: #000000;">py</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span>
-              <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">abs</span><span style="color: #0000FF;">(</span><span style="color: #000000;">y21</span><span style="color: #0000FF;">*</span><span style="color: #000000;">px</span><span style="color: #0000FF;">-</span><span style="color: #000000;">x21</span><span style="color: #0000FF;">*</span><span style="color: #000000;">py</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">p2x</span><span style="color: #0000FF;">*</span><span style="color: #000000;">p1y</span><span style="color: #0000FF;">-</span><span style="color: #000000;">p2y</span><span style="color: #0000FF;">*</span><span style="color: #000000;">p1x</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">></span><span style="color: #000000;">dMax</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">idx</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span>
-             <span style="color: #000000;">dMax</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">d</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">dMax</span><span style="color: #0000FF;">></span><span style="color: #000000;">e</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">rdp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">rdp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">..$],</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">)[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">..$]</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">[$]}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+function rdp(sequence l, atom e)
+    if length(l)<2 then crash("not enough points to simplify") end if
+    integer idx := 0
+    atom dMax := -1,
+    {p1x,p1y} := l[1],
+    {p2x,p2y} := l[$],
+    x21 := p2x - p1x,
+    y21 := p2y - p1y
+    for i=1 to length(l) do
+        atom {px,py} = l[i],
+             d = abs(y21*px-x21*py + p2x*p1y-p2y*p1x)
+        if d>dMax then
+            idx = i
+            dMax = d
+        end if
+    end for
+    if dMax>e then
+        return rdp(l[1..idx], e) & rdp(l[idx..$], e)[2..$]
+    end if
+    return {l[1], l[$]}
+end function
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">points</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0.1</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">0.1</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">5</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">6</span><span style="color: #0000FF;">},</span>
-                    <span style="color: #0000FF;">{</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">7</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">6</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">8.1</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">7</span><span style="color: #0000FF;">,</span>    <span style="color: #000000;">9</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">8</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">9</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">9</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">9</span><span style="color: #0000FF;">}}</span>
- <span style="color: #0000FF;">?</span><span style="color: #000000;">rdp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">points</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-<!--
+sequence points = {{0, 0}, {1, 0.1}, {2, -0.1}, {3, 5}, {4, 6},
+                   {5, 7}, {6, 8.1}, {7,    9}, {8, 9}, {9, 9}}
+?rdp(points, 1)

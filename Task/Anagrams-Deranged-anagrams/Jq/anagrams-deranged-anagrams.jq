@@ -25,8 +25,8 @@ split("\n") | select(length>0)              # read all the words as an array
         then if length == 0 then [$v,$w]
              elif ($v|length) == (.[0]|length) then . + [$v,$w]
              elif ($v|length) >  (.[0]|length) then [$v,$w]
-	     else .
-	     end
+         else .
+         end
         else .
         end) ) )
 | unique

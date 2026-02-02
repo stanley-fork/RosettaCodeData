@@ -1,19 +1,18 @@
--->
- <span style="color: #004080;">atom</span> <span style="color: #000000;">t1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time<span style="color: #0000FF;">(<span style="color: #0000FF;">)<span style="color: #0000FF;">+<span style="color: #000000;">1</span>
+with javascript_semantics
+atom t1 = time()+1
 
- <span style="color: #004080;">integer</span> <span style="color: #000000;">depth</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
+integer depth = 0
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">recurse<span style="color: #0000FF;">(<span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">time<span style="color: #0000FF;">(<span style="color: #0000FF;">)<span style="color: #0000FF;">><span style="color: #000000;">t1</span> <span style="color: #008080;">then</span>
-         <span style="color: #0000FF;">?<span style="color: #000000;">depth</span>
-         <span style="color: #000000;">t1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time<span style="color: #0000FF;">(<span style="color: #0000FF;">)<span style="color: #0000FF;">+<span style="color: #000000;">1</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">depth</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #000080;font-style:italic;">-- only 1 of these will ever get called, of course...</span>
-     <span style="color: #000000;">recurse<span style="color: #0000FF;">(<span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">recurse<span style="color: #0000FF;">(<span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">recurse<span style="color: #0000FF;">(<span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure recurse()
+    if time()>t1 then
+        ?depth
+        t1 = time()+1
+    end if
+    depth += 1
+    -- only 1 of these will ever get called, of course...
+    recurse()
+    recurse()
+    recurse()
+end procedure
 
- <span style="color: #000000;">recurse<span style="color: #0000FF;">(<span style="color: #0000FF;">)
-<!--
+recurse()

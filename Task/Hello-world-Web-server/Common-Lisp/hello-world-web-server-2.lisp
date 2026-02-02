@@ -30,7 +30,7 @@
 			      (list "HTTP/1.1 200 OK"
 				    "Content-Type: text/plain; charset=UTF-8"
 				    ""
-				    "Hello world!"))
+				    "Goodbye, World!"))
 			(socket-close ready)
 			(setf connections (remove ready connections))))))
       (loop for c in connections do (loop while (socket-close c))))))

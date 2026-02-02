@@ -1,4 +1,4 @@
-fn jacobi(aa u64, na u64) ?int {
+fn jacobi(aa u64, na u64) !int {
     mut a := aa
     mut n := na
     if n%2 == 0 {
@@ -33,7 +33,7 @@ fn main() {
     for n := u64(1); n <= 17; n += 2 {
         print("${n:2} ")
         for a := u64(0); a <= 9; a++ {
-            t := jacobi(a, n)?
+            t := jacobi(a, n)!
             print(" ${t:2}")
         }
         println('')

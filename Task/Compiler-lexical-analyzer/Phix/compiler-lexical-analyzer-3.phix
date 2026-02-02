@@ -1,188 +1,182 @@
-(phixonline)-->
- <span style="color: #000080;font-style:italic;">--
- -- demo\\rosetta\\Compiler\\lex.e
- -- ==============================
- --
- --  The reusable part of lex.exw
- --  This is only kept separate from core.e for consistency with later modules.</span>
+-- demo\\rosetta\\Compiler\\lex.e
+--  The reusable part of lex.exw
+--  This is only kept separate from core.e for consistency with later modules.
+with javascript_semantics
+include core.e
 
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #000000;">core</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+integer ch = ' ',
+        line = 0,
+        col = 0
 
- <span style="color: #004080;">integer</span> <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span>
-         <span style="color: #000000;">line</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>
-         <span style="color: #000000;">col</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
+procedure eof(string s)
+    error("%s in %s literal",{iff(ch=EOF?"EOF":"EOL"),s})
+end procedure
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">eof</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%s in %s literal"</span><span style="color: #0000FF;">,{</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #000000;">EOF</span><span style="color: #0000FF;">?</span><span style="color: #008000;">"EOF"</span><span style="color: #0000FF;">:</span><span style="color: #008000;">"EOL"</span><span style="color: #0000FF;">),</span><span style="color: #000000;">s</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+function next_ch()
+    while 1 do
+        col += 1
+        if oneline=EOF then
+            ch = EOF
+            exit
+        elsif col>length(oneline) then
+            line += 1
+            col = 0
+            oneline = iff(platform()=JS?js_gets(input_file)
+                                       :gets(input_file))
+        else
+            ch = oneline[col]
+            exit
+        end if
+    end while
+    return ch
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">col</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">oneline</span><span style="color: #0000FF;">=</span><span style="color: #000000;">EOF</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">EOF</span>
-             <span style="color: #008080;">exit</span>
-         <span style="color: #008080;">elsif</span> <span style="color: #000000;">col</span><span style="color: #0000FF;">></span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">oneline</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">line</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-             <span style="color: #000000;">col</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-             <span style="color: #000000;">oneline</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">js_gets</span><span style="color: #0000FF;">(</span><span style="color: #000000;">input_file</span><span style="color: #0000FF;">)</span>
-                                        <span style="color: #0000FF;">:</span><span style="color: #7060A8;">gets</span><span style="color: #0000FF;">(</span><span style="color: #000000;">input_file</span><span style="color: #0000FF;">))</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">oneline</span><span style="color: #0000FF;">[</span><span style="color: #000000;">col</span><span style="color: #0000FF;">]</span>
-             <span style="color: #008080;">exit</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">ch</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+-- for pwa/p2js (JavaScript *really* dislikes tabs in strings):
+--constant whitespace = " \t\r\n\x0B\xA0"
+constant whitespace = {' ','\t','\r','\n',#0B,#A0}
+-- (0x0B is Vertical Tab, 0xA0 is Non-breaking space)
 
- <span style="color: #000080;font-style:italic;">-- for pwa/p2js (JavaScript *really* dislikes tabs in strings):
- --constant whitespace = " \t\r\n\x0B\xA0"</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">whitespace</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'\t'</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'\r'</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'\n'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">#0B</span><span style="color: #0000FF;">,</span><span style="color: #000000;">#A0</span><span style="color: #0000FF;">}</span>
- <span style="color: #000080;font-style:italic;">-- (0x0B is Vertical Tab, 0xA0 is Non-breaking space)</span>
+procedure skipspacesandcomments()
+    while 1 do
+        if not find(ch,whitespace) then
+            if ch='/' and col<length(oneline) and oneline[col+1]='*' then
+                tok_line = line -- (in case of EOF error)
+                tok_col = col
+                ch = next_ch()  -- (can be EOF)
+                ch = next_ch()  -- (    ""    )
+                while 1 do
+                    if ch='*' then
+                        ch = next_ch()
+                        if ch='/' then exit end if
+                    elsif ch=EOF then
+                        error("EOF in comment")
+                    else
+                        ch = next_ch()
+                    end if
+                end while
+            else
+                exit
+            end if
+        end if
+        ch = next_ch()
+    end while
+end procedure
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">skipspacesandcomments</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #008080;">not</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">,</span><span style="color: #000000;">whitespace</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'/'</span> <span style="color: #008080;">and</span> <span style="color: #000000;">col</span><span style="color: #0000FF;"><</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">oneline</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #000000;">oneline</span><span style="color: #0000FF;">[</span><span style="color: #000000;">col</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]=</span><span style="color: #008000;">'*'</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000000;">tok_line</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">line</span> <span style="color: #000080;font-style:italic;">-- (in case of EOF error)</span>
-                 <span style="color: #000000;">tok_col</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">col</span>
-                 <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>  <span style="color: #000080;font-style:italic;">-- (can be EOF)</span>
-                 <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>  <span style="color: #000080;font-style:italic;">-- (    ""    )</span>
-                 <span style="color: #008080;">while</span> <span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-                     <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'*'</span> <span style="color: #008080;">then</span>
-                         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-                         <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'/'</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                     <span style="color: #008080;">elsif</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #000000;">EOF</span> <span style="color: #008080;">then</span>
-                         <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"EOF in comment"</span><span style="color: #0000FF;">)</span>
-                     <span style="color: #008080;">else</span>
-                         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-                     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-             <span style="color: #008080;">else</span>
-                 <span style="color: #008080;">exit</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+function escape_char(string s)
+    ch = next_ch() -- (discard the '\\')
+    if ch='n' then
+        ch = '\n'
+    elsif ch='\\' then
+        ch = '\\'
+    elsif ch=EOF
+       or ch='\n' then
+        eof(s)
+    else
+        error(`unknown escape sequence \%c`, {ch})
+    end if
+    return ch
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">escape_char</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span> <span style="color: #000080;font-style:italic;">-- (discard the '\\')</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'n'</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'\n'</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'\\'</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'\\'</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #000000;">EOF</span>
-        <span style="color: #008080;">or</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'\n'</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">eof</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">`unknown escape sequence \%c`</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">ch</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function char_lit()
+    integer startch = ch,
+            res = next_ch() -- (skip opening quote, save res)
+    if ch=startch then
+        error("empty character constant")
+    elsif ch='\\' then
+        res = escape_char("character")
+    end if
+    ch = next_ch()
+    if ch=EOF
+    or ch='\n' then
+        eof("character")
+    elsif ch!=startch then
+        error("multi-character constant")
+    end if
+    ch = next_ch()
+    return {tk_Integer, res}
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">char_lit</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">startch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">,</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span> <span style="color: #000080;font-style:italic;">-- (skip opening quote, save res)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #000000;">startch</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"empty character constant"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'\\'</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">escape_char</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"character"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #000000;">EOF</span>
-     <span style="color: #008080;">or</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'\n'</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">eof</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"character"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">startch</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"multi-character constant"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Integer</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function string_lit()
+    integer startch = ch
+    string text = ""
+    while next_ch()!=startch do
+        if ch=EOF
+        or ch='\n' then
+            eof("string")
+        elsif ch='\\' then
+            ch = escape_char("string")
+        end if
+        text &= ch
+    end while
+    ch = next_ch()
+    return {tk_String, text}
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">string_lit</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">startch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ch</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">text</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()!=</span><span style="color: #000000;">startch</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #000000;">EOF</span>
-         <span style="color: #008080;">or</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'\n'</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">eof</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"string"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">elsif</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'\\'</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">escape_char</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"string"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">text</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">ch</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_String</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">text</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function get_op()
+--  sequence operator = {ch}
+    string operator = ""&ch
+    ch = next_ch()
+    while charmap[ch]=OPERATOR
+      and find(operator&ch,operators) do
+        -- (^ ie/eg merge ">=", but not ");")
+        operator &= ch
+        ch = next_ch()
+    end while
+    integer k = find(operator,operators)
+    if k=0 then error("unknown operator") end if
+    return {opcodes[k], 0} -- (0 unused)
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">get_op</span><span style="color: #0000FF;">()</span>
- <span style="color: #000080;font-style:italic;">--  sequence operator = {ch}</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">operator</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span><span style="color: #0000FF;">&</span><span style="color: #000000;">ch</span>
-     <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">OPERATOR</span>
-       <span style="color: #008080;">and</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">operator</span><span style="color: #0000FF;">&</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">,</span><span style="color: #000000;">operators</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000080;font-style:italic;">-- (^ ie/eg merge "&gt;=", but not ");")</span>
-         <span style="color: #000000;">operator</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">ch</span>
-         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">operator</span><span style="color: #0000FF;">,</span><span style="color: #000000;">operators</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"unknown operator"</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">opcodes</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">}</span> <span style="color: #000080;font-style:italic;">-- (0 unused)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function get_int()
+    integer i = 0
+    while charmap[ch]=DIGIT do
+        i = i*10 + (ch-'0')
+        ch = next_ch()
+    end while
+    if charmap[ch]=LETTER then
+        error("invalid number")
+    end if
+    return {tk_Integer, i}
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">get_int</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">i</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">DIGIT</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">i</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">*</span><span style="color: #000000;">10</span> <span style="color: #0000FF;">+</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">-</span><span style="color: #008000;">'0'</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">LETTER</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"invalid number"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Integer</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function get_ident()
+    string text = ""
+    while find(charmap[ch],{LETTER,DIGIT}) do
+        text &= ch
+        ch = next_ch()
+    end while
+    integer keyword = getd(text,KEYWORDS)
+    if keyword!=NULL then
+        return {keyword, 0} -- (0 unused)
+    end if
+    return {tk_Identifier, text}
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">get_ident</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">text</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #008080;">while</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">],{</span><span style="color: #000000;">LETTER</span><span style="color: #0000FF;">,</span><span style="color: #000000;">DIGIT</span><span style="color: #0000FF;">})</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">text</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">ch</span>
-         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">next_ch</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">keyword</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">getd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">text</span><span style="color: #0000FF;">,</span><span style="color: #000000;">KEYWORDS</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">keyword</span><span style="color: #0000FF;">!=</span><span style="color: #004600;">NULL</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">keyword</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">}</span> <span style="color: #000080;font-style:italic;">-- (0 unused)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Identifier</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">text</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function get_token()
+    skipspacesandcomments()
+    tok_line = line
+    tok_col  = col
+    switch ch do
+        case EOF  then return {tk_EOI, 0} -- (0 unused)
+        case '\'' then return char_lit()
+        case '"'  then return string_lit()
+        else
+            switch charmap[ch] do
+                case OPERATOR then return get_op()
+                case DIGIT then return get_int()
+                case LETTER then return get_ident()
+                else error("unrecognized character: (%d)", {ch})
+            end switch
+    end switch
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">get_token</span><span style="color: #0000FF;">()</span>
-     <span style="color: #000000;">skipspacesandcomments</span><span style="color: #0000FF;">()</span>
-     <span style="color: #000000;">tok_line</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">line</span>
-     <span style="color: #000000;">tok_col</span>  <span style="color: #0000FF;">=</span> <span style="color: #000000;">col</span>
-     <span style="color: #008080;">switch</span> <span style="color: #000000;">ch</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">EOF</span>  <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_EOI</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">}</span> <span style="color: #000080;font-style:italic;">-- (0 unused)</span>
-         <span style="color: #008080;">case</span> <span style="color: #008000;"><nowiki>'\''</nowiki></span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">char_lit</span><span style="color: #0000FF;">()</span>
-         <span style="color: #008080;">case</span> <span style="color: #008000;">'"'</span>  <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">string_lit</span><span style="color: #0000FF;">()</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #008080;">switch</span> <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-                 <span style="color: #008080;">case</span> <span style="color: #000000;">OPERATOR</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">get_op</span><span style="color: #0000FF;">()</span>
-                 <span style="color: #008080;">case</span> <span style="color: #000000;">DIGIT</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">get_int</span><span style="color: #0000FF;">()</span>
-                 <span style="color: #008080;">case</span> <span style="color: #000000;">LETTER</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">get_ident</span><span style="color: #0000FF;">()</span>
-                 <span style="color: #008080;">else</span> <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"unrecognized character: (%d)"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
-
- <span style="color: #008080;">global</span> <span style="color: #008080;">function</span> <span style="color: #000000;">lex</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">toks</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">v</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">tk_EOI</span> <span style="color: #008080;">do</span>
-         <span style="color: #0000FF;">{</span><span style="color: #000000;">tok</span><span style="color: #0000FF;">,</span><span style="color: #000000;">v</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_token</span><span style="color: #0000FF;">()</span>
-         <span style="color: #000000;">toks</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">toks</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">tok_line</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tok_col</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tok</span><span style="color: #0000FF;">,</span><span style="color: #000000;">v</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">toks</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
-<!--
+global function lex()
+    sequence toks = {}
+    integer tok = -1
+    object v
+    while tok!=tk_EOI do
+        {tok,v} = get_token()
+        toks = append(toks,{tok_line,tok_col,tok,v})
+    end while
+    return toks
+end function

@@ -1,6 +1,6 @@
 (function ordinal n
   (if ([11 12 13] (rem n 100))
-      (str n "th")
+      "{n}th"
       (str n (or ((rem n 10) ["th" "st" "nd" "rd"]) "th"))))
 
 (function line x y

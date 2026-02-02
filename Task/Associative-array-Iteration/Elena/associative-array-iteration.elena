@@ -2,7 +2,7 @@ import system'collections;
 import system'routines;
 import extensions;
 
-public program()
+public Program()
 {
     // 1. Create
     auto map := new Map<string,string>();

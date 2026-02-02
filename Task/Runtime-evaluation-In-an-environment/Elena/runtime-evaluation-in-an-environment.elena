@@ -1,12 +1,12 @@
 import extensions;
 import extensions'scripting;
 
-public program()
+public Program()
 {
-    var text := program_arguments[1];
-    var arg := program_arguments[2];
+    var text := Program_arguments[1];
+    var arg := Program_arguments[2];
 
-    var program := lscript.interpretLine(text);
-    console.printLine(
+    var program := LScript.interpretLine(text);
+    Console.printLine(
         text,",",arg," = ",program.eval(arg.toReal()));
 }

@@ -1,10 +1,10 @@
 function zigzag2(n) {
-	a = zigzag1(n)
-	v = (1..n-1):^2
-	for (i=1; i<n; i++) {
-		a[n-i+1, i+1..n] = a[n-i+1, i+1..n] - v[1..n-i]
-	}
-	return(a)
+   a = zigzag1(n)
+   v = (1..n-1):^2
+   for (i=1; i<n; i++) {
+      a[n-i+1, i+1..n] = a[n-i+1, i+1..n] - v[1..n-i]
+   }
+   return(a)
 }
 
 zigzag2(5)

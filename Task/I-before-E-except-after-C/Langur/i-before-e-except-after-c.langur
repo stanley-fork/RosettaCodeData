@@ -1,6 +1,6 @@
-val words = less(split(readfile("./data/unixdict.txt"), by="\n"), of=1)
+val words = less(split(readfile("./data/unixdict.txt"), delim="\n"), of=1)
 
-val print = fn*(support, against) {
+val print = fn*(support number, against number) {
     val ratio = support / against
     writeln "{{support}} / {{against}} = {{ratio : r2}}:", (ratio < 2) * " NOT", " PLAUSIBLE"
     return if(ratio >= 2: 1; 0)

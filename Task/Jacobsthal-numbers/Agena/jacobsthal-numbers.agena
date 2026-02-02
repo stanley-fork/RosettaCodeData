@@ -22,7 +22,7 @@ scope # find some Jacobsthal and related Numbers
         jo[ n ] := j[ n + 1 ] * j[ n ]
     od;
 
-    local procedure showNumbers( legend :: string, numbers :: sequence )
+    local proc showNumbers( legend :: string, numbers :: sequence )
         local nCount := 0;
         printf( "First %d %s\n", size numbers, legend );
         for n to size numbers do

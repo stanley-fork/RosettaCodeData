@@ -1,4 +1,5 @@
 with javascript_semantics
+requires("1.0.6") -- (or use the pre-1.0.6 code below)
 constant A = {{27,"Jonah"},
               {18,"Alan"},
               {28,"Glory"},
@@ -9,14 +10,14 @@ constant A = {{27,"Jonah"},
               {"Alan", "Ghosts"},
               {"Alan", "Zombies"},
               {"Glory","Buffy"}},
-        jA = 2,
-        jB = 1,
+        jA = 2, -- (join A index)
+        jB = 1, -- (join B index)
         MB = new_dict()
 sequence C = {}
 for b in B do
     object key = b[jB],
-          data = getdd(key,{},MB)
-    data = append(deep_copy(data),b)
+          data = getdd(key,{},MB,true) -- 1.0.6+
+    data = append(data,b)
     putd(key,data,MB)
 end for
 for a in A do

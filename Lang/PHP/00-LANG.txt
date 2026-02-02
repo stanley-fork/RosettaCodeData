@@ -14,3 +14,12 @@
 
 ==Citations==
 * [[wp:PHP|Wikipedia:PHP]]
+
+==External links==
+=== Online compilers ===
+* [https://onlinephp.io/ PHP Sandbox - Execute PHP code online through your browser] (online compiler)
+* [https://www.mycompiler.io/new/php Create a new PHP program - myCompiler - myCompiler] (online compiler)
+
+=== Tutorials and manuals ===
+* [https://www.w3schools.com/php/default.asp PHP Tutorial] on [https://www.w3schools.com www.w3schools.com]
+* [https://www.geeksforgeeks.org/php/php-tutorial/ PHP Tutorial - GeeksforGeeks]

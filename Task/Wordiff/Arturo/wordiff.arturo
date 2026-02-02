@@ -19,9 +19,9 @@ validAnswer?: function [answer][
 playerA: input "player A: what is your name? "
 playerB: input "player B: what is your name? "
 
-pastWords: new @[sample select wordset 'word [ contains? [3 4] size word ]]
+pastWords: @[sample select wordset 'word [ contains? [3 4] size word ]]
 
-print ["\nThe initial word is:" last pastWords "\n"]
+print ["\nThe initial word is: " last pastWords "\n"]
 
 current: playerA
 while ø [

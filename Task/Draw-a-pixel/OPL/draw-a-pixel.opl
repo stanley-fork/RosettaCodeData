@@ -1,3 +1,6 @@
+REM Psion devices up to Series 5 have no colour, so the pixel is black.  The Series 7 and later do have colour, but I don't own any of those, so I can neither test it nor am I familiar with OPL beyond Series 5.
+REM The Series 3 also has a resolution of only 480x160, so the window falls off the screen.
+
 PROC main:
   LOCAL wndw%
   wndw%=gCREATE(80,0,320,240,1,1)

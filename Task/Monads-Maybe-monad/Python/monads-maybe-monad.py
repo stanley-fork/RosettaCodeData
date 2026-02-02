@@ -1,53 +1,95 @@
-"""A Maybe monad. Requires Python >= 3.7 for type hints."""
 from __future__ import annotations
 
+from abc import ABC
+from abc import abstractmethod
+from typing import Any
 from typing import Callable
-from typing import Generic
-from typing import Optional
-from typing import TypeVar
-from typing import Union
 
 
-T = TypeVar("T")
-U = TypeVar("U")
+class Maybe[T](ABC):
+    @abstractmethod
+    def is_some(self) -> bool:
+        """Return `True` if the option is a `Some`."""
 
+    @abstractmethod
+    def is_none(self) -> bool:
+        """Return `True` if the option is a `Nothing`."""
 
-class Maybe(Generic[T]):
-    def __init__(self, value: Union[Optional[T], Maybe[T]] = None):
-        if isinstance(value, Maybe):
-            self.value: Optional[T] = value.value
-        else:
-            self.value = value
+    @abstractmethod
+    def bind[U](self, func: Callable[[T], Maybe[U]]) -> Maybe[U]:
+        """Apply `func` to this value if it's a `Some`."""
 
-    def __rshift__(self, func: Callable[[Optional[T]], Maybe[U]]) -> Maybe[U]:
+    def and_then[U](self, func: Callable[[T], Maybe[U]]) -> Maybe[U]:
+        "Alias for `bind`."
         return self.bind(func)
 
-    def bind(self, func: Callable[[Optional[T]], Maybe[U]]) -> Maybe[U]:
+    def __rshift__[U](self, func: Callable[[T], Maybe[U]]) -> Maybe[U]:
+        "Alias for `bind`."
+        return self.bind(func)
+
+    @abstractmethod
+    def or_else(self, func: Callable[[], Maybe[T]]) -> Maybe[T]:
+        """Return self if it's a `Some`, otherwise the result of `func`."""
+
+
+class Some[T](Maybe[T]):
+    def __init__(self, value: T) -> None:
+        self.value = value
+
+    def __str__(self) -> str:
+        return f"Some({self.value!r})"
+
+    def is_some(self) -> bool:
+        return True
+
+    def is_none(self) -> bool:
+        return False
+
+    def bind[U](self, func: Callable[[T], Maybe[U]]) -> Maybe[U]:
         return func(self.value)
 
-    def __str__(self):
-        return f"{self.__class__.__name__}({self.value!r})"
+    def or_else(self, func: Callable[[], Maybe[T]]) -> Maybe[T]:
+        return self
 
 
-def plus_one(value: Optional[int]) -> Maybe[int]:
-    if value is not None:
-        return Maybe(value + 1)
-    return Maybe(None)
+class Nothing[T](Maybe[T]):
+    def __str__(self) -> str:
+        return "Nothing()"
+
+    def is_some(self) -> bool:
+        return False
+
+    def is_none(self) -> bool:
+        return True
+
+    def bind[U](self, func: Callable[[T], Maybe[U]]) -> Maybe[U]:
+        return NOTHING
+
+    def or_else(self, func: Callable[[], Maybe[T]]) -> Maybe[T]:
+        return func()
 
 
-def currency(value: Optional[int]) -> Maybe[str]:
-    if value is not None:
-        return Maybe(f"${value}.00")
-    return Maybe(None)
+NOTHING = Nothing[Any]()
 
 
 if __name__ == "__main__":
-    test_cases = [1, 99, None, 4]
 
-    for case in test_cases:
-        result = Maybe(case) >> plus_one >> currency
+    def plus_one(value: int) -> Maybe[int]:
+        return Some(value + 1)
 
-        # or..
-        # result = Maybe(case).bind(plus_one).bind(currency)
+    def currency(value: int) -> Maybe[str]:
+        return Some(f"${value}.00")
 
-        print(f"{str(case):<4} -> {result}")
+    values: list[Maybe[int]] = [Some(1), Some(99), NOTHING, Some(4)]
+
+    # Using `>>` as a bind operator
+    for value in values:
+        result = value >> plus_one >> currency
+        print(f"{value} -> {result}")
+
+    print("---")
+
+    # The same, but using lambda functions with the bind method.
+    for value in values:
+        result = value.bind(lambda v: Some(v + 1)).bind(lambda v: Some(f"${v}.00"))
+        print(f"{value} -> {result}")

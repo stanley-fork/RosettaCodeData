@@ -1,5 +1,5 @@
 function equindex2pass(data::Array)
-    rst = Vector{Int}(0)
+    rst = Int[]
     suml, sumr, ddelayed = 0, sum(data), 0
     for (i, d) in enumerate(data)
         suml += ddelayed

@@ -24,6 +24,6 @@ public class MainWindow : SDIDialog
 
         closeButton.Caption := "Close";
         closeButton.setRegion(20, 40, 150, 30);
-        closeButton.onClick := (args){ forward program.stop() };
+        closeButton.onClick := (args){ forward Program.stop() };
     }
 }

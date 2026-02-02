@@ -150,3 +150,37 @@ conversion10S:              # INFO: conversion10S
     lw      ra, 0(sp)       # restaur registers
     addi    sp, sp, 8
     ret
+/**********************************************/
+/* conversion hexadecimale                    */
+/**********************************************/
+/* a0    value */
+/* a1    esult area address  */
+.equ LGZONECONV,   20
+conversion16:              # INFO: conversion16
+    addi    sp, sp, -4     # reserve pile
+    sw      ra, 0(sp)      # Adresse de retour 	Appelant
+
+    li t0,28               # start bit position
+    li t1,0xF0000000       # mask
+    mv t2,a0               # save entry value
+	li t3,10
+1:                         # start loop
+    and a0,t2,t1           # value register and mask
+    srl a0,a0,t0           # shift right
+    blt a0,t3,2f           # compare value 10
+    addi a0,a0,55          # letters A-F
+    j 3f
+2:
+    addi a0,a0,48          # number
+3:
+    sb a0,(a1)            # store digit on area and + 1 in area address
+    addi a1,a1,1
+    srli t1,t1,4           # shift mask 4 positions
+    addi t0,t0,-4          #  counter bits - 4 <= zero  ?
+    bge t0,x0,1b           #  no -> loop
+    sb x0,(a1)             # store final zero
+    li a0,8                # return size
+100:
+    lw      ra, 0(sp)      # restaur registre
+    addi    sp, sp, 4      # liberer pile
+    ret

@@ -1,6 +1,11 @@
-Red [ "Arithmetic Evaluator - Hinjo, August 2025"
-      {Using a Modified Shunting-Yard algorithm to produce S-Expression as the AST
-       and a simple S-Expression evaluator (recursive).}
+Red [
+    Title:  "Arithmetic Evaluation"
+    Author: "hinjolicious"
+	Date:   "August 2025"
+	Purpose: {
+	    Using a Modified Shunting-Yard algorithm to produce S-Expression as the AST
+        and a simple S-Expression evaluator (recursive).
+	}
 ]
 
 s-expr: function [expr [string!] /trace] [

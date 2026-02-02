@@ -1,7 +1,7 @@
 import system'collections;
 import extensions;
 
-public program()
+public Program()
 {
     // Create a queue and "push" items into it
     var queue := new Queue();
@@ -11,14 +11,14 @@ public program()
     queue.push(5);
 
     // "Pop" items from the queue in FIFO order
-    console.printLine(queue.pop()); // 1
-    console.printLine(queue.pop()); // 3
-    console.printLine(queue.pop()); // 5
+    Console.printLine(queue.pop()); // 1
+    Console.printLine(queue.pop()); // 3
+    Console.printLine(queue.pop()); // 5
 
     // To tell if the queue is empty, we check the count
-    console.printLine("queue is ",(queue.Length == 0).iif("empty","nonempty"));
+    Console.printLine("queue is ",(queue.Length == 0).iif("empty","nonempty"));
 
     // If we try to pop from an empty queue, an exception
     // is thrown.
-    queue.pop() \\ on::(e){ console.writeLine("Queue empty.") }
+    queue.pop() \\ on::(e){ Console.writeLine("Queue empty.") }
 }

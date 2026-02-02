@@ -4,7 +4,7 @@ MODE VECTOR = [default upb]FIELD;
 MODE MATRIX = [default upb,default upb]FIELD;
 
 # crude exception handling #
-PROC VOID raise index error := VOID: GOTO exception index error;
+PROC VOID raise index error := VOID: ( putf(stand error, $x"Exception: index error."l$); stop );
 
 # define the vector/matrix operators #
 OP * = (VECTOR a,b)FIELD: ( # basically the dot product #
@@ -53,8 +53,4 @@ test:(
   # finally print the result #
   print(("Product of a and b: ",new line));
   real matrix printf(real fmt, prod)
-  EXIT
-
-  exception index error:
-    putf(stand error, $x"Exception: index error."l$)
 )

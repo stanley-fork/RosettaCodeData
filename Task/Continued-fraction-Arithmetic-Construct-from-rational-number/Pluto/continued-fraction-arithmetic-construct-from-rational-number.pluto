@@ -1,5 +1,4 @@
 require "rat"
-require "math2"
 local fmt = require "fmt"
 
 local function to_cont_frac(r)

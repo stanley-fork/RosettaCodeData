@@ -1,16 +1,33 @@
-BEGIN # find some Chowla numbers ( Chowla n = sum of divisors of n excluding n and 1 ) #
+BEGIN # find some Chowla numbers ( Chowla n = sum of divisors of n exclusing n and 1 ) #
+
+    # returns the divisor sums of [1 n], the sums exclude 1 and n #
+    PROC sum divisors = ( INT n )[]INT:
+         BEGIN
+            [ 1 : n ]INT sums;
+            FOR i TO n DO sums[ i ] := 0 OD;
+            FOR i FROM 2 TO n DO
+                FOR j FROM i + i BY i TO n DO sums[ j ] +:= i OD
+            OD;
+            sums
+         END # sum divisors # ;
+
+    []INT ds = sum divisors( 10 000 000 ); # get a table of divisor sums for 1..n #
+
     # returs the Chowla number of n #
     PROC chowla = ( INT n )INT:
-         BEGIN
-             INT sum := 0;
-             FOR i FROM 2 WHILE i * i <= n DO
-                 IF n MOD i = 0 THEN
-                     INT j = n OVER i;
-                     sum +:= i + IF i = j THEN 0 ELSE j FI
-                 FI
-             OD;
-             sum
-         END # chowla # ;
+         IF   n <  2
+         THEN 0
+         ELIF n <= UPB ds - LWB ds + 1
+         THEN ds[ n ]
+         ELSE INT sum := 0;
+              FOR i FROM 2 WHILE i * i <= n DO
+                  IF n MOD i = 0 THEN
+                      INT j = n OVER i;
+                      sum +:= i + IF i = j THEN 0 ELSE j FI
+                  FI
+              OD;
+              sum
+         FI # chowla # ;
 
     FOR n TO 37 DO print( ( "chowla(", whole( n, 0 ), ") = ", whole( chowla( n ), 0 ), newline ) ) OD;
 
@@ -23,7 +40,7 @@ BEGIN # find some Chowla numbers ( Chowla n = sum of divisors of n excluding n a
         FI
     OD;
     count := 0;
-    INT limit = 350 000 000;
+    INT limit = 35 000 000;
     INT k    := 2, kk := 3;
     WHILE INT p = k * kk;
           p <= limit

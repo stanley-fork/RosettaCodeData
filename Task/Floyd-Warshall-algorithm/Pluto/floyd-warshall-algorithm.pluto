@@ -1,5 +1,4 @@
 require "table2"
-require "math2"
 
 class floydWarshall
     static function do_calcs(weights, nvertices)

@@ -1,5 +1,5 @@
--- 25 Apr 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 numeric digits 2000
 
 say 'WIEFERICH PRIMES'
@@ -33,8 +33,4 @@ say n 'found'
 say
 return
 
-include Sequences
-include Helper
-include Functions
-include Constants
-include Abend
+include Math

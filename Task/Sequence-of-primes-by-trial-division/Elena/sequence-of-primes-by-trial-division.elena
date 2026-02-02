@@ -8,7 +8,7 @@ isPrime =
 Primes =
     (n => new Range(2, n - 2).filterBy(isPrime));
 
-public program()
+public Program()
 {
-    console.printLine(Primes(100))
+    Console.printLine(Primes(100))
 }

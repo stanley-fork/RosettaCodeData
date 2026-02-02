@@ -34,7 +34,7 @@ pure nothrow @nogc @safe {
     solve(weight - items[idx].weight, idx - 1, v2);
 
     v2.value += items[idx].value;
-    v2.bits |= (1 << idx);
+    v2.bits |= (1 << cast(uint) idx);
 
     s = (v1.value >= v2.value) ? v1 : v2;
 }
@@ -43,7 +43,7 @@ void main() @safe {
     import std.stdio;
 
     auto s = Solution(0, 0);
-    solve(400, items.length - 1, s);
+    solve(400, cast(int) items.length - 1, s);
 
     writeln("Items:");
     int w = 0;

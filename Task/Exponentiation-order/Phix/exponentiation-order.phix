@@ -1,4 +1,2 @@
--->
- <span style="color: #0000FF;">?<span style="color: #7060A8;">power<span style="color: #0000FF;">(<span style="color: #7060A8;">power<span style="color: #0000FF;">(<span style="color: #000000;">5<span style="color: #0000FF;">,<span style="color: #000000;">3<span style="color: #0000FF;">)<span style="color: #0000FF;">,<span style="color: #000000;">2<span style="color: #0000FF;">)</span>
- <span style="color: #0000FF;">?<span style="color: #7060A8;">power<span style="color: #0000FF;">(<span style="color: #000000;">5<span style="color: #0000FF;">,<span style="color: #7060A8;">power<span style="color: #0000FF;">(<span style="color: #000000;">3<span style="color: #0000FF;">,<span style="color: #000000;">2<span style="color: #0000FF;">)<span style="color: #0000FF;">)
-<!--
+?power(power(5,3),2)
+?power(5,power(3,2))

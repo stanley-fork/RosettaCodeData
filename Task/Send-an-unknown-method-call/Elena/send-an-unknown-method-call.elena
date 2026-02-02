@@ -6,7 +6,7 @@ class Example
         = x + 42;
 }
 
-public program()
+public Program()
 {
     var example := new Example();
     var methodSignature := "foo";
@@ -14,5 +14,5 @@ public program()
     var invoker := new MessageName(methodSignature);
     var result := invoker(example,5);
 
-    console.printLine(methodSignature,"(",5,") = ",result)
+    Console.printLine(methodSignature,"(",5,") = ",result)
 }

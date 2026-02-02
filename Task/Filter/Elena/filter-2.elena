@@ -3,9 +3,9 @@ import system'routines'stex;
 import system'math;
 import extensions;
 
-public program()
+public Program()
 {
-    int[] array := new int[]{1,2,3,4,5};
+    int[] array := new []{1,2,3,4,5};
 
     array
         .filterBy::(int n => n.mod(2) == 0)

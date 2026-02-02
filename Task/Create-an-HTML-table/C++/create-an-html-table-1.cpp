@@ -45,12 +45,12 @@ int main( ) {
       oss << row ;
       tabletext += oss.str( ) ;
       for ( int col = 0 ; col < 3 ; col++ ) {
-	 oss.str( "" ) ;
-	 int randnumber = rand( ) % 10000 ;
-	 oss << randnumber ;
-	 tabletext += "<td>" ;
-	 tabletext.append( oss.str( ) ) ;
-	 tabletext += "</td>" ;
+    oss.str( "" ) ;
+    int randnumber = rand( ) % 10000 ;
+    oss << randnumber ;
+    tabletext += "<td>" ;
+    tabletext.append( oss.str( ) ) ;
+    tabletext += "</td>" ;
       }
       tabletext += "</tr>\n" ;
    }

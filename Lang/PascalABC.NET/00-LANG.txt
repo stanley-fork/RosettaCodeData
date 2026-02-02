@@ -1,4 +1,4 @@
-{{language|PascalABC.NET}}
+{{language|site=https://pascalabc.net/en/}}
 {{implementation|Pascal}}
 
 PascalABC.NET is the new generation Pascal programming language that combines simplicity of classic Pascal, a great number of modern extensions and broad capabilities of Microsoft .NET Framework.
@@ -16,4 +16,5 @@ begin
 end.
 </syntaxhighlight>
 
-{{unimpl_Page|PascalABC.NET}}
+==Tasks not implemented in PascalABC.NET==
+[[Tasks not implemented in PascalABC.NET]]

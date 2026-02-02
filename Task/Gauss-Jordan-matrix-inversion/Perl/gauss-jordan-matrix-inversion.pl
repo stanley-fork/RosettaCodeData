@@ -61,5 +61,5 @@ for my $matrix (@tests) {
     my @gj = gauss_jordan_invert( @$matrix );
     print "Gauss-Jordan Inverted Matrix:\n" . display(\@gj) . "\n";
     my @rt = gauss_jordan_invert( @gj );
-    print "After round-trip:\n" . display(\@rt) . "\n";} . "\n"
+    print "After round-trip:\n" . display(\@rt) . "\n";
 }

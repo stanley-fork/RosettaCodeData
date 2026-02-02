@@ -19,10 +19,10 @@ FOR I = 1 TO MAX_G G[I] = 0: NEXT
 G[4] = 1 ' 4 is the only sum of 2 even primes
 FOR I = 3 TO HALF_MAX_G STEP 2
   IF P[I] THEN
-    INC G[I + 1]
-    FOR J = I + 2 TO MAX_G - 1
+    INC G[I + I]
+    FOR J = I + 2 TO MAX_G - I
       IF P[J] THEN
-        INC G[I + 1]
+        INC G[I + J]
       ENDIF
     NEXT
   ENDIF
@@ -41,7 +41,7 @@ FOR I = 3 TO MAX_P DIV 2 STEP 2
 NEXT
 PRINT FORMAT$("G(%D): ", MAX_P); GM
 FOR I = 2 TO MAX_G - 10 STEP 10
-  FOR J = 1 TO I + 8 STEP 2
+  FOR J = I TO I + 8 STEP 2
     GPSET I DIV 10, 240-G[J],RGB(255,255,255)
   NEXT
 NEXT

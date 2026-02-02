@@ -1,7 +1,7 @@
 import extensions;
 import system'routines;
 
-public program()
+public Program()
 {
     var text := new string[]{"---------- Ice and Fire ------------",
                   "",
@@ -18,8 +18,8 @@ public program()
     {
         line.splitBy(" ").sequenceReverse().forEach::(word)
         {
-            console.print(word," ")
+            Console.print(word," ")
         };
-        console.writeLine()
+        Console.writeLine()
     }
 }

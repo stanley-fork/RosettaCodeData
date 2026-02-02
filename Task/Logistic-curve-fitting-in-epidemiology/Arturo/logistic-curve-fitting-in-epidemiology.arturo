@@ -40,17 +40,15 @@ solve: function [fn][
     while [and? -> delta > eps
                 -> result <> result - delta][
         nf: call fn @[result-delta]
-        if? nf < f0 [
+        switch nf < f0 [
             f0: nf
             result: result - delta
-        ]
-        else [
+        ][
             nf: call fn @[result+delta]
-            if? nf < f0 [
+            switch nf < f0 [
                 f0: nf
                 result: result + delta
-            ]
-            else [
+            ][
                 factor: 0.5
             ]
         ]
@@ -59,8 +57,8 @@ solve: function [fn][
     return result
 ]
 
-r: solve 'f
-r0: exp 12 * r
+r: round.to:7 solve 'f
+r0: round.to:7 exp 12 * r
 
 print ["r =" r]
 print ["R0 =" r0]

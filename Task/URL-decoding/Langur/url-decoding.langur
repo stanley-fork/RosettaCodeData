@@ -1,5 +1,5 @@
 val finish = fn s:b2s(map(
-    less(split(s, by="%"), of=1),
+    less(split(s, delim="%"), of=1),
     by=fn x:number(x, fmt=16),
     ))
 val decode = fn s:replace(
@@ -8,5 +8,5 @@ val decode = fn s:replace(
     with=finish,
     )
 
-writeln decode("https%3A%2F%2Fno%20more%20foo%20bars%20please%2F")
+writeln decode("http%3A%2F%2Fno%20more%20foo%20bars%20please%2F")
 writeln decode("google.com/search?q=%22unbroken%20string%22")

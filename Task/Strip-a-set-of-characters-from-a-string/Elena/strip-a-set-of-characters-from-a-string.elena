@@ -2,10 +2,10 @@ import extensions;
 import extensions'text;
 import system'routines;
 
-public program()
+public Program()
 {
     var testString := "She was a soul stripper. She took my heart!";
     var removeChars := "aei";
 
-    console.printLine(testString.filterBy::(ch => removeChars.indexOf(0, ch) == -1).summarize(new StringWriter()))
+    Console.printLine(testString.filterBy::(ch => removeChars.indexOf(0, ch) == -1).summarize(new StringWriter()))
 }

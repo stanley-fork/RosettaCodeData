@@ -1,9 +1,4 @@
-REM Author.....: Eva Broccoli
-REM Date.......: 23 May 2025
-REM Description: OPL solution for "100 doors" task on https://rosettacode.org
-REM Tested with: Psion Series 3a & Series 5
-REM Contact....: eva.klassen@kittymail.com
-
+REM https://github.com/Eva-Broccoli/OPL-Rosetta-Code/blob/main/A100door.opl
 PROC main:
   LOCAL door%(100),i%,j%
   i%=1

@@ -45,7 +45,7 @@ LOOP     BXH    R4,R6,ENDLOOP   do I=1 to N
          MVC    C,Z             C=Z
          OI     C+L'C-1,X'F0'   zap sign
          MVC    WTOBUF(8),C+8
-         WTO    MF=(E,WTOMSG)		
+         WTO    MF=(E,WTOMSG)
 NOTPRIME EQU    *
          B      LOOP
 ENDLOOP  EQU    *

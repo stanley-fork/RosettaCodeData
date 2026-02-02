@@ -3,9 +3,9 @@ proc generate {n} {
     set l [lrepeat $n "\[" "\]"]
     set len [llength $l]
     while {$len} {
-	set tmp [lindex $l [set i [expr {int($len * rand())}]]]
-	lset l $i [lindex $l [incr len -1]]
-	lset l $len $tmp
+    set tmp [lindex $l [set i [expr {int($len * rand())}]]]
+    lset l $i [lindex $l [incr len -1]]
+    lset l $len $tmp
     }
     return [join $l ""]
 }
@@ -13,11 +13,11 @@ proc generate {n} {
 proc balanced s {
     set n 0
     foreach c [split $s ""] {
-	# Everything unmatched is ignored, which is what we want
-	switch -exact -- $c {
-	    "\[" {incr n}
-	    "\]" {if {[incr n -1] < 0} {return false}}
-	}
+    # Everything unmatched is ignored, which is what we want
+    switch -exact -- $c {
+        "\[" {incr n}
+        "\]" {if {[incr n -1] < 0} {return false}}
+    }
     }
     expr {!$n}
 }

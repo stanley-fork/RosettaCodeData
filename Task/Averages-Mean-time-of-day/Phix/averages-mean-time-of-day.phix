@@ -1,36 +1,34 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">MeanAngle</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">angles</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">y</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">angles</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">ai_rad</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">angles</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]*</span><span style="color: #004600;">PI</span><span style="color: #0000FF;">/</span><span style="color: #000000;">180</span>
-         <span style="color: #000000;">x</span> <span style="color: #0000FF;">+=</span> <span style="color: #7060A8;">cos</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ai_rad</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">y</span> <span style="color: #0000FF;">+=</span> <span style="color: #7060A8;">sin</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ai_rad</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">abs</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)<</span><span style="color: #000000;">1e-16</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #008000;">"not meaningful"</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">atan2</span><span style="color: #0000FF;">(</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">180</span><span style="color: #0000FF;">/</span><span style="color: #004600;">PI</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+function MeanAngle(sequence angles)
+    atom x = 0, y = 0
+    for i=1 to length(angles) do
+        atom ai_rad = angles[i]*PI/180
+        x += cos(ai_rad)
+        y += sin(ai_rad)
+    end for
+    if abs(x)<1e-16 then return "not meaningful" end if
+    return atan2(y,x)*180/PI
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">toSecAngle</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">hours</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">minutes</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">seconds</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">((</span><span style="color: #000000;">hours</span><span style="color: #0000FF;">*</span><span style="color: #000000;">60</span><span style="color: #0000FF;">+</span><span style="color: #000000;">minutes</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">60</span><span style="color: #0000FF;">+</span><span style="color: #000000;">seconds</span><span style="color: #0000FF;">)/(</span><span style="color: #000000;">24</span><span style="color: #0000FF;">*</span><span style="color: #000000;">60</span><span style="color: #0000FF;">*</span><span style="color: #000000;">60</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">360</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function toSecAngle(integer hours, integer minutes, integer seconds)
+    return ((hours*60+minutes)*60+seconds)/(24*60*60)*360
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">Times</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">toSecAngle</span><span style="color: #0000FF;">(</span><span style="color: #000000;">23</span><span style="color: #0000FF;">,</span><span style="color: #000000;">00</span><span style="color: #0000FF;">,</span><span style="color: #000000;">17</span><span style="color: #0000FF;">),</span>
-                   <span style="color: #000000;">toSecAngle</span><span style="color: #0000FF;">(</span><span style="color: #000000;">23</span><span style="color: #0000FF;">,</span><span style="color: #000000;">40</span><span style="color: #0000FF;">,</span><span style="color: #000000;">20</span><span style="color: #0000FF;">),</span>
-                   <span style="color: #000000;">toSecAngle</span><span style="color: #0000FF;">(</span><span style="color: #000000;">00</span><span style="color: #0000FF;">,</span><span style="color: #000000;">12</span><span style="color: #0000FF;">,</span><span style="color: #000000;">45</span><span style="color: #0000FF;">),</span>
-                   <span style="color: #000000;">toSecAngle</span><span style="color: #0000FF;">(</span><span style="color: #000000;">00</span><span style="color: #0000FF;">,</span><span style="color: #000000;">17</span><span style="color: #0000FF;">,</span><span style="color: #000000;">19</span><span style="color: #0000FF;">)}</span>
+constant Times = {toSecAngle(23,00,17),
+                  toSecAngle(23,40,20),
+                  toSecAngle(00,12,45),
+                  toSecAngle(00,17,19)}
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">toHMS</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #008080;">not</span> <span style="color: #004080;">string</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">s</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">+=</span><span style="color: #000000;">360</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">24</span><span style="color: #0000FF;">*</span><span style="color: #000000;">60</span><span style="color: #0000FF;">*</span><span style="color: #000000;">60</span><span style="color: #0000FF;">*</span><span style="color: #000000;">s</span><span style="color: #0000FF;">/</span><span style="color: #000000;">360</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">hours</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">/</span><span style="color: #000000;">3600</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">mins</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3600</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">60</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">secs</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">60</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%02d:%02d:%02d"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">hours</span><span style="color: #0000FF;">,</span><span style="color: #000000;">mins</span><span style="color: #0000FF;">,</span><span style="color: #000000;">secs</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function toHMS(object s)
+    if not string(s) then
+        if s<0 then s+=360 end if
+        s = 24*60*60*s/360
+        atom hours = floor(s/3600),
+             mins = floor(remainder(s,3600)/60),
+             secs = remainder(s,60)
+        s = sprintf("%02d:%02d:%02d",{hours,mins,secs})
+    end if
+    return s
+end function
 
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Mean Time is %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">toHMS</span><span style="color: #0000FF;">(</span><span style="color: #000000;">MeanAngle</span><span style="color: #0000FF;">(</span><span style="color: #000000;">Times</span><span style="color: #0000FF;">))})</span>
-<!--
+printf(1,"Mean Time is %s\n",{toHMS(MeanAngle(Times))})

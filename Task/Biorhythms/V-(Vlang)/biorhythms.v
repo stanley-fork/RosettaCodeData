@@ -11,9 +11,9 @@ const quadrants = [
 ]
 
 // Parameters assumed to be in YYYY-MM-DD format.
-fn biorhythms(birth_date string, target_date string) ? {
-    bd := time.parse_iso8601(birth_date)?
-    td := time.parse_iso8601(target_date)?
+fn biorhythms(birth_date string, target_date string) ! {
+    bd := time.parse_iso8601(birth_date)!
+    td := time.parse_iso8601(target_date)!
     days := int((td-bd).hours() / 24)
     println("Born $birth_date, Target $target_date")
     println("Day $days")
@@ -51,6 +51,6 @@ fn main() {
         ["1809-02-12", "1863-11-19"], // correct DOB for Abraham Lincoln
 	]
     for date_pair in date_pairs {
-        biorhythms(date_pair[0], date_pair[1])?
+        biorhythms(date_pair[0], date_pair[1])!
     }
 }

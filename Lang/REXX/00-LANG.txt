@@ -30,8 +30,9 @@ Using Classic REXX closely resembles pseudo code and many languages like Basic o
 Some items that might differ from what you are familiar with.<br>
 * Caseless, fully free format.
 * Code blocks delimited by do...end, no brackets (){}.
-* Usual control structures present: do...by...to, do while/until, select, leave, iterate.
-* No data types, no declarations, everything is string. String functions such as Left() or Substr() may be applied on numbers.
+* A programs starts always with line 1, so you'll need 'exit' before the code for procedures and routines.
+* Usual control structures present: do...by...to, do while/until, select, leave, iterate, call, return, exit, & (and), \ (not).
+* No data types, no declarations, everything is string. String functions such as 'Left()' or 'Substr()' may be applied on numbers.
 * All arithmetic is decimal based, not binary. So stuff like bit shifting or multiply/divide by 2 using exponent add/subtract does not apply.
 * Exponentiation is designated by '**' thus x^2 = x**2.
 * Integer division is designated by '%' thus 13%3 = 4.
@@ -129,4 +130,4 @@ Some items that might differ from what you are familiar with.<br>
 * [http://www.rexxla.org/ CRX Open Source (right column side)]
 
 == Rosetta Code tasks not implemented in REXX ==
-[[Reports:Tasks_not_implemented_in_REXX]]
+[[Tasks not implemented in REXX]]

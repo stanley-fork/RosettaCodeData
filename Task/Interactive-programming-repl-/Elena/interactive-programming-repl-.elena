@@ -1,17 +1,29 @@
 c:\Alex\ELENA\bin>elt-cli
-ELENA command line VM terminal 6.0.7 (C)2021-23 by Aleksey Rakov
-ELENA VM 6.0.25 (C)2022-2023 by Aleksey Rakov
+ELENA command line VM terminal 6.9.6 (C)2021-25 by Aleksey Rakov
+Loading repl template
+Loading multiline template
+Loading get_var template
+Loading set_var template
+ELENA VM 6.9.14 (32-bit) (C)2022-2025 by Aleksey Rakov, ELENA-LANG Org
 Initializing...
--q                         - quit
--c                         - clear
--h                         - help
--l <path>                  - execute a script from file
--p<script>;                - prepend the prefix code
-{ <script>; }*
- <script>                  - execute script
+@help                      - help
+@quit                      - quit
+@multiline                 - switching to a multi-line mode
+<expr>                     - evaluate the expression and print the result
+$<var> := <expr>;          - assign a global variable
+.. $<var>  ..              - get a global variable value
+@base <path>               - set the base path for scripts
+@load <path>               - execute a script from file
+@import <path>             - load the script into multi-line script
+@use <template>            - use the template for multiline script
+@eval                      - executing the multi-line code and switch back to REPL mode
+@clear                     - clear the multi-line code and switch back to REPL mode
+@print                     - print the multi-line code
+@add import <reference>    - importing a module into the session
+@remove import <reference> - removing a module from the session
 
->-pf(s1,s2,sep){^ s1 + sep + sep + s2 }
+>$f := { print(s1,s2,sep){^ s1 + sep + sep + s2 } };
 
->f("Rosetta","Code",":")
+>$f.print("Rosetta","Code",":")
 Rosetta::Code
 >

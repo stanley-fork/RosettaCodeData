@@ -1,7 +1,7 @@
 scope # Totient function
 
     # returns the number of integers k where 1 <= k <= n that are mutually prime to n
-    local procedure totient( n :: number ) :: number
+    local proc totient( n :: number ) :: number
         if   n < 3 then result := 1
         elif n = 3 then result := 2
         else

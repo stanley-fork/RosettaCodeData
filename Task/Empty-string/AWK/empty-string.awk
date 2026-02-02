@@ -3,8 +3,8 @@ BEGIN {
   # Demonstrate how to assign an empty string to a variable.
   a="";
   b="XYZ";
-  print "a = ",a;	
-  print "b = ",b;	
+  print "a = ",a;
+  print "b = ",b;
   print "length(a)=",length(a);
   print "length(b)=",length(b);
   # Demonstrate how to check that a string is empty.

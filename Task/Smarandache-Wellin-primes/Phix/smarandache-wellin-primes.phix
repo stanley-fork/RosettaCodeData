@@ -1,45 +1,44 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
- <span style="color: #004080;">string</span> <span style="color: #000000;">sw</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
- <span style="color: #004080;">mpz</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(),</span> <span style="color: #000000;">dn</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">()</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">swp</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{},</span> <span style="color: #000000;">swdp</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{},</span> <span style="color: #000000;">dc</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">np</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">(),</span> <span style="color: #000000;">t1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()+</span><span style="color: #000000;">1</span>
- <span style="color: #008080;">while</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">swp</span><span style="color: #0000FF;">)<</span><span style="color: #7060A8;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">5</span><span style="color: #0000FF;">:</span><span style="color: #000000;">8</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #000000;">np</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">get_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">np</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">sp</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">sw</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">sp</span>
-     <span style="color: #7060A8;">mpz_set_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">sw</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">swp</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">swp</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">np</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sw</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">c</span> <span style="color: #008080;">in</span> <span style="color: #000000;">sp</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">dc</span><span style="color: #0000FF;">[</span><span style="color: #000000;">c</span><span style="color: #0000FF;">-</span><span style="color: #008000;">'0'</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">dc9</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">dc</span><span style="color: #0000FF;">[</span><span style="color: #000000;">10</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">odd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dc9</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dc9</span><span style="color: #0000FF;">,</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">string</span> <span style="color: #000000;">swdps</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dc</span><span style="color: #0000FF;">,</span><span style="color: #008000;">""</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">:=</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpz_set_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dn</span><span style="color: #0000FF;">,</span><span style="color: #000000;">swdps</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dn</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">swdp</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">swdp</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">np</span><span style="color: #0000FF;">,</span><span style="color: #000000;">swdps</span><span style="color: #0000FF;">})</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()!=</span><span style="color: #004600;">JS</span> <span style="color: #008080;">and</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()></span><span style="color: #000000;">t1</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">progress</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"processing prime %d...\r"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">np</span><span style="color: #0000FF;">})</span>
-         <span style="color: #000000;">t1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()+</span><span style="color: #000000;">1</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Smarandache-Wellin primes:\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span> <span style="color: #008080;">in</span> <span style="color: #000000;">swp</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">" %d%s:"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">ord</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">" Index: %4d, Last prime %5d, %s\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Smarandache-Wellin derived primes:\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span> <span style="color: #008080;">in</span> <span style="color: #000000;">swdp</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">" %d%s:"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">ord</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">" Index: %4d, %s\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span><span style="color: #0000FF;">)</span>
-<!--
+requires(64,true) -- (~four times faster than 32-bit)
+requires("1.0.6") -- mpz_probab_prime_p
+include mpfr.e
+string sw = ""
+mpz n = mpz_init(), dn = mpz_init()
+sequence swp = {}, swdp = {}, dc = repeat(0,10)
+integer np = 0
+atom t0 = time(), t1 = time()+1
+while length(swp)<iff(platform()=JS?5:8) do
+    np += 1
+    integer p = get_prime(np)
+    string sp = sprintf("%d",p)
+    sw &= sp
+    mpz_set_str(n,sw,10)
+    if mpz_probab_prime_p(n,1) then
+        swp = append(swp,{np,p,shorten(sw)})
+    end if
+    for c in sp do
+        dc[c-'0'+1] += 1
+    end for
+    integer dc9 = dc[10]
+    if odd(dc9) and remainder(dc9,5)!=0 then
+        string swdps = join(dc,"",fmt:="%d")
+        mpz_set_str(dn,swdps,10)
+        if mpz_prime(dn) then
+            swdp = append(swdp,{np,swdps})
+        end if
+    end if
+    if time()>t1 then
+        progress("processing prime %d...\r",{np})
+        t1 = time()+1
+    end if
+end while
+printf(1,"Smarandache-Wellin primes:\n")
+for i,s in swp do
+    printf(1," %d%s:",{i,ord(i)})
+    printf(1," Index: %4d, Last prime %5d, %s\n",s)
+end for
+printf(1,"Smarandache-Wellin derived primes:\n")
+for i,s in swdp do
+    printf(1," %d%s:",{i,ord(i)})
+    printf(1," Index: %4d, %s\n",s)
+end for
+?elapsed(time()-t0)

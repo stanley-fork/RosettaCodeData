@@ -1,12 +1,12 @@
 import system'routines;
 import extensions;
 
-public program()
+public Program()
 {
     var things := new string[]{"Apple", "Banana", "Coconut"};
 
     things.forEach::(thing)
     {
-        console.printLine(thing)
+        Console.printLine(thing)
     }
 }

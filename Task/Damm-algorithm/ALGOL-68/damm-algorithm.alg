@@ -4,20 +4,17 @@ BEGIN
     PROC has valid damm check digit = ( STRING s )BOOL:
          BEGIN
             # operation table - as per wikipedia example #
-            [,]INT operation table =
-                ( [,]INT( ( 0, 3, 1, 7, 5, 9, 8, 6, 4, 2 )
-                        , ( 7, 0, 9, 2, 1, 5, 4, 8, 6, 3 )
-                        , ( 4, 2, 0, 6, 8, 7, 1, 3, 5, 9 )
-                        , ( 1, 7, 5, 0, 9, 8, 3, 4, 2, 6 )
-                        , ( 6, 1, 2, 3, 0, 4, 5, 9, 7, 8 )
-                        , ( 3, 6, 7, 4, 2, 0, 9, 5, 8, 1 )
-                        , ( 5, 8, 6, 9, 7, 2, 0, 1, 3, 4 )
-                        , ( 8, 9, 4, 5, 3, 6, 2, 0, 1, 7 )
-                        , ( 9, 4, 3, 8, 6, 1, 7, 2, 0, 5 )
-                        , ( 2, 5, 8, 1, 4, 3, 6, 7, 9, 0 )
-                        )
-                ) [ AT 0, AT 0 ]
-                ;
+            [,]INT operation table = ( ( 0, 3, 1, 7, 5, 9, 8, 6, 4, 2 )
+                                     , ( 7, 0, 9, 2, 1, 5, 4, 8, 6, 3 )
+                                     , ( 4, 2, 0, 6, 8, 7, 1, 3, 5, 9 )
+                                     , ( 1, 7, 5, 0, 9, 8, 3, 4, 2, 6 )
+                                     , ( 6, 1, 2, 3, 0, 4, 5, 9, 7, 8 )
+                                     , ( 3, 6, 7, 4, 2, 0, 9, 5, 8, 1 )
+                                     , ( 5, 8, 6, 9, 7, 2, 0, 1, 3, 4 )
+                                     , ( 8, 9, 4, 5, 3, 6, 2, 0, 1, 7 )
+                                     , ( 9, 4, 3, 8, 6, 1, 7, 2, 0, 5 )
+                                     , ( 2, 5, 8, 1, 4, 3, 6, 7, 9, 0 )
+                                     );
             INT interim digit := 0;
             FOR s pos FROM LWB s TO UPB s DO
                 INT next digit = ABS s[ s pos ] - ABS "0";
@@ -27,7 +24,7 @@ BEGIN
                     stop
                 ELSE
                     # have a valid digit #
-                    interim digit := operation table[ interim digit, next digit ]
+                    interim digit := operation table[ interim digit + 1, next digit + 1 ]
                 FI
             OD;
             interim digit = 0
@@ -44,7 +41,7 @@ BEGIN
                    )
                  )
          END # test damm algorithm # ;
-    # test cases - as per other language samples #
+    # test cases #
     test damm algorithm( "5724",   TRUE  );
     test damm algorithm( "5727",   FALSE );
     test damm algorithm( "112946", TRUE  )

@@ -1,5 +1,5 @@
--- 12 Apr 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 numeric digits 12
 
 call Time('r')
@@ -53,13 +53,9 @@ return
 PrimeDigits:
 procedure
 arg xx
-a = Verify(xx,2357)
-if a > 0 then
+if Verify(xx,2357) > 0 then
    return 0
 else
    return 1
 
-include Numbers
-include Sequences
-include Functions
-include Abend
+include Math

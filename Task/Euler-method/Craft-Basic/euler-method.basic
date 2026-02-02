@@ -13,36 +13,36 @@ end
 
 sub euler
 
-	cls
-	cursor 1, 1
-	wait
-	print "step: ", s
+    cls
+    cursor 1, 1
+    wait
+    print "step: ", s
 
-	let b = 100
-	let y = 100
+    let b = 100
+    let y = 100
 
-	for t = 0 to b step s
+    for t = 0 to b step s
 
-		print t, " : ", y
+        print t, " : ", y
 
-		let y = y + s * (-0.07 * (y - 20))
+        let y = y + s * (-0.07 * (y - 20))
 
-		gosub delay
+        gosub delay
 
-	next t
+    next t
 
-	alert "step ", s, " finished"
+    alert "step ", s, " finished"
 
 return
 
 sub delay
 
-	let w = clock
+    let w = clock
 
-	do
+    do
 
-		wait
+        wait
 
-	loop clock < w + 200
+    loop clock < w + 200
 
 return

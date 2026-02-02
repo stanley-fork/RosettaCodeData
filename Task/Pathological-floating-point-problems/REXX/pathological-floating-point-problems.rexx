@@ -1,5 +1,5 @@
--- 28 Jul 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 arg digs
 if digs = '' then
    digs=9

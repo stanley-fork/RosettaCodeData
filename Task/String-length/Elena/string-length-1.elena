@@ -1,6 +1,6 @@
 import extensions;
 
-public program()
+public Program()
 {
     var s := "Hello, world!";             // UTF-8 literal
     var ws := "Привет мир!"w;             // UTF-16 literal

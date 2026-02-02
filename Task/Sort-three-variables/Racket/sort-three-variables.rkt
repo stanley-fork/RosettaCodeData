@@ -1,5 +1,3 @@
-#lang racket
-
 (define-syntax-rule (sort-3! x y z <?)
   (begin
     (define-syntax-rule (swap! x y) (let ((tmp x)) (set! x y) (set! y tmp)))

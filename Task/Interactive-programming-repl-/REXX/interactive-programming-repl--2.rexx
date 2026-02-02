@@ -1,6 +1,23 @@
-/*REXX program demonstrates  interactive programming  by using a  function [F].         */
-say f('Rosetta',  "Code",  ':')
-say f('The definition of a trivial program is ',  " one that has no bugs.",  '───')
-exit                                             /*stick a fork in it,  we're all done. */
-/*──────────────────────────────────────────────────────────────────────────────────────*/
-f:  return arg(1) || copies(arg(3),2) || arg(2)  /*return the required string to invoker*/
+-- 12 Sep 2025
+include Setting
+
+say 'INTERACTIVE PROGRAMMING'
+say version
+say
+say 'Type source code at the REXX prompt, followed by Enter.'
+say 'Just Enter or command ''exit'' leaves the program.'
+say
+
+IgnoreError16:
+include Setting
+
+do until command = ''
+   call Charout, 'REXX '
+   parse pull command
+   interpret command
+   say
+end
+say 'Goodbye!'
+exit
+
+include Math

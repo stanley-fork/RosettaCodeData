@@ -1,34 +1,34 @@
-BullCow	New bull,cow,guess,guessed,ii,number,pos,x
-	Set number="",x=1234567890
-	For ii=1:1:4 Do
-	. Set pos=$Random($Length(x))+1
-	. Set number=number_$Extract(x,pos)
-	. Set $Extract(x,pos)=""
-	. Quit
-	Write !,"The computer has selected a number that consists"
-	Write !,"of four different digits."
-	Write !!,"As you are guessing the number, ""bulls"" and ""cows"""
-	Write !,"will be awarded: a ""bull"" for each digit that is"
-	Write !,"placed in the correct position, and a ""cow"" for each"
-	Write !,"digit that occurs in the number, but in a different place.",!
-	Write !,"For a guess, enter 4 digits."
-	Write !,"Any other input is interpreted as ""I give up"".",!
-	Set guessed=0 For  Do  Quit:guessed
-	. Write !,"Your guess: " Read guess If guess'?4n Set guessed=-1 Quit
-	. Set (bull,cow)=0,x=guess
-	. For ii=4:-1:1 If $Extract(x,ii)=$Extract(number,ii) Do
-	. . Set bull=bull+1,$Extract(x,ii)=""
-	. . Quit
-	. For ii=1:1:$Length(x) Set:number[$Extract(x,ii) cow=cow+1
-	. Write !,"You guessed ",guess,". That earns you "
-	. If 'bull,'cow Write "neither bulls nor cows..." Quit
-	. If bull Write bull," bull" Write:bull>1 "s"
-	. If cow Write:bull " and " Write cow," cow" Write:cow>1 "s"
-	. Write "."
-	. If bull=4 Set guessed=1 Write !,"That's a perfect score."
-	. Quit
-	If guessed<0 Write !!,"The number was ",number,".",!
-	Quit
+BullCow  New bull,cow,guess,guessed,ii,number,pos,x
+   Set number="",x=1234567890
+   For ii=1:1:4 Do
+   . Set pos=$Random($Length(x))+1
+   . Set number=number_$Extract(x,pos)
+   . Set $Extract(x,pos)=""
+   . Quit
+   Write !,"The computer has selected a number that consists"
+   Write !,"of four different digits."
+   Write !!,"As you are guessing the number, ""bulls"" and ""cows"""
+   Write !,"will be awarded: a ""bull"" for each digit that is"
+   Write !,"placed in the correct position, and a ""cow"" for each"
+   Write !,"digit that occurs in the number, but in a different place.",!
+   Write !,"For a guess, enter 4 digits."
+   Write !,"Any other input is interpreted as ""I give up"".",!
+   Set guessed=0 For  Do  Quit:guessed
+   . Write !,"Your guess: " Read guess If guess'?4n Set guessed=-1 Quit
+   . Set (bull,cow)=0,x=guess
+   . For ii=4:-1:1 If $Extract(x,ii)=$Extract(number,ii) Do
+   . . Set bull=bull+1,$Extract(x,ii)=""
+   . . Quit
+   . For ii=1:1:$Length(x) Set:number[$Extract(x,ii) cow=cow+1
+   . Write !,"You guessed ",guess,". That earns you "
+   . If 'bull,'cow Write "neither bulls nor cows..." Quit
+   . If bull Write bull," bull" Write:bull>1 "s"
+   . If cow Write:bull " and " Write cow," cow" Write:cow>1 "s"
+   . Write "."
+   . If bull=4 Set guessed=1 Write !,"That's a perfect score."
+   . Quit
+   If guessed<0 Write !!,"The number was ",number,".",!
+   Quit
 Do BullCow
 
 The computer has selected a number that consists

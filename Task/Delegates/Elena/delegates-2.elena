@@ -34,7 +34,7 @@ class Delegator
     }
 }
 
-public program()
+public Program()
 {
     var delegator := new Delegator();
 

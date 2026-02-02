@@ -14,7 +14,7 @@ do -- Find the first 20 antiprimes.
                 ndc       = {}
                 for i = 1, maxNumber do ndc[ i ] = 1 end
                 for i = 2, maxNumber do
-                    for j = i, maxNumber, i do ++ ndc[ j ] end
+                    for j = i, maxNumber, i do ndc[ j ] += 1 end
                 end
             end
             local factors = ndc[ number ]
@@ -22,7 +22,7 @@ do -- Find the first 20 antiprimes.
                 table.insert( list, number )
                 mostFactors = factors
             end
-            ++ number
+            number += 1
         end
         return list
     end

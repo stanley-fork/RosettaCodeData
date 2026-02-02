@@ -1,4 +1,4 @@
-public program = PROGRAM;
+public Program = PROGRAM;
 
 CONSOLE = Console;
 
@@ -53,5 +53,5 @@ CLEAR(S) { S.clear() }
 POPULATE(OBJ, ACTION) { ^ OBJ.populate(ACTION) }
 FOREACH(OBJ, ACTION) { ^ OBJ.forEach(ACTION) }
 
-const MONTHNAMES = new string[]{"JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"};
-const DAYNAMES = new string[]{"MO", "TU", "WE", "TH", "FR", "SA", "SU"};
+const string[] MONTHNAMES = new []{"JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"};
+const string[] DAYNAMES = new []{"MO", "TU", "WE", "TH", "FR", "SA", "SU"};

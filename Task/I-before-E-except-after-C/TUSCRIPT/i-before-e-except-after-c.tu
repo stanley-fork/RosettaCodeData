@@ -1,5 +1,5 @@
 $$ MODE TUSCRIPT,{}
-words=REQUEST("http://wiki.puzzlers.org/pub/wordlists/unixdict.txt")
+words=REQUEST("https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt")
 size=SIZE(words)
 ieei=cie=xie=cei=xei=0
 

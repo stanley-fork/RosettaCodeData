@@ -57,7 +57,7 @@ gtextsize 3
 scale 15
 rotate 45 45
 draw
-on key
+on key_down
    if keybkey = "ArrowUp"
       rotate 0 1
    elif keybkey = "ArrowDown"

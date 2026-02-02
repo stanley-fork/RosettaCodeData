@@ -1,5 +1,5 @@
--- 12 Apr 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 numeric digits 10
 
 call Time('r')
@@ -66,7 +66,4 @@ do i = 3 by 2 to 1e8+1
 end
 return
 
-include Sequences
-include Functions
-include Constants
-include Abend
+include Math

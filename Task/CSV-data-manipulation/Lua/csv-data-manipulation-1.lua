@@ -3,11 +3,9 @@
 
 print(io.read"l" .. ",SUM")
 for line in io.lines() do
-	local fields, sum = {}, 0
-	for field in line:gmatch"[^,]+" do
-		table.insert(fields, field)
-		sum = sum + field
-	end
-	table.insert(fields, sum)
-	print(table.concat(fields,","))
+   local sum = 0
+   for field in line:gmatch"[^,]+" do
+      sum = sum + field
+   end
+   print(line .. "," .. sum)
 end

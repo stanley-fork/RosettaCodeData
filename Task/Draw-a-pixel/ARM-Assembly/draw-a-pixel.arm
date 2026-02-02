@@ -47,7 +47,7 @@ szTexte2:                .asciz "Press q for close window or clic X in system me
 szLibDW: .asciz "WM_DELETE_WINDOW"    @ special label for correct close error
 
 /*************************************************/
-szMessErr: .ascii	"Error code hexa : "
+szMessErr: .ascii   "Error code hexa : "
 sHexa: .space 9,' '
          .ascii "  decimal :  "
 sDeci: .space 15,' '
@@ -441,7 +441,7 @@ conversion16:
     and r0,r3,r4                                       @value register and mask
     lsr r0,r2                                          @ move right
     cmp r0,#10                                         @ compare value
-    addlt r0,#48                                       @ <10  ->digit	
+    addlt r0,#48                                       @ <10  ->digit
     addge r0,#55                                       @ >10  ->letter A-F
     strb r0,[r1],#1                                    @ store digit on area and + 1 in area address
     lsr r4,#4                                          @ shift mask 4 positions
@@ -507,7 +507,7 @@ divisionpar10U:
     sub r1,r4,r2, lsl #1                               @ r1 <- r4 - (r2 * 2)  = r4 - (r0 * 10)
     pop {r2,r3,r4,lr}
     bx lr                                              @ leave function
-iMagicNumber:  	.int 0xCCCCCCCD
+iMagicNumber:   .int 0xCCCCCCCD
 /***************************************************/
 /* integer division unsigned                       */
 /***************************************************/

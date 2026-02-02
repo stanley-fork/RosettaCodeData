@@ -1,3 +1,30 @@
+function fibfc(n) result(f) ! integer forward count using 128 bit integers.
+    !   DOMAIN:  up to 184
+    !   uses 16 byte integers
+    integer(16), intent (in) :: n ! input
+    integer(16)              :: f ! output
+    integer(16)              :: i, fm2, fm1
+
+    if (n>184) then
+        PRINT *, "ERROR: 'a' must be in the domain 0 <= n <= 184 !"
+        STOP
+    end if
+    f=0
+    fm2=0
+    fm1=1
+    IF ( n > 0 ) f = 1
+    IF ( n < 3 ) return
+    do i = 2, n
+       f=fm2+fm1
+       fm2=fm1
+       fm1=f
+    enddo
+end function
+
+</syntaxhighlight lang="fortran">
+
+===FORTRAN 77===
+<syntaxhighlight lang="fortran">
       FUNCTION IFIB(N)
       IF (N.EQ.0) THEN
         ITEMP0=0

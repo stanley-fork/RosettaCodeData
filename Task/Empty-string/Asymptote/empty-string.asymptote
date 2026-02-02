@@ -1,11 +1,11 @@
-string c;		//implicitly assigned an empty string
+string c;     //implicitly assigned an empty string
 if (length(c) == 0) {
   write("Empty string");
 } else {
   write("Non empty string");
 }
 
-string s = "";		//explicitly assigned an empty string
+string s = "";      //explicitly assigned an empty string
 if (s == "")  {
   write("Empty string");
 }

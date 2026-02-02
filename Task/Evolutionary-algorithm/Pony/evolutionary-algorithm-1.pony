@@ -2,10 +2,10 @@ use "random"
 
 actor Main
   let _env: Env
-  let _rand: MT = MT	// Mersenne Twister
+  let _rand: MT = MT    // Mersenne Twister
   let _target: String = "METHINKS IT IS LIKE A WEASEL"
   let _possibilities: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-  let _c: U16 = 100	// number of spawn per generation
+  let _c: U16 = 100 // number of spawn per generation
   let _min_mutate_rate: F64 = 0.09
   let _perfect_fitness: USize = _target.size()
   var _parent: String = ""

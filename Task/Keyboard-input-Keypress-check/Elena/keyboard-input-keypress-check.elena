@@ -1,10 +1,10 @@
 import extensions;
 
-public program()
+public Program()
 {
-    auto chr := emptyString;
-    if (console.KeyAvailable)
+    auto chr := EmptyString;
+    if (Console.KeyAvailable)
     {
-        chr := console.readChar()
+        chr := Console.readChar()
     }
 }

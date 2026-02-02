@@ -1,8 +1,8 @@
 String::__defineGetter__ 'escaped', () ->
-	this.replace(/&/g, '&amp;')
-	    .replace(/</g, '&lt;')
-	    .replace(/>/g, '&gt;')
-	    .replace(/"/g, '&quot;') // rosettacode doesn't like "
+   this.replace(/&/g, '&amp;')
+       .replace(/</g, '&lt;')
+       .replace(/>/g, '&gt;')
+       .replace(/"/g, '&quot;') // rosettacode doesn't like "
 
 text = '''
 Character,Speech
@@ -19,21 +19,21 @@ header = lines.shift()
 
 console.log """
 <table cellspacing="0">
-	<thead>
-		<th scope="col">#{header[0]}</th>
-		<th scope="col">#{header[1]}</th>
-	</thead>
-	<tbody>
+   <thead>
+      <th scope="col">#{header[0]}</th>
+      <th scope="col">#{header[1]}</th>
+   </thead>
+   <tbody>
 """
 
 for line in lines
-	[character, speech] = line
-	console.log """
-		<th scope="row">#{character}</th>
-		<td>#{speech.escaped}</td>
-	"""
+   [character, speech] = line
+   console.log """
+      <th scope="row">#{character}</th>
+      <td>#{speech.escaped}</td>
+   """
 
 console.log """
-	</tbody>
+   </tbody>
 </table>
-	"""
+   """

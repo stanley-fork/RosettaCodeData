@@ -3,7 +3,7 @@ import extensions;
 extension op : IntNumber
 {
     bool randN()
-        = randomGenerator.nextInt(self) == 0;
+        = Random.nextInt(self) == 0;
 
     get bool Unbiased()
     {
@@ -20,7 +20,7 @@ extension op : IntNumber
     }
 }
 
-public program()
+public Program()
 {
     for(int n := 3; n <= 6; n += 1)
     {
@@ -35,7 +35,7 @@ public program()
             if(n.Unbiased) { unbiasedOne += 1 } else { unbiasedZero += 1 }
         };
 
-        console
+        Console
             .printLineFormatted("(N = {0}):".padRight(17) + "# of 0"$9"# of 1"$9"% of 0"$9"% of 1", n)
             .printLineFormatted("Biased:".padRight(15) + "{0}"$9"{1}"$9"{2}"$9"{3}",
                                     biasedZero, biasedOne, biasedZero / 1000, biasedOne / 1000)

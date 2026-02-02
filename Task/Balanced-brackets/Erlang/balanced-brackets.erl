@@ -2,17 +2,17 @@
 -export( [generate/1, is_balanced/1, task/0] ).
 
 generate( N ) ->
-	[generate_bracket(random:uniform()) || _X <- lists:seq(1, 2*N)].
+    [generate_bracket(random:uniform()) || _X <- lists:seq(1, 2*N)].
 
 is_balanced( String ) -> is_balanced_loop( String, 0 ).
 
 task() ->
-	lists:foreach( fun (N) ->
-			String = generate( N ),
-			Result = is_balanced( String ),
-			io:fwrite( "~s is ~s~n", [String, task_balanced(Result)] )
-		end,
-		lists:seq(0, 5) ).
+    lists:foreach( fun (N) ->
+            String = generate( N ),
+            Result = is_balanced( String ),
+            io:fwrite( "~s is ~s~n", [String, task_balanced(Result)] )
+        end,
+        lists:seq(0, 5) ).
 
 
 

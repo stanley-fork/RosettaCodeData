@@ -1,5 +1,5 @@
--- 28 Jul 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'ISQRT (INTEGER SQUARE ROOT)'
 say version
@@ -18,9 +18,9 @@ call Task2 12345,1,12345,'F'
 exit
 
 Task1:
-procedure
+procedure expose glob.
 arg xx
-call time('r')
+call Timer 'x'
 say 'Integer square root for n = 0...'xx
 do n = 0 to xx
    call Charout ,QuadraticResidue(n)' '
@@ -30,9 +30,9 @@ call Timer
 return
 
 Task2:
-procedure expose Memo.
+procedure expose Memo. glob.
 arg xx,yy,zz,mm
-call Time('r')
+call Timer 'x'
 select
    when mm = 'Q' then
       t = 'Quadratic residue'

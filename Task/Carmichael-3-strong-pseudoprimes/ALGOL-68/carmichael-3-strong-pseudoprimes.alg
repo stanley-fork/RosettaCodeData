@@ -17,9 +17,9 @@ INT max number = 200 000;
 sieve( is prime );
 
 # Find the Carmichael 3 Stromg Pseudoprimes for Prime1 up to 61              #
-
-FOR prime1 FROM 2 TO 61 DO
-    IF is prime[ prime 1 ] THEN
+# prime1 cannot be 2 as there no integers h3 such that 1 < h3 < 2            #
+FOR prime1 FROM 3 BY 2 TO 61 DO
+    IF is prime[ prime1 ] THEN
         FOR h3 TO prime1 - 1 DO
             FOR d TO ( h3 + prime1 ) - 1 DO
                 IF   ( h3 + prime1 ) * ( prime1 - 1 ) MOD d = 0

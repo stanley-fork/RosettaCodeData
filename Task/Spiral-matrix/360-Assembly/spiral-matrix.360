@@ -99,7 +99,7 @@ LOOPJ    CR     R5,R12
          LA     R5,1(R5)
          B      LOOPJ
 ENDLOOPJ EQU    *
-         WTO    MF=(E,WTOMSG)		
+         WTO    MF=(E,WTOMSG)
          LA     R4,1(R4)
          B      LOOPI
 ENDLOOPI EQU    *

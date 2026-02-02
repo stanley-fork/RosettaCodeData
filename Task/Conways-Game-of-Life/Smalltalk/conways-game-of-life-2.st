@@ -9,7 +9,7 @@ GameOfLife class>>withAliveCells: aCollectionOfCells ofSize: aBoardSize
   ^self new initializeWithAliveCells: aCollectionOfCells ofSize: aBoardSize
 
 GameOfLife class>>assertAll: aCollectionOfAliveCells areInside: aSize
-  | origin |	
+  | origin |
   origin := 0@0.
   aCollectionOfAliveCells do: [:aCell |
   (aCell between: origin and: aSize) ifFalse: [ self error: 'Cell ', aCell printString,' out of range' ]]

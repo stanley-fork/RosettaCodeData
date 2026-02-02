@@ -8,7 +8,7 @@ programming language has one).
 
 
 Other programming languages may make use of the &nbsp; '''POW''' &nbsp; or some other BIF
-&nbsp; ('''B'''uilt─'''I'''n '''F'''function), &nbsp; or some other library service.
+&nbsp; ('''B'''uilt─'''I'''n '''F'''unction), &nbsp; or some other library service.
 
 If your language's exponentiation operator is not one of the usual ones, please comment on how to recognize it.
 

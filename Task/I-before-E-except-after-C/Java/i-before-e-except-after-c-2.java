@@ -12,7 +12,7 @@ static int cei = 0;
 static int cie = 0;
 
 static void count() throws URISyntaxException, IOException {
-    URL url = new URI("http://wiki.puzzlers.org/pub/wordlists/unixdict.txt").toURL();
+    URL url = new URI("https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt").toURL();
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
         String line;
         while ((line = reader.readLine()) != null) {

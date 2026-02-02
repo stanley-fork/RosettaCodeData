@@ -1,5 +1,5 @@
 def zigzag(n)
-  (seq=(0...n).to_a).product(seq)
+  (seq=(0...n).to_a).cartesian_product(seq)
     .sort_by {|x,y| [x+y, (x+y).even? ? y : -y]}
     .map_with_index{|v, i| {v, i}}.sort.map(&.last).each_slice(n).to_a
 end

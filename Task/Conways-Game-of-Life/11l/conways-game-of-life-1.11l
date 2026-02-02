@@ -11,7 +11,7 @@ universe[(1, 4)] = 1
 universe[(2, 4)] = 1
 universe[(3, 4)] = 1
 
-L(i) 4
+L(i) 0.<4
    print("\nGeneration "i‘:’)
    L(row) 0 .< cellcounty
       print(‘  ’(0 .< cellcountx).map(col -> [‘. ’, ‘O ’][:universe[(@row, col)]]).join(‘’))

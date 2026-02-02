@@ -5,7 +5,7 @@ The multitude,Who are you?
 Brians mother,I'm his mother; that's who!
 The multitude,Behold his mother! Behold his mother!"
 
-k	= instr(csv$,",")                                 ' 2 exra lines to get heading
+k  = instr(csv$,",")                                 ' 2 exra lines to get heading
 csv$  = left$(csv$,k - 1) + "</th><th> + mid$(csv$,k + 1)
 
 csv$ = strRep$(csv$,",","</td><td>")
@@ -15,10 +15,10 @@ wait
 ' string replace rep str with
 ' --------------------------------
 FUNCTION strRep$(strRep$,rep$,with$)
-ln	= len(rep$)
-k	= instr(strRep$,rep$)
+ln = len(rep$)
+k  = instr(strRep$,rep$)
 while k
-	strRep$	= left$(strRep$,k - 1) + with$ + mid$(strRep$,k + ln)
-	k	= instr(strRep$,rep$)
+   strRep$  = left$(strRep$,k - 1) + with$ + mid$(strRep$,k + ln)
+   k  = instr(strRep$,rep$)
 WEND
 END FUNCTION

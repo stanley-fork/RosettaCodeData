@@ -56,6 +56,15 @@ l= '-2 3 +5 7 -11 13 17 19 -23 29 -31 37 -41 43 47 -53 59 -61 67 -71 73 79 -83 8
 /*──────────────────────────────────────────────────────────────────────────────────────*/
 m= a b c d f g h i j k l                         /*this will create a list of all the   */
                                                  /*listed strings used  (so far)  into  */
-                                                 /*the variable     L      (with an     */
+                                                 /*the variable     m      (with an     */
                                                  /*intervening blank between each       */
                                                  /*variable's value.                    */
+vl='a b c d f g h i j k l'
+t=0
+Do While vl>''
+  Parse Var vl v vl
+  len=length(value(v))
+  t+=len
+  Say v len t
+  End
+say 'm  'length(m)

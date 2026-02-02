@@ -13,15 +13,15 @@ valid: function [ i] [ all [ parse i [4 digits]  ","  4 = length? unique i ] ]  
 possible: collect [ repeat i 9876 [ if valid s: to-string i  [ keep s ] ] ]  ;; should start at 1234, but for sake of brevity...
 
 forever [                                                                    ;; read valid secret number from keyboard...
-	while [ not valid secret: ask "^/Enter Number with 4 uniq digits (1 - 9 only, q-quit ) " ] [  ;; "^/" is character for newline
-	      either secret = "q" [print "Bye" halt ] [ print [ secret "invalid, Try again !" ]   ]
+   while [ not valid secret: ask "^/Enter Number with 4 uniq digits (1 - 9 only, q-quit ) " ] [  ;; "^/" is character for newline
+         either secret = "q" [print "Bye" halt ] [ print [ secret "invalid, Try again !" ]   ]
   ]
 
   results: copy #()                                          ;; map (key-value ) to store each guess and its result
 
   foreach guess possible [
     foreach [k v] body-of results [                          ;; check guess against previous results
-      if  v <> check guess k  [ guess: copy "" break  ]	
+      if  v <> check guess k  [ guess: copy "" break  ]
     ]
     if  empty? guess [ continue ]                            ;; check against previous results failed ?
     put results guess res: check guess secret                ;; store current guess and result in map

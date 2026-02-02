@@ -15,10 +15,10 @@ class CameraPhone : MobilePhone
     dispatch() => CameraFeature;
 }
 
-public program()
+public Program()
 {
    var cp := new CameraPhone();
 
-   console.writeLine(cp.cameraMsg);
-   console.writeLine(cp.mobileMsg)
+   Console.writeLine(cp.cameraMsg);
+   Console.writeLine(cp.mobileMsg)
 }

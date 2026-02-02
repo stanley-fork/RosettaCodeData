@@ -1,3 +1,5 @@
+REM Series 3a and Series 5 use different modes.  This version runs on Series 3a.  For Series 5, remove the "2" in the gCLOCK line.
+
 PROC main:
   gCLOCK ON,$29
   GET

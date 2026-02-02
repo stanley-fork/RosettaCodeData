@@ -1,23 +1,50 @@
-/*REXX program demonstrates a method of a  partial function application.      */
-s=;      do a=0  to 3                  /*build 1st series of some low integers*/
-         s=strip(s a)                  /*append to the integer to the  S  list*/
-         end   /*a*/
+-- 11 Sep 2025
+include Setting
 
-call fs 'f1',s;         say 'for f1:  series=' s",   result="  result
-call fs 'f2',s;         say 'for f2:  series=' s",   result="  result
+say 'PARTIAL FUNCTION APPLICATION'
+say version
+say 'F1 doubles, F2 squares'
+say
+-- List of low integers
+list=''
+do i = 0 to 3
+   list=Strip(list i)
+end i
+-- Apply F1 and F2
+call Fs 'F1',list
+say 'For F1: Sequence =' list', Result =' result
+call Fs 'F2',list
+say 'For F2: Sequence =' list', Result =' result
+-- List of low even integers
+list=''
+do i = 2 by 2 to 8
+   list=Strip(list i)
+end i
+-- Apply F1 and F2
+call Fs 'F1',list
+say 'For F1: Sequence =' list', Result =' result
+call Fs 'F2',list
+say 'For F2: Sequence =' list', Result =' result
+exit
 
-s=;      do b=2  to  8  by 2           /*build 2nd series, low even integers. */
-         s=strip(s b)                  /*append to the integer to the  S  list*/
-         end   /*b*/
+Fs:
+-- Partial function application
+-- Mimics 'map' operation
+procedure expose Memo.
+arg function,list
+dd=''
+do w = 1 for Words(list)
+   z=Word(list,w)
+   interpret 'dd=dd' function'('z')'
+end w
+return Strip(dd)
 
-call fs 'f1',s;         say 'for f1:  series=' s",   result="  result
-call fs 'f2',s;         say 'for f2:  series=' s",   result="  result
-exit                                   /*stick a fork in it,  we're all done. */
-/*────────────────────────────────────────────────────────────────────────────*/
-f1:  return arg(1)* 2
-f2:  return arg(1)**2
-/*────────────────────────────────────────────────────────────────────────────*/
-fs:  procedure;   arg f,s;   $=;       do j=1  for words(s);   z=word(s,j)
-                                       interpret '$=$'     f"("z')'
-                                       end  /*j*/
-     return strip($)
+F1:
+-- Double
+return arg(1)*2
+
+F2:
+-- Square
+return arg(1)**2
+
+include Math

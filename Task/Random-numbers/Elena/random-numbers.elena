@@ -3,8 +3,8 @@ import extensions'math;
 
 randomNormal()
 {
-    ^ cos(2 * Pi_value * randomGenerator.nextReal())
-                      * sqrt(-2 * ln(randomGenerator.nextReal()))
+    ^ cos(2 * Pi_value * Random.nextReal())
+                      * sqrt(-2 * ln(Random.nextReal()))
 }
 
 public program()
@@ -19,7 +19,7 @@ public program()
     };
 
     tAvg /= a.Length;
-    console.printLine("Average: ", tAvg);
+    Console.printLine("Average: ", tAvg);
 
     real s := 0;
     for (int x := 0; x < a.Length; x += 1)
@@ -29,7 +29,7 @@ public program()
 
     s := sqrt(s / 1000);
 
-    console.printLine("Standard Deviation: ", s);
+    Console.printLine("Standard Deviation: ", s);
 
-    console.readChar()
+    Console.readChar()
 }

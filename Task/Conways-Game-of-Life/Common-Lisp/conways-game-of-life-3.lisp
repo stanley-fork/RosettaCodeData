@@ -1,11 +1,11 @@
 (defun moore-neighborhood (cell)
   (let ((r '(-1 0 1)))
     (mapcan
-	 (lambda (delta-x)
-	   (loop for delta-y in r
-	      unless (and (= delta-x 0) (= delta-y 0))
-	      collect (cons (+ (car cell) delta-x) (+ (cdr cell) delta-y))))
-	 r)))
+    (lambda (delta-x)
+      (loop for delta-y in r
+         unless (and (= delta-x 0) (= delta-y 0))
+         collect (cons (+ (car cell) delta-x) (+ (cdr cell) delta-y))))
+    r)))
 
 (defun frequencies (cells)
   (let ((h (make-hash-table :test #'equal)))
@@ -20,16 +20,16 @@
   (let ((f (frequencies (mapcan #'moore-neighborhood cells))))
     (loop for k being the hash-keys in f
        when (or
-	     (= (gethash k f) 3)
-	     (and (= (gethash k f) 2) (member k cells :test #'equal)))
-	 collect k)))
+        (= (gethash k f) 3)
+        (and (= (gethash k f) 2) (member k cells :test #'equal)))
+    collect k)))
 
 (defun print-world (live-cells &optional (world-size 10))
   (dotimes (y world-size)
     (dotimes (x world-size)
       (if (member (cons x y) live-cells :test #'equal)
-	  (format t "X")
-	  (format t ".")))
+     (format t "X")
+     (format t ".")))
     (format t "~%")))
 
 (defun run-life (world-size steps cells)

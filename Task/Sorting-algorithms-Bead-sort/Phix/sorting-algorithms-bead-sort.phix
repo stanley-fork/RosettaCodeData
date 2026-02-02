@@ -1,17 +1,23 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
+with javascript_semantics
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">beadsort</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">poles</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">poles</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sq_add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">poles</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]],</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..$]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">poles</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">poles</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sq_add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">poles</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]],</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">a</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function beadsort(sequence a)
+    sequence poles = repeat(0,max(a))
+    for k in a do
+        poles[1..k] = sq_add(poles[1..k],1)
+--or
+--      for i,p in poles to k do
+--          poles[i] = p+1
+--      end for
+    end for
+    a[1..$] = 0
+    for p in poles do
+        a[-p..$] = sq_add(a[-p..$],1)
+--or
+--      for i,n in a from -p to -1 do
+--          a[i] = n+1
+--      end for
+    end for
+    return a
+end function
 
- <span style="color: #0000FF;">?</span><span style="color: #000000;">beadsort</span><span style="color: #0000FF;">({</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">7</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">20</span><span style="color: #0000FF;">})</span>
-<!--
+?beadsort({5, 3, 1, 7, 4, 1, 1, 20})

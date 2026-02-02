@@ -8,7 +8,7 @@ L(n) 2..54
    s.append((s[n - 2] - s[n - 1]) % 10 ^ 9)
 
 Deque[Int] r
-L(n) 55
+L(n) 0.<55
    V i = (34 * (n + 1)) % 55
    r.append(s[i])
 

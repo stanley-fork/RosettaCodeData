@@ -1,32 +1,30 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">repunit</span><span style="color: #0000FF;">(</span><span style="color: #004080;">mpz</span> <span style="color: #000000;">z</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">base</span><span style="color: #0000FF;">=</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpz_set_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">mpz_mul_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">base</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpz_add_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+with javascript_semantics
+include mpfr.e
+procedure repunit(mpz z, integer n, base=10)
+    mpz_set_si(z,0)
+    for i=1 to n do
+        mpz_mul_si(z,z,base)
+        mpz_add_si(z,z,1)
+    end for
+end procedure
 
- <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">constant</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">limit</span><span style="color: #0000FF;">,</span><span style="color: #000000;">blimit</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?{</span><span style="color: #000000;">400</span><span style="color: #0000FF;">,</span><span style="color: #000000;">16</span><span style="color: #0000FF;">}</span> <span style="color: #000080;font-style:italic;">-- 8.8s</span>
-                                            <span style="color: #0000FF;">:{</span><span style="color: #000000;">1000</span><span style="color: #0000FF;">,</span><span style="color: #000000;">16</span><span style="color: #0000FF;">})</span> <span style="color: #000080;font-style:italic;">-- 50.3s
- --                                         :{1000,36}) -- 4 min 20s
- --                                         :{2700,16}) -- 28 min 35s
- --                                         :{2700,36}) -- &gt;patience</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">primes</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">get_primes_le</span><span style="color: #0000FF;">(</span><span style="color: #000000;">limit</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">mpz</span> <span style="color: #000000;">z</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">base</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #000000;">blimit</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">rprimes</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">primes</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">primes</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #000000;">repunit</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">base</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">rprimes</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rprimes</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprint</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">))</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Base %2d: %s\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">base</span><span style="color: #0000FF;">,</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rprimes</span><span style="color: #0000FF;">)})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span><span style="color: #0000FF;">)</span>
-<!--
+atom t0 = time()
+constant {limit,blimit} = iff(platform()=JS?{400,16} -- 1.2s
+                                           :{1000,16}) -- 22s
+--                                         :{1000,36}) -- 1 min 35s
+--                                         :{2700,16}) -- 9 min 30s
+--                                         :{2700,40}) -- 52 minutes and 30s
+sequence primes = get_primes_le(limit)
+mpz z = mpz_init()
+for base=2 to blimit do
+    sequence rprimes = {}
+    for i=1 to length(primes) do
+        integer p = primes[i]
+        repunit(z,p,base)
+        if mpz_prime(z) then
+            rprimes &= p
+        end if
+    end for
+    printf(1,"Base %2d: %v\n", {base, rprimes})
+end for
+?elapsed(time()-t0)

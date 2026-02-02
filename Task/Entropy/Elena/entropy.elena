@@ -9,7 +9,7 @@ extension op
         = self.ln() / 2.ln();
 }
 
-public program()
+public Program()
 {
     var input := console.readLine();
     var infoC := 0.0r;

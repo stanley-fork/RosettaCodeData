@@ -1,6 +1,6 @@
 import net'http;
 
-public program()
+public Program()
 {
    using(HttpClient client := HttpClient.open("http://www.google.com"))
    {

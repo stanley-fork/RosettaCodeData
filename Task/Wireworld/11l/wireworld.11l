@@ -52,7 +52,7 @@ F world2string(ww)
 
 V ww = readfile(w.split("\n"))
 
-L(gen) 10
+L(gen) 0.<10
    print(("\n#3 ".format(gen))‘’(‘=’ * (ww.w - 4))"\n")
    print(world2string(ww))
    ww = nextgen(ww)

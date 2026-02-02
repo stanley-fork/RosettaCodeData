@@ -1,5 +1,5 @@
--- 28 Jul 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 parse arg xx','yy','zz
 if xx = '' then
    xx = 'Random'

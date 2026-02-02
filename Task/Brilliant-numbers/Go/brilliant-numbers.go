@@ -7,7 +7,7 @@ import (
     "sort"
 )
 
-var primes = rcu.Primes(1e8 - 1)
+var primes = rcu.Primes(int(1e8) - 1)
 
 type res struct {
     bc   interface{}

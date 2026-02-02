@@ -3,7 +3,7 @@ import ballerina/io;
 function r(string word, string[] bl) returns boolean {
     if word == "" { return true; }
     int c = word[0].toBytes()[0] | 32;
-	foreach int i in 0..<bl.length() {
+   foreach int i in 0..<bl.length() {
         var b = bl[i];
         if c == (b.toBytes()[0] | 32) || c == (b.toBytes()[1] | 32) {
             bl[i] = bl[0];
@@ -13,8 +13,8 @@ function r(string word, string[] bl) returns boolean {
             bl[i] = bl[0];
             bl[0] = t;
         }
-	}
-	return false;
+   }
+   return false;
 }
 
 function newSpeller(string blocks) returns (function(string) returns boolean) {

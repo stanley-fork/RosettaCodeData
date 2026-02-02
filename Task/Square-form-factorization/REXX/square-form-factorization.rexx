@@ -1,5 +1,5 @@
--- 28 Jul 2025
-include Settings
+-- 15 Nov 2025
+include Setting
 numeric digits 40
 
 say 'SQUARE FORM FACTORIZATION'
@@ -11,42 +11,42 @@ call Randomized
 exit
 
 TestNumbers:
-procedure expose test.
-t = '2501 12851 13289 75301 120787 967009 997417 7091569 13290059',
-    '42854447 223553581 2027651281 11111111111 100895598169 1002742628021',
-    '60012462237239 287129523414791 9007199254740931 11111111111111111',
-    '314159265358979323 384307168202281507 419244183493398773',
-    '658812288346769681 922337203685477563 1000000000000000127',
-    '1152921505680588799 1537228672809128917 4611686018427387877'
-do i = 1 to Words(t)
-   test.i = Word(t,i)
+procedure expose Test.
+t='13 111 2501 12851 13289 75301 120787 967009 997417 7091569 13290059',
+  '42854447 223553581 2027651281 11111111111 100895598169 1002742628021',
+  '60012462237239 287129523414791 9007199254740931 11111111111111111',
+  '314159265358979323 384307168202281507 419244183493398773',
+  '658812288346769681 922337203685477563 1000000000000000127',
+  '1152921505680588799 1537228672809128917 4611686018427387877'
+do i=1 to Words(t)
+   Test.i=Word(t,i)
 end
-test.0 = i-1
+Test.0=i-1
 return
 
 Selected:
-procedure expose mult. test. Memo.
+procedure expose Mult. Test. Memo.
 call Time('r')
-say 'Find a factor for 28 selected numbers...'
-do t = 1 for test.0
-   n = test.t
+say 'Find a factor for 30 selected numbers...'
+do t=1 for Test.0
+   n=Test.t
    call Time('r')
-   f = Squfof(n)
-   if f = 0 then
-      u = 'failed'
+   f=Squfof(n)
+   if f=0 then
+      u='failed'
    else
-      u = f 'x' n/f
+      u=f 'x' n/f
    say Format(Time('e'),3,3)'s Squfof ' n '('Xpon(n)+1 'digits) =' u
    call Time('r')
-   f = Pollardrho(n)
-   if f = 0 then
-      u = 'failed'
+   f=Pollardrho(n)
+   if f=0 then
+      u='failed'
    else
-      u = f 'x' n/f
+      u=f 'x' n/f
    say Format(Time('e'),3,3)'s Pollard' n '('Xpon(n)+1 'digits) =' u
-   if n < 1e17 then do
+   if n<1e16 then do
       call Time('r')
-      f = Trialdiv(n); u = f 'x' n/f
+      f=Trialdiv(n); u = f 'x' n/f
       say Format(Time('e'),3,3)'s Trial  ' n '('Xpon(n)+1 'digits) =' u
    end
    say
@@ -55,38 +55,47 @@ say
 return
 
 Randomized:
-procedure expose mult. Memo.
-say 'Find a factor for 28 random numbers...'
-x = 0
-do until x = 28
-   n = (Right(Randu(),Randu(1,10))||Right(Randu(),Randu(1,10))||Right(Randu(),Randu(1,10)))/1
-   if Pos(Right(n,1),05) > 0 | Even(n) | Digitsum(n)//3 = 0 then
+procedure expose Mult. Memo.
+say 'Find a factor for 30 random numbers...'
+x=1
+do until x=30
+   n=''
+   do 30
+      n||=Random(9)
+   end
+   n%=10**Random(25)
+   if Right(n,1)=5 | Even(n) | Digitsum(n)//3=0 then
       iterate
    call Time('r')
-   f = Squfof(n)
-   if f = 0 then
-      u = 'failed'
+   f=Squfof(n)
+   if f=0 then
+      u='failed'
    else
-      u = f 'x' n/f
+      u=f 'x' n/f
    say Format(Time('e'),3,3)'s Squfof ' n '('Xpon(n)+1 'digits) =' u
-   if n < 1e24 then do
+   call Time('r')
+   f=Pollardrho(n)
+   if f=0 then
+      u='failed'
+   else
+      u=f 'x' n/f
+   say Format(Time('e'),3,3)'s Pollard' n '('Xpon(n)+1 'digits) =' u
+   if n<1e16 then do
       call Time('r')
-      f = Pollardrho(n)
-      if f = 0 then
-         u = 'failed'
-      else
-         u = f 'x' n/f
-      say Format(Time('e'),3,3)'s Pollard' n '('Xpon(n)+1 'digits) =' u
-   end
-   if n < 1e17 then do
-      call Time('r')
-      f = Trialdiv(n); u = f 'x' n/f
+      f=Trialdiv(n); u=f 'x' n/f
       say Format(Time('e'),3,3)'s Trial  ' n '('Xpon(n)+1 'digits) =' u
    end
    say
-   x = x+1
+   x+=1
 end
 say
 return
 
-include Math
+-- Even (is even?)
+-- Xpon (get exponent)
+include Basic
+-- Sfufof (find a factor by square forms factorization)
+-- Pollardrho (find a factor by Pollard's rho algorithm)
+-- Trialdiv (find a factor by trial division)
+-- Digitsum (calculate sum of digits)
+include Ntheory

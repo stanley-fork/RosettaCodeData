@@ -17,6 +17,10 @@
 ==Citations==
 *[[wp:C_Sharp_(programming_language)|Wikipedia:C#]]
 
+== External links ==
+=== Online editors and compilers ===
+*[https://www.onlinegdb.com/ GDB Online Compiler] (Select C#)
+
 {{language programming paradigm|Imperative}}
 {{language programming paradigm|Object-oriented}}
 {{language programming paradigm|Generic}}

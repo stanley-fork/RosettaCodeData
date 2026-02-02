@@ -7,5 +7,5 @@
   (.. and (map in-block? word)))
 
 (-> ["A" "bark" "Book" "TREAT" "Common" "squaD" "CoNFuSe"] ; Notice case insensitivity
-    (map #(str % " => " (can-make-word %)))
+    (map #"{%} => {can-make-word %}")
     (join ", "))

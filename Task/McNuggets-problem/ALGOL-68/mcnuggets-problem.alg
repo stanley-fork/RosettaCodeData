@@ -12,8 +12,8 @@ BEGIN
         OD # y #
     OD # x # ;
     # show the highest number that cannot be formed                          #
-    INT largest := -1;
-    FOR i FROM UPB sum BY -1 TO LWB sum WHILE sum[ largest := i ] DO SKIP OD;
+    INT largest := max nuggets;
+    WHILE sum[ largest ] DO largest -:= 1 OD;
     print( ( "The largest non McNugget number is: "
            , whole( largest, 0 )
            , newline

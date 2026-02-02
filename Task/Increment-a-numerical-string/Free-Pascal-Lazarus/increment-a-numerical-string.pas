@@ -13,32 +13,33 @@ program StrInc;
     system.SysUtils;
 {$ENDIF}
 type
-  myString =  AnsiString; // String[32];//
+  tMyNumString = Ansistring; //string[31];//
 
 function IncLoop(ps: pChar;le,Base: NativeInt):NativeInt;inline;
 //Add 1 and correct carry
 //returns 0, if no overflow, else 1
 var
-  dg: nativeInt;
+  dgt: nativeInt;
 Begin
+  //convert base to the highest char in base  2 > '1' ;10 -> '9'
+  base += Ord('0')-1;
   dec(le);//ps is 0-based
-  dg := ord(ps[le])+(-ord('0')+1);
-  result := 0;
 
+  result := 0;
   repeat
-    IF dg < base then
+    dgt := ord(ps[le]);
+    IF dgt < base then
     begin
-      ps[le] := chr(dg+ord('0'));
+      ps[le] := chr(dgt+1);
       EXIT;
     end;
     ps[le] := '0';
     dec(le);
-    dg := ord(ps[le])+(-ord('0')+1);
   until (le<0);
   result:= 1;
 end;
 
-procedure IncIntStr(base:NativeInt;var s:myString);
+procedure IncIntStr(base:NativeInt;var s:tMyNumString);
 var
   le: NativeInt;
 begin
@@ -53,13 +54,32 @@ begin
   end;
 end;
 
+procedure IncMyString(var NumString: tMyNumString);
+var
+	i: integer;
+	f_code: word;
+begin
+  // string to num
+  val(Numstring,i,f_code);
+  //num to string
+  if f_code= 0 then
+    str(i+1,NumString);
+end;
+
+procedure IncMyStringOrg(var NumString: tMyNumString);
+var
+  i: integer;
+begin
+  readStr(NumString, i);
+  writeStr(NumString, succ(i));
+end;
+
 const
-  ONE_BILLION = 1000*1000*1000;
   strLen = 26;
   MAX = 1 shl strLen -1;
 
 var
-  s  : myString;
+  s  : tMyNumString;
   i,base : nativeInt;
   T0: TDateTime;
 Begin
@@ -76,22 +96,31 @@ Begin
     For i := 1 to MAX do
       IncIntStr(Base,s);
     T0 := (time-T0)*86400;
+    if base = 10 then
+      writeln(' IncAnsiString '); ;
     writeln(s:strLen,' base ',base:2,T0:8:3,' s');
   end;
 
-  writeln;
-  writeln('One billion digits "9"');
-  setlength(s,ONE_BILLION+1);
-  s[1]:= '0';//don't measure setlength in IncIntStr
-  fillchar(s[2],length(s)-1,'9');
-  writeln('first 5 digits ',s[1],s[2],s[3],s[4],s[5]);
+  writeln(' val -> str ');
+  setlength(s,1);
+  s[1]:= '0';
   T0 := time;
-  IncIntStr(10,s);
+  For i := 1 to MAX do
+    IncMyString(s);
   T0 := (time-T0)*86400;
-  writeln(length(s):10,T0:8:3,' s');
-  writeln('first 5 digits ',s[1],s[2],s[3],s[4],s[5]);
+  writeln(s:strLen,' base ',10:2,T0:8:3,' s');
+
+  writeln(' readstr -> writestring ');
+  setlength(s,1);
+  s[1]:= '0';
+  T0 := time;
+  For i := 1 to MAX do
+    IncMyStringOrg(s);
+  T0 := (time-T0)*86400;
+  writeln(s:strLen,' base ',10:2,T0:8:3,' s');
+
   s:='';
-  {$IFDEF WINDOWS}
+ {$IFDEF WINDOWS}
     readln;
   {$ENDIF}
 end.

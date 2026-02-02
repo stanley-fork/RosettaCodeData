@@ -16,8 +16,8 @@ begin % compute the distance between places using the Haversine formula %
         real d;
         integer mi, km;
         d  := distance( 36.12, -86.67, 33.94, -118.4 );
-        mi := round( d );
-        km := round( d / 1.609344 );
-        writeon( i_w := 4, s_w := 0, "distance: ", mi, " km (", km, " mi.)" )
+        km := round( d );
+        mi := round( d / 1.609344 );
+        writeon( i_w := 4, s_w := 0, "distance: ", km, " km (", mi, " mi.)" )
     end
 end.

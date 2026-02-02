@@ -17,8 +17,9 @@ func$ toupper s$ .
    return r$
 .
 for tok$ in toks$[]
-   if number tok$ <> 0
-      cnt[$] = number tok$
+   n = number tok$
+   if error = 0
+      cnt[$] = n
    else
       cmd$[] &= toupper tok$
       cnt[] &= 999

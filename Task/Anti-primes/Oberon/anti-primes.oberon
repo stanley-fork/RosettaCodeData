@@ -12,12 +12,15 @@ MODULE AntiPrimes;
     VAR
       Facts,Div:INTEGER;
   BEGIN
-    IF N < 2 THEN RETURN 1 END;
-    Facts := 2;
-    FOR Div := 2 TO N DIV 2 DO
-      IF N MOD Div = 0 THEN INC(Facts) END;
+    IF N < 2 THEN
+      Facts := 1
+    ELSE
+      Facts := 2;
+      FOR Div := 2 TO N DIV 2 DO
+        IF N MOD Div = 0 THEN INC(Facts) END
+      END
     END;
-    RETURN Facts;
+  RETURN Facts
   END Factors;
 
 BEGIN

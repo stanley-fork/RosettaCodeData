@@ -11,13 +11,13 @@
 |LCT=yes
 |bnf=http://phix.x10.mx/bnf.php
 }}
-Phix is a self-hosted hybrid interpreter/compiler, developed by Pete Lomax. It is very easy to use, and similar to 
-[https://rosettacode.org/wiki/Category:Euphoria Euphoria].
+Phix is a self-hosted hybrid interpreter/compiler, developed by Pete Lomax.<br>
+<!--It is very easy to use, and similar to [https://rosettacode.org/wiki/Category:Euphoria Euphoria].-->
 
-On [https://rosettacode.org/wiki/Rosetta_Code/Rank_languages_by_popularity/Full_list?oldid=294533 26th December 2021, Phix became the first programming language on this site to have submissions for 100% of all tasks].<br>
-(On 20th June 2022 [[Wren]] became the second, albeit with [https://www.rosettacode.org/wiki/Category:WrenGo 13]+[https://rosettacode.org/wiki/Special:Search?search=wren.h&wprov=acrw1_-1 66] of those embedded that I, for one, have been unable to run.)
+On 26th December 2021, Phix became the first language on this site to have [https://rosettacode.org/wiki/Rosetta_Code/Rank_languages_by_popularity/Full_list?oldid=294533 submissions for 100%] of all tasks.<br>
+(On 20th June 2022 [[Wren]] became the second, albeit there are [https://www.rosettacode.org/wiki/Category:WrenGo 13]+[https://rosettacode.org/wiki/Special:Search?search=wren.h&wprov=acrw1_-1 66] of those I have never been able to run.)
 
-[http://phix.x10.mx/download.php A simple 30MB download] contains a pre-compiled executable, all the sources, and'' '''everything''' ''needed to recompile them, in under 20 seconds. The download also contains a full-featured programmer's editor and about 1000 demo programs.
+[http://phix.x10.mx/download.php A simple 30MB download] contains a pre-compiled executable, all the sources, and'' '''everything''' ''needed to recompile them, in under 20 seconds. The download also contains a full-featured programmer's editor and about 1000 demos.
 
 You can also [https://replit.com/@PeteLomax1/PhixInterpreter#main.sh run Phix on replit here] (1.0.3 Lnx 64 bit), and several manually transpiled and uploaded entries [https://rosettacode.org/wiki/Category:Phix/online here]
 

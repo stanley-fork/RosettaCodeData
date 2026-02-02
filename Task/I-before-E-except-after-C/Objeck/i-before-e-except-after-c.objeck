@@ -3,7 +3,7 @@ use Collection;
 
 class HttpTest {
   function : Main(args : String[]) ~ Nil {
-    IsPlausibleRule("http://wiki.puzzlers.org/pub/wordlists/unixdict.txt");
+    IsPlausibleRule("https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt");
   }
 
   function : PlausibilityCheck(comment : String, x : Int, y : Int) ~ Bool {

@@ -2,7 +2,7 @@ decl string s
 set s ""
 
 if (= s "")
-	out "empty" endl console
+    out "empty" endl console
 else
-	out "not empty" endl console
+    out "not empty" endl console
 end if

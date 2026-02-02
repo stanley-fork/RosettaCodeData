@@ -1,14 +1,14 @@
 function zigzag1(n) {
-	j = 0::n-1
-	u = J(1, n, (-1, 1))
-	v = (j:*(2:*j:+3))
-	v = rowshape((v,v:+1), 1)
-	a = J(n, n, .)
-	for (i=1; i<=n; i++) {
-		a[i, .] = v[j:+i]
-		v = v+u
-	}
-	return(a)
+   j = 0::n-1
+   u = J(1, n, (-1, 1))
+   v = (j:*(2:*j:+3))
+   v = rowshape((v,v:+1), 1)
+   a = J(n, n, .)
+   for (i=1; i<=n; i++) {
+      a[i, .] = v[j:+i]
+      v = v+u
+   }
+   return(a)
 }
 
 zigzag1(5)

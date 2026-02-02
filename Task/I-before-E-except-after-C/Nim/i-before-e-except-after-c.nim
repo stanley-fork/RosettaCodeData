@@ -17,7 +17,7 @@ proc plausibility(rule: string; count1, count2: int): bool =
 let client = newHttpClient()
 
 var nie, cie, nei, cei = 0
-for word in client.getContent("http://wiki.puzzlers.org/pub/wordlists/unixdict.txt").split():
+for word in client.getContent("https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt").split():
   if word.contains("ie"):
     if word.contains("cie"):
       inc cie

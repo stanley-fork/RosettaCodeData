@@ -10,8 +10,8 @@ task() ->
        Longest_anagrams.
 
 words_from_url( URL ) ->
-	{ok, {{_HTTP, 200, "OK"}, _Headers, Body}} = httpc:request( URL ),
-	string:tokens( Body, "\n" ).
+    {ok, {{_HTTP, 200, "OK"}, _Headers, Body}} = httpc:request( URL ),
+    string:tokens( Body, "\n" ).
 
 
 deranged_anagrams( Dict ) ->

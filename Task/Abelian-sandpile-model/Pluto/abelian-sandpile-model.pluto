@@ -28,7 +28,7 @@ class Sandpile
             for i = 1, #self.a do
                 if self.a[i] > 3 then
                     self.a[i] -= 4
-                    for self.neighbors[i] as j do ++self.a[j] end
+                    for self.neighbors[i] as j do self.a[j] += 1 end
                 end
             end
         end

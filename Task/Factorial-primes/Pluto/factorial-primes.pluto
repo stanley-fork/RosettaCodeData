@@ -5,12 +5,12 @@ do  -- find some factorial primes - primes that are f - 1 or f + 1 for some fact
 
     local f, fpCount, n = 1, 0, 0
     while fpCount < 10 do
-        ++ n
+        n += 1
         f *= n
         local fpOp = "-"
         for fp = f - 1, f + 1, 2 do
             if int.isprime( fp ) then
-                ++ fpCount
+                fpCount += 1
                 fmt.write( "%2d:%4d! %s 1 = %d\n", fpCount, n, fpOp, fp )
             end
             fpOp = "+"

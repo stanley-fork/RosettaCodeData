@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'FERMAT NUMBERS'
 say version
@@ -31,7 +31,4 @@ end
 say Format(Time('e'),,3) 'seconds'; say
 exit
 
-include Functions
-include Sequences
-include Numbers
-include Abend
+include Math

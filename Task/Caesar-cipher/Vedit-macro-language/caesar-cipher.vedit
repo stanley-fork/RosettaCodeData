@@ -6,6 +6,6 @@ while(Cur_Pos < Block_End) {
     if (Cur_Char >= 'A') {
         Ins_Char((Cur_Char - #11 + 26 + #10) % 26 + #11, OVERWRITE)
     } else {
-	Char(1)
+   Char(1)
     }
 }

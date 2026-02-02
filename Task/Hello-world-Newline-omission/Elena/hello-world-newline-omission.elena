@@ -1,4 +1,4 @@
-public program()
+public Program()
 {
     //print will not append a newline
     console.write("Goodbye, World!")

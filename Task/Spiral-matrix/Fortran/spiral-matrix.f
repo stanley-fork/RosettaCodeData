@@ -35,7 +35,7 @@ PROGRAM SPIRAL
         x = x + 1
         array(x,y) = n
         n = n + 1
-      END DO	
+      END DO
       IF (n > size*size-1) EXIT
   END DO
 

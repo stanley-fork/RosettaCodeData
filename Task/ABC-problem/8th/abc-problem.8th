@@ -171,8 +171,8 @@ var ix
   ' chkokpath s:each                          \ | path
   rdrop                                       \
   success @                                   \ success
-	if                                          \
-	  break                                     \
+   if                                          \
+     break                                     \
   then
   ;
 

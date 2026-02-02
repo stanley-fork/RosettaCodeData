@@ -1,42 +1,40 @@
-(phixonline)-->
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">cch</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
+sequence cch = {}
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">CusipCheckDigit</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">cusip</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">v</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cch</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">cch</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">256</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'0'</span> <span style="color: #008080;">to</span> <span style="color: #008000;">'9'</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">cch</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #008000;">'0'</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'A'</span> <span style="color: #008080;">to</span> <span style="color: #008000;">'Z'</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">cch</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">55</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #000000;">cch</span><span style="color: #0000FF;">[</span><span style="color: #008000;">'*'</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">36</span>
-         <span style="color: #000000;">cch</span><span style="color: #0000FF;">[</span><span style="color: #008000;">'@'</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">37</span>
-         <span style="color: #000000;">cch</span><span style="color: #0000FF;">[</span><span style="color: #008000;">'#'</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">38</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cusip</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">9</span> <span style="color: #008080;">or</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #008000;">'\0'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">cusip</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">8</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">c</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">cusip</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #000000;">v</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">cch</span><span style="color: #0000FF;">[</span><span style="color: #000000;">c</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">v</span><span style="color: #0000FF;">=-</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">v</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">2</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">+=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">v</span><span style="color: #0000FF;">/</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)+</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">v</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">cusip</span><span style="color: #0000FF;">[</span><span style="color: #000000;">9</span><span style="color: #0000FF;">]=</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">-</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)+</span><span style="color: #008000;">'0'</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function CusipCheckDigit(string cusip)
+integer s = 0, c, v
+    if length(cch)=0 then
+        cch = repeat(-1,256)
+        for i='0' to '9' do
+            cch[i] = i-'0'
+        end for
+        for i='A' to 'Z' do
+            cch[i] = i-55
+        end for
+        cch['*'] = 36
+        cch['@'] = 37
+        cch['#'] = 38
+    end if
+    if length(cusip)!=9 or find('\0',cusip) then return 0 end if
+    for i=1 to 8 do
+        c := cusip[i]
+        v := cch[c]
+        if v=-1 then return 0 end if
+        if remainder(i,2)=0 then
+            v *= 2
+        end if
+        s += floor(v/10)+mod(v,10)
+    end for
+    return cusip[9]=mod(10-mod(s,10),10)+'0'
+end function
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">tests</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"037833100"</span><span style="color: #0000FF;">,</span>  <span style="color: #000080;font-style:italic;">-- Apple Incorporated</span>
-                   <span style="color: #008000;">"17275R102"</span><span style="color: #0000FF;">,</span>  <span style="color: #000080;font-style:italic;">-- Cisco Systems</span>
-                   <span style="color: #008000;">"38259P508"</span><span style="color: #0000FF;">,</span>  <span style="color: #000080;font-style:italic;">-- Google Incorporated</span>
-                   <span style="color: #008000;">"594918104"</span><span style="color: #0000FF;">,</span>  <span style="color: #000080;font-style:italic;">-- Microsoft Corporation</span>
-                   <span style="color: #008000;">"68389X106"</span><span style="color: #0000FF;">,</span>  <span style="color: #000080;font-style:italic;">-- Oracle Corporation   (incorrect)</span>
-                   <span style="color: #008000;">"68389X105"</span><span style="color: #0000FF;">}</span>  <span style="color: #000080;font-style:italic;">-- Oracle Corporation</span>
+sequence tests = {"037833100",  -- Apple Incorporated
+                  "17275R102",  -- Cisco Systems
+                  "38259P508",  -- Google Incorporated
+                  "594918104",  -- Microsoft Corporation
+                  "68389X106",  -- Oracle Corporation   (incorrect)
+                  "68389X105"}  -- Oracle Corporation
 
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">ti</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tests</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s : %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">,{</span><span style="color: #008000;">"invalid"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"valid"</span><span style="color: #0000FF;">}[</span><span style="color: #000000;">CusipCheckDigit</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+for i=1 to length(tests) do
+    string ti = tests[i]
+    printf(1,"%s : %s\n",{ti,{"invalid","valid"}[CusipCheckDigit(ti)+1]})
+end for

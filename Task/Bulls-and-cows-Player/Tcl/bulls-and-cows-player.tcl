@@ -5,11 +5,11 @@ proc scorecalc {guess chosen} {
     set bulls 0
     set cows 0
     foreach g $guess c $chosen {
-	if {$g eq $c} {
-	    incr bulls
-	} elseif {$g in $chosen} {
-	    incr cows
-	}
+   if {$g eq $c} {
+       incr bulls
+   } elseif {$g in $chosen} {
+       incr cows
+   }
     }
     return [list $bulls $cows]
 }
@@ -30,23 +30,23 @@ while 1 {
     set ans [lindex $choices [expr {int(rand()*[llength $choices])}]]
     lappend answers $ans
     puts -nonewline \
-	"Guess [llength $answers] is [join $ans {}]. Answer (Bulls, cows)? "
+   "Guess [llength $answers] is [join $ans {}]. Answer (Bulls, cows)? "
     set score [scan [gets stdin] %d,%d]
     lappend scores $score
     if {$score eq {$size 0}} {
-	puts "Ye-haw!"
-	break
+   puts "Ye-haw!"
+   break
     }
     foreach c $choices[set choices {}] {
-	if {[scorecalc $c $ans] eq $score} {
-	    lappend choices $c
-	}
+   if {[scorecalc $c $ans] eq $score} {
+       lappend choices $c
+   }
     }
     if {![llength $choices]} {
-	puts "Bad scoring? nothing fits those scores you gave:"
-	foreach a $answers s $scores {
-	    puts "  [join $a {}] -> ([lindex $s 0], [lindex $s 1])"
-	}
-	break
+   puts "Bad scoring? nothing fits those scores you gave:"
+   foreach a $answers s $scores {
+       puts "  [join $a {}] -> ([lindex $s 0], [lindex $s 1])"
+   }
+   break
     }
 }

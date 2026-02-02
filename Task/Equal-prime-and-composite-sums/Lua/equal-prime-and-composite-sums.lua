@@ -31,8 +31,8 @@ do --[[ find n and m where the sums of the first n primes and first m
             m    = m + 1
         end
         if sumP == sumC then
-            io.write( string.format( "%14d", sumP ), string.format( "%10d", n ), string.format( "%11d", m ), "\n" )
-            count = count + 1;
+            io.write( string.format( "%14d%10d%11d\n", sumP, n, m ) )
+            count = count + 1
             if count < 8 then
                 repeat numC = numC + 1 until not isPrime( numC )
                 sumC = sumC + numC

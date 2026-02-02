@@ -11,7 +11,7 @@ even(N) ->
     (N rem 2) == 0.
 
 multiply(LHS,RHS) when is_integer(Lhs) and Lhs > 0 and
-			is_integer(Rhs) and Rhs > 0 ->
+            is_integer(Rhs) and Rhs > 0 ->
     multiply(LHS,RHS,0).
 
 multiply(1,RHS,Acc) ->

@@ -37,9 +37,9 @@ foreach line [split $csvData "\n"] {
 # Generate the output
 puts [subst {
     [table {
-	[tr [html::quoteFormValue [rows get]] {bgcolor="yellow"}]
-	[html::while {[rows size]} {
-	    [tr [html::quoteFormValue [rows get]]]
-	}]
+   [tr [html::quoteFormValue [rows get]] {bgcolor="yellow"}]
+   [html::while {[rows size]} {
+       [tr [html::quoteFormValue [rows get]]]
+   }]
     }]
 }]

@@ -1,5 +1,5 @@
--- 12 Apr 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 
 call Time('r')
 say 'TWIN PRIMES'
@@ -28,6 +28,4 @@ end
 say
 return
 
-include Sequences
-include Functions
-include Abend
+include Math

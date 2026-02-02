@@ -3,7 +3,7 @@ class Life{
       var N=n, cells=Data(n*n), tmp=Data(n*n),
         ds=T(T(-1,-1),T(-1,0),T(-1,1), T(0,-1),T(0,1), T(1,-1),T(1,0),T(1,1));
       icells:=vm.arglist[1,*];
-      (N*N).pump(Void,cells.append.fpM("1-",0));	// clear board
+      (N*N).pump(Void,cells.append.fpM("1-",0));   // clear board
       icells.pump(Void,Void.Read,fcn(row,col){ cells[row*N+col]=1 });
    }
    fcn get(row,col){

@@ -8,13 +8,13 @@ extension extension
         = new Range(1, self - 1).selectBy::(n => (self.mod(n) == 0).iif(n,0) ).summarize(new Integer()) == self;
 }
 
-public program()
+public Program()
 {
-    for(int n := 1; n < 10000; n += 1)
+    for(int n := 1; n < 10000; n++)
     {
         if(n.isPerfect())
-            { console.printLine(n," is perfect") }
+            { Console.printLine(n," is perfect") }
     };
 
-    console.readChar()
+    Console.readChar()
 }

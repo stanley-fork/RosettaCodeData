@@ -1,8 +1,8 @@
 import extensions;
 
-public program()
+public Program()
 {
-    console.printLine(program_arguments.asEnumerable());  // the whole command line
+    Console.printLine(Program_arguments.asEnumerable());  // the whole command line
 
-    console.printLine(program_arguments[0]); // the program name
+    Console.printLine(Program_arguments[0]); // the program name
 }

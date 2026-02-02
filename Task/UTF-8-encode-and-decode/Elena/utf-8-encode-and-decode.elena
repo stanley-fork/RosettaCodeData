@@ -15,24 +15,24 @@ extension op : String
 
     string printAsUTF32()
     {
-        self.toArray().forEach::(c){ console.print("U+",c.toInt().toString(16)," ") }
+        self.forEach::(c){ console.printPaddingRight(8, "U+",c.toInt().toString(16)) }
     }
 }
 
 public program()
 {
-    "A".printAsString().printAsUTF8Array().printAsUTF32();
+    "A".printAsString().printAsUTF32().printAsUTF8Array();
     console.printLine();
 
-    "ö".printAsString().printAsUTF8Array().printAsUTF32();
+    "ö".printAsString().printAsUTF32().printAsUTF8Array();
     console.printLine();
 
-    "Ж".printAsString().printAsUTF8Array().printAsUTF32();
+    "Ж".printAsString().printAsUTF32().printAsUTF8Array();
     console.printLine();
 
-    "€".printAsString().printAsUTF8Array().printAsUTF32();
+    "€".printAsString().printAsUTF32().printAsUTF8Array();
     console.printLine();
 
-    "𝄞".printAsString().printAsUTF8Array().printAsUTF32();
+    "𝄞".printAsString().printAsUTF32().printAsUTF8Array();
     console.printLine();
 }

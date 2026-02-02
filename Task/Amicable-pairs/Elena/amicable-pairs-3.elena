@@ -33,7 +33,7 @@ public sealed AmicablePairs
     }
 }
 
-public program()
+public Program()
 {
     auto e := new AmicablePairs(Limit).enumerator();
     while (e.next()) {

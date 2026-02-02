@@ -17,14 +17,14 @@ def iteration(C):
     S, T = np.zeros(C.shape), np.zeros(C.shape)
     Z, dZ, ddZ = np.zeros_like(C), np.zeros_like(C), np.zeros_like(C)
 
-    def iterate(C, S, T, Z, dZ, ddZ):
+    def iterate1(C, S, T, Z, dZ, ddZ):
         S, T = S + np.sin(density * np.angle(Z)), T + 1
         Z, dZ, ddZ = Z * Z + C, 2 * Z * dZ + 1, 2 * (dZ * dZ + Z * ddZ)
         return S, T, Z, dZ, ddZ
 
-    for i in range(n):
+    for i in range(0, n, 1):
         M = abs(Z) < r
-        S[M], T[M], Z[M], dZ[M], ddZ[M] = iterate(C[M], S[M], T[M], Z[M], dZ[M], ddZ[M])
+        S[M], T[M], Z[M], dZ[M], ddZ[M] = iterate1(C[M], S[M], T[M], Z[M], dZ[M], ddZ[M])
 
     return S, T, Z, dZ, ddZ
 

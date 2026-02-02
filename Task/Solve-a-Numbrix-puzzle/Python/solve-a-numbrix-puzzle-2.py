@@ -6,7 +6,7 @@ class Numbrix:
         self.clues: list[int]
         self.totalToFill: int
         self.startRow: int
-        self.StartCol: int
+        self.startCol: int
     def solve(self, row, col, count:int, nextClue: int) -> bool:
         if count > self.totalToFill:
             return True
@@ -22,6 +22,7 @@ class Numbrix:
             if self.solve(row + move[1], col + move[0], count + 1, nextClue):
                 return True
         self.grid[row][col] = back
+        return False
     def xprint(self):
         for row in self.grid:
             for val in row:
@@ -82,4 +83,4 @@ if __name__ == "__main__":
             print(f"Solution for example {i+1}:", end="")
             numbrix.xprint()
         else:
-            "No solution."
+            print("No solution.")

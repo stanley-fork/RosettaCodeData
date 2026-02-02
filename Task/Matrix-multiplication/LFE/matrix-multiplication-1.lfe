@@ -1,7 +1,7 @@
-(defun matrix* (matrix-1 matrix-2)
-  (list-comp
-    ((<- a matrix-1))
-    (list-comp
-      ((<- b (transpose matrix-2)))
-      (lists:foldl #'+/2 0
-                   (lists:zipwith #'*/2 a b)))))
+(defun matrix*-map (m1 m2)
+  (let ((m2T (transpose m2)))
+    (lists:map
+     (lambda (row)
+       (lists:map (lambda (col) (dot-product row col))
+                  m2T))
+     m1)))

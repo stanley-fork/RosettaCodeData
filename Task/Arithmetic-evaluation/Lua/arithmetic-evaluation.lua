@@ -19,20 +19,20 @@ function eval(expr)
 
   --arithmetic functions
   tb = {["+"] = function(a,b) return eval(a) + eval(b) end,
-		["-"] = function(a,b) return eval(a) - eval(b) end,
-		["*"] = function(a,b) return eval(a) * eval(b) end,
-		["/"] = function(a,b) return eval(a) / eval(b) end}
+        ["-"] = function(a,b) return eval(a) - eval(b) end,
+        ["*"] = function(a,b) return eval(a) * eval(b) end,
+        ["/"] = function(a,b) return eval(a) / eval(b) end}
 
   --you could add ^ or other operators to this pretty easily
   for i, v in ipairs{"*/", "+-"} do
     for s, u in ipairs(expr) do
-	  local k = type(u) == "string" and C(S(v)):match(u)
-	  if k then
-	    expr[s-1] = tb[k](expr[s-1],expr[s+1])
-	    table.remove(expr, s)
-	    table.remove(expr, s)
-	  end
-	end
+      local k = type(u) == "string" and C(S(v)):match(u)
+      if k then
+        expr[s-1] = tb[k](expr[s-1],expr[s+1])
+        table.remove(expr, s)
+        table.remove(expr, s)
+      end
+    end
   end
   return expr[1]
 end

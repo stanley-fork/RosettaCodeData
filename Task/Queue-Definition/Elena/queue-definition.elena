@@ -1,6 +1,6 @@
 import extensions;
 
-class queue<T>
+class Queue<T>
 {
     T[]  theArray;
     int  theTop;
@@ -20,7 +20,10 @@ class queue<T>
     {
         if (theTale > theArray.Length)
         {
-            theArray := theArray.reallocate(theTale)
+            auto newArray := class Array<T>.allocate(theTale);
+            class Array<T>.copy(newArray, theArray, 0, theArray.Length);
+
+            theArray := newArray
         };
 
         theArray[theTale] := object;
@@ -41,23 +44,23 @@ class queue<T>
     }
 }
 
-public program()
+public Program()
 {
-    queue<int> q := new queue<int>();
+    Queue<int> q := new Queue<int>();
     q.push(1);
     q.push(2);
     q.push(3);
-    console.printLine(q.pop());
-    console.printLine(q.pop());
-    console.printLine(q.pop());
-    console.printLine("a queue is ", q.empty().iif("empty","not empty"));
-    console.print("Trying to pop:");
+    Console.printLine(q.pop());
+    Console.printLine(q.pop());
+    Console.printLine(q.pop());
+    Console.printLine("a queue is ", q.empty().iif("empty","not empty"));
+    Console.print("Trying to pop:");
     try
     {
         q.pop()
     }
     catch(Exception e)
     {
-        console.printLine(e.Message)
+        Console.printLine(e.Message)
     }
 }

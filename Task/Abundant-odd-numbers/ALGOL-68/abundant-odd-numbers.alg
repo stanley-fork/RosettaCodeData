@@ -1,4 +1,4 @@
-BEGIN # find some abundant odd numbers - numbers wose the proper divisor sum  #
+BEGIN # find some abundant odd numbers - numbers where the proper divisor sum #
       #                                  is bigger than the number itself     #
 
     # returns the sum of the proper divisors of n                             #

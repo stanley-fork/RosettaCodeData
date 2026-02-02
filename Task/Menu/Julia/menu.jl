@@ -9,7 +9,7 @@ end
 _ok(::Any,::Any) = false
 function _ok(reply::AbstractString, itemcount)
     n = tryparse(Int, reply)
-    return isnull(n) || 0 ≤ get(n) ≤ itemcount
+    return isnothing(n) || 0 ≤ n ≤ itemcount
 end
 
 "Prompt to select an item from the items"
@@ -20,7 +20,7 @@ function _selector(items, prompt::AbstractString)
     while !_ok(reply, itemcount)
         _menu(items)
         print(prompt)
-        reply = strip(readline(STDIN))
+        reply = strip(readline())
     end
     return items[parse(Int, reply)]
 end

@@ -6,10 +6,10 @@ while ~feof(fid)
     if any(diff(abs(str))<0) continue; end;
 
     if length(str)>maxlen,
-	list = {str};
-	maxlen = length(str);
+    list = {str};
+    maxlen = length(str);
     elseif length(str)==maxlen,
-	list{end+1} = str;
+    list{end+1} = str;
     end;
 end
 fclose(fid);

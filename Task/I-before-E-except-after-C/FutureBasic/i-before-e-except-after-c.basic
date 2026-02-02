@@ -22,7 +22,7 @@ void local fn CheckWord( wrd as CFStringRef, txt as CFStringRef, c as ^long, x a
 end fn
 
 void local fn Doit
-  CFURLRef    url    = fn URLWithString( @"http://wiki.puzzlers.org/pub/wordlists/unixdict.txt" )
+  CFURLRef    url    = fn URLWithString( @"https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt" )
   CFStringRef string = fn StringWithContentsOfURL( url, NSUTF8StringEncoding, NULL )
   CFArrayRef  words  = fn StringComponentsSeparatedByCharactersInSet( string, fn CharacterSetNewlineSet )
   long        cei    = 0, cie = 0, xei = 0, xie = 0

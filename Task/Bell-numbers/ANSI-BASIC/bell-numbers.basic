@@ -1,7 +1,7 @@
 100 REM Bell numbers
-110 LET MaxN = 14
-120 OPTION BASE 0
-130 DIM A(13) ! i.e. DIM A(MaxN - 1), ANSI BASIC does not allow expressions in the bound arguments.
+110 OPTION BASE 0
+120 DIM A(13)
+130 LET MaxN = UBOUND(A) + 1
 140 FOR I = 0 TO MaxN - 1
 150    LET A(I) = 0
 160 NEXT I

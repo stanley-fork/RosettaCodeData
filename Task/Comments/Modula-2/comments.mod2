@@ -1,3 +1,4 @@
-(* Comments (* can nest *)
+(* Modula-2/Modula-3 use the same style of comments *)
+(* ...and comments (* can nest *)
    and they can span multiple lines.
  *)

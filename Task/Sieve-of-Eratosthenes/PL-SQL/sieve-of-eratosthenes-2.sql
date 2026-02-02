@@ -3,16 +3,16 @@ from   table(sieve_of_eratosthenes.find_primes(30));
 
 PRIME_NUMBER
 ------------
-	   2
-	   3
-	   5
-	   7
-	  11
-	  13
-	  17
-	  19
-	  23
-	  29
+      2
+      3
+      5
+      7
+     11
+     13
+     17
+     19
+     23
+     29
 
 10 rows selected.
 

@@ -1,1 +1,24 @@
-{{stub}}{{language|Odin}}
+{{language
+|exec=machine
+|gc=no
+|safety=unsafe
+|parampass=reference
+|checking=static
+|compat=nominative
+|strength=strong
+|site=https://odin-lang.org/
+|tag=odin
+}}{{language programming paradigm|Imperative}}{{Codepad}}
+
+'''Odin''' is a general-purpose, [[procedural programming|procedural]], [[imperative programming|imperative]] programming language developed by [https://www.gingerbill.org/ gingerBill] as a "C alternative for the joy of programming".
+
+Odin is distributed under [https://github.com/odin-lang/Odin/blob/master/LICENSE zlib license].
+
+==Links==
+* [https://odin-lang.org/docs/install/ Compiler installation instructions]
+* [https://github.com/odin-lang/Odin Repository]
+* [https://odin-lang.org/docs/overview/ Language overview]
+* [https://pkg.odin-lang.org/ Standard library documentation]
+
+==Todo==
+[[Tasks_not_implemented_in_Odin]]

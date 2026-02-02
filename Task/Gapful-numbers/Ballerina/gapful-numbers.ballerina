@@ -1,5 +1,16 @@
 import ballerina/io;
 
+function commatize(int n) returns string {
+    string s = n.toString();
+    if n < 0 { s = s.substring(1); }
+    int le = s.length();
+    foreach int i in int:range(le - 3, 0, -3) {
+        s = s.substring(0, i) + "," + s.substring(i);
+    }
+    if n >= 0 { return s; }
+    return "-" + s;
+}
+
 public function main() {
     int[] starts = [100, <int>1e6, <int>1e7, <int>1e9, 7123];
     int[] counts = [30, 15, 15, 10, 25];

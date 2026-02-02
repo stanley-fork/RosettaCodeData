@@ -1,7 +1,7 @@
 import system'routines;
 import extensions;
 
-public program()
+public Program()
 {
     var sorted := Array.allocate(9).populate::(n => n + 1 );
     var values := sorted.clone().randomize(9);
@@ -16,10 +16,10 @@ public program()
     {
         tries.append(1);
 
-        console.print("# ",tries," : LIST : ",values," - Flip how many?");
+        Console.print("# ",tries," : LIST : ",values," - Flip how many?");
 
         values.sequenceReverse(0, console.readLine().toInt())
     };
 
-    console.printLine("You took ",tries," attempts to put the digits in order!").readChar()
+    Console.printLine("You took ",tries," attempts to put the digits in order!").readChar()
 }

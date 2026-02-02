@@ -18,30 +18,30 @@ LayoutButtonRow = list(size)
 app = new qApp
 {
       win = new qWidget() {
-	    setWindowTitle('Identity Matrix')
-	    move(500,100)
-	    reSize(600,600)
-	    winheight = win.height()
-	    fontSize = 18 + (winheight / 100)
+       setWindowTitle('Identity Matrix')
+       move(500,100)
+       reSize(600,600)
+       winheight = win.height()
+       fontSize = 18 + (winheight / 100)
 
- 	    LayoutButtonMain = new QVBoxLayout()			
-	    LayoutButtonMain.setSpacing(C_Spacing)
-	    LayoutButtonMain.setContentsmargins(0,0,0,0)
+       LayoutButtonMain = new QVBoxLayout()
+       LayoutButtonMain.setSpacing(C_Spacing)
+       LayoutButtonMain.setContentsmargins(0,0,0,0)
 
-	    for Row = 1 to size
-		LayoutButtonRow[Row] = new QHBoxLayout() {
-				       setSpacing(C_Spacing)
-				       setContentsmargins(0,0,0,0)
-				       }
-         	 for Col = 1 to size
-		     Button[Row][Col] = new QPushButton(win) {
+       for Row = 1 to size
+      LayoutButtonRow[Row] = new QHBoxLayout() {
+                   setSpacing(C_Spacing)
+                   setContentsmargins(0,0,0,0)
+                   }
+             for Col = 1 to size
+           Button[Row][Col] = new QPushButton(win) {
                                         setSizePolicy(1,1)
-					}
-					
-		     LayoutButtonRow[Row].AddWidget(Button[Row][Col])	
-		 next
-		 LayoutButtonMain.AddLayout(LayoutButtonRow[Row])			
-	      next
+               }
+
+           LayoutButtonRow[Row].AddWidget(Button[Row][Col])
+       next
+       LayoutButtonMain.AddLayout(LayoutButtonRow[Row])
+         next
               LayoutDataRow1 = new QHBoxLayout() { setSpacing(C_Spacing) setContentsMargins(0,0,0,0) }
               LayoutButtonMain.AddLayout(LayoutDataRow1)
               setLayout(LayoutButtonMain)
@@ -61,6 +61,6 @@ func pBegin()
                 Button[Row][Col].setStyleSheet(C_ButtonBlueStyle)
                 Button[Row][Col].settext("0")
              ok
-	 next
+    next
      next
      score = 0

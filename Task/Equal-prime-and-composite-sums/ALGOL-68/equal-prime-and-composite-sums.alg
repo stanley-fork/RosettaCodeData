@@ -22,26 +22,26 @@ CO  OP   ROOT    = (      INT n )INT:      ENTIER      sqrt( n );            CO
         INT     count := 0;
         INTEGER n := 2, m := 1, sum p := 5, sum c := 4, num p := 3, num c := 4;
         print( ( "             sum    primes composites", newline ) );
-        WHILE IF sum c > sum p THEN
-                  WHILE NOT is prime( num p +:= 2 ) DO SKIP OD;
-                  sum p +:= num p;
-                  n     +:= 1
-              FI;
-              IF sum p > sum c THEN
-                  WHILE is prime( num c +:= 1 ) DO SKIP OD;
-                  sum c +:= num c;
-                  m     +:= 1
-              FI;
-              IF sum p = sum c THEN
-                  print( ( whole( sum p, -16 ), whole( n, -10 ), whole( m, -11 ), newline ) );
-                  count +:= 1;
-                  IF count < 8 THEN
-                      WHILE is prime( num c +:= 1 ) DO SKIP OD;
-                      sum c +:= num c;
-                      m     +:= 1
-                  FI
-              FI;
-              count < 8
-        DO SKIP OD
+        WHILE count < 8 DO
+            IF sum c > sum p THEN
+                WHILE NOT is prime( num p +:= 2 ) DO SKIP OD;
+                sum p +:= num p;
+                n     +:= 1
+            FI;
+            IF sum p > sum c THEN
+                WHILE is prime( num c +:= 1 ) DO SKIP OD;
+                sum c +:= num c;
+                m     +:= 1
+            FI;
+            IF sum p = sum c THEN
+                print( ( whole( sum p, -16 ), whole( n, -10 ), whole( m, -11 ), newline ) );
+                count +:= 1;
+                IF count < 8 THEN
+                    WHILE is prime( num c +:= 1 ) DO SKIP OD;
+                    sum c +:= num c;
+                    m     +:= 1
+                FI
+            FI
+        OD
     END
 END

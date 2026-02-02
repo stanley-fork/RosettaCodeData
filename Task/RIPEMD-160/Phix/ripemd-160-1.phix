@@ -1,6 +1,5 @@
--->
- <span style="color: #008080;">include</span> <span style="color: #000000;">builtins</span><span style="color: #0000FF;">\</span><span style="color: #000000;">ripemd160</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+without javascript_semantics -- #ilASM, peek, allocate
+include builtins\ripemd160.e
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">test</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"Rosetta Code"</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n%s =&gt; %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">test</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ripemd160</span><span style="color: #0000FF;">(</span><span style="color: #000000;">test</span><span style="color: #0000FF;">)})</span>
-<!--
+constant test = "Rosetta Code"
+printf(1,"\n%s => %s\n",{test,ripemd160(test)})

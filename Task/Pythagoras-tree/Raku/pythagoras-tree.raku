@@ -2,19 +2,19 @@ class Square {
     has Complex ($.position, $.edge);
     method size { $!edge.abs }
     method svg-polygon {
-	qq[<polygon points="{join ' ', map
-	{ ($!position + $_ * $!edge).reals.join(',') },
-	0, 1, 1+1i, 1i}" style="fill:lime;stroke=black" />]
+    qq[<polygon points="{join ' ', map
+    { ($!position + $_ * $!edge).reals.join(',') },
+    0, 1, 1+1i, 1i}" style="fill:lime;stroke=black" />]
     }
     method left-child {
-	self.new:
-	position => $!position + i*$!edge,
-	edge => sqrt(2)/2*cis(pi/4)*$!edge;
+    self.new:
+    position => $!position + i*$!edge,
+    edge => sqrt(2)/2*cis(pi/4)*$!edge;
     }
     method right-child {
-	self.new:
-	position => $!position + i*$!edge + self.left-child.edge,
-	edge => sqrt(2)/2*cis(-pi/4)*$!edge;
+    self.new:
+    position => $!position + i*$!edge + self.left-child.edge,
+    edge => sqrt(2)/2*cis(-pi/4)*$!edge;
     }
 }
 

@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'CATALAN NUMBERS'
 say version
@@ -40,8 +40,4 @@ say catalann(xx)+0
 say Format(Time('e'),,3) 'seconds'; say
 return
 
-include Sequences
-include Numbers
-include Functions
-include Constants
-include Abend
+include Math

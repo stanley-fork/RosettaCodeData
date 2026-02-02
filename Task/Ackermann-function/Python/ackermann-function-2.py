@@ -1,6 +1,6 @@
-from functools import lru_cache
+from functools import cache
 
-@lru_cache(None)
+@cache
 def ack2(M, N):
     if M == 0:
         return N + 1

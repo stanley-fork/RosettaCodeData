@@ -1,63 +1,57 @@
-(phixonline)-->
- <span style="color: #008080;">include</span> <span style="color: #000000;">builtins</span><span style="color: #0000FF;">/</span><span style="color: #000000;">bigatom</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+with javascript_semantics
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">suffixes</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"KMGTPEZYXWVU"</span><span style="color: #0000FF;">,</span>
-          <span style="color: #000000;">anydp</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">100</span> <span style="color: #000080;font-style:italic;">-- the "any dp" value (prevents nearest 1e-100, though)</span>
+include builtins/bigatom.e
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">suffize</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">args</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">bigatom</span> <span style="color: #000000;">size</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ba_abs</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">sgn</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ba_compare</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)<</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">:+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>
-             <span style="color: #000000;">la</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">),</span>
-             <span style="color: #000000;">dp</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">la</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">2</span><span style="color: #0000FF;">?</span><span style="color: #000000;">args</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]:</span><span style="color: #000000;">anydp</span><span style="color: #0000FF;">),</span>  <span style="color: #000080;font-style:italic;">-- decimal places</span>
-             <span style="color: #000000;">bd</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">la</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">3</span><span style="color: #0000FF;">?</span><span style="color: #000000;">args</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]:</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>      <span style="color: #000080;font-style:italic;">-- 2 or 10</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">ip</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- (inverted precision)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">dp</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #000000;">size</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ba_round</span><span style="color: #0000FF;">(</span><span style="color: #000000;">size</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ip</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">suffix</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">ba_compare</span><span style="color: #0000FF;">(</span><span style="color: #000000;">size</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1e100</span><span style="color: #0000FF;">)></span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">size</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ba_div</span><span style="color: #0000FF;">(</span><span style="color: #000000;">size</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1e100</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">suffix</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"googol"</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">factor</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">bd</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span><span style="color: #0000FF;">?</span><span style="color: #000000;">1024</span><span style="color: #0000FF;">:</span><span style="color: #000000;">1000</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">fdx</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-         <span style="color: #008080;">while</span> <span style="color: #000000;">fdx</span><span style="color: #0000FF;"><</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">suffixes</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">bigatom</span> <span style="color: #000000;">rsize</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ba_div</span><span style="color: #0000FF;">(</span><span style="color: #000000;">size</span><span style="color: #0000FF;">,</span><span style="color: #000000;">factor</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">dp</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #000000;">rsize</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ba_round</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rsize</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ip</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">ba_compare</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rsize</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)<</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000000;">size</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">rsize</span>
-             <span style="color: #000000;">fdx</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-         <span style="color: #000000;">suffix</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fdx</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?</span><span style="color: #008000;">""</span><span style="color: #0000FF;">:</span><span style="color: #000000;">suffixes</span><span style="color: #0000FF;">[</span><span style="color: #000000;">fdx</span><span style="color: #0000FF;">]&</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">bd</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span><span style="color: #0000FF;">?</span><span style="color: #008000;">"i"</span><span style="color: #0000FF;">:</span><span style="color: #008000;">""</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">fmt</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dp</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">or</span> <span style="color: #000000;">dp</span><span style="color: #0000FF;">=</span><span style="color: #000000;">anydp</span><span style="color: #0000FF;">?</span><span style="color: #008000;">"%0B"</span><span style="color: #0000FF;">:</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%%0.%dB"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">))</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ba_sprintf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">ba_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">size</span><span style="color: #0000FF;">,</span><span style="color: #000000;">sgn</span><span style="color: #0000FF;">))</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">suffix</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+constant suffixes = "KMGTPEZYXWVU",
+         anydp = 100 -- the "any dp" value (prevents nearest 1e-100, though)
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">test_text</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"""
-  87,654,321
- -998,877,665,544,332,211,000 3
- +112,233 0
-  16,777,216 1
- 456,789,100,000,000
- 456,789,100,000,000 2 10
- 456,789,100,000,000 5 2
- 456,789,100,000.000e+00 0 10
-  16777216 , 2
- 1.2e101
- 347,344 -2
- 10
- """</span><span style="color: #0000FF;">,</span>
- <span style="color: #000000;">test_cases</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #000000;">test_text</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'\n'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">no_empty</span><span style="color: #0000FF;">:=</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)</span>
+function sufficate(sequence args)
+    bigatom size = ba_new(substitute(args[1],",",""))
+    for a=2 to length(args) do
+        sequence sa = scanf(args[a],"%f")
+        args[a] = iff(length(sa)=1?sa[1][1]:anydp)
+    end for
+    integer sgn = ba_compare(size,0),
+            dp = iff(length(args)>=2?args[2]:anydp),    -- decimal places
+            bd = iff(length(args)>=3?args[3]:10)        -- 2 or 10
+    atom ip = power(10,dp) -- (inverted precision)
+    size = ba_abs(size)
+    if dp<0 then size = ba_round(size,ip) end if
+    string suffix
+    if ba_compare(size,1e100)>0 then
+        size = ba_div(size,1e100)
+        suffix = "googol"
+    else
+        integer factor = iff(bd=2?1024:1000), fdx = 0
+        while fdx<length(suffixes) do
+            bigatom rsize = ba_div(size,factor)
+            if dp<0 then rsize = ba_round(rsize,ip) end if
+            if ba_compare(rsize,1)<0 then exit end if
+            size = rsize
+            fdx += 1
+        end while
+        suffix = iff(fdx=0?"":suffixes[fdx]&iff(bd=2?"i":""))
+    end if
+    string fmt = iff(dp<0 or dp=anydp?"%0B":sprintf("%%0.%dB",dp))
+    if sgn=-1 then size = ba_mul(size,sgn) end if
+    return {args[1],ba_sprintf(fmt, size) & suffix}
+end function
 
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">test_cases</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">ti</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">test_cases</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">args</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">,</span><span style="color: #000000;">no_empty</span><span style="color: #0000FF;">:=</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">args</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ba_new</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">substitute</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span><span style="color: #008000;">","</span><span style="color: #0000FF;">,</span><span style="color: #008000;">""</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">sa</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">scanf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">[</span><span style="color: #000000;">a</span><span style="color: #0000FF;">],</span><span style="color: #008000;">"%f"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">args</span><span style="color: #0000FF;">[</span><span style="color: #000000;">a</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sa</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">?</span><span style="color: #000000;">sa</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]:</span><span style="color: #000000;">anydp</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">suffize</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%30s : %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+constant tests = split("""
+ 87,654,321
+-998,877,665,544,332,211,000 3
++112,233 0
+ 16,777,216 1
+456,789,100,000,000
+456,789,100,000,000 2 10
+456,789,100,000,000 5 2
+456,789,100,000.000e+00 0 10
+ 16777216 , 2
+1.2e101
+347,344 -2
+10
+""",'\n')
+
+for t in tests do
+    printf(1,"%30s : %s\n",sufficate(split(t)))
+end for

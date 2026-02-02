@@ -19,6 +19,6 @@ public program()
     T original := new S();
     T clone := original.clone();
 
-    console.printLine(original.Name);
-    console.printLine(clone.Name)
+    Console.printLine(original.Name);
+    Console.printLine(clone.Name)
 }

@@ -48,7 +48,7 @@ def task:
   | ($encrypted | decrypt(polys[$i] )) as $decrypted
   | "Message   : \(.)",
     "Encrypted : \($encrypted)",
-    "Decrypted : \($decrypted)"
+    "Decrypted : \($decrypted)",
     "" ;
 
 task

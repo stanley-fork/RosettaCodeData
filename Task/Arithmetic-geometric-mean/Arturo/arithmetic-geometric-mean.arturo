@@ -10,8 +10,4 @@ agm: function [a,g][
     return aOld
 ]
 
-print agm 1.0 1.0/sqrt 2.0</lang>
-
-{{out}}
-
-<pre>0.8472130847939792</pre>
+print agm 1.0 1.0/sqrt 2.0

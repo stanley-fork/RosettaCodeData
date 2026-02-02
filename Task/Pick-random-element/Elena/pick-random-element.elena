@@ -3,12 +3,12 @@ import extensions;
 extension listOp
 {
     randomItem()
-        = self[randomGenerator.nextInt(self.Length)];
+        = self[Random.nextInt(self.Length)];
 }
 
 public program()
 {
-    var item := new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    auto item := new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    console.printLine("I picked element ",item.randomItem())
+    Console.printLine("I picked element ",item.randomItem())
 }

@@ -16,13 +16,17 @@ C = 8.0 * np.exp((A + B * 1j) * 1j) + (a + b * 1j)
 def iteration(C):
     Z, dZ = np.zeros_like(C), np.zeros_like(C)
 
-    def iterate(C, Z, dZ):
+    def iterate5(C, Z, dZ):
+        Z, dZ = Z * Z + C, 2 * Z * dZ + 1
+        Z, dZ = Z * Z + C, 2 * Z * dZ + 1
+        Z, dZ = Z * Z + C, 2 * Z * dZ + 1
+        Z, dZ = Z * Z + C, 2 * Z * dZ + 1
         Z, dZ = Z * Z + C, 2 * Z * dZ + 1
         return Z, dZ
 
-    for i in range(n):
+    for i in range(0, n, 5):
         M = abs(Z) < r
-        Z[M], dZ[M] = iterate(C[M], Z[M], dZ[M])
+        Z[M], dZ[M] = iterate5(C[M], Z[M], dZ[M])
 
     return Z, dZ
 

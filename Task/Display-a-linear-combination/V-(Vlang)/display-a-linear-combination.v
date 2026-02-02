@@ -8,18 +8,18 @@ fn linear_combo(c []int) string {
         }
         mut op := ''
         match true {
-        	n < 0 && sb.len == 0 {
-            	op = "-"
-			}
-        	n < 0{
-            	op = " - "
-			}
-        	n > 0 && sb.len == 0 {
-            	op = ""
-			}
-        	else{
-            	op = " + "
-			}
+            n < 0 && sb.len == 0 {
+                op = "-"
+            }
+            n < 0{
+                op = " - "
+            }
+            n > 0 && sb.len == 0 {
+                op = ""
+            }
+            else{
+                op = " + "
+            }
         }
         mut av := n
         if av < 0 {
@@ -50,7 +50,7 @@ fn main() {
         [-1, -1, -1],
         [-1, -2, 0, -3],
         [-1],
-	]
+    ]
     for c in combos {
         println("${c:-15}  ->  ${linear_combo(c)}")
     }

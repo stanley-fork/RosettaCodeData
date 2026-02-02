@@ -2,7 +2,7 @@ brazilian?: function [n][
     if n < 7 -> return false
     if zero? and n 1 -> return true
     loop 2..n-2 'b [
-        if 1 = size unique digits.base:b n ->
+        if one? unique digits.base:b n ->
             return true
     ]
     return false
@@ -11,11 +11,11 @@ brazilian?: function [n][
 printFirstByRule: function [rule,title][
     print ~"First 20 |title|brazilian numbers:"
     i: 7
-    found: new []
+    found: []
     while [20 > size found][
         if brazilian? i ->
             'found ++ i
-        do.import rule
+        do rule
     ]
     print found
     print ""

@@ -1,6 +1,11 @@
-# index/1 returns the index or null,
-# so the jq test "if index(_) then ...." can be used
-# without any type conversion.
+# In jq 1.4 or later:
+jq -n '"abcdabcd" | indices("bc")'
+[
+  1,
+  5
+]
 
-"abcd" | index( "bc")
-#=> 1
+# In jq 1.5, the regex function match/1 can also be used:
+$ jq -n '"abcdabcd" | match("bc"; "g") | .offset'
+1
+5

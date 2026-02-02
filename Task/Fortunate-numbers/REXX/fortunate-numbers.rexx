@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'FORTUNATE NUMBERS'
 say version
@@ -57,9 +57,4 @@ end
 say Format(Time('e'),,3) 'seconds'; say
 return
 
-include Numbers
-include Sequences
-include Functions
-include Special
-include Constants
-include Abend
+include Math

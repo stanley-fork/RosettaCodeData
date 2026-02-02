@@ -6,9 +6,9 @@ extension op : Func1
         = (x => self(f(x)));
 }
 
-public program()
+public Program()
 {
     var fg := (x => x + 1).compose::(x => x * x);
 
-    console.printLine(fg(3))
+    Console.printLine(fg(3))
 }

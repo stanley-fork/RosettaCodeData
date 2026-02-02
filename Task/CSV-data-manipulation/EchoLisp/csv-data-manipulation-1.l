@@ -10,12 +10,10 @@
 
 (define (task file)
  (let*
- 	((table (csv->table file))
- 	(header (first table))
- 	(rows (rest table)))
- 	
- 	(table->csv
- 		(append header "SUM") ;; add last column
- 		(for/list ((row rows)) (append row (apply + row))))))
+   ((table (csv->table file))
+   (header (first table))
+   (rows (rest table)))
 
-	
+   (table->csv
+      (append header "SUM") ;; add last column
+      (for/list ((row rows)) (append row (apply + row))))))

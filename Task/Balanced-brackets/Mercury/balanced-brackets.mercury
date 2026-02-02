@@ -25,16 +25,16 @@ balanced(S) :- imbalance(S,0).
 
 brackets(N,S,!RS) :-
     (
-	N < 1 -> S is []
+    N < 1 -> S is []
     ;   random(0,2,R,!RS),
-	( R is 0 -> S is ['['|T], brackets(N-1,T,!RS)
-	; S is [']'|T], brackets(N-1,T,!RS))).
+    ( R is 0 -> S is ['['|T], brackets(N-1,T,!RS)
+    ; S is [']'|T], brackets(N-1,T,!RS))).
 
 main(!IO) :-
     random.init(0,RS),
     brackets(4,S,RS,_),
     print(S,!IO),
     (
-	balanced(S) -> print(" is balanced\n",!IO)
+    balanced(S) -> print(" is balanced\n",!IO)
     ;   print(" is unbalanced\n", !IO)
     ).

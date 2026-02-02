@@ -57,4 +57,4 @@ loop @[
     45039,123456,91740274651983,
     neg 83125311200, neg 12, neg 7
 ] 'num ->
-    print [pad to :string num 15, join.with: "\n"++ (repeat " " 16) split.lines wordwrap.at: 40 wordify num
+    print [pad to :string num 15, join.with: "\n"++ (repeat " " 16) split.lines wordwrap.at: 40 wordify num]

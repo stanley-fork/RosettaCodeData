@@ -1,4 +1,3 @@
 fn main() {
-    macro_rules! script {() => {"fn main() {{\n\tmacro_rules! script {{() => {{{:?}}}}}\n\tprintln!(script!(), script!());\n}}"}}
-    println!(script!(), script!());
+    print!("{}", include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/", file!())));
 }

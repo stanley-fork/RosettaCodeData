@@ -1,92 +1,90 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">task</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"""
- alpha   a
- beta    b or v
- gamma   g
- delta   d
- epsilon e (but not ee)
- zeta    z
- eta     h or ee (but not ch, kh, ph, rh or th)
- theta   th
- iota    i or j
- kappa   c, k, q or ck (but not ch and kh)
- lambda  l
- mu      m
- nu      n
- xi      x
- omicron o (but not oo)
- pi      p (but not ph or ps)
- rho     r or rh
- sigma   s (but not ps)
- tau     t (but not th)
- upsilon u or y
- phi     f or ph
- chi     ch or kh
- psi     ps
- omega   w or oo
- """</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">rules</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">replacements</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #000000;">task</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">suborder</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #008000;">" "</span><span style="color: #0000FF;">,</span><span style="color: #000000;">49</span><span style="color: #0000FF;">},{</span><span style="color: #008000;">","</span><span style="color: #0000FF;">,</span><span style="color: #000000;">50</span><span style="color: #0000FF;">},{</span><span style="color: #008000;">"."</span><span style="color: #0000FF;">,</span><span style="color: #000000;">51</span><span style="color: #0000FF;">},{</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">52</span><span style="color: #0000FF;">}},</span>
- 	     <span style="color: #0000FF;">{</span><span style="color: #000000;">rs</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ir</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">columnize</span><span style="color: #0000FF;">(</span><span style="color: #000000;">suborder</span><span style="color: #0000FF;">),</span>
- 	     <span style="color: #000000;">names</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">reinstate</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">52</span><span style="color: #0000FF;">),</span><span style="color: #000000;">ir</span><span style="color: #0000FF;">,</span><span style="color: #000000;">rs</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">done</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span> <span style="color: #008080;">in</span> <span style="color: #000000;">replacements</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">substitute_all</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,{</span><span style="color: #008000;">" or"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">" and"</span><span style="color: #0000FF;">},{</span><span style="color: #008000;">","</span><span style="color: #0000FF;">,</span><span style="color: #008000;">","</span><span style="color: #0000FF;">})</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">match</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"(but not "</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">nots</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">k</span> <span style="color: #008080;">then</span>
-             <span style="color: #7060A8;">assert</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[$]=</span><span style="color: #008000;">')'</span> <span style="color: #008080;">and</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]=</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">nots</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">+</span><span style="color: #000000;">9</span><span style="color: #0000FF;">..$-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span><span style="color: #008000;">", "</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">k</span><span style="color: #0000FF;">-</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">substitute</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #008000;">","</span><span style="color: #0000FF;">,</span><span style="color: #008000;">""</span><span style="color: #0000FF;">),</span><span style="color: #008000;">" "</span><span style="color: #0000FF;">)</span>
- 	<span style="color: #000000;">names</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"&lt;"</span> <span style="color: #0000FF;">&</span> <span style="color: #7060A8;">proper</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span> <span style="color: #0000FF;">&</span> <span style="color: #008000;">"&gt;"</span>
- 	<span style="color: #000000;">names</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">24</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"&lt;"</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">&</span> <span style="color: #008000;">"&gt;"</span>
- 	<span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">..$]</span>
-         <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">apply</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">&</span><span style="color: #000000;">nots</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">))</span>
-         <span style="color: #000000;">replacements</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">k</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">reverse</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">),</span><span style="color: #000000;">nots</span><span style="color: #0000FF;">}</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #000000;">replacements</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sort</span><span style="color: #0000FF;">(</span><span style="color: #000000;">replacements</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">while</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">replacements</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">replacements</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">to</span> <span style="color: #000000;">1</span> <span style="color: #008080;">by</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-             <span style="color: #004080;">bool</span> <span style="color: #000000;">missing</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">false</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">s</span> <span style="color: #008080;">in</span> <span style="color: #000000;">replacements</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">][</span><span style="color: #000000;">4</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-                 <span style="color: #000000;">missing</span> <span style="color: #0000FF;">+=</span> <span style="color: #008080;">not</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">done</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-             <span style="color: #008080;">if</span> <span style="color: #008080;">not</span> <span style="color: #000000;">missing</span> <span style="color: #008080;">then</span>
- 		<span style="color: #004080;">integer</span> <span style="color: #000000;">g</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">replacements</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #008080;">for</span> <span style="color: #000000;">s</span> <span style="color: #008080;">in</span> <span style="color: #000000;">replacements</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">][</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-                     <span style="color: #000000;">done</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">done</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-                     <span style="color: #000000;">suborder</span> <span style="color: #0000FF;">&=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">g</span><span style="color: #0000FF;">+</span><span style="color: #000000;">24</span><span style="color: #0000FF;">}}</span>
-                     <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">upper</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span>
-                     <span style="color: #000000;">suborder</span> <span style="color: #0000FF;">&=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">g</span><span style="color: #0000FF;">}}</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-                 <span style="color: #000000;">replacements</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">..</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #7060A8;">columnize</span><span style="color: #0000FF;">(</span><span style="color: #000000;">suborder</span><span style="color: #0000FF;">),</span><span style="color: #000000;">names</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+constant task = """
+alpha   a
+beta    b or v
+gamma   g
+delta   d
+epsilon e (but not ee)
+zeta    z
+eta     h or ee (but not ch, kh, ph, rh or th)
+theta   th
+iota    i or j
+kappa   c, k, q or ck (but not ch and kh)
+lambda  l
+mu      m
+nu      n
+xi      x
+omicron o (but not oo)
+pi      p (but not ph or ps)
+rho     r or rh
+sigma   s (but not ps)
+tau     t (but not th)
+upsilon u or y
+phi     f or ph
+chi     ch or kh
+psi     ps
+omega   w or oo
+"""
+function rules()
+    sequence replacements = split(task,"\n"),
+             suborder = {{" ",49},{",",50},{".",51},{"\n",52}},
+	         {rs,ir} = columnize(suborder),
+	         names = reinstate(repeat(0,52),ir,rs),
+             done = {}
+    for i,s in replacements do
+        s = substitute_all(s,{" or"," and"},{",",","})
+        integer k = match("(but not ",s)
+        sequence nots = {}
+        if k then
+            assert(s[$]=')' and s[k-1]=' ')
+            nots = split(s[k+9..$-1],", ")
+            s = s[1..k-2]
+        end if
+        s = split(substitute(s,",","")," ")
+	    names[i] = "<" & proper(s[1]) & ">"
+	    names[i+24] = "<" & s[1] & ">"
+	    s = s[2..$]
+        k = max(apply(s&nots,length))
+        replacements[i] = {k,i,reverse(s),nots}
+    end for
+    replacements = sort(replacements)
+    while length(replacements) do
+        for i=length(replacements) to 1 by -1 do
+            bool missing = false
+            for s in replacements[i][4] do
+                missing += not find(s,done)
+            end for
+            if not missing then
+		        integer g = replacements[i][2]
+                for s in replacements[i][3] do
+                    done = append(done,s)
+                    suborder &= {{s,g+24}}
+                    s[1] = upper(s[1])
+                    suborder &= {{s,g}}
+                end for
+                replacements[i..i] = {}
+            end if
+        end for
+    end while
+    return {columnize(suborder),names}
+end function
 
- <span style="color: #004080;">sequence</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">sub</span><span style="color: #0000FF;">,</span><span style="color: #000000;">rep</span><span style="color: #0000FF;">},</span><span style="color: #000000;">names</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">rules</span><span style="color: #0000FF;">(),</span>
- <span style="color: #000000;">gulp</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">utf8_to_utf32</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"</span><span style="color: #0000FF;">&</span>
- 		     <span style="color: #008000;">"αβγδεζηθικλμνξοπρστυφχψω ,.\n"</span><span style="color: #0000FF;">),</span>
- <span style="color: #000000;">text</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"""
- The quick brown fox jumped over the lazy dog.
+sequence {{sub,rep},names} = rules(),
+gulp = utf8_to_utf32("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"&
+		             "αβγδεζηθικλμνξοπρστυφχψω ,.\n"),
+text = """
+The quick brown fox jumped over the lazy dog.
 
- I was looking at some rhododendrons in my back garden,
- dressed in my khaki shorts, when the telephone rang.
+I was looking at some rhododendrons in my back garden,
+dressed in my khaki shorts, when the telephone rang.
 
- As I answered it, I cheerfully glimpsed that the July sun
- caused a fragment of black pine wax to ooze on the velvet quilt
- laying in my patio.
- sphinx of black quartz, judge my vow."""</span>
- <span style="color: #004080;">string</span> <span style="color: #000000;">g</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">utf32_to_utf8</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">extract</span><span style="color: #0000FF;">(</span><span style="color: #000000;">gulp</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">substitute_all</span><span style="color: #0000FF;">(</span><span style="color: #000000;">text</span><span style="color: #0000FF;">,</span><span style="color: #000000;">sub</span><span style="color: #0000FF;">,</span><span style="color: #000000;">rep</span><span style="color: #0000FF;">)))</span>
- <span style="color: #000000;">g</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">substitute_all</span><span style="color: #0000FF;">(</span><span style="color: #000000;">g</span><span style="color: #0000FF;">,{</span><span style="color: #008000;">"σ "</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"σ,"</span><span style="color: #0000FF;">},{</span><span style="color: #008000;">"ς "</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"ς,"</span><span style="color: #0000FF;">})</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s\n=&gt;\n%s\n\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">text</span><span style="color: #0000FF;">,</span><span style="color: #000000;">g</span><span style="color: #0000FF;">})</span>
- <span style="color: #004080;">string</span> <span style="color: #000000;">thedog</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"the dog"</span>
- <span style="color: #000000;">g</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">extract</span><span style="color: #0000FF;">(</span><span style="color: #000000;">names</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">substitute_all</span><span style="color: #0000FF;">(</span><span style="color: #000000;">thedog</span><span style="color: #0000FF;">,</span><span style="color: #000000;">sub</span><span style="color: #0000FF;">,</span><span style="color: #000000;">rep</span><span style="color: #0000FF;">)),</span><span style="color: #008000;">""</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s\n=&gt;\n%s\n\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">thedog</span><span style="color: #0000FF;">,</span><span style="color: #000000;">g</span><span style="color: #0000FF;">})</span>
-<!--
+As I answered it, I cheerfully glimpsed that the July sun
+caused a fragment of black pine wax to ooze on the velvet quilt
+laying in my patio.
+sphinx of black quartz, judge my vow."""
+string g = utf32_to_utf8(extract(gulp,substitute_all(text,sub,rep)))
+g = substitute_all(g,{"σ ","σ,"},{"ς ","ς,"})
+printf(1,"%s\n=>\n%s\n\n",{text,g})
+string thedog = "the dog"
+g = join(extract(names,substitute_all(thedog,sub,rep)),"")
+printf(1,"%s\n=>\n%s\n\n",{thedog,g})

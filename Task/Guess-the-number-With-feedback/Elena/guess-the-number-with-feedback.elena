@@ -1,6 +1,6 @@
 import extensions;
 
-public program()
+public Program()
 {
     int randomNumber := randomGenerator.nextInt(1,10);
     console.printLine("I'm thinking of a number between 1 and 10.  Can you guess it?");

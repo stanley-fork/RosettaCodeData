@@ -1,2 +1,2 @@
 (let var-name "hello")
-((eval (str "(var " var-name ")")) 123)
+((eval "(var {var-name})") 123)

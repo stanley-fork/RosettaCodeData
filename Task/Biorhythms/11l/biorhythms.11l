@@ -21,7 +21,7 @@ F biorhythms(birthdate_str, targetdate_str)
    V cycle_lengths = [23, 28, 33]
    V quadrants = [(‘up and rising’, ‘peak’), (‘up but falling’, ‘transition’), (‘down and falling’, ‘valley’), (‘down but rising’, ‘transition’)]
 
-   L(i) 3
+   L(i) 0.<3
       V label = cycle_labels[i]
       V length = cycle_lengths[i]
       V position = days % length

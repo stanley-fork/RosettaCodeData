@@ -27,7 +27,7 @@ extension op
     }
 }
 
-public program()
+public Program()
 {
     N.AmicablePairs.forEach::(pair)
     {

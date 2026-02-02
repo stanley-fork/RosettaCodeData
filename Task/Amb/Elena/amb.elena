@@ -71,7 +71,7 @@ singleton ambOperator
 
 // --- Program ---
 
-public program()
+public Program()
 {
     try
     {

@@ -1,6 +1,6 @@
 sub is_gapful(n)
     m = n
-	l = mod(n, 10)
+   l = mod(n, 10)
     while (m >= 10)
         m = int(m / 10)
     wend

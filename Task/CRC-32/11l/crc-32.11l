@@ -1,5 +1,5 @@
 V crc_table = [0] * 256
-L(i) 256
+L(i) 0.<256
    UInt32 rem = i
    L 8
       I rem [&] 1 != 0

@@ -8,7 +8,7 @@ BEGIN # solve the sum and product puzzle: find X, Y where 1 < X < Y; X + Y <= 10
       # 2: The number X*Y has only one product decomposition for which 1: is true #
       # 3: The number X+Y has only one sum decomposition for which 2: is true     #
 
-    # determine the possible sums and products and count their occurances         #
+    # determine the possible sums and products and count their occurences         #
     INT max n = 98, min n = 2;
     [ 0 : max n * max n ]INT s count, p count;
     [ min n : max n, min n : max n ]BOOL candidate;
@@ -31,7 +31,7 @@ BEGIN # solve the sum and product puzzle: find X, Y where 1 < X < Y; X + Y <= 10
             print( ( stage, " ", whole( c count, - 5 ), " candidate", IF c count = 1 THEN "" ELSE "s" FI, newline ) )
         END # show candidates # ;
 
-    # checks 1: is TRUE for x plus y, returns TRUE if it is, FALSE otherwose      #
+    # checks 1: is TRUE for x plus y, returns TRUE if it is, FALSE otherwise      #
     PROC all sums have multiple product decompositions = ( INT x plus y )BOOL:
          BEGIN
             BOOL all multiple p := TRUE;
@@ -45,7 +45,7 @@ BEGIN # solve the sum and product puzzle: find X, Y where 1 < X < Y; X + Y <= 10
             all multiple p
          END # all sums have multiple product decompositions # ;
 
-    # checks 2: is TRUE for x times y, returns TRUE if it is, FALSE otherwose     #
+    # checks 2: is TRUE for x times y, returns TRUE if it is, FALSE otherwise     #
     PROC only one product decomposition = ( INT x times y )BOOL:
          BEGIN
             INT multiple p := 0;

@@ -18,7 +18,7 @@ html::init
 puts [subst {
     [html::openTag table {summary="csv2html program output"}]
     [html::while {[rows size]} {
-	[html::row {*}[html::quoteFormValue [rows get]]]
+   [html::row {*}[html::quoteFormValue [rows get]]]
     }]
     [html::closeTag]
 }]

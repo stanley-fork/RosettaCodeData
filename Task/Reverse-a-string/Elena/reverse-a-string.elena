@@ -8,7 +8,7 @@ extension extension
         = self.toArray().sequenceReverse().summarize(new StringWriter());
 }
 
-public program()
+public Program()
 {
-    console.printLine("Hello World".reversedLiteral())
+    Console.printLine("Hello World".reversedLiteral())
 }

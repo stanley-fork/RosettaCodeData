@@ -22,7 +22,7 @@ public extension QuibbleOp : Array<string>
    }
 }
 
-public program()
+public Program()
 {
    Console.printLine(new string[] { }.quibble());
    Console.printLine(new string[] { "ABC" }.quibble());

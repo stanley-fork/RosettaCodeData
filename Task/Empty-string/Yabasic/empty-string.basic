@@ -4,7 +4,7 @@ sub IsEmpty (s$)
     else
         print "String is not empty"
     endif
-	if s$ = "" print "yes, the string is empty"
+    if s$ = "" print "yes, the string is empty"
     if s$ <> "" print "no, the string is not empty"
 end sub
 

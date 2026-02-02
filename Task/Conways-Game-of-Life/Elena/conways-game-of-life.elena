@@ -92,7 +92,7 @@ public extension presenterOp : Space
    }
 }
 
-public program()
+public Program()
 {
     auto model := Model.newRandomset(gameOfLifeRuleSet);
     Console.clear();

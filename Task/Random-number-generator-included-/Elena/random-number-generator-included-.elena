@@ -1,7 +1,7 @@
 import extensions;
 
-public program()
+public Program()
 {
-    console.printLine(randomGenerator.nextReal());
-    console.printLine(randomGenerator.nextInt(0,100))
+    Console.printLine(Random.nextReal());
+    Console.printLine(Random.nextInt(0,100))
 }

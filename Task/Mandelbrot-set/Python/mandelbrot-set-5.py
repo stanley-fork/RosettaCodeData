@@ -14,14 +14,14 @@ def iteration(C):
     S, T = np.zeros(C.shape), np.zeros(C.shape)
     Z, dZ = np.zeros_like(C), np.zeros_like(C)
 
-    def iterate(C, S, T, Z, dZ):
+    def iterate1(C, S, T, Z, dZ):
         S, T = S + np.exp(- abs(Z)), T + 1
         Z, dZ = Z * Z + C, 2 * Z * dZ + 1
         return S, T, Z, dZ
 
-    for i in range(n):
+    for i in range(0, n, 1):
         M = abs(Z) < r
-        S[M], T[M], Z[M], dZ[M] = iterate(C[M], S[M], T[M], Z[M], dZ[M])
+        S[M], T[M], Z[M], dZ[M] = iterate1(C[M], S[M], T[M], Z[M], dZ[M])
 
     return S, T, Z, dZ
 

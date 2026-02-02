@@ -1,6 +1,6 @@
 import Foundation
 
-let request = NSURLRequest(URL: NSURL(string: "http://wiki.puzzlers.org/pub/wordlists/unixdict.txt")!)
+let request = NSURLRequest(URL: NSURL(string: "https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt")!)
 
 NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue()) {res, data, err in
     if (data != nil) {

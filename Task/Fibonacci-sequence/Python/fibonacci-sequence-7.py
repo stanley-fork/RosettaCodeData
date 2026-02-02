@@ -1,5 +1,6 @@
-def fibGen(n):
-    a, b = 0, 1
-    while n>0:
-        yield a
-        a, b, n = b, a+b, n-1
+def fib_fast_rec(n):
+    def inner_fib(prvprv, prv, c):
+        if c < 1:
+            return prvprv
+        return inner_fib(prv, prvprv + prv, c - 1)
+    return inner_fib(0, 1, n)

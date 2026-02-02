@@ -17,7 +17,7 @@ fn (mut s Stack) push(v f32) {
     s.depth++
 }
 
-fn (mut s Stack) pop() ?f32 {
+fn (mut s Stack) pop() !f32 {
     if s.depth > 0 {
         s.depth--
         result := s.data[s.depth]
@@ -27,7 +27,7 @@ fn (mut s Stack) pop() ?f32 {
     return error('Stack Underflow!!')
 }
 
-fn (s Stack) peek() ?f32 {
+fn (s Stack) peek() !f32 {
     if s.depth > 0 {
         result := s.data[s.depth - 1]
         println('Peek: top of stack is ${result:3.2f}')

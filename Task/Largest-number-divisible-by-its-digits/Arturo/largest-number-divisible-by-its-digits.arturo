@@ -1,5 +1,5 @@
 lynchBell?: function [num][
-    hset: new []
+    hset: []
     loop digits num 'd [
         if d=0 -> return false
         if or? [0 <> mod num d]
@@ -11,7 +11,7 @@ lynchBell?: function [num][
 ]
 
 Magic: 9 * 8 * 7
-High: ((from.hex "9876432") / Magic) * Magic
+High: (0x9876432 / Magic) * Magic
 
 loop range High .step: Magic Magic 'n [
     if lynchBell? n [

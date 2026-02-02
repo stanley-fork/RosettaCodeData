@@ -12,7 +12,7 @@ F rshift()
    :cylinder[0] = t
 
 F unload()
-   L(i) 6
+   L(i) 0.<6
       :cylinder[i] = 0B
 
 F load()

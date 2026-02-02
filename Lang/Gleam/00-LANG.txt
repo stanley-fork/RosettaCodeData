@@ -1,2 +1,5 @@
 {{stub}}{{language|Gleam|hopl=no|site=https://gleam.run/}}
 Gleam is a type-safe functional programming language that runs on the [[Erlang]] virtual machine.
+
+== Todo ==
+[https://rosettacode.org/wiki/Tasks_not_implemented_in_Gleam Tasks not implemented in Gleam]

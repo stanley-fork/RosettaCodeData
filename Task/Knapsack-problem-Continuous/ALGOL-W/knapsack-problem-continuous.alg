@@ -8,6 +8,7 @@ begin % Knapsack problem: Continuous - based on the Algol 68 sample, which is ba
     begin
         reference(Item) array sackItems ( 1 :: MAX_ITEMS );
         real                  maxWeight;
+        integer               i;
 
         sackItems( 1 ) := Item( "beef",    3.8, 36 );sackItems( 2 ) := Item( "pork",    5.4, 43 );
         sackItems( 3 ) := Item( "ham",     3.6, 90 );sackItems( 4 ) := Item( "greaves", 2.4, 45 );
@@ -26,13 +27,13 @@ begin % Knapsack problem: Continuous - based on the Algol 68 sample, which is ba
             end for_q
         end for_p;
         maxWeight := 15;
-        for p := 1 until MAX_ITEMS do begin
+        i         := 0;
+        while i <= MAX_ITEMS and maxWeight > 0 do begin
             real w;
-            w := if weight(sackItems(p)) > maxWeight then maxWeight else weight(sackItems(p));
-            write( s_w := 0, r_format := "A", r_w := 6, r_d := 2, w, " kg ", name(sackItems(p)) );
-            maxWeight := maxWeight - w;
-            if maxWeight <= 0 then goto endSack
-        end for_p ;
-endSack:
+            i := i + 1;
+            w := if weight(sackItems(i)) > maxWeight then maxWeight else weight(sackItems(i));
+            write( s_w := 0, r_format := "A", r_w := 6, r_d := 2, w, " kg ", name(sackItems(i)) );
+            maxWeight := maxWeight - w
+        end while_i_le_MAX_WEIGHT_and_maxWeight_gt_0 ;
     end
 end.

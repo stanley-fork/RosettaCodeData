@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'EUCLID-MULLIN SEQUENCE'
 say version
@@ -19,7 +19,4 @@ end
 say
 return
 
-include Functions
-include Sequences
-include Numbers
-include Abend
+include Math

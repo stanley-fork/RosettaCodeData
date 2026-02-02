@@ -1,4 +1,4 @@
-val farey = fn(n) {
+val farey = fn(n number) {
     var a, b, c, d = 0, 1, 1, n
     while[=[[0, 1]]] c <= n {
         val k = (n + b) // d
@@ -10,7 +10,7 @@ val farey = fn(n) {
 val testFarey = fn*() {
     writeln "Farey sequence for orders 1 through 11"
     for i of 11 {
-        writeln "{{i:2}}: ", join(map(farey(i), by=fn f: "{{f[1]}}/{{f[2]}}"), by=" ")
+        writeln "{{i:2}}: ", join(map(farey(i), by=fn f: "{{f[1]}}/{{f[2]}}"), delim=" ")
     }
 }
 

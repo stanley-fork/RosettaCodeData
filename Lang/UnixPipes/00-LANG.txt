@@ -13,7 +13,7 @@ Using utilities from, [http://packages.debian.org/unstable/utils/moreutils moreu
 
 Defining unfold as the opposite of xargs, i.e take a list of arguments and send them one at a time.
 The definition would be
-<lang bash>
+<syntaxhighlight lang=bash>
 |cat unfold
 num=$1
 while read xxx; do
@@ -27,7 +27,7 @@ done
 4 5 6
 7 8
 
-</lang>
+</syntaxhighlight>
 
 == Deleted solutions ==
 We delete a UnixPipes solution when it is too similar to its UNIX Shell equivalent, or when it is incorrect (but the UNIX Shell solution is correct).

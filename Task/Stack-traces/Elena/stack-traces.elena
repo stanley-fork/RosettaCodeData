@@ -1,10 +1,10 @@
 import extensions;
 
-public singleton program
+public singleton Program
 {
     inner()
     {
-        console.printLine(new CallStack())
+        Console.printLine(new CallStack())
     }
 
     middle()
@@ -20,6 +20,6 @@ public singleton program
     // program entry point
     function()
     {
-        program.outer()
+        Program.outer()
     }
 }

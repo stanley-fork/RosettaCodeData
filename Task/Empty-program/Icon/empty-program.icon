@@ -1,2 +1,1 @@
-procedure main()   # a null file will compile but generate a run-time error for missing main
-end
+record main()

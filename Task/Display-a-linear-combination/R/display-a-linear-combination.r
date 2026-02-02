@@ -7,21 +7,21 @@ basisify <- function(v){
       terms <- c(terms, str_glue("{v[i]}*e({i})"))
     }
   }
-  if(length(terms)==0) return(0)
+  if(length(terms)==0) return("0")
   terms <- str_replace_all(terms, fixed("1*"), "")
   series <- str_flatten(terms, collapse=" + ")
-  return(str_replace_all(series, fixed("+ -"), "- "))
+  str_replace_all(series, fixed("+ -"), "- ")
 }
 
-test_vectors <- list(c(1,2,3),
-                     c(0,1,2,3),
-                     c(1,0,3,4),
-                     c(1,2,0),
-                     c(0,0,0),
+test_vectors <- list(c(1, 2, 3),
+                     c(0, 1, 2, 3),
+                     c(1, 0, 3, 4),
+                     c(1, 2, 0),
+                     c(0, 0, 0),
                      0,
-                     c(1,1,1),
-                     c(-1,-1,-1),
-                     c(-1,-2,0,-3),
+                     c(1, 1, 1),
+                     c(-1, -1, -1),
+                     c(-1, -2, 0, -3),
                      -1)
 
-print(lapply(test_vectors, basisify), quote=FALSE)
+writeLines(sapply(test_vectors, basisify))

@@ -14,7 +14,7 @@
 (defn huffman-tree [pq]
   (while (> (.size pq) 1)
     (let [a (.poll pq) b (.poll pq)
-	  new-node {:priority (+ (:priority a) (:priority b)) :left a :right b}]
+     new-node {:priority (+ (:priority a) (:priority b)) :left a :right b}]
       (.add pq new-node)))
   (.poll pq))
 

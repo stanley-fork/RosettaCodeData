@@ -9,9 +9,9 @@
 >>#)
 
 (define (task speech)
-	(define table (csv->table speech))
-	(stack html)
-	(emit-tag 'table h-table table)
-	(html-dump))
-	
+   (define table (csv->table speech))
+   (stack html)
+   (emit-tag 'table h-table table)
+   (html-dump))
+
 (task MontyPython)

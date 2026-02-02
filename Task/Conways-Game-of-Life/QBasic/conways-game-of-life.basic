@@ -15,10 +15,10 @@ DIM matrizB(-1 TO 81, -1 TO 81)
 'and set those of matrixB to 0
 y = 0
 DO
-	x = 0
-	DO
-		x = x + 1
-		matrizA(x, y) = INT(RND + .5)
+   x = 0
+   DO
+      x = x + 1
+      matrizA(x, y) = INT(RND + .5)
         matrizB(x, y) = 0
     LOOP UNTIL x > 80
 
@@ -33,7 +33,7 @@ DO
     'Draw the matrix
     y = 0
     DO
-        x = 0			
+        x = 0
         DO
             IF matrizA(x, y) = 1 THEN LINE (x, y)-(x + 1, y + 1), 1, BF
             x = x + 1

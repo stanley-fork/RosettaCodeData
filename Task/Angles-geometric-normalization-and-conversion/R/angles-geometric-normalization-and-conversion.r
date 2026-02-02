@@ -1,3 +1,4 @@
+options(digits=9, scipen=10)
 test_angles <- c(-2,-1,0,1,2,6.2831853,16,57.2957795,359,399,6399,1000000)
 
 d2d <- function(a) sign(a)*(abs(a)%%360)

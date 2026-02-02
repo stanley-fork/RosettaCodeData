@@ -1,9 +1,9 @@
 import system'routines;
 import extensions;
 
-public program()
+public Program()
 {
-    var elements := new object[]{
+    auto elements := new object[]{
             KeyValue.new("Krypton", 83.798r),
             KeyValue.new("Beryllium", 9.012182r),
             KeyValue.new("Silicon", 28.0855r),
@@ -15,6 +15,6 @@ public program()
 
     sorted.forEach::(element)
     {
-         console.printLine(element.Key," - ",element)
+         Console.printLine(element.Key," - ",element)
     }
 }

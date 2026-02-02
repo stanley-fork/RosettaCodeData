@@ -10,7 +10,7 @@ def eval:
         elif .[-2] == "+" then $v + .[-1]
         elif .[-2] == "-" then $v - .[-1]
         else tostring|error
-	end
+    end
       end
     end
   else .

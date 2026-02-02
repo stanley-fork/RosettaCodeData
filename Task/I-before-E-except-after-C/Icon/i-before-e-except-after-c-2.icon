@@ -1,4 +1,4 @@
-import Utils		# To get the FindFirst class
+import Utils     # To get the FindFirst class
 
 procedure main(a)
     WS := " \t"

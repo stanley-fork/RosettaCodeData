@@ -1,4 +1,4 @@
-val txt = Word8VectorSlice.full (Byte.stringToBytes  "hello world!"   ) ;
+val txt = Word8VectorSlice.full (Byte.stringToBytes  "Goodbye, World!"   ) ;
 
 fun serve listener portnr =
  let

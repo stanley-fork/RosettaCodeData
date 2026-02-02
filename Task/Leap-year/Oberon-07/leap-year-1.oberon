@@ -1,4 +1,14 @@
 MODULE Dates;
+    IMPORT Out;
+
+    CONST  SUNDAY*    = 0;
+           MONDAY*    = 1;
+           TUESDAY*   = 2;
+           WEDNESDAY* = 3;
+           THURSDAY*  = 4;
+           FRIDAY*    = 5;
+           SATURDAY*  = 6;
+
 
 (* returns TRUE if year is a leap year, FALSE otherwise.
    assumes year is in the Gregorian Calendar
@@ -8,5 +18,69 @@ PROCEDURE isLeapYear* ( year : INTEGER ) : BOOLEAN ;
     RETURN ( year MOD 400 = 0 )
         OR ( ( year MOD 4 = 0 ) & ( year MOD 100 # 0 ) )
     END isLeapYear ;
+
+(* returns the day of the week of 31st December of year *)
+PROCEDURE dayOfYearEnd* ( year : INTEGER ) : INTEGER ;
+    BEGIN
+    RETURN ( year + ( year DIV 4 ) - ( year DIV 100 ) + ( year DIV 400 ) ) MOD 7
+    END dayOfYearEnd ;
+
+(* returns TRUE if year is a long year (i.e., has 53 weeks), FaLSE otherwise *)
+PROCEDURE isLongYear* ( year : INTEGER ) : BOOLEAN ;
+    BEGIN
+    (* year is a long year if 31st December is a Thursday
+     * or the first of January is a Thursday (and so the previous
+     * year had 31st December on a Wednesday)
+     *)
+    RETURN ( dayOfYearEnd( year     ) = THURSDAY  )
+        OR ( dayOfYearEnd( year - 1 ) = WEDNESDAY )
+    END isLongYear ;
+
+(* returns the day of the week of d/m/y *)
+PROCEDURE dayOfWeek* ( d, m, y : INTEGER ) : INTEGER ;
+    VAR     j, k, mm, yy, w1 : INTEGER;
+    BEGIN
+        mm := m;
+        yy := y;
+        IF mm <= 2 THEN
+            INC( mm, 12 );
+            DEC( yy )
+        END;
+        j := yy DIV 100;
+        k := yy MOD 100;
+        (* w1 is the day of the week, Saturday = 0, Sunday = 1, ... *)
+        w1 := ( d + ( ( mm + 1 ) * 26 ) DIV 10 + k + k DIV 4 + j DIV 4 + 5 * j ) MOD 7;
+        (* convert w1 to Sunday = 0, Monday = 1, ... *)
+        IF w1 = 0 THEN
+           w1 := SATURDAY
+        ELSE
+           w1 := w1 - 1
+        END
+    RETURN w1
+    END dayOfWeek ;
+
+(* Writes the date dd/mm/yyyy to standard output, in yyyy-mm-dd format *)
+PROCEDURE OutDate* ( dd, mm, yyyy : INTEGER ) ;
+BEGIN
+    Out.Int( yyyy, 4 );
+    IF mm < 10 THEN Out.String( "-0" ) ELSE Out.String( "-1" ) END;
+    Out.Int( mm MOD 10, 1 );
+    IF dd < 10 THEN Out.String( "-0" ) ELSE Out.String( "-" ) END;
+    Out.Int( dd, 1 )
+END OutDate ;
+
+(* Writes the name of day to standard output *)
+PROCEDURE OutDayName* ( day : INTEGER ) ;
+BEGIN
+    IF    day = SUNDAY    THEN Out.String( "Sunday"    )
+    ELSIF day = MONDAY    THEN Out.String( "Monday"    )
+    ELSIF day = TUESDAY   THEN Out.String( "Tuesday"   )
+    ELSIF day = WEDNESDAY THEN Out.String( "Wednesday" )
+    ELSIF day = THURSDAY  THEN Out.String( "Thursday"  )
+    ELSIF day = FRIDAY    THEN Out.String( "Friday"    )
+    ELSIF day = SATURDAY  THEN Out.String( "Saturday"  )
+    ELSE                       Out.String( "Invaliday" )
+    END
+END OutDayName ;
 
 END Dates.

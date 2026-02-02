@@ -1,7 +1,7 @@
 var [const] MsgHash=Import("zklMsgHash"), Curl=Import("zklCurl");
 
 icon:=Curl().get("http://rosettacode.org/favicon.ico"); //-->(Data(4,331),693,0)
-icon=icon[0][icon[1],*];	// remove header
+icon=icon[0][icon[1],*];    // remove header
 iconEncoded:=MsgHash.base64encode(icon);
 iconDecoded:=MsgHash.base64decode(iconEncoded);
 File("rosettaCodeIcon.ico","wb").write(iconDecoded); # eyeball checking says good

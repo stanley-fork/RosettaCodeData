@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'ABUNDANT, DEFICIENT AND PERFECT NUMBER CLASSIFICATIONS'
 say version
@@ -24,7 +24,4 @@ say Format(d,5) 'numbers are deficient '
 say Time('e') 'seconds'
 exit
 
-include Numbers
-include Functions
-include Special
-include Abend
+include Math

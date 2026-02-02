@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'MAGIC CONSTANT'
 say version
@@ -56,7 +56,4 @@ say Format(Time('e'),,3) 'seconds'
 say
 return
 
-include Functions
-include Sequences
-include Numbers
-include Abend
+include Math

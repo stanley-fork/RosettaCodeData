@@ -7,10 +7,10 @@ nws:=words.values.pump(List,fcn(ws){ //-->( (len,words), ...)
    if(ws.len()>1){ // two or more anagrams
       r:=List(); n:=ws[0].len(); // length of these anagrams
       foreach idx,w in (ws.enumerate()){
-	 foreach w2 in (ws[idx+1,*]){
-	    if(Utils.zipWith('!=,w,w2).filter().len()==n)
-	       r.write(T(w,w2));
-	 }
+     foreach w2 in (ws[idx+1,*]){
+        if(Utils.zipWith('!=,w,w2).filter().len()==n)
+           r.write(T(w,w2));
+     }
       }
       if(r) return(r.insert(0,n));
    }

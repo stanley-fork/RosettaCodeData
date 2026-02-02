@@ -1,5 +1,7 @@
+use std::fs::read_to_string;
+
 fn main() {
-    let wordsfile = fs::read_to_string("unixdict.txt").unwrap().to_lowercase();
+    let wordsfile = read_to_string("unixdict.txt").unwrap().to_lowercase();
     let wheel = "ndeokgelw".to_string();
     let middle = &wheel[4..=4];
 

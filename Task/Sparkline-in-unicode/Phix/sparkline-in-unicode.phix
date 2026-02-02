@@ -1,30 +1,28 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #7060A8;">requires</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1.0.2"</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- (a fix for JS)</span>
- <span style="color: #008080;">include</span> <span style="color: #000000;">builtins</span><span style="color: #0000FF;">\</span><span style="color: #000000;">unicode_console</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+with javascript_semantics
+requires("1.0.2") -- (a fix for JS)
+include builtins\unicode_console.e
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">tests</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"0 1 19 20"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"0 0 1 1"</span><span style="color: #0000FF;">,</span>
-                   <span style="color: #008000;">"0 999 4000 4999 7000 7999"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"1 1 2 2 3 3"</span><span style="color: #0000FF;">,</span>
-                   <span style="color: #008000;">"1 2 3 4 5 6 7 8 7 6 5 4 3 2 1"</span><span style="color: #0000FF;">,</span>
-                   <span style="color: #008000;">"1.5, 0.5 3.5, 2.5 5.5, 4.5 7.5, 6.5"</span><span style="color: #0000FF;">}</span>
+constant tests = {"0 1 19 20", "0 0 1 1",
+                  "0 999 4000 4999 7000 7999", "1 1 2 2 3 3",
+                  "1 2 3 4 5 6 7 8 7 6 5 4 3 2 1",
+                  "1.5, 0.5 3.5, 2.5 5.5, 4.5 7.5, 6.5"}
 
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">ti</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split_any</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #008000;">" ,"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #0000FF;">{{</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]}}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">scanf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">],</span><span style="color: #008000;">"%f"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">mn</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">min</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">),</span>
-          <span style="color: #000000;">mx</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">),</span>
-          <span style="color: #000000;">range</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">mx</span><span style="color: #0000FF;">-</span><span style="color: #000000;">mn</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Min :%g, Max :%g, Range :%g\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mn</span><span style="color: #0000FF;">,</span><span style="color: #000000;">mx</span><span style="color: #0000FF;">,</span><span style="color: #000000;">range</span><span style="color: #0000FF;">})</span>
+for i=1 to length(tests) do
+    sequence ti = split_any(tests[i]," ,")
+    for j=1 to length(ti) do
+        {{ti[j]}} = scanf(ti[j],"%f")
+    end for
+    atom mn = min(ti),
+         mx = max(ti),
+         range = mx-mn
+    printf(1,"Min :%g, Max :%g, Range :%g\n",{mn,mx,range})
 
-     <span style="color: #008080;">if</span> <span style="color: #000000;">unicode_console</span><span style="color: #0000FF;">()</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">ti</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">#2581</span> <span style="color: #0000FF;">+</span> <span style="color: #7060A8;">min</span><span style="color: #0000FF;">(</span><span style="color: #000000;">7</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">((</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">mn</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">range</span><span style="color: #0000FF;">*</span><span style="color: #000000;">8</span><span style="color: #0000FF;">))</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">utf32_to_utf8</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"unicode is not supported\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+    if unicode_console() then
+        for j=1 to length(ti) do
+            ti[j] = #2581 + min(7,floor((ti[j]-mn)/range*8))
+        end for
+        printf(1,"%s\n",{utf32_to_utf8(ti)})
+    else
+        puts(1,"unicode is not supported\n")
+    end if
+end for

@@ -1,11 +1,11 @@
 import extensions;
 
-public program()
+public Program()
 {
     var i := 0u;
     while (true)
     {
-        console.printLine(i);
+        Console.printLine(i);
 
         i += 1u
     }

@@ -31,7 +31,7 @@ class Yaccer(object):
    def o2( self, operchar ):
       # Operator character or open paren in state1
       def openParen(a,b):
-         return 0		# function should not be called
+         return 0       # function should not be called
 
       opDict= { '+': ( operator.add, 2, 2 ),
          '-': (operator.sub, 2, 2 ),
@@ -56,7 +56,7 @@ class Yaccer(object):
       # reduce node until matching open paren found
       self.redeuce( 1 )
       if len(self.operstak)>0:
-         self.operstak.pop()		# pop off open parenthesis
+         self.operstak.pop()        # pop off open parenthesis
       else:
          print 'Error - no open parenthesis matches close parens.'
       self.__dict__.update(self.state2)

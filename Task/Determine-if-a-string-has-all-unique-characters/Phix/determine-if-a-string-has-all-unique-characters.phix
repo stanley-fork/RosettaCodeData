@@ -1,40 +1,39 @@
-(phixonline)-->
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">all_uniq</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">chars</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">posns</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{},</span>
-              <span style="color: #000000;">multi</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">lm</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">si</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span>
-                 <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">si</span><span style="color: #0000FF;">,</span><span style="color: #000000;">chars</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">chars</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">si</span>
-             <span style="color: #000000;">posns</span> <span style="color: #0000FF;">&=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">}}</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #000000;">posns</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">i</span>
-             <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">posns</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">])=</span><span style="color: #000000;">2</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000000;">multi</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">k</span>
-                 <span style="color: #000000;">lm</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">msg</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"\"%s\" (length %d): "</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)}),</span>
-            <span style="color: #000000;">nod</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">ordinal</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lm</span><span style="color: #0000FF;">,</span><span style="color: #004600;">true</span><span style="color: #0000FF;">),</span>
-            <span style="color: #000000;">ess</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"s"</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">lm</span><span style="color: #0000FF;">></span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span>
-            <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lm</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?</span><span style="color: #008000;">"all characters are unique"</span>
-                          <span style="color: #0000FF;">:</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"contains %s duplicate%s:"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">nod</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ess</span><span style="color: #0000FF;">}))</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">})</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">msg</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">multi</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">mi</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">multi</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span>
-                 <span style="color: #000000;">ci</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">chars</span><span style="color: #0000FF;">[</span><span style="color: #000000;">mi</span><span style="color: #0000FF;">]</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s '%c'(#%02x) at %V\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ci</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ci</span><span style="color: #0000FF;">,</span><span style="color: #000000;">posns</span><span style="color: #0000FF;">[</span><span style="color: #000000;">mi</span><span style="color: #0000FF;">]})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+with javascript_semantics
+procedure all_uniq(sequence s)
+    string chars = ""
+    sequence posns = {},
+             multi = {}
+    integer lm = 0
+    for i=1 to length(s) do
+        integer si = s[i],
+                k = find(si,chars)
+        if k=0 then
+            chars &= si
+            posns &= {{i}}
+        else
+            posns[k] &= i
+            if length(posns[k])=2 then
+                multi &= k
+                lm += 1
+            end if
+        end if
+    end for
+    string msg = sprintf("\"%s\" (length %d): ",{s,length(s)}),
+           nod = ordinal(lm,true),
+           ess = "s"[1..lm>1],
+           res = iff(lm=0?"all characters are unique"
+                         :sprintf("contains %s duplicate%s:",{nod,ess}))
+    printf(1,"%s %s\n",{msg,res})
+    res = repeat(' ',length(msg))
+    for i=1 to length(multi) do
+        integer mi = multi[i],
+                ci = chars[mi]
+        printf(1,"%s '%c'(#%02x) at %V\n",{res,ci,ci,posns[mi]})
+    end for
+    printf(1,"\n")
+end procedure
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">tests</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">""</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"."</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"abcABC"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"XYZ ZYX"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"1234567890ABCDEFGHIJKLMN0PQRSTUVWXYZ"</span><span style="color: #0000FF;">,</span>
-                   <span style="color: #008000;">"01234567890ABCDEFGHIJKLMN0PQRSTUVWXYZ0X"</span><span style="color: #0000FF;">,</span>
-                   <span style="color: #008000;">"   "</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"2"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"333"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"55"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"tttTTT"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"tTTTtt"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"4444 444k"</span><span style="color: #0000FF;">}</span>
- <span style="color: #7060A8;">papply</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">,</span><span style="color: #000000;">all_uniq</span><span style="color: #0000FF;">)</span>
-<!--
+constant tests = {"",".","abcABC","XYZ ZYX","1234567890ABCDEFGHIJKLMN0PQRSTUVWXYZ",
+                  "01234567890ABCDEFGHIJKLMN0PQRSTUVWXYZ0X",
+                  "   ","2","333","55","tttTTT","tTTTtt","4444 444k"}
+papply(tests,all_uniq)

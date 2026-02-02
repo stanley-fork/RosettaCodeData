@@ -26,11 +26,11 @@ analytic :: proc(){
 
 main :: proc() {
     fmt.println("Step: 2 Seconds")
-	ivp_euler(100.0, 2,100)
+    ivp_euler(100.0, 2,100)
     fmt.println("Step: 5 Seconds")
     ivp_euler(100.0, 5, 100)
     fmt.println("Step: 10 Seconds")
-	ivp_euler(100.0, 10, 100)
+    ivp_euler(100.0, 10, 100)
     fmt.println("Analytic")
     analytic()
 }

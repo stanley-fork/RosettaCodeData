@@ -68,8 +68,8 @@ if (!Array.prototype.map) {
 /* ------------------------------------- Generator -------------------------------------
  * Generates a fixed length gene sequence via a gene strategy object.
  * The gene strategy object must have two functions:
- *	- "create": returns create a new gene
- *	- "mutate(existingGene)": returns mutation of an existing gene
+ *  - "create": returns create a new gene
+ *  - "mutate(existingGene)": returns mutation of an existing gene
  */
 function Generator(length, mutationRate, geneStrategy) {
     this.size = length;
@@ -119,9 +119,9 @@ Population.prototype.spawn = function (parent) {
 /* ------------------------------------- Evolver -------------------------------------
  * Attempts to converge a population based a fitness strategy object.
  * The fitness strategy object must have three function
- *	- "score(individual)": returns a score for an individual.
- *	- "compare(scoreA, scoreB)": return true if scoreA is better (ie more fit) then scoreB
- *	- "done( score )": return true if score is acceptable (ie we have successfully converged).
+ *  - "score(individual)": returns a score for an individual.
+ *  - "compare(scoreA, scoreB)": return true if scoreA is better (ie more fit) then scoreB
+ *  - "done( score )": return true if score is acceptable (ie we have successfully converged).
  */
 function Evolver(size, generator, fitness) {
     this.done = false;

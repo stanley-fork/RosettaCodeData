@@ -2,7 +2,7 @@
 
 MainModule: {
     blocks: ["BO", "XK", "DQ", "CP", "NA", "GT", "RE", "TG", "QD", "FS",
-		"JW", "HU", "VI", "AN", "OB", "ER", "FS", "LY", "PC", "ZM"],
+      "JW", "HU", "VI", "AN", "OB", "ER", "FS", "LY", "PC", "ZM"],
     words: ["A","BARK","BOOK","TREAT","COMMON","SQUAD","CONFUSE"],
 
     testMake: Lambda<String Vector<String> Bool>(λ
@@ -16,7 +16,7 @@ MainModule: {
         )
         (ret false)
     ),
-	_start: (lambda
+   _start: (lambda
         (for word in words do
             (lout :boolalpha word " : "
                 (exec testMake word blocks))

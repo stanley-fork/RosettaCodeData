@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 
 say 'TOTIENT FUNCTION (PHI)'
 say version
@@ -92,8 +92,4 @@ end
 say
 return
 
-include Functions
-include Special
-include Numbers
-include Sequences
-include Abend
+include Math

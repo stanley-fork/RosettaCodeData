@@ -1,4 +1,10 @@
+# Experimental!
 # Greatest Common Divisor using Euclidean algorithm
-Gcd ← ⊙◌⍢(⟜◿:|±,)
+Gcd ← ⊙◌⍢(⤙˜◿|◡⋅±)
 # Least Common Multiple
 Lcm ← ÷⊃(Gcd|⌵×)
+Gcd 6 20
+# Experimental built-in GCD.
+∨ 6 20
+
+Lcm 14 15

@@ -38,7 +38,7 @@ extension op : IntNumber
     }
 }
 
-public program()
+public Program()
 {
-    console.printLine(5.zigzagMatrix()).readChar()
+    Console.printLine(5.zigzagMatrix()).readChar()
 }

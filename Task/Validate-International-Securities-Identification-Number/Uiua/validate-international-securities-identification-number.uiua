@@ -1,8 +1,8 @@
-Base ← "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-Luhn ← =0◿10+⊃(/+⊢|/+∵(⍥(-9)>9.×2)⊡1)⍉⬚0↯∞_2⇌
-Checksum ← Luhn≡⋕/◇⊂≡(□°⋕⊗)⊙(¤Base)
-Format ← ××⊃(/×≡(≥@A)↙2|=12⧻|/↧∊:Base)
-Valid ← ×⊃(Format|Checksum)
+Base     ← "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+Luhn     ← =0◿10+⊃(/+⊢|/+≡₀(⍥(-9)>9.×2)⊡1)⍉⬚0↯∞_2⇌
+Checksum ← Luhn≡⋕/◇⊂≡(□°⋕˜⨂)⊙(¤Base)
+Format   ← ××⊃(/×≡(≥@A)↙2|=12⧻|/↧˜∊:Base)
+Valid    ← ×⊃(Format|Checksum)
 
 Tests ← {
   "AU0000XVGZA3"

@@ -1,3 +1,10 @@
+from __future__ import print_function  # allows print() in Python 2
+import sys
+
+# Handle xrange compatibility
+if sys.version_info[0] < 3:
+    range = xrange
+
 DIFF_THRESHOLD = 1e-40
 
 class Fixed:
@@ -12,7 +19,7 @@ class Node:
         self.fixed = f
 
 def set_boundary(m):
-    m[1][1] = Node( 1.0, Fixed.A)
+    m[1][1] = Node(1.0, Fixed.A)
     m[6][7] = Node(-1.0, Fixed.B)
 
 def calc_difference(m, d):
@@ -20,8 +27,8 @@ def calc_difference(m, d):
     w = len(m[0])
     total = 0.0
 
-    for i in xrange(h):
-        for j in xrange(w):
+    for i in range(h):
+        for j in range(w):
             v = 0.0
             n = 0
             if i != 0:  v += m[i-1][j].voltage; n += 1
@@ -38,10 +45,10 @@ def calc_difference(m, d):
 def iter(m):
     h = len(m)
     w = len(m[0])
-    difference = [[Node() for j in xrange(w)] for i in xrange(h)]
+    difference = [[Node() for j in range(w)] for i in range(h)]
 
     while True:
-        set_boundary(m) # Enforce boundary conditions.
+        set_boundary(m)  # Enforce boundary conditions.
         if calc_difference(m, difference) < DIFF_THRESHOLD:
             break
         for i, di in enumerate(difference):
@@ -56,9 +63,7 @@ def iter(m):
 
     return (cur[Fixed.A] - cur[Fixed.B]) / 2.0
 
-def main():
+if __name__ == "__main__":
     w = h = 10
-    mesh = [[Node() for j in xrange(w)] for i in xrange(h)]
-    print "R = %.16f" % (2 / iter(mesh))
-
-main()
+    mesh = [[Node() for j in range(w)] for i in range(h)]
+    print("R = %.16f" % (2 / iter(mesh)))

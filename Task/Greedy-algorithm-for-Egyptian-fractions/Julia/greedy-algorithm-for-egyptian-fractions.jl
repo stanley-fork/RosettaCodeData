@@ -2,12 +2,16 @@ struct EgyptianFraction{T<:Integer} <: Real
     int::T
     frac::NTuple{N,Rational{T}} where N
 end
+EgyptianFraction{V}(r::Rational{T}) where {T, V} = convert(EgyptianFraction{V}, r)
+EgyptianFraction(r::Rational{T}) where T = convert(EgyptianFraction{T}, r)
+EgyptianFraction(r::Rational) = convert(EgyptianFraction, r)
 
+Base.Rational(ef::EgyptianFraction{T}) where T = convert(Rational{T}, ef)
 Base.show(io::IO, ef::EgyptianFraction) = println(io, "[", ef.int, "] ", join(ef.frac, " + "))
 Base.length(ef::EgyptianFraction) = !iszero(ef.int) + length(ef.frac)
 function Base.convert(::Type{EgyptianFraction{T}}, fr::Rational) where T
     fr, int::T = modf(fr)
-    fractions = Vector{Rational{T}}(0)
+    fractions = Rational{T}[]
     x::T, y::T = numerator(fr), denominator(fr)
     iszero(x) && return EgyptianFraction{T}(int, (x // y,))
     while x != one(x)
@@ -22,8 +26,7 @@ function Base.convert(::Type{EgyptianFraction{T}}, fr::Rational) where T
 end
 Base.convert(::Type{EgyptianFraction}, fr::Rational{T}) where T = convert(EgyptianFraction{T}, fr)
 Base.convert(::Type{EgyptianFraction{T}}, fr::EgyptianFraction) where T = EgyptianFraction{T}(convert(T, fr.int), convert.(Rational{T}, fr.frac))
-Base.convert(::Type{Rational{T}}, fr::EgyptianFraction) where T = T(fr.int) + sum(convert.(Rational{T}, fr.frac))
-Base.convert(::Type{Rational}, fr::EgyptianFraction{T}) where T = convert(Rational{T}, fr)
+Base.convert(::Type{Rational{T}}, fr::EgyptianFraction{V}) where {T, V} = T(fr.int) + sum(convert.(Rational{T}, fr.frac))
 
 @show EgyptianFraction(43 // 48)
 @show EgyptianFraction{BigInt}(5 // 121)

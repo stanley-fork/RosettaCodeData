@@ -1,39 +1,39 @@
-(phixonline)-->
- <span style="color: #008080;">function</span> <span style="color: #000000;">amb1</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">sets</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">idx</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>
-             <span style="color: #000000;">pass</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">idx</span><span style="color: #0000FF;">></span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sets</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">pass</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sets</span><span style="color: #0000FF;">))</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">sets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]][$]</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">or</span> <span style="color: #000000;">sets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">][</span><span style="color: #000000;">k</span><span style="color: #0000FF;">][</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">ch</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">k</span>
-                 <span style="color: #0000FF;">{</span><span style="color: #000000;">pass</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">amb1</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sets</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">pass</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">pass</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">sets</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #008000;">"the"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"that"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"a"</span><span style="color: #0000FF;">},</span>
-                  <span style="color: #0000FF;">{</span><span style="color: #008000;">"frog"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"elephant"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"thing"</span><span style="color: #0000FF;">},</span>
-                  <span style="color: #0000FF;">{</span><span style="color: #008000;">"walked"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"treaded"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"grows"</span><span style="color: #0000FF;">},</span>
-                  <span style="color: #0000FF;">{</span><span style="color: #008000;">"slowly"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"quickly"</span><span style="color: #0000FF;">}}</span>
- <span style="color: #0000FF;">{</span><span style="color: #004080;">integer</span> <span style="color: #000000;">pass</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">amb1</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sets</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">if</span> <span style="color: #000000;">pass</span> <span style="color: #008080;">then</span>
-     <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"success: "</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sets</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">sets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">][</span><span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]]</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #0000FF;">?</span><span style="color: #000000;">res</span>
- <span style="color: #008080;">else</span>
-     <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"failure\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-<!--
+function amb1(sequence sets, object res=0, integer idx=1)
+    integer ch = 0
+    bool pass = false
+    if idx>length(sets) then
+        pass = true
+    else
+        if res=0 then
+            res = repeat(0,length(sets))
+        else
+            res = deep_copy(res)
+            ch = sets[idx-1][res[idx-1]][$]
+        end if
+        for k=1 to length(sets[idx]) do
+            if ch=0 or sets[idx][k][1]=ch then
+                res[idx] = k
+                {pass,res} = amb1(sets,res,idx+1)
+                if pass then exit end if
+            end if
+        end for
+    end if
+    return {pass,res}
+end function
+
+sequence sets = {{"the","that","a"},
+                 {"frog","elephant","thing"},
+                 {"walked","treaded","grows"},
+                 {"slowly","quickly"}}
+{bool pass, sequence res} = amb1(sets)
+if pass then
+    puts(1,"success: ")
+    for i=1 to length(sets) do
+        res[i] = sets[i][res[i]]
+    end for
+    ?res
+else
+    puts(1,"failure\n")
+end if

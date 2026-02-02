@@ -1,7 +1,7 @@
 import extensions;
 import system'calendar;
 
-public program()
+public Program()
 {
-    console.printLine(Date.Now);
+    Console.printLine(Date.Now);
 }

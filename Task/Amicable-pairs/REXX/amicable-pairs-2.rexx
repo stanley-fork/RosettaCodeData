@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'AMICABLE PAIRS'
 say version
@@ -19,8 +19,4 @@ end
 say time('e') 'seconds'
 exit
 
-include Sequences
-include Numbers
-include Functions
-include Special
-include Abend
+include Math

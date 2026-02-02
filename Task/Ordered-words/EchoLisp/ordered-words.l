@@ -5,15 +5,15 @@
 (define (ordre words)
 (define wl 0)
 (define s 's)
-	(for/fold (len 0) ((w words))
-		(set! wl (string-length w))
-		#:continue (< wl len)
-		#:when (ordered? w)
-		#:continue (and (= len wl) (push s w))
-		(push (stack s) w) ;; start a new list of length wl
-		wl)
-	(stack->list s))
-	
+    (for/fold (len 0) ((w words))
+        (set! wl (string-length w))
+        #:continue (< wl len)
+        #:when (ordered? w)
+        #:continue (and (= len wl) (push s w))
+        (push (stack s) w) ;; start a new list of length wl
+        wl)
+    (stack->list s))
+
 ;; output
 (load 'unixdict)
 (ordre (text-parse unixdict))

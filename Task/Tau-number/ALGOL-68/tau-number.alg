@@ -1,4 +1,4 @@
-BEGIN # find tau numbers - numbers divisible by the count of theoir divisors #
+BEGIN # find tau numbers - numbers divisible by the count of their divisors  #
     # calculates the number of divisors of v                                 #
     PROC divisor count = ( INT v )INT:
          BEGIN

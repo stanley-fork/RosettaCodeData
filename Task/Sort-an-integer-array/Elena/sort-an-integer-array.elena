@@ -1,9 +1,9 @@
 import system'routines;
 import extensions;
 
-public program()
+public Program()
 {
-    var unsorted := new int[]{6, 2, 7, 8, 3, 1, 10, 5, 4, 9};
+    auto unsorted := new int[]{6, 2, 7, 8, 3, 1, 10, 5, 4, 9};
 
-    console.printLine(unsorted.clone().sort(ifOrdered).asEnumerable())
+    Console.printLine(unsorted.clone().sort(ifOrdered).asEnumerable())
 }

@@ -8,7 +8,7 @@ function void caesar_encode(message:ptr key:uint) {
       temp = + temp key// shift lowercase letters
       if > temp 'z' {
         temp = - temp 26ub
-      } ;		
+      } ;
     } {
       if in temp uppers {
         temp = + temp key// shift uppercase letters

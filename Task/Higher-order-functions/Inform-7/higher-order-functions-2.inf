@@ -1,5 +1,5 @@
 (function prepend-hello s
-  (str "Hello, " s))
+  "Hello, {s}")
 
 (function modify-string f s
   (f s))

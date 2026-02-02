@@ -40,5 +40,5 @@ F legpi(n)
    V a = legpi(Int(sqrt(n)))
    R phi(n, a) + a - 1
 
-L(e) 10
+L(e) 0.<10
    print(‘10^’e‘ ’legpi(10 ^ e))

@@ -1,7 +1,7 @@
 var
-	i: integer;
-	p: ^integer;
+   i: integer;
+   p: ^integer;
 begin
-	p := @i;
-	writeLn(p^);
+   p := @i;
+   writeLn(p^);
 end;

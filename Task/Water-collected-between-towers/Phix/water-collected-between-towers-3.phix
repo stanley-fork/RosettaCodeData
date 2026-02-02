@@ -1,25 +1,23 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #7060A8;">requires</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1.0.2"</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- (bugfix in p2js.js/$sidii(), 20/4/22)</span>
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">print_water</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">heights</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">l</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">towers</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #000000;">l</span><span style="color: #0000FF;">),</span><span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">l</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">heights</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">towers</span><span style="color: #0000FF;">[-</span><span style="color: #000000;">j</span><span style="color: #0000FF;">][</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'#'</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">></span><span style="color: #000000;">1</span> <span style="color: #008080;">and</span> <span style="color: #000000;">i</span><span style="color: #0000FF;"><</span><span style="color: #000000;">l</span> <span style="color: #008080;">then</span>
-             <span style="color: #004080;">integer</span> <span style="color: #000000;">lm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]),</span>
-                     <span style="color: #000000;">rm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..$]),</span>
-                     <span style="color: #000000;">m</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">min</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">rm</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">m</span> <span style="color: #008080;">do</span>
-                 <span style="color: #000000;">towers</span><span style="color: #0000FF;">[-</span><span style="color: #000000;">j</span><span style="color: #0000FF;">][</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'~'</span>
-                 <span style="color: #000000;">res</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s\ncollected:%d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">towers</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">),</span><span style="color: #000000;">res</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+with javascript_semantics
+requires("1.0.2") -- (bugfix in p2js.js/$sidii(), 20/4/22)
+procedure print_water(sequence heights)
+    integer res = 0, l = length(heights)
+    sequence towers = repeat(repeat(' ',l),max(heights))
+    for i=1 to l do
+        for j=1 to heights[i] do
+            towers[-j][i] = '#'
+        end for
+        if i>1 and i<l then
+            integer lm = max(heights[1..i-1]),
+                    rm = max(heights[i+1..$]),
+                    m = min(lm,rm)
+            for j=heights[i]+1 to m do
+                towers[-j][i] = '~'
+                res += 1
+            end for
+        end if
+    end for
+    printf(1,"%s\ncollected:%d\n",{join(towers,"\n"),res})
+end procedure
 
- <span style="color: #000000;">print_water</span><span style="color: #0000FF;">({</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">7</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">6</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">9</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">})</span>
-<!--
+print_water({5,3,7,2,6,4,5,9,1,2})

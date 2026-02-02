@@ -62,7 +62,7 @@ fn is_wordiff_change(new_word string, last_word string) bool  {
 }
 
 fn main() {
-    words := os.read_lines("unixdict.txt")?
+    words := os.read_lines("unixdict.txt")!
     time_limit := os.input("Time limit (sec) or 0 for none: ").int()
     players := os.input("Please enter player names, separated by commas: ").split(",")
 

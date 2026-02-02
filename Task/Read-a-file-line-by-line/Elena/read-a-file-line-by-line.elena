@@ -2,7 +2,7 @@ import system'io;
 import extensions;
 import extensions'routines;
 
-public program()
+public Program()
 {
-    File.assign("file.txt").forEachLine(printingLn)
+    File.assign("file.txt").forEachLine(PrintingLn)
 }

@@ -15,3 +15,5 @@ print @"character length:",len(s)
 print @"unicode length:",,len(s,_kLenUnicode)
 print @"byte length UTF8:",len(s,_kLenBytesUTF8)
 print @"byte length UTF16:",len(s,_kLenBytesUTF16)
+
+HandleEvents

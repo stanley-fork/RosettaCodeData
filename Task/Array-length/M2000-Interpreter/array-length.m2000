@@ -1,3 +1,34 @@
-\\ A is a pointer to array
+' A is a pointer to array
 A=("Apple", "Orange")
 Print  Len(A)=2  ' True
+Print Type$(A)="tuple"
+Dim A(10,2) as Byte=32, B(), C(10,2)
+Print Len(A())=20, Len(B())=0, Len(C())=20
+C(1,1)="String"
+C(2,0)=100, 3
+Dim C(6,2)
+Print Len(C())=12
+Print C(2,0)=100, C(2,1)=3, C(1,1)="String"
+B()=A   ' this is a copy
+A=(,)
+Print B(1)="Orange", Len(B())=2, Len(A)=0
+Print Type$(B())="mArray", Type$(A)="tuple"
+A=B()  ' now A point to B()
+Print Type$(A)="mArray"
+Print A(5,1)=32, Type$(A(5,1))="Byte"
+A=A() ' point to A() we address through A as a flat 1d array.
+Print Type$(A,0)="Byte", A#val(0)=32, A#sum()=32*20, A()#sum()=32*20
+Print Dimension(A())=2  ' Number of dimensions
+Print Dimension(A(), 1)=10, Dimension(A(), 2)=2  ' length for each dimension
+Print Dimension(A(), 1, 0)=0,  Dimension(A(), 1, 1)=9 ' lower and upper bound on 1st Dimension
+
+' RefArray type of Arrays (always 0 lower bound)
+Variant D[100]
+Print Len(D)=101, Type$(D)="RefArray"
+Byte F[9][1]
+Print Len(F)=10
+F[3][0]=111
+F[3][4]=105
+D[3]=F[3][]   ' copy a row from F[3] to D[3]
+F[3][0]++
+Print D[3][0]=111, D[3][4]=105, F[3][0]=112

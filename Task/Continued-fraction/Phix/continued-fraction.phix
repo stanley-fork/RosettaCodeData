@@ -1,25 +1,23 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">precision</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">10000</span>
+with javascript_semantics
+constant precision = 10000
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">continued_fraction</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">steps</span><span style="color: #0000FF;">=</span><span style="color: #000000;">precision</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">steps</span> <span style="color: #008080;">to</span> <span style="color: #000000;">1</span> <span style="color: #008080;">by</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #0000FF;">{</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">:=</span> <span style="color: #000000;">b</span> <span style="color: #0000FF;">/</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">a</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #0000FF;">{</span><span style="color: #000000;">a</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">a</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function continued_fraction(integer f, steps=precision)
+    atom a, b, res = 0
+    for n=steps to 1 by -1 do
+        {a, b} = f(n)
+        res := b / (a + res)
+    end for
+    {a} = f(0)
+    return a + res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">sqr2</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?</span><span style="color: #000000;">1</span><span style="color: #0000FF;">:</span><span style="color: #000000;">2</span><span style="color: #0000FF;">),</span><span style="color: #000000;">1</span><span style="color: #0000FF;">}</span> <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function sqr2(integer n) return {iff(n=0?1:2),1} end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">nap</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?</span><span style="color: #000000;">2</span><span style="color: #0000FF;">:</span><span style="color: #000000;">n</span><span style="color: #0000FF;">),</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">?</span><span style="color: #000000;">1</span><span style="color: #0000FF;">:</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)}</span> <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function nap(integer n) return {iff(n=0?2:n),iff(n=1?1:n-1)} end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">pi</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?</span><span style="color: #000000;">3</span><span style="color: #0000FF;">:</span><span style="color: #000000;">6</span><span style="color: #0000FF;">),</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)}</span> <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function pi(integer n) return {iff(n=0?3:6),power(2*n-1,2)} end function
 
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Precision: %d\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">precision</span><span style="color: #0000FF;">})</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Sqr(2):    %.10g\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">continued_fraction</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sqr2</span><span style="color: #0000FF;">)})</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Napier:    %.10g\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">continued_fraction</span><span style="color: #0000FF;">(</span><span style="color: #000000;">nap</span><span style="color: #0000FF;">)})</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Pi:        %.10g\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">continued_fraction</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pi</span><span style="color: #0000FF;">)})</span>
-<!--
+printf(1,"Precision: %d\n", {precision})
+printf(1,"Sqr(2):    %.10g\n", {continued_fraction(sqr2)})
+printf(1,"Napier:    %.10g\n", {continued_fraction(nap)})
+printf(1,"Pi:        %.10g\n", {continued_fraction(pi)})

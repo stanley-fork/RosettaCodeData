@@ -1,128 +1,122 @@
-(phixonline)-->
- <span style="color: #000080;font-style:italic;">--
- -- demo\rosetta\Pattern_matching.exw
- -- =================================
- --
- -- 1). Lightly modified copy of demo\rosetta\VisualiseTree.exw</span>
+-- demo\rosetta\Pattern_matching.exw
+--  Lightly modified copy of demo\rosetta\VisualiseTree.exw
+with javascript_semantics
 
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
+-- To the theme tune of the Milk Tray Ad iyrt,
+-- All because the Windows console hates utf8:
+constant TL = '\#DA', -- aka '┌'
+         VT = '\#B3', -- aka '│'
+         BL = '\#C0', -- aka '└'
+         HZ = '\#C4', -- aka '─'
+         HS = "\#C4"  -- (string version of HZ)
 
- <span style="color: #000080;font-style:italic;">-- To the theme tune of the Milk Tray Ad iyrt,
- -- All because the Windows console hates utf8:</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">TL</span> <span style="color: #0000FF;">=</span> '\<span style="color: #000000;">#DA</span>'<span style="color: #0000FF;">,</span> <span style="color: #000080;font-style:italic;">-- aka '┌'</span>
-          <span style="color: #000000;">VT</span> <span style="color: #0000FF;">=</span> '\<span style="color: #000000;">#B3</span>'<span style="color: #0000FF;">,</span> <span style="color: #000080;font-style:italic;">-- aka '│'</span>
-          <span style="color: #000000;">BL</span> <span style="color: #0000FF;">=</span> '\<span style="color: #000000;">#C0</span>'<span style="color: #0000FF;">,</span> <span style="color: #000080;font-style:italic;">-- aka '└'</span>
-          <span style="color: #000000;">HZ</span> <span style="color: #0000FF;">=</span> '\<span style="color: #000000;">#C4</span>'<span style="color: #0000FF;">,</span> <span style="color: #000080;font-style:italic;">-- aka '─'</span>
-          <span style="color: #000000;">HS</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"\#C4"</span>  <span style="color: #000080;font-style:italic;">-- (string version of HZ)</span>
+function w1252_to_utf8(string s)
+    if platform()!=WINDOWS then
+        s = substitute_all(s,{ TL, VT, BL, HZ},
+                             {"┌","│","└","─"})
+    end if
+    return s
+end function
+--</hates utf8>
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">w1252_to_utf8</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()!=</span><span style="color: #004600;">WINDOWS</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">substitute_all</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,{</span> <span style="color: #000000;">TL</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">VT</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BL</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">HZ</span><span style="color: #0000FF;">},</span>
-                              <span style="color: #0000FF;">{</span><span style="color: #008000;">"┌"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"│"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"└"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"─"</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #000080;font-style:italic;">--&lt;/hates utf8&gt;</span>
+procedure visualise_tree(object tree, string root=HS)
+    if atom(tree) then
+        puts(1,"<empty>\n")
+    else
+        object {colour,left,v,right} = tree
+        integer g = root[$]
+        if sequence(left) then
+            root[$] = iff(g=TL or g=HZ?' ':VT)
+            visualise_tree(left,root&TL)
+        end if
+        root[$] = g
+        printf(1,"%s%s%v\n",{w1252_to_utf8(root),colour,v})
+        if sequence(right) then
+            root[$] = iff(g=TL?VT:' ')
+            visualise_tree(right,root&BL)
+        end if
+    end if
+end procedure
+--</copy VisualiseTree>
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">visualise_tree</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">tree</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">root</span><span style="color: #0000FF;">=</span><span style="color: #000000;">HS</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #004080;">atom</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tree</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"&lt;empty&gt;\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #004080;">object</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">colour</span><span style="color: #0000FF;">,</span><span style="color: #000000;">left</span><span style="color: #0000FF;">,</span><span style="color: #000000;">v</span><span style="color: #0000FF;">,</span><span style="color: #000000;">right</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tree</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">g</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">root</span><span style="color: #0000FF;">[$]</span>
-         <span style="color: #008080;">if</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">left</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">root</span><span style="color: #0000FF;">[$]</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">g</span><span style="color: #0000FF;">=</span><span style="color: #000000;">TL</span> <span style="color: #008080;">or</span> <span style="color: #000000;">g</span><span style="color: #0000FF;">=</span><span style="color: #000000;">HZ</span><span style="color: #0000FF;">?</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">:</span><span style="color: #000000;">VT</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">visualise_tree</span><span style="color: #0000FF;">(</span><span style="color: #000000;">left</span><span style="color: #0000FF;">,</span><span style="color: #000000;">root</span><span style="color: #0000FF;">&</span><span style="color: #000000;">TL</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">root</span><span style="color: #0000FF;">[$]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">g</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s%s%v\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">w1252_to_utf8</span><span style="color: #0000FF;">(</span><span style="color: #000000;">root</span><span style="color: #0000FF;">),</span><span style="color: #000000;">colour</span><span style="color: #0000FF;">,</span><span style="color: #000000;">v</span><span style="color: #0000FF;">})</span>
-         <span style="color: #008080;">if</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">right</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">root</span><span style="color: #0000FF;">[$]</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">g</span><span style="color: #0000FF;">=</span><span style="color: #000000;">TL</span><span style="color: #0000FF;">?</span><span style="color: #000000;">VT</span><span style="color: #0000FF;">:</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">visualise_tree</span><span style="color: #0000FF;">(</span><span style="color: #000000;">right</span><span style="color: #0000FF;">,</span><span style="color: #000000;">root</span><span style="color: #0000FF;">&</span><span style="color: #000000;">BL</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
- <span style="color: #000080;font-style:italic;">--&lt;/copy VisualiseTree&gt;
+-- 2). Imagine the following is in a file, say algebraic_data_types.e - not quite generic enough
+--      for inclusion in builtins, but not exactly difficult to copy/maintain per-project either.
 
- -- 2). Imagine the following is in a file, say algebraic_data_types.e - not quite generic enough
- --      for inclusion in builtins, but not exactly difficult to copy/maintain per-project either.</span>
+function match_one(sequence key, object t)
+    sequence res = {}
+    if sequence(t)
+    and length(key)==length(t) then
+        for i=1 to length(key) do
+            object ki = key[i], ti = t[i]
+            if sequence(ki) and not string(ki) then
+                sequence r2 = match_one(ki,ti)
+                if r2={} then res = {} exit end if
+                res &= r2
+            else
+                if ki=0 then
+                    res = append(res,ti)
+                else
+                    if ki!=ti then res = {} exit end if
+                end if
+            end if
+        end for
+    end if
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">match_one</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">key</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #008080;">if</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">and</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">key</span><span style="color: #0000FF;">)==</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">key</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #004080;">object</span> <span style="color: #000000;">ki</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">key</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">ti</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-             <span style="color: #008080;">if</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ki</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #008080;">not</span> <span style="color: #004080;">string</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ki</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-                 <span style="color: #004080;">sequence</span> <span style="color: #000000;">r2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">match_one</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ki</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">r2</span><span style="color: #0000FF;">={}</span> <span style="color: #008080;">then</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">r2</span>
-             <span style="color: #008080;">else</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">ki</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-                     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ti</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">else</span>
-                     <span style="color: #008080;">if</span> <span style="color: #000000;">ki</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">ti</span> <span style="color: #008080;">then</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+/*global*/ function match_algebraic(sequence set, t)
+    sequence s
+    for i=1 to length(set) do
+        s = match_one(set[i],t)
+        if length(s) then exit end if
+    end for
+    return s
+end function
+--</algebraic_data_types.e>
 
- <span style="color: #000080;font-style:italic;">/*global*/</span> <span style="color: #008080;">function</span> <span style="color: #000000;">match_algebraic</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">set</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">set</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">match_one</span><span style="color: #0000FF;">(</span><span style="color: #000000;">set</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #000080;font-style:italic;">--&lt;/algebraic_data_types.e&gt;
+-- 3). The actual task
 
- -- 3). The actual task</span>
+constant B = "B", R = "R"
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">B</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"B"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">R</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"R"</span>
+function balance(sequence t)
+    sequence s = match_algebraic({{B,{R,{R,0,0,0},0,0},0,0},
+                                  {B,{R,0,0,{R,0,0,0}},0,0},
+                                  {B,0,0,{R,{R,0,0,0},0,0}},
+                                  {B,0,0,{R,0,0,{R,0,0,0}}}},t)
+    if length(s) then
+        object {a,x,b,y,c,z,d} = s
+        t = {R,{B,a,x,b},y,{B,c,z,d}}
+    end if
+    return t
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">balance</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">match_algebraic</span><span style="color: #0000FF;">({{</span><span style="color: #000000;">B</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">},</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">},</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">},</span>
-                                   <span style="color: #0000FF;">{</span><span style="color: #000000;">B</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">}},</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">},</span>
-                                   <span style="color: #0000FF;">{</span><span style="color: #000000;">B</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">},</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">}},</span>
-                                   <span style="color: #0000FF;">{</span><span style="color: #000000;">B</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">}}}},</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">object</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">B</span><span style="color: #0000FF;">,</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">},</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">B</span><span style="color: #0000FF;">,</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">}}</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">t</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function ins(object tree, object leaf)
+    if tree=NULL then
+        tree = {R,NULL,leaf,NULL}
+    else
+        object {c,l,k,r} = tree
+        if leaf!=k then
+            if leaf<k then l = ins(l,leaf)
+                      else r = ins(r,leaf)
+            end if
+            tree = balance({c,l,k,r})
+        end if
+    end if
+    return tree
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">ins</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">tree</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">leaf</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">tree</span><span style="color: #0000FF;">=</span><span style="color: #004600;">NULL</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">tree</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">R</span><span style="color: #0000FF;">,</span><span style="color: #004600;">NULL</span><span style="color: #0000FF;">,</span><span style="color: #000000;">leaf</span><span style="color: #0000FF;">,</span><span style="color: #004600;">NULL</span><span style="color: #0000FF;">}</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #004080;">object</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">l</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tree</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">leaf</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">k</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">leaf</span><span style="color: #0000FF;"><</span><span style="color: #000000;">k</span> <span style="color: #008080;">then</span> <span style="color: #000000;">l</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ins</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">,</span><span style="color: #000000;">leaf</span><span style="color: #0000FF;">)</span>
-                       <span style="color: #008080;">else</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ins</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,</span><span style="color: #000000;">leaf</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000000;">tree</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">balance</span><span style="color: #0000FF;">({</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">l</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r</span><span style="color: #0000FF;">})</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">tree</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function tree_insert(object tree, object leaf)
+    tree = ins(tree,leaf)
+    tree[1] = B
+    return tree
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">tree_insert</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">tree</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">leaf</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">tree</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ins</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tree</span><span style="color: #0000FF;">,</span><span style="color: #000000;">leaf</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">tree</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">B</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">tree</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+sequence stuff = shuffle(tagset(10))
+object tree = NULL
+for i=1 to length(stuff) do
+    tree = tree_insert(tree,stuff[i])
+end for
+visualise_tree(tree)
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">stuff</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">shuffle</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">))</span>
- <span style="color: #004080;">object</span> <span style="color: #000000;">tree</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">NULL</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">stuff</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #000000;">tree</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tree_insert</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tree</span><span style="color: #0000FF;">,</span><span style="color: #000000;">stuff</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #000000;">visualise_tree</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tree</span><span style="color: #0000FF;">)</span>
-
- <span style="color: #0000FF;">?</span><span style="color: #008000;">"done"</span>
- <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">wait_key</span><span style="color: #0000FF;">()</span>
-<!--
+?"done"
+{} = wait_key()

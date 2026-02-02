@@ -1,44 +1,42 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+with javascript_semantics
+include mpfr.e
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">lim</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">100</span><span style="color: #0000FF;">,</span>
-          <span style="color: #000000;">lim1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">lim</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span>
-          <span style="color: #000000;">last</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">12</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">l</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lim1</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">lim1</span> <span style="color: #008080;">do</span>
-     <span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_inits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lim1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpz_set_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">][</span><span style="color: #000000;">n</span><span style="color: #0000FF;">],</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">2</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">mpz_fac_ui</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">],</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #004080;">mpz</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">m100</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_inits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">lim</span> <span style="color: #008080;">do</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">mpz_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">],</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">])</span>
-         <span style="color: #7060A8;">mpz_fdiv_q</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">])</span>
-         <span style="color: #7060A8;">mpz_fdiv_q</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">])</span>
-         <span style="color: #7060A8;">mpz_fdiv_q</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">k</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">k</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Unsigned Lah numbers: l(n, k):\n n   k:"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">last</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%6d     "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n---    %s\n"</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">'-'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">last</span><span style="color: #0000FF;">*</span><span style="color: #000000;">11</span><span style="color: #0000FF;">+</span><span style="color: #000000;">6</span><span style="color: #0000FF;">))</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">last</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%2d "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%10s "</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">k</span><span style="color: #0000FF;">])})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">lim1</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">mpz</span> <span style="color: #000000;">l100k</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">[</span><span style="color: #000000;">lim1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">k</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_cmp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">l100k</span><span style="color: #0000FF;">,</span><span style="color: #000000;">m100</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">></span> <span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">m100</span><span style="color: #0000FF;">,</span><span style="color: #000000;">l100k</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\nThe maximum l(100,k): %s\n"</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">m100</span><span style="color: #0000FF;">)))</span>
-<!--
+constant lim = 100,
+         lim1 = lim+1,
+         last = 12
+sequence l = repeat(0,lim1)
+for n=1 to lim1 do
+    l[n] = mpz_inits(lim1)
+    mpz_set_si(l[n][n],1)
+    if n!=2 then
+        mpz_fac_ui(l[n][2],n-1)
+    end if
+end for
+mpz {t, m100} = mpz_inits(2)
+for n=1 to lim do
+    for k=1 to n do
+        mpz_mul(t,l[n+1][2],l[n][2])
+        mpz_fdiv_q(t, t, l[k+1][2])
+        mpz_fdiv_q(t, t, l[k][2])
+        mpz_fdiv_q(l[n+1][k+1], t, l[n-k+1][2])
+    end for
+end for
+printf(1,"Unsigned Lah numbers: l(n, k):\n n   k:")
+for i=0 to last do
+    printf(1,"%6d     ", i)
+end for
+printf(1,"\n---    %s\n",repeat('-',last*11+6))
+for n=0 to last do
+    printf(1,"%2d ", n)
+    for k=1 to n+1 do
+        printf(1,"%10s ",{mpz_get_str(l[n+1][k])})
+    end for
+    printf(1,"\n")
+end for
+for k=1 to lim1 do
+    mpz l100k = l[lim1][k]
+    if mpz_cmp(l100k,m100) > 0 then
+        mpz_set(m100,l100k)
+    end if
+end for
+printf(1,"\nThe maximum l(100,k): %s\n",shorten(mpz_get_str(m100)))

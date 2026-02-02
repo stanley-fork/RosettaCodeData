@@ -1,5 +1,5 @@
--- 25 Apr 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 numeric digits 20
 arg xx
 if xx = '' then
@@ -27,7 +27,7 @@ procedure expose prim. fcto.
 arg xx
 say '  n: Wilson primes'
 say '--------------------'
-do n = 1 to 301
+do n = 1 to 50
    a = Right(n,3)':'
    do i = 1 to prim.0
       if Wilson(n,prim.i) then
@@ -55,7 +55,4 @@ if (p2+pr-(-1)**n)//p2 = 0 then
 else
    return 0
 
-include Sequences
-include Functions
-include Helper
-include Abend
+include Math

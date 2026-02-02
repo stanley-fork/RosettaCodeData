@@ -71,7 +71,7 @@ F neighbours_tuple(x, y, image)
 
 F transitions(neighbours)
    V s = 0
-   L(i) 7
+   L(i) 0.<7
       s += Int((neighbours[i], neighbours[i + 1]) == (0, 1))
    R s + Int((neighbours[7], neighbours[0]) == (0, 1))
 

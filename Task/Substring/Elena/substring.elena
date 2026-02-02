@@ -1,6 +1,6 @@
 import extensions;
 
-public program()
+public Program()
 {
     var s := "0123456789";
     var n := 3;
@@ -8,9 +8,9 @@ public program()
     var c := $51;
     var z := "345";
 
-    console.writeLine(s.Substring(n, m));
-    console.writeLine(s.Substring(n, s.Length - n));
-    console.writeLine(s.Substring(0, s.Length - 1));
-    console.writeLine(s.Substring(s.indexOf(0, c), m));
-    console.writeLine(s.Substring(s.indexOf(0, z), m))
+    Console.writeLine(s.Substring(n, m));
+    Console.writeLine(s.Substring(n, s.Length - n));
+    Console.writeLine(s.Substring(0, s.Length - 1));
+    Console.writeLine(s.Substring(s.indexOf(0, c), m));
+    Console.writeLine(s.Substring(s.indexOf(0, z), m))
 }

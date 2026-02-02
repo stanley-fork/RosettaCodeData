@@ -3,11 +3,11 @@ open "unixdict.txt" for reading as #1
 repeat
     line input #1 pal$
     if instr(pal$, "ie") then
-		if instr(pal$, "cie") then CI = CI + 1 else XI = XI + 1 : fi
-	endif
+      if instr(pal$, "cie") then CI = CI + 1 else XI = XI + 1 : fi
+   endif
     if instr(pal$, "ei") then
-		if instr(pal$, "cei") then CE = CE + 1 else XE = XE + 1 : fi
-	endif
+      if instr(pal$, "cei") then CE = CE + 1 else XE = XE + 1 : fi
+   endif
 until eof(1)
 close #1
 

@@ -1,3 +1,7 @@
+//
+// M A Y A N  C A L E N D A R
+// Using FutureBasic 7.0.33, January 2025 R.W.
+//
 //=================================================================
 // Convert Gregorian to real Julian Date (not JDE)
 // 				 on entry Gregorian M = month, D = day, Y = YYYY

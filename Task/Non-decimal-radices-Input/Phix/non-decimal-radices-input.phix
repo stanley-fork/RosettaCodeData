@@ -1,16 +1,14 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">to_integer</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1234"</span><span style="color: #0000FF;">)</span>             <span style="color: #000080;font-style:italic;">-- 1234</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">to_integer</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"10101010"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>     <span style="color: #000080;font-style:italic;">-- 170, 0 on failure</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">to_number</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"FFFFFFFF"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"?"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">16</span><span style="color: #0000FF;">)</span>   <span style="color: #000080;font-style:italic;">-- 4294967295.0, "?" on failure</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">scanf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"#FFFFFFFF"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%f"</span><span style="color: #0000FF;">)</span>        <span style="color: #000080;font-style:italic;">-- <nowiki>{{</nowiki>4294967295.0<nowiki>}}</nowiki>, {} on failure</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">scanf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"0o377"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%o"</span><span style="color: #0000FF;">)</span>            <span style="color: #000080;font-style:italic;">-- <nowiki>{{</nowiki>255<nowiki>}}</nowiki></span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">scanf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1234"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">)</span>             <span style="color: #000080;font-style:italic;">-- <nowiki>{{</nowiki>1234<nowiki>}}</nowiki></span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
- <span style="color: #004080;">mpz</span> <span style="color: #000000;">z</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">()</span>
- <span style="color: #7060A8;">mpz_set_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"377"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">8</span><span style="color: #0000FF;">)</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>                 <span style="color: #000080;font-style:italic;">-- "255"</span>
- <span style="color: #004080;">mpfr</span> <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">()</span>
- <span style="color: #7060A8;">mpfr_set_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"110.01"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">mpfr_get_fixed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">)</span>              <span style="color: #000080;font-style:italic;">-- "6.25" (which is correct in decimal)</span>
-<!--
+with javascript_semantics
+?to_integer("1234")             -- 1234
+?to_integer("10101010",0,2)     -- 170, 0 on failure
+?to_number("FFFFFFFF","?",16)   -- 4294967295.0, "?" on failure
+?scanf("#FFFFFFFF","%f")        -- {{4294967295.0}}, {} on failure
+?scanf("0o377","%o")            -- {{255}}
+?scanf("1234","%d")             -- {{1234}}
+include mpfr.e
+mpz z = mpz_init()
+mpz_set_str(z,"377",8)
+?mpz_get_str(z)                 -- "255"
+mpfr f = mpfr_init()
+mpfr_set_str(f,"110.01",2)
+?mpfr_get_fixed(f)              -- "6.25" (which is correct in decimal)

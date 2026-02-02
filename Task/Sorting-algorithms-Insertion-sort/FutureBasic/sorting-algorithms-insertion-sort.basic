@@ -1,5 +1,6 @@
 //
-// Insertion Sort in FutureBasic
+// Insertion Sort
+// Using FutureBasic 7.0.34, July 2025 R.W
 //
 
 _maxDim = 99  // size of array

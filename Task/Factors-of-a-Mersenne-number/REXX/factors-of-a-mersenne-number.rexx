@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'FACTORS OF A MERSENNE NUMBER'
 say version
@@ -7,7 +7,7 @@ say
 numeric digits 300
 n = Primes(1000)
 do i = 1 to n
-   x = prim.i
+   x = Prim.i
    select
       when (x >= 2 & x <= 83) then
          call Task x
@@ -17,11 +17,11 @@ do i = 1 to n
          nop
    end
 end
-say; say Format(Time('e'),,3) 'seconds'
+call Timer
 exit
 
 Task:
-procedure
+procedure expose Memo.
 arg x
 a = x; a = 'M'a; m = 2**x
 do k = 1 by 2*x to Isqrt(m)
@@ -44,6 +44,4 @@ if c <> 1 then
    say a 'is prime'
 return
 
-include Functions
-include Sequences
-Include Abend
+include Math

@@ -1,37 +1,35 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #7060A8;">requires</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1.0.0"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+with javascript_semantics
+requires("1.0.0") -- mpz_pollard_rho
+include mpfr.e
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">test</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">lastp</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">}</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">while</span> <span style="color: #004600;">true</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">substitute</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"_"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">""</span><span style="color: #0000FF;">)</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">rr</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_pollard_rho</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rr</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rr</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"_"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">niter</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">1</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">iter</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">niter</span><span style="color: #0000FF;">></span><span style="color: #000000;">1</span><span style="color: #0000FF;">?</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"(%d)"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">niter</span><span style="color: #0000FF;">):</span><span style="color: #008000;">""</span><span style="color: #0000FF;">),</span>
-            <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">></span><span style="color: #000000;">0.1</span><span style="color: #0000FF;">?</span><span style="color: #008000;">" ["</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)&</span><span style="color: #008000;">"]"</span><span style="color: #0000FF;">:</span><span style="color: #008000;">""</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"HP%d%s = "</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">iter</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">niter</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s%d %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">e</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #000000;">niter</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">niter</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">1</span>
-             <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%sHP%s(%d)\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #000000;">niter</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">))</span>
-                 <span style="color: #000000;">s</span><span style="color: #0000FF;">[-</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'='</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s%s %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">[$],</span><span style="color: #000000;">e</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
- <span style="color: #7060A8;">papply</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">20</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)&</span><span style="color: #000000;">65</span><span style="color: #0000FF;">,</span><span style="color: #000000;">test</span><span style="color: #0000FF;">)</span>
-<!--
+procedure test(integer n)
+    string s = sprintf("%d",n), lastp = ""
+    sequence res = {s}
+    atom t0 = time()
+    while true do
+        s = substitute(s,"_","")
+        sequence rr = mpz_pollard_rho(s,true)
+        if length(rr)=1 then exit end if
+        s = join(rr,"_")
+        res = append(res,s)
+    end while
+    atom t = time()-t0
+    integer niter = length(res)-1
+    string iter = iff(niter>1?sprintf("(%d)",niter):""),
+           e = iff(t>0.1?" ["&elapsed(t)&"]":"")
+    s = sprintf("HP%d%s = ",{n,iter})
+    if niter=0 then
+        printf(1,"%s%d %s\n",{s,n,e})
+    else
+        for i=2 to niter do
+            niter -= 1
+            printf(1,"%sHP%s(%d)\n",{s,res[i],niter})
+            if i=2 then
+                s = repeat(' ',length(s))
+                s[-2] = '='
+            end if
+        end for
+        printf(1,"%s%s %s\n",{s,res[$],e})
+    end if
+end procedure
+papply(tagset(20,2)&65,test)

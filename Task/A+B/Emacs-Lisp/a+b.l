@@ -1,5 +1,0 @@
-(let* ((input (read-from-minibuffer ""))
-       (numbers (mapcar #'string-to-number (split-string input)))
-       (a (car numbers))
-       (b (cadr numbers)))
-  (message "%d" (+ a b)))

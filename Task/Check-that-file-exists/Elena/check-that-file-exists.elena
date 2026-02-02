@@ -7,7 +7,7 @@ extension op
         = self.Available.iif("exists","not found");
 }
 
-public program()
+public Program()
 {
     Console.printLine("input.txt file ",File.assign("input.txt").validatePath());
 

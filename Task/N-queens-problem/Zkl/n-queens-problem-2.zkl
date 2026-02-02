@@ -1,3 +1,8 @@
-queens := queensN(4);
+N, queens := 4, queensN(N);
 println(queens.len()," solution(s):");
-queens.apply2(Console.println);
+foreach s in (queens){
+   println(s,":");
+   b = (b := List.createLong(N,"-")).apply(b.copy); // NxN array
+   s.apply2('wrap([(r,c)]){ b[r - 1][c - 1] = "Q" });
+   b.apply("concat","").concat("\n").println();
+}

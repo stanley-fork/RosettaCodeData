@@ -1,3 +1,5 @@
+val fun = fn a, b, c: [b, b * c + a]
+
 val solvePell = fn(n) {
     val x = trunc(n ^/ 2)
     var y, z, r = x, 1, x * 2
@@ -20,7 +22,7 @@ val C = fn(x) {
     if s[1] == '-' {
         neg, s = "-", less(s, of=1)
     }
-    neg ~ join(split(s, by=-3), by=",")
+    neg ~ join(split(s, delim=-3), delim=",")
 }
 
 for n in [61, 109, 181, 277, 8941] {

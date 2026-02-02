@@ -6,7 +6,7 @@ void doublit(int *x)  { *x <<= 1; }
 bool iseven(const int x) { return (x & 1) ==  0; }
 
 int ethiopian(int plier,
-	      int plicand, const bool tutor)
+          int plicand, const bool tutor)
 {
   int result=0;
 

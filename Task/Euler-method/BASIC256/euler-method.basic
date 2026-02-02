@@ -1,17 +1,17 @@
 print "Time    ";
 tiempo = 0.0
 while tiempo <= 100.1
-	print rjust(string(tiempo), 5); "  ";
-	tiempo += 10.0
+    print rjust(string(tiempo), 5); "  ";
+    tiempo += 10.0
 end while
 print
 
 print "Dif eq  ";
 tiempo = 0.0
 while tiempo <= 100.1
-	temperatura = 20.0 + (100.0-20.0) * exp(-0.07*tiempo)
-	print rjust(left(string(temperatura), 5), 5); "  ";
-	tiempo += 10.0
+    temperatura = 20.0 + (100.0-20.0) * exp(-0.07*tiempo)
+    print rjust(left(string(temperatura), 5), 5); "  ";
+    tiempo += 10.0
 end while
 print
 
@@ -21,14 +21,14 @@ call Euler(10)
 end
 
 subroutine Euler(paso)
-	tiempo = 0
-	temperatura = 100.0
-	print "Step "; rjust(string(paso), 2); " ";
+    tiempo = 0
+    temperatura = 100.0
+    print "Step "; rjust(string(paso), 2); " ";
 
-	while tiempo <= 100
-		if (tiempo mod 10) = 0 then print rjust(left(string(temperatura), 5), 5); "  ";
-		temperatura += float(paso) * (-0.07*(temperatura-20.0))
-		tiempo += paso
-	end while
-	print
+    while tiempo <= 100
+        if (tiempo mod 10) = 0 then print rjust(left(string(temperatura), 5), 5); "  ";
+        temperatura += float(paso) * (-0.07*(temperatura-20.0))
+        tiempo += paso
+    end while
+    print
 end subroutine

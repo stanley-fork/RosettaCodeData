@@ -7,10 +7,10 @@ beginchar("D", 25pt#, 25pt#, 0pt#);
   for i = 1 upto dragoniter:
     for v = 1 step mstep until (2-mstep):
       if unknown z[v+mstep]:
-	pair t;
-	t := .7071[ z[v], z[v+2mstep] ];
-	z[v+mstep] = t rotatedaround(z[v], 45sg);
-	sg := -1*sg;
+    pair t;
+    t := .7071[ z[v], z[v+2mstep] ];
+    z[v+mstep] = t rotatedaround(z[v], 45sg);
+    sg := -1*sg;
       fi
     endfor
     mstep := mstep/2;

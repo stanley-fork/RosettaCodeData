@@ -1,24 +1,22 @@
-package main
+package doors
 
 import "core:fmt"
 
 main :: proc() {
- using fmt
+	doors: [100]bool
 
-  Door_State :: enum {Closed, Open}
+	for every_n := 1; every_n < len(doors); every_n += 1 {
+		i := every_n - 1
+		for true {
+			if i >= len(doors) do break
 
-  doors := [?]Door_State { 0..<100 = .Closed }
+			doors[i] = !doors[i]
 
-  for i in  1..=100 {
-    for j := i-1; j < 100; j += i {
-      if doors[j] == .Closed {
-        doors[j] = .Open
-      } else {
-        doors[j] = .Closed
-      }
-    }
-  }
-  for state, i in doors {
-    println("Door: ",int(i+1)," -> ",state)
-  }
+			i += every_n
+		}
+	}
+
+	for &door, i in doors {
+		if door do fmt.printf("%d ", i + 1)
+	}
 }

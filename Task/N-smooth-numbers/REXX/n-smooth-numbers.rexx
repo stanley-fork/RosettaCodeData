@@ -1,5 +1,5 @@
--- 25 Apr 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 
 say 'N-SMOOTH NUMBERS'
 say version
@@ -47,8 +47,4 @@ end
 say Format(Time('e'),,3) 'seconds'; say
 return
 
-include Sequences
-include Numbers
-include Functions
-include Constants
-include Abend
+include Math

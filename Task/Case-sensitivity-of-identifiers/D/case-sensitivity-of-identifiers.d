@@ -5,6 +5,6 @@ void main() {
     // identifiers that start with capital letters are type names
     string Dog = "Samba";
     string DOG = "Bernie";
-    writefln("There are three dogs named ",
-             dog, ", ", Dog, ", and ", DOG, "'");
+    writeln("There are three dogs named ",
+             dog, ", ", Dog, ", and ", DOG, ".");
 }

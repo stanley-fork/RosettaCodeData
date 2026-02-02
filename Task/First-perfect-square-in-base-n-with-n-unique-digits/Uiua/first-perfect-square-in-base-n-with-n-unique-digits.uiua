@@ -1,14 +1,11 @@
-Base₁₀ ← /+×ⁿ:⊙(⇌⇡⧻.)                # (b, [digits]) -> n
-BaseN ← ⊙◌⊂⍢(⊙⊂⌊⊃÷◿⊃⋅⋅∘⊙⊙∘|≤⊙⋅∘)⊙[]: # (b, n) -> [digits]
-
-IsPan ← =⧻◴: # IsPan 3 [0 1 2] -> true
+IsPan ← =⧻◴ # IsPan 3 [0 1 2] -> true
 # Smallest pan number for given base
 # will always be = [1 0 2 3 4...] in base n
-MinPanBase ← Base₁₀ ⟜(↙:⊂1_0↘2⇡+1.)
+MinPanBase ← ⌝⊥⊙⇌ ⟜(˜↙⊂1_0↘2⇡⊸+1)
 # Take sqrt of the smallest pan number and inc until found.
-MinPanSqrBase ← ⊙◌⍢(+1|¬IsPan:BaseN,×.) ⌊√MinPanBase.
+MinPanSqrBase ← ⊙◌⍢(+1|¬IsPan ⇌⊥⊃⋅∘⊙∘˙×) ⌊√⊸MinPanBase
 ShowMinPan ← (
-  ⊃(⊙∘|⋅(×.)|BaseN ⊙(×.)) ⟜MinPanSqrBase
+  ⊃(⊙∘|⋅˙×|⇌⊥ ⊙˙×) ⟜MinPanSqrBase
   &p $"Base _\t_\t_\t_\t"
 )
 ⍜now (≡ShowMinPan ↘2⇡13)

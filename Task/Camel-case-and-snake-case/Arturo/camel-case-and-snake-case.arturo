@@ -1,12 +1,11 @@
 camelToSnake: function [str][
-    i: new 0
-    result: new ""
+    i: 0
+    result: ""
     while [i < size str][
         ch: str\[i]
-        if? upper? ch [
-            'result ++ `_` ++ lower str\[i]
-        ]
-        else [
+        switch upper? ch [
+            'result ++ '_' ++ lower str\[i]
+        ][
             'result ++ str\[i]
         ]
 
@@ -16,15 +15,14 @@ camelToSnake: function [str][
 ]
 
 snakeToCamel: function [str][
-    i: new 0
-    result: new ""
+    i: 0
+    result: ""
     while [i < size str][
         ch: str\[i]
-        if? and? [ch=`_`][(i+1) < size str] [
+        switch and? [ch='_'][(i+1) < size str] [
             'result ++ upper str\[i+1]
             inc 'i
-        ]
-        else [
+        ][
             'result ++ str\[i]
         ]
 

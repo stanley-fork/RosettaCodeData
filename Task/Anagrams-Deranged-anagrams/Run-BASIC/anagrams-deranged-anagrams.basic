@@ -30,14 +30,14 @@ for i = 1 to n
     for j = 1 to n
       if ssWord$(i) = ssWord$(j) and i <> j then
         cnt = 0
-	for k = 1 to len(theWord$(i))
-	  if mid$(theWord$(i),k,1) = mid$(theWord$(j),k,1) then cnt = cnt + 1
-	next k
-	if cnt = 0 then
-	  maxLen = len(theWord$(i))
-	  maxPtrI = i
-	  maxPtrJ = j
-	end if
+    for k = 1 to len(theWord$(i))
+      if mid$(theWord$(i),k,1) = mid$(theWord$(j),k,1) then cnt = cnt + 1
+    next k
+    if cnt = 0 then
+      maxLen = len(theWord$(i))
+      maxPtrI = i
+      maxPtrJ = j
+    end if
       end if
     next j
   end if

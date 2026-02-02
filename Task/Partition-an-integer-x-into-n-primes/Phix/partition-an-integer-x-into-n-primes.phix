@@ -1,38 +1,37 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #7060A8;">requires</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1.0.2"</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- (join(fmt))</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">partition</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">v</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">idx</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">is_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">v</span><span style="color: #0000FF;">)?{</span><span style="color: #000000;">v</span><span style="color: #0000FF;">}:</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">while</span> <span style="color: #004600;">true</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">idx</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">np</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">get_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">idx</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">np</span><span style="color: #0000FF;">>=</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">v</span><span style="color: #0000FF;">/</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #004080;">object</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">partition</span><span style="color: #0000FF;">(</span><span style="color: #000000;">v</span><span style="color: #0000FF;">-</span><span style="color: #000000;">np</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">idx</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">prepend</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">np</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">0</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+requires("1.0.2") -- (join(fmt))
+function partition(integer v, n, idx=0)
+    if n=1 then
+        return iff(is_prime(v)?{v}:0)
+    end if
+    while true do
+        idx += 1
+        integer np = get_prime(idx)
+        if np>=floor(v/2) then exit end if
+        object res = partition(v-np, n-1, idx)
+        if sequence(res) then
+            res = prepend(res,np)
+            return res
+        end if
+    end while
+    return 0
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">tests</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">99809</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">18</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">19</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">20</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">2017</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">24</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">22699</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">22699</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">22699</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">22699</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">40355</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">}}</span>
+constant tests = {{99809, 1},
+                  {18, 2},
+                  {19, 3},
+                  {20, 4},
+                  {2017, 24},
+                  {22699, 1},
+                  {22699, 2},
+                  {22699, 3},
+                  {22699, 4},
+                  {40355, 3}}
 
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">integer</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">v</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tests</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">partition</span><span style="color: #0000FF;">(</span><span style="color: #000000;">v</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?</span><span style="color: #008000;">"not possible"</span><span style="color: #0000FF;">:</span><span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #008000;">" + "</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">:=</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">))</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Partition %d into %d primes: %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">v</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+for i=1 to length(tests) do
+    integer {v,n} = tests[i]
+    object res = partition(v,n)
+    string sep = iff(n<10?" + ":"+")
+    res = iff(res=0?"not possible":join(res,sep,fmt:="%d"))
+    printf(1,"Partition %d into %d primes: %s\n",{v,n,res})
+end for

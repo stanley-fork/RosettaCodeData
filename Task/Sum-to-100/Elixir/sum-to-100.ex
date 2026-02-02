@@ -1,21 +1,22 @@
 defmodule Sum do
   def to(val) do
-    generate
+    generate()
     |> Enum.map(&{eval(&1), &1})
     |> Enum.filter(fn {v, _s} -> v==val end)
     |> Enum.each(&IO.inspect &1)
   end
 
   def max_solve do
-    generate
+    generate()
     |> Enum.group_by(&eval &1)
-    |> Enum.filter_map(fn {k,_} -> k>=0 end, fn {k,v} -> {length(v),k} end)
+    |> Enum.filter(fn {k,_} -> k>=0 end)
+    |> Enum.map(fn {k,v} -> {length(v),k} end)
     |> Enum.max
     |> fn {len,sum} -> IO.puts "sum of #{sum} has the maximum number of solutions : #{len}" end.()
   end
 
   def min_solve do
-    solve = generate |> Enum.group_by(&eval &1)
+    solve = generate() |> Enum.group_by(&eval &1)
     Stream.iterate(1, &(&1+1))
     |> Enum.find(fn n -> solve[n]==nil end)
     |> fn sum -> IO.puts "lowest positive sum that can't be expressed : #{sum}" end.()
@@ -23,7 +24,7 @@ defmodule Sum do
 
   def  highest_sums(n\\10) do
     IO.puts "highest sums :"
-    generate
+    generate()
     |> Enum.map(&eval &1)
     |> Enum.uniq
     |> Enum.sort_by(fn sum -> -sum end)

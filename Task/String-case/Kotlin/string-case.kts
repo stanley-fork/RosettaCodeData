@@ -1,9 +1,9 @@
-// version 1.0.6
+// version 2.3.0
 
-fun main(args: Array<String>) {
+fun main() {
     val s = "alphaBETA"
-    println(s.toUpperCase())
-    println(s.toLowerCase())
-    println(s.capitalize())
-    println(s.decapitalize())
+    println(s.uppercase())
+    println(s.lowercase())
+    println(s.replaceFirstChar{ it.uppercase() })
+    println(s.replaceFirstChar{ it.lowercase() })
 }

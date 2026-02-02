@@ -15,7 +15,7 @@ scope # find unprimeable numbers - numbers which can't be made into a prime by c
     od;
 
     # returns true if n is unprimeable, false otherwise
-    local procedure isUnprimeable( n :: number ) :: boolean
+    local proc isUnprimeable( n :: number ) :: boolean
         local result := false;
         if   n < 100    then return false
         elif prime[ n ] then return false
@@ -63,7 +63,7 @@ scope # find unprimeable numbers - numbers which can't be made into a prime by c
     end
 
     # returns a string representation of n with commas, n must be an integer
-    local procedure commatise( n :: number ) :: string
+    local proc commatise( n :: number ) :: string
         local constant nStr    := tostring( abs n );
         local constant signStr := if n < 0 then "-" else "" fi;
         local constant cStr    := strings.reverse( strings.gsub( strings.reverse( nStr ), "%d%d%d", "%1," ) );

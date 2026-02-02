@@ -1,18 +1,17 @@
 function countunicode()
-    englishlettercodes = [Int(c) for c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"]
     count = 0
     az = ""
     AZ = ""
     for i in 0:0xffffff
-        if is_assigned_char(i)
-            count += 1
-        end
-        if i in englishlettercodes
+        if isvalid(Char, i)
             c = Char(i)
-            if islower(c)
-                az *= "$c"
-            else
-                AZ *= "$c"
+            count += 1
+            if i < 128 && isletter(c)
+                if islowercase(c)
+                    az *= "$c"
+                elseif isuppercase(c)
+                    AZ *= "$c"
+                end
             end
         end
     end
@@ -21,5 +20,5 @@ end
 
 unicodecount, lcletters, ucletters = countunicode()
 
-print("There are $unicodecount valid Chars and the English ones are ")
-println("lowercase: $lcletters and uppercase: $ucletters.")
+println("There are $unicodecount valid Chars and the ASCII English ones are:")
+println("lowercase: $lcletters  and uppercase: $ucletters  .")

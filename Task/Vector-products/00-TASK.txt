@@ -37,7 +37,14 @@ Given the three vectors:
 * &nbsp; Wikipedia &nbsp; [[wp:Dot product|dot product]]. 
 * &nbsp; Wikipedia &nbsp; [[wp:Cross product|cross product]]. 
 * &nbsp; Wikipedia &nbsp; [[wp:Triple product|triple product]].
-
+* &nbsp; Wikipedia &nbsp; [[wp:Hodge star operator|hodge star operator]]
+* &nbsp; Wikipedia &nbsp; [[wp:Inner product space|inner product space]]
+* &nbsp; Wikipedia &nbsp; [[wp:Outer product|outer product]]
+* &nbsp; Wikipedia &nbsp; [[wp:Interior product|interior product]]
+* &nbsp; Wikipedia &nbsp; [[wp:Exterior product|exterior product]]
+* &nbsp; Wikipedia &nbsp; [[wp:Wedge product|wedge product]]
+* &nbsp; Wikipedia &nbsp; [[wp:Curry product|curry product]]
+* &nbsp; Wikipedia &nbsp; [[wp:Pfaffian product|pfaffian product]]
 
 ;Related tasks:
 * &nbsp; [[Dot product]]

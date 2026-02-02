@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'LEGENDRE PRIME COUNTER (SIEVING)'
 say version
@@ -12,6 +12,4 @@ do n = 0 to 8
 end
 exit
 
-include Abend
-include Functions
-include Sequences
+include Math

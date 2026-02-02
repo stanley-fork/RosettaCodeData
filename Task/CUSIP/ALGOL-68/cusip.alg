@@ -1,44 +1,35 @@
-BEGIN
-    # returns TRUE if cusip is a valid CUSIP code #
-    OP ISCUSIP = ( STRING cusip )BOOL:
-       IF ( UPB cusip - LWB cusip ) /= 8
-       THEN
-           # code is wrong length #
-           FALSE
-       ELSE
-           # string is 9 characters long - check it is valid #
-           STRING cusip digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ*@#"[ AT 0 ];
-           INT check digit := 0;
-           IF NOT char in string( cusip[ UPB cusip ], check digit, cusip digits )
-           THEN
-               # invalid check digit #
-               FALSE
-           ELSE
-               # OK so far compare the calculated check sum to the supplied one #
-               INT sum := 0;
-               INT c pos := LWB cusip - 1;
-               FOR i TO 8 DO
-                   INT digit := 0;
-                   IF NOT char in string( cusip[ i + c pos ], digit, cusip digits )
-                   THEN
-                       # invalid digit #
-                       digit := -999
-                   FI;
-                   IF NOT ODD i
-                   THEN
-                       # even digit #
-                       digit *:= 2
-                   FI;
-                   sum +:= ( digit OVER 10 ) + ( digit MOD 10 )
-               OD;
-               ( 10 - ( sum MOD 10 ) ) MOD 10 = check digit
-           FI
-       FI ; # ISCUSIP #
+BEGIN # validate CUSIP codes #
+
+    # returns TRUE if cusip string is a valid CUSIP code, FALSE otherwise #
+    OP   ISCUSIP = ( STRING cusip string )BOOL:
+         IF UPB cusip string - LWB cusip string /= 8
+         THEN FALSE # CUSIP code is not 9 characters long #
+         ELSE       # CUSIP code has the correct length #
+
+            # returns the base 39 digit corresponding to a character of a CUSIP code #
+            PROC cusip digit = ( CHAR c char )INT:
+                 IF   STRING cusip digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ*@#"[ AT 0 ];
+                      INT digit := 0;
+                      char in string( c char, digit, cusip digits )
+                 THEN digit
+                 ELSE -999 # invalid digit #
+                 FI # cusip digit # ;
+
+            []CHAR cusip = cusip string[ AT 1 ];
+            INT sum := 0;
+            INT check digit = cusip digit( cusip[ UPB cusip ] );
+            FOR c pos TO UPB cusip - 1 DO
+                INT digit := cusip digit( cusip[ c pos ] );
+                IF NOT ODD c pos THEN digit *:= 2 FI;
+                sum +:= ( digit OVER 10 ) + ( digit MOD 10 )
+            OD;
+            ( 10 - ( sum MOD 10 ) ) MOD 10 = check digit
+         FI # is cusip # ;
 
     # task test cases #
 
     PROC test cusip = ( STRING cusip )VOID:
-        print( ( cusip, IF ISCUSIP cusip THEN " valid" ELSE " invalid" FI, newline ) );
+         print( ( cusip, IF ISCUSIP cusip THEN " valid" ELSE " invalid" FI, newline ) );
 
     test cusip( "037833100" );
     test cusip( "17275R102" );

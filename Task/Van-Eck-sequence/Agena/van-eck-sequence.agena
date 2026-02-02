@@ -2,7 +2,7 @@ scope # find elements of the Van Eck Sequence - first term is 0, following
       # terms are 0 if the previous was the first appearance of the element
       #        or how far back in the sequence the last element appeared otherwise
 
-    local procedure VanEck( n :: number ) :: sequence # returns the first n elements of the Van Eck sequence
+    local proc VanEck( n :: number ) :: sequence # returns the first n elements of the Van Eck sequence
         local constant result := seq(); for i to n do result[ i ] := 0 od;
         local constant pos    := seq(); for i to n + 1 do pos[ i ] := 0 od;
         for i from 2 to n do

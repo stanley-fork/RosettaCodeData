@@ -1,22 +1,20 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">collect_water</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">heights</span><span style="color: #0000FF;">)</span>
+with javascript_semantics
+function collect_water(sequence heights)
 
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">left_max</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">heights</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span>
-             <span style="color: #000000;">right_max</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">heights</span><span style="color: #0000FF;">[$]</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">left_height</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">right_height</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">)</span>
+    integer left_max = heights[1],
+            right_max = heights[$]
+    sequence left_height = deep_copy(heights),
+             right_height = deep_copy(heights)
 
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">left_max</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #000000;">left_max</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">left_height</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">left_max</span>
-         <span style="color: #000000;">right_max</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">[-</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #000000;">right_max</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">right_height</span><span style="color: #0000FF;">[-</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">right_max</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
+    for i=2 to length(heights)-1 do
+        left_max = max(heights[i],left_max)
+        left_height[i] = left_max
+        right_max = max(heights[-i],right_max)
+        right_height[-i] = right_max
+    end for
 
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">mins</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sq_min</span><span style="color: #0000FF;">(</span><span style="color: #000000;">left_height</span><span style="color: #0000FF;">,</span><span style="color: #000000;">right_height</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">diffs</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sq_sub</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mins</span><span style="color: #0000FF;">,</span><span style="color: #000000;">heights</span><span style="color: #0000FF;">)</span>
+    sequence mins = sq_min(left_height,right_height),
+             diffs = sq_sub(mins,heights)
 
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">sum</span><span style="color: #0000FF;">(</span><span style="color: #000000;">diffs</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
-<!--
+    return sum(diffs)
+end function

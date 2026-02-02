@@ -1,10 +1,10 @@
  #A translation of the C code posted
 html_table := proc(str)
-	local char;
+   local char;
      printf("<table>\n<tr><td>");
      for char in str do
          if char = "\n" then
-         	printf("</td></tr>\n<tr><td>")
+            printf("</td></tr>\n<tr><td>")
          elif char = "," then
           printf("</td><td>")
          elif char = "<" then
@@ -12,7 +12,7 @@ html_table := proc(str)
          elif char = ">" then
           printf("&gt;")
          elif char = "&" then
-         	printf("&amp;")
+            printf("&amp;")
          else
           printf(char)
          end if;

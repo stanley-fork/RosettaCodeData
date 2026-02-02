@@ -24,9 +24,9 @@ extension op
       = RomanDictionary.accumulate(new StringWriter("I", self), (m,kv => m.replace(new StringWriter("I",kv.Key).Value, kv.Value)));
 }
 
-public program()
+public Program()
 {
-    console.printLine("1990 : ", 1990.toRoman());
-    console.printLine("2008 : ", 2008.toRoman());
-    console.printLine("1666 : ", 1666.toRoman())
+    Console.printLine("1990 : ", 1990.toRoman());
+    Console.printLine("2008 : ", 2008.toRoman());
+    Console.printLine("1666 : ", 1666.toRoman())
 }

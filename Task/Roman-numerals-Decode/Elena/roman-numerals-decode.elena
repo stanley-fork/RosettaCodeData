@@ -38,9 +38,9 @@ extension op : String
     }
 }
 
-public program()
+public Program()
 {
-    console.printLine("MCMXC:  ", "MCMXC".toRomanInt());
-    console.printLine("MMVIII: ", "MMVIII".toRomanInt());
-    console.printLine("MDCLXVI:", "MDCLXVI".toRomanInt())
+    Console.printLine("MCMXC:  ", "MCMXC".toRomanInt());
+    Console.printLine("MMVIII: ", "MMVIII".toRomanInt());
+    Console.printLine("MDCLXVI:", "MDCLXVI".toRomanInt())
 }

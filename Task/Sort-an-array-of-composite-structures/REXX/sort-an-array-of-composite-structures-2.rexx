@@ -1,47 +1,32 @@
-include Settings
+-- 19 Jan 2026
+include Setting
 
-say 'SORT COMPOSITE ARRAY - 5 Mar 2025'
+say 'SORT COMPOSITE ARRAY'
 say version
 say
-call Create
-call Show 'Not ordered'
-call SortStateCity
-call Show 'By state and city'
-call SortPopCityN
-call Show 'By pop (numeric desc) and city'
-table = 'states.'; keys = 'pop. state.'; data = 'city.'
-call SortPopCityS table,keys,data
-call Show 'By pop (string) and city'
-table = 'states.'; keys = 'city. state.'; data = 'pop.'
-call SortCityState table,keys,data
-call Show 'By city and state'
-return
-
-Create:
-states = 'States.txt'
-call Stream states,'c','open read'
-states. = ''; n = 0
-do while lines(states) > 0
-   record = linein(states)
-   parse var record rstate','rcity','rpop
-   n = n+1; states.state.n = rstate; states.city.n = rcity; states.pop.n = rpop
-end
-call Stream states,'c','close'
-states.0 = n
-return
+call Stemread 'States.txt','states.state. states.city. states.pop.'
+call Show 'Not ordered','A'
+call Stemsort 'states.state. states.city.','states.pop.'
+call Show 'By state and city','A'
+call Stemsort 'states.pop.','states.state. states.city.'
+call Show 'By pop (desc)','D'
+exit
 
 Show:
 procedure expose states.
-arg header
-say center(header,53)
-say right('row',3) left('state',20) left('city',20) right('pop',7)
-do n = 1 to states.0
-   say right(n,3) left(states.state.n,20) left(states.city.n,20) right(states.pop.n,7)
+arg header,seq
+say Center(header,53)
+say Right('row',3) Left('state',20) Left('city',20) Right('pop',7)
+if seq='A' then do
+   a=1; i=1; z=states.0
+end
+else do
+   a=states.0; i=-1; z=1
+end
+do n=a by i to z
+   say Right(n,3) Left(states.state.n,20) Left(states.city.n,20) Right(states.pop.n,7)
 end
 say
 return
 
-include Quicksort21 [label]=SortStateCity [table]=states. [key1]=state. [key2]=city. [data1]=pop.
-include Quicksort21 [label]=SortPopCityN [table]=states. [key1]=pop. [key2]=city. [data1]=state. [lt]=> [gt]=<
-include Quicksort [label]=SortCityState
-include Quicksort [label]=SortPopCityS [lt]=<< [gt]=>>
+include Math

@@ -20,6 +20,6 @@ def ibwt:
   | length as $len
   | reduce range(0;$len) as $i ([];
         reduce range(0; $len) as $j (.;
-	.[$j] = $r[$j:$j+1] + .[$j]) | sort)
+    .[$j] = $r[$j:$j+1] + .[$j]) | sort)
   | first( .[] | select(endswith("\u0003")))
   | .[1:-1] ;

@@ -269,6 +269,7 @@ Tree *stmt() {
 
                 if (tok.tok != tk_Comma)
                     break;
+				/* I think there's should be "tok = gettok();" in this line - hinjolicious */
             }
             expect("Print", tk_Rparen);
             expect("Print", tk_Semi);

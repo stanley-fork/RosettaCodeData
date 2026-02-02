@@ -4,7 +4,8 @@ inSC <- function(x, y) {
     if(!x||!y) {return(1)}
     if(x%%3==1&&y%%3==1) {return(0)}
     x=x%/%3; y=y%/%3;
-  } return(0);
+  }
+  return(0);
 }
 ## Plotting Sierpinski carpet fractal. aev 4/1/17
 ## ord - order, fn - file name, ttl - plot title, clr - color

@@ -1,5 +1,5 @@
--- 8 Aug 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'ASSOCIATIVE ARRAY: MERGE'
 say version
@@ -10,6 +10,7 @@ call CreateUpdate
 call ShowUpdate
 call MergeBaseUpdate
 call ShowBase 'Merged'
+call DumpVariables
 exit
 
 CreateBase:
@@ -75,4 +76,4 @@ if WordPos(k,upda) = 0 then
 upda.k=v
 return
 
-include Abend
+include Math

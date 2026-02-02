@@ -1,7 +1,7 @@
 MODULE AdditivePrimes;
 
 IMPORT
-  Out;
+  Out, Primes;
 
 CONST
   Max = 500;
@@ -20,24 +20,8 @@ PROCEDURE DigitSum( n :INTEGER ):INTEGER;
   RETURN result
   END DigitSum;
 
-PROCEDURE Sieve;
-  VAR     i, j    :INTEGER;
-  BEGIN
-    Prime[ 0 ] := FALSE; Prime[ 1 ] := FALSE;
-    FOR i := 2 TO Max DO Prime[ i ] := TRUE END;
-    FOR i := 2 TO Max DIV 2 DO
-      IF Prime[ i ] THEN
-        j := i * 2;
-        WHILE j <= Max DO
-          Prime[ j ] := FALSE;
-          INC( j, i )
-        END
-      END
-    END
-  END Sieve;
-
 BEGIN
-  Sieve;
+  Primes.sieve( Prime );
   FOR n := 2 TO Max DO
     IF Prime[ n ] & Prime[ DigitSum( n ) ] THEN
       Out.Int( n, 4 );

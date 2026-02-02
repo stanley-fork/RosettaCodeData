@@ -6,5 +6,5 @@ VG8gZXJyIGlzIGh1bWFuLCBidXQgdG8gcmVhbGx5IGZvdWwgdGhpbmdzIHVwIHlvdSBuZWVkIGEgY29t
 
 if let decoded = Data(base64Encoded: input),
 let str = String(data: decoded, encoding: .utf8) {
-	print( str )
+    print( str )
 }

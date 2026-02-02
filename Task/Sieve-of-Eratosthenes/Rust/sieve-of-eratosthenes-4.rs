@@ -14,8 +14,8 @@ fn optimized_sieve(limit: usize) -> Box<Iterator<Item = usize>> {
             let mut cullpos = (p * p - 3) / 2;
             while cullpos < ndxlmt {
                 unsafe { // avoids array bounds check, which is already done above
-	            let cptr = cmpsts.get_unchecked_mut(cullpos >> 5);
-	            *cptr |= 1u32 << (cullpos & 31);
+               let cptr = cmpsts.get_unchecked_mut(cullpos >> 5);
+               *cptr |= 1u32 << (cullpos & 31);
                 }
 //                cmpsts[cullpos >> 5] |= 1u32 << (cullpos & 31); // with bounds check
                 cullpos += p;

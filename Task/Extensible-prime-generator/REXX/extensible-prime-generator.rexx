@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'EXTENSIBLE PRIME GENERATOR'
 say version
@@ -28,7 +28,7 @@ return
 
 Between100and150:
 procedure expose prim.
-say 'Prime numbers between 100 and 150 are:'
+say 'Prime numbers between 100...150 are:'
 n = 0
 do i = 1
    a = prim.i
@@ -46,7 +46,7 @@ return
 
 Between7700and8000:
 procedure expose prim.
-say 'Prime numbers between 77022 Mar 2025:'
+say 'Prime numbers between 7700...8000:'
 n = 0
 do i = 1
    a = prim.i
@@ -76,7 +76,4 @@ say 'The 5500000th prime is' prim.5500000
 say
 return
 
-include Functions
-include Sequences
-include Numbers
-include Abend
+include Math

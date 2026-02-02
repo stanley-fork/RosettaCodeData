@@ -1,5 +1,6 @@
-del input.txt
+@echo off
+echo n | del /f input.txt
 rd /s /q docs
 
-del \input.txt
+echo n | del /f \input.txt
 rd /s /q \docs

@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'ADDITIVE PRIMES'
 say version
@@ -22,7 +22,4 @@ say a 'additive primes found below' n
 say Time('e')/1 'seconds'
 exit
 
-include Sequences
-include Numbers
-include Functions
-include Abend
+include Math

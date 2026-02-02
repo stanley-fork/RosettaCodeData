@@ -20,7 +20,7 @@ fn (mut stack Stack) push(value f32) {
 	stack.depth++
 }
 
-fn (mut stack Stack) pop() ?f32 {
+fn (mut stack Stack) pop() !f32 {
 	if stack.depth > 0 {
 		stack.depth--
 		result := stack.data[stack.depth]
@@ -29,7 +29,7 @@ fn (mut stack Stack) pop() ?f32 {
 	return error('Stack Underflow!!')
 }
 
-fn (stack Stack) peek() ?f32 {
+fn (stack Stack) peek() !f32 {
 	if stack.depth > 0 {
 		result := stack.data[0]
 		return result
@@ -37,7 +37,7 @@ fn (stack Stack) peek() ?f32 {
 	return error('Out of Bounds...')
 }
 
-fn (mut stack Stack) rpn(input string) ?f32 {
+fn (mut stack Stack) rpn(input string) !f32 {
 	println('Input: $input')
 	tokens := input.split(' ')
 	mut a := f32(0)

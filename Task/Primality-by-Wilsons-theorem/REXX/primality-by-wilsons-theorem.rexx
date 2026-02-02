@@ -1,5 +1,5 @@
--- 28 Jul 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 numeric digits 10
 
 say 'PRIMALITY BY WILSON''S THEOREM'

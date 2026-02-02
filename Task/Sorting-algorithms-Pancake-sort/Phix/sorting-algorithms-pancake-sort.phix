@@ -1,21 +1,19 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
+with javascript_semantics
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">pancake_sort</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">to</span> <span style="color: #000000;">2</span> <span style="color: #008080;">by</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">m</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">largest</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">m</span><span style="color: #0000FF;"><</span><span style="color: #000000;">i</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">m</span><span style="color: #0000FF;">></span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">m</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">reverse</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">m</span><span style="color: #0000FF;">])</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">reverse</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">..</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function pancake_sort(sequence s)
+    s = deep_copy(s)
+    for i=length(s) to 2 by -1 do
+        integer m = largest(s[1..i],true)
+        if m<i then
+            if m>1 then
+                s[1..m] = reverse(s[1..m])
+            end if
+            s[1..i] = reverse(s[1..i])
+        end if
+    end for
+    return s
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">shuffle</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">))</span>
- <span style="color: #0000FF;">?</span> <span style="color: #000000;">s</span>
- <span style="color: #0000FF;">?</span> <span style="color: #000000;">pancake_sort</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-<!--
+constant s = shuffle(tagset(10))
+? s
+? pancake_sort(s)

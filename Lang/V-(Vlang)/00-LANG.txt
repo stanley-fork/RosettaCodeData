@@ -21,13 +21,15 @@ V is an easier to learn, read, and use language.
 
 [https://vlang.io V] first appeared in 2019 in a trial web sandbox, "The V Playground". 
 
-V's design has been influenced by Go, Oberon, Rust, Swift, Kotlin, and Python. [https://github.com/vlang/v/wiki/FAQ For V's FAQ] 
+V's design and history has been influenced by Go, C, Oberon, Rust, Swift, Kotlin, and Python.
 
-V's sources are published at [https://github.com/vlang/v GitHub], presently on version [https://github.com/vlang/v/releases 0.4.x].
+V's sources are published at [https://github.com/vlang/v GitHub], presently on version [https://github.com/vlang/v/releases 0.5.x].
+
+V's [https://github.com/vlang/v/wiki/FAQ FAQ] and [https://github.com/vlang/v/blob/master/ROADMAP.md roadmap] to see its validity, promise, and delivery of features.
 
 V's compiler tool is similar in implementation to a multi purpose command processor: ''prompt$ v help''
 
-V language review and documentation are [https://github.com/vlang/v/blob/master/doc/docs.md here]. 
+V language review and documentation is [https://github.com/vlang/v/blob/master/doc/docs.md here] for the professional, student, or as a hobby.
 
 ==Helpful links==
 * [https://en.everybodywiki.com/V_(programming_language) V in Wiki]
@@ -35,6 +37,7 @@ V language review and documentation are [https://github.com/vlang/v/blob/master/
 * [https://www.youtube.com/watch?v=pchEsYwA74Q V language overview and introduction] on behalf of the Sydney Computing Society
 * [https://www.youtube.com/watch?v=_dIAcNp9bJs V language overview and presentation] for IBM
 * Some of the code snippets are available at the archived [//github.com/v-community/v_rosetta V-Community (V Rosetta) GitHub]
+* For venturing into how to contribute, join, or help the V project can be found [https://github.com/vlang/v/blob/master/CONTRIBUTING.md#how-to-help-and-contribute-to-the-v-project here].
 * More info on the below can be found at [https://modules.vlang.io/ modules used by V]
 
 {| class="wikitable"

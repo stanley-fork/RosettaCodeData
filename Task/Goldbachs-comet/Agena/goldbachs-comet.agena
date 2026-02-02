@@ -1,6 +1,6 @@
 scope # Goldbach's comet, translation of Pluto
 
-   local procedure goldbach( n :: number ) :: number
+   local proc goldbach( n :: number ) :: number
         local count := 0;
         for i to n \ 2 do
             if numtheory.isprime( i ) and numtheory.isprime( n - i ) then

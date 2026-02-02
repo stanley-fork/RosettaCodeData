@@ -1,5 +1,5 @@
 function iBeforeE()
-check('http://wiki.puzzlers.org/pub/wordlists/unixdict.txt');
+check('https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt');
 fprintf('\n');
 check('http://ucrel.lancs.ac.uk/bncfreq/lists/1_2_all_freq.txt');
 end

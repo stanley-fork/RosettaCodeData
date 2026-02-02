@@ -1,25 +1,21 @@
-import jax
-jax.config.update("jax_enable_x64", True)  # faster on GPU P100 than on GPU T4
+import numba
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-import cupy as cp
-import jax.numpy as jnp
-
 import decimal as dc  # decimal floating point arithmetic with arbitrary precision
 dc.getcontext().prec = 80  # set precision to 80 digits (about 256 bits)
 
-d, h = 100, 2000  # pixel density (= image width) and image height
-n, r = 100000, 100000.0  # number of iterations and escape radius (r > 2)
+d, h = 1600, 1000  # pixel density (= image width) and image height
+n, r = 80000, 100000.0  # number of iterations and escape radius (r > 2)
 
 a = dc.Decimal("-1.256827152259138864846434197797294538253477389787308085590211144291")
 b = dc.Decimal(".37933802890364143684096784819544060002129071484943239316486643285025")
 
-S = np.zeros(n+1, dtype=np.complex128)
+S = np.zeros(n + 100, dtype=np.complex128)  # 100 iterations are chained
 u, v = dc.Decimal(0), dc.Decimal(0)
 
-for i in range(n+1):
+for i in range(n + 100):
     S[i] = float(u) + float(v) * 1j
     if u * u + v * v < r * r:
         u, v = u * u - v * v + a, 2 * u * v + b
@@ -30,56 +26,91 @@ for i in range(n+1):
 x = np.linspace(0, 2, num=d+1, dtype=np.float64)
 y = np.linspace(0, 2 * h / d, num=h+1, dtype=np.float64)
 
-A, B = np.meshgrid(x * np.pi, y * np.pi)
-C = (- 8.0) * np.exp((A + B * 1j) * 1j)
+A, B = np.meshgrid(x - 1, y - h / d)
+C = 5.0e-35 * (A + B * 1j)
 
-def iteration_cupy(S, C):
+@numba.njit(parallel=True, fastmath=True)
+def iteration_numba_bla(S, C):
+    I, J = np.zeros(C.shape, dtype=np.intp), np.zeros(C.shape, dtype=np.complex128)
+    E, Z, dZ = np.zeros_like(C), np.zeros_like(C), np.zeros_like(C)
 
-    def iteration(S, C):
-        I = cp.zeros(C.shape, dtype=np.intp)
-        E, Z, dZ = cp.zeros_like(C), cp.zeros_like(C), cp.zeros_like(C)
-
-        for i in range(n):
-            M = cp.absolute(Z) < cp.absolute(E)  # rebase when z is closer to zero
-            I, E = cp.where(M, 0, I), cp.where(M, Z, E)  # reset reference orbit
-            M = cp.absolute(Z) < r
-            I, E = cp.where(M, I + 1, I), cp.where(M, (2 * S[I] + E) * E + C, E)
-            Z, dZ = cp.where(M, S[I] + E, Z), cp.where(M, 2 * Z * dZ + 1, dZ)
-
-        return I, E, Z, dZ
-
-    I, E, Z, dZ = iteration(cp.asarray(S), cp.asarray(C))
-    return I.get(), E.get(), Z.get(), dZ.get()
-
-def iteration_jax(S, C):
-
-    def iteration(S, C):
-        I = jnp.zeros(C.shape, dtype=np.intp)
-        E, Z, dZ = jnp.zeros_like(C), jnp.zeros_like(C), jnp.zeros_like(C)
+    def iteration(S, dS, R, A, B, C):
+        I, J = np.zeros(C.shape, dtype=np.intp), np.zeros(C.shape, dtype=np.complex128)
+        E, Z, dZ = np.zeros_like(C), np.zeros_like(C), np.zeros_like(C)
 
         def abs2(z):
             return z.real * z.real + z.imag * z.imag
 
-        def iterate(i, V):
-            I, E, Z, dZ = V
-            M = abs2(Z) < abs2(E)  # rebase when z is closer to zero
-            I, E = jnp.where(M, 0, I), jnp.where(M, Z, E)  # reset reference orbit
-            M = abs2(Z) < abs2(r)
-            I, E = jnp.where(M, I + 1, I), jnp.where(M, (2 * S[I] + E) * E + C, E)
-            Z, dZ = jnp.where(M, S[I] + E, Z), jnp.where(M, 2 * Z * dZ + 1, dZ)
-            return I, E, Z, dZ
+        def iterate2(delta, index, epsilon, z, dz):
+            index, epsilon = index + 1, (2 * S[index] + epsilon) * epsilon + delta
+            z, dz = S[index] + epsilon, 2 * z * dz + 1
+            index, epsilon = index + 1, (2 * S[index] + epsilon) * epsilon + delta
+            z, dz = S[index] + epsilon, 2 * z * dz + 1
+            return index, epsilon, z, dz
 
-        I, E, Z, dZ = jax.lax.fori_loop(0, n, iterate, (I, E, Z, dZ), unroll=10)
-        return I, E, Z, dZ
+        def skip100(delta, index, e, z, dz):
+            de = dz - dS[index]  # no catastrophic cancellation (don't try that with e)
+            # for l in range(100):  # skip 100 iterations (using linear approximations)
+            #     index, e, de = index + 1, 2 * S[index] * e + delta, 2 * S[index] * de
+            index, e, de = index + 100, A[index] * e + B[index] * delta, A[index] * de
+            z, dz = S[index] + e, dS[index] + de
+            return index, e, z, dz
 
-    I, E, Z, dZ = iteration(jnp.asarray(S), jnp.asarray(C))
-    return np.asarray(I), np.asarray(E), np.asarray(Z), np.asarray(dZ)
+        for k in range(len(C)):
+            delta, index, epsilon, z, dz = C[k], I[k], E[k], Z[k], dZ[k]
 
-I, E, Z, dZ = iteration_jax(S, C)  # use iteration_cupy or iteration_jax
-D = np.zeros(C.shape, dtype=np.float64)
+            i, j = 0, 0
+            while i + j < n:
+                if abs2(z) < abs2(r):
+                    if abs2(epsilon) < abs2(1e-10 * R[index]):
+                        index, epsilon, z, dz = skip100(delta, index, epsilon, z, dz)
+                        j = j + 100
+                    else:
+                        if abs2(z) < abs2(epsilon):
+                            index, epsilon = 0, z  # reset the reference orbit
+                        index, epsilon, z, dz = iterate2(delta, index, epsilon, z, dz)
+                        i = i + 2
+                else:
+                    break
+
+            I[k], E[k], Z[k], dZ[k], J[k] = index, epsilon, z, dz, complex(i + j, j)
+
+        return I, E, Z, dZ, J
+
+    A, B = np.ones(n, dtype=np.complex128), np.zeros(n, dtype=np.complex128)
+    R, aS = np.full(n, 2, dtype=np.float64), np.where(np.abs(S) < 2, np.abs(S), 0)
+    dS = np.zeros(n + 100, dtype=np.complex128)
+
+    for i in range(1, n + 100):  # derivation of the series (accuracy is not required)
+        dS[i] = 2 * S[i - 1] * dS[i - 1] + 1
+
+    for i in numba.prange(n):  # coefficients und radii for the bilinear approximation
+        for l in range(100):
+            A[i], B[i] = 2 * S[i + l] * A[i], 2 * S[i + l] * B[i] + 1
+            R[i] = min(R[i], aS[i + l])  # validity radii and skip barriers (zeros)
+
+    for i in numba.prange(C.shape[0]):
+        I[i, :], E[i, :], Z[i, :], dZ[i, :], J[i, :] = iteration(S, dS, R, A, B, C[i, :])
+
+    return I, E, Z, dZ, J
+
+I, E, Z, dZ, J = iteration_numba_bla(S, C)
+D, T = np.zeros(C.shape, dtype=np.float64), J.real.copy()
+
+skipped = J.imag.sum() / J.real.sum()
+print("%.1f%% of all iterations were skipped." % (skipped * 100))
 
 N = abs(Z) > 2  # exterior distance estimation
 D[N] = np.log(abs(Z[N])) * abs(Z[N]) / abs(dZ[N])
 
-plt.imshow(D.T ** 0.015, cmap=plt.cm.gist_ncar, origin="lower")
-plt.savefig("Mercator_Mandelbrot_deep_map.png", dpi=200)
+plt.imshow(D ** 0.15, cmap=plt.cm.turbo, origin="lower")
+plt.savefig("Mandelbrot_deep_zoom.png", dpi=200)
+
+N = abs(Z) >= r  # normalized iteration count
+T[N] = T[N] - np.log2(np.log(abs(Z[N])) / np.log(r))
+
+T = np.minimum(T, n)  # truncation
+T = (T - T.min()) / (T.max() - T.min())  # scaling
+
+plt.imshow(T ** 0.2, cmap=plt.cm.jet, origin="lower")
+plt.savefig("Mandelbrot_deep_time.png", dpi=200)

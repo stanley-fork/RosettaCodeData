@@ -1,5 +1,4 @@
-val conjugate = fn(c) {
-    if c is not complex: throw "expected complex number"
+val conjugate = fn(c complex) {
     return complex(c[1], -c[2])
 }
 

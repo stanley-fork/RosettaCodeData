@@ -2,7 +2,7 @@ import system'routines;
 import extensions;
 import extensions'text;
 
-public program()
+public Program()
 {
     var s := new Range(0, 5).selectBy::(x => "ha").summarize(new StringWriter())
 }

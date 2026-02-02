@@ -50,3 +50,66 @@ Test the new installation:
   ...
 
 See https://yamlscript.org for more information.
+
+==Adding YS Entries to Rosetta Code==
+
+Here's a YS program that you can use to format a YS program and it's output to a MediaWiki text to insert into a Rosetta Code task page:
+
+<pre>
+#!/usr/bin/env ys-0
+
+# Create a Rosetta Code entry for a YS program:
+
+defn main(program *args):
+  say: |-
+
+    =={{header|YAMLScript}}==
+    <syntaxhighlight lang="yaml">
+    $chomp(program:read)
+    </syntaxhighlight>
+
+  when-not ENV.NO_OUT.?:
+    command =: "ys $program$fmt-args(args)"
+    output =: bash(command).out:chomp
+    say: |-
+
+      {{out}}
+      <pre>
+      $ $command
+      $output
+      &lt;/pre>
+
+defn fmt-args(args):
+  args =: !:joins
+    map _ args:
+      \(re-matches(/[-+,.:\w]+/ _:S)
+        .if(_ pr-str(_)))
+  when args.?: " $args"
+</pre>
+
+You run it like this:
+
+<pre>
+$ ys rosetta-code-ys-entry fibonacci-sequence.ys 5
+
+=={{header|YAMLScript}}==
+<syntaxhighlight lang="yaml">
+!YS-v0
+
+defn main(n=10):
+  loop a 0, b 1, i 1:
+    say: a
+    when i < n:
+      recur: b, (a + b), i.++
+</syntaxhighlight>
+
+{{out}}
+<pre>
+$ ys fibonacci-sequence.ys 5
+0
+1
+1
+2
+3
+&lt;/pre>
+</pre>

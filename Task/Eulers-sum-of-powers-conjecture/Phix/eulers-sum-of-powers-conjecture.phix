@@ -1,38 +1,38 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">MAX</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">250</span>
+with javascript_semantics
+constant MAX = 250
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">p5</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">new_dict</span><span style="color: #0000FF;">(),</span>
-          <span style="color: #000000;">sum2</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">new_dict</span><span style="color: #0000FF;">()</span>
+constant p5 = new_dict(),
+         sum2 = new_dict()
 
- <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">MAX</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">i5</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">setd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p5</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">j5</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">j</span><span style="color: #0000FF;">,</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">setd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">j5</span><span style="color: #0000FF;">+</span><span style="color: #000000;">i5</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">j</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">},</span><span style="color: #000000;">sum2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
+atom t0 = time()
+for i=1 to MAX do
+    atom i5 = power(i,5)
+    setd(i5,i,p5)
+    for j=1 to i-1 do
+        atom j5 = power(j,5)
+        setd(j5+i5,{i,j},sum2)
+    end for
+end for
 
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span>
+printf(1,"created %d + %d dictionary entries (%gs)\n",
+         {dict_size(p5),dict_size(sum2),time()-t0})
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">forsum2</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">data</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">p</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">s</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">getd_index</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">-</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">sum2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">!=</span><span style="color: #004600;">NULL</span> <span style="color: #008080;">then</span>
-         <span style="color: #0000FF;">?</span><span style="color: #7060A8;">getd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p5</span><span style="color: #0000FF;">)&</span><span style="color: #000000;">data</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">getd_by_index</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">,</span><span style="color: #000000;">sum2</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">0</span> <span style="color: #000080;font-style:italic;">-- (show one solution per p)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">1</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+bool found = false
+function forsum2(object s, data, p)
+    if p<=s then return 0 end if
+    integer k = getd_index(p-s,sum2)
+    if k!=NULL then
+        printf(1,"%d^5 + %d^5 + %d^5 +%d^5 = %d^5 (%gs)\n",
+            getd_by_index(k,sum2)&data&getd(p,p5)&(time()-t0))
+        found = true
+        return 0 -- (show one solution per p)
+    end if
+    return 1
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">forp5</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">key</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000080;font-style:italic;">/*data*/</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000080;font-style:italic;">/*user_data*/</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">traverse_dict</span><span style="color: #0000FF;">(</span><span style="color: #000000;">forsum2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">key</span><span style="color: #0000FF;">,</span><span style="color: #000000;">sum2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">1</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function forp5(object key, /*data*/, /*user_data*/)
+    traverse_dict(forsum2,key,sum2)
+    return not found
+end function
 
- <span style="color: #7060A8;">traverse_dict</span><span style="color: #0000FF;">(</span><span style="color: #000000;">forp5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p5</span><span style="color: #0000FF;">)</span>
-
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span>
-<!--
+traverse_dict(forp5,0,p5)

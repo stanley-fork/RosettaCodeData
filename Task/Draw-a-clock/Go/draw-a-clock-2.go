@@ -10,10 +10,10 @@
   var hourhand;
   function wsConnect()
   {
-	//get contexts for drawing
+    //get contexts for drawing
     //var canvas = document.getElementById( "canvas" );
     //ctx = canvas.getContext( '2d' );
-	var canvas = document.getElementById("rim");
+    var canvas = document.getElementById("rim");
     //draw circle for rim
     rim =  canvas.getContext('2d');
     rim.beginPath();
@@ -83,19 +83,19 @@
 
 <body>
     <h2>Clock</h2>
-	
+
   <canvas id="rim" width="512" height="512" style="position: absolute; left: 0; top: 0; z-index: 0;">
         Sorry, your browser does not support Canvas
   </canvas>
-	<canvas id="hourhand" width="512" height="512"style="position: absolute; left: 0; top: 0; z-index: 1;">
+    <canvas id="hourhand" width="512" height="512"style="position: absolute; left: 0; top: 0; z-index: 1;">
         Sorry, your browser does not support Canvas
   </canvas>
-	<canvas id="minutehand" width="512" height="512"style="position: absolute; left: 0; top: 0; z-index: 2;">
+    <canvas id="minutehand" width="512" height="512"style="position: absolute; left: 0; top: 0; z-index: 2;">
         Sorry, your browser does not support Canvas
   </canvas>
-	<canvas id="secondhand" width="512" height="512"style="position: absolute; left: 0; top: 0; z-index: 3;">
+    <canvas id="secondhand" width="512" height="512"style="position: absolute; left: 0; top: 0; z-index: 3;">
         Sorry, your browser does not support Canvas
   </canvas>
-	
+
 </body>
 </html>

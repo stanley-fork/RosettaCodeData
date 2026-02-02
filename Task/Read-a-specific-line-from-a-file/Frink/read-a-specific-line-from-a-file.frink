@@ -1,6 +1,6 @@
 nthLine[filename, lineNum] :=
 {
-   line = nth[lines[filenameToURL[filename]], lineNum-1]
+   line = nth1[lines[filenameToURL[filename]], lineNum]
    if line != undef
       return line
    else

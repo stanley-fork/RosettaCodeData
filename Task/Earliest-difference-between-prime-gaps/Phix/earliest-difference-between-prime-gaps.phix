@@ -1,35 +1,33 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">limit</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">1e7</span><span style="color: #0000FF;">:</span><span style="color: #000000;">1e8</span><span style="color: #0000FF;">),</span>
-          <span style="color: #000000;">gslim</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">250</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">primes</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">get_primes_le</span><span style="color: #0000FF;">(</span><span style="color: #000000;">limit</span><span style="color: #0000FF;">*</span><span style="color: #000000;">4</span><span style="color: #0000FF;">),</span>
-          <span style="color: #000000;">gapstarts</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">gslim</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">primes</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">gap</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">primes</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">primes</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">gapstarts</span><span style="color: #0000FF;">[</span><span style="color: #000000;">gap</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">gapstarts</span><span style="color: #0000FF;">[</span><span style="color: #000000;">gap</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">primes</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
+with javascript_semantics
+constant limit = iff(platform()=JS?1e7:1e8),
+         gslim = 250
+sequence primes = get_primes_le(limit*4),
+         gapstarts = repeat(0,gslim)
+for i=2 to length(primes) do
+    integer gap = primes[i]-primes[i-1]
+    if gapstarts[gap]=0 then
+        gapstarts[gap] = primes[i-1]
+    end if
+end for
 
- <span style="color: #004080;">integer</span> <span style="color: #000000;">pm</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">10</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">gap1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">2</span>
- <span style="color: #008080;">while</span> <span style="color: #004600;">true</span> <span style="color: #008080;">do</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">gapstarts</span><span style="color: #0000FF;">[</span><span style="color: #000000;">gap1</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">0</span> <span style="color: #008080;">do</span> <span style="color: #000000;">gap1</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">2</span> <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">start1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">gapstarts</span><span style="color: #0000FF;">[</span><span style="color: #000000;">gap1</span><span style="color: #0000FF;">],</span>
-             <span style="color: #000000;">gap2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">gap1</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">2</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">gapstarts</span><span style="color: #0000FF;">[</span><span style="color: #000000;">gap2</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">gap1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">gap2</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">2</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">start2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">gapstarts</span><span style="color: #0000FF;">[</span><span style="color: #000000;">gap2</span><span style="color: #0000FF;">],</span>
-                 <span style="color: #000000;">diff</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">abs</span><span style="color: #0000FF;">(</span><span style="color: #000000;">start2</span> <span style="color: #0000FF;">-</span> <span style="color: #000000;">start1</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">diff</span><span style="color: #0000FF;">></span><span style="color: #000000;">pm</span> <span style="color: #008080;">then</span>
-             <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Earliest difference &gt;%,d between adjacent prime gap starting primes:\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">pm</span><span style="color: #0000FF;">})</span>
-             <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Gap %d starts at %,d, gap %d starts at %,d, difference is %,d.\n\n"</span><span style="color: #0000FF;">,</span>
-                          <span style="color: #0000FF;">{</span><span style="color: #000000;">gap1</span><span style="color: #0000FF;">,</span>        <span style="color: #000000;">start1</span><span style="color: #0000FF;">,</span>  <span style="color: #000000;">gap2</span><span style="color: #0000FF;">,</span>        <span style="color: #000000;">start2</span><span style="color: #0000FF;">,</span>            <span style="color: #000000;">diff</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">pm</span><span style="color: #0000FF;">=</span><span style="color: #000000;">limit</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000000;">pm</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">10</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #000000;">gap1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">gap2</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-<!--
+integer pm = 10, gap1 = 2
+while true do
+    while gapstarts[gap1]=0 do gap1 += 2 end while
+    integer start1 = gapstarts[gap1],
+            gap2 = gap1 + 2
+    if gapstarts[gap2]=0 then
+        gap1 = gap2 + 2
+    else
+        integer start2 = gapstarts[gap2],
+                diff = abs(start2 - start1)
+        if diff>pm then
+            printf(1,"Earliest difference >%,d between adjacent prime gap starting primes:\n",{pm})
+            printf(1,"Gap %d starts at %,d, gap %d starts at %,d, difference is %,d.\n\n",
+                         {gap1,        start1,  gap2,        start2,            diff})
+            if pm=limit then exit end if
+            pm *= 10
+        else
+            gap1 = gap2
+        end if
+    end if
+end while

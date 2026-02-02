@@ -46,7 +46,7 @@ main :: proc() {
 
     }
     // print primes or numbers that aren't multiples
-	for i:=2;i<n;i+=1 {
+   for i:=2;i<n;i+=1 {
         if(result[i]!=0) {
 
             fmt.print(result[i])

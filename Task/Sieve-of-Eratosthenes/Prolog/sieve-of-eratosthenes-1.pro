@@ -1,5 +1,5 @@
 primes(N, L) :- numlist(2, N, Xs),
-	        sieve(Xs, L).
+           sieve(Xs, L).
 
 sieve([H|T], [H|X]) :- H2 is H + H,
                        filter(H, H2, T, R),

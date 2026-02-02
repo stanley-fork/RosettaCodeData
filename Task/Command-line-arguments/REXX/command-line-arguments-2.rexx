@@ -1,22 +1,27 @@
-parse arg aaa                          /*get the arguments.        */
-                                       /*another version:          */
-                                       /*  aaa=arg(1)              */
-say 'command arguments:'
-say aaa
+-- 12 Sep 2025
+include Setting
 
-opts=''                                /*placeholder for options.  */
-data=''                                /*placeholder for data.     */
-
-  do j=1 to words(aaa)
-  x=word(aaa,j)
-  if left(x,1)=='-' then opts=opts x   /*Option?  Then add to opts.*/
-                    else data=data x   /*Must be data. Add to data.*/
-  end
-
-        /*the above process adds a leading blank to  OPTS and  DATA*/
-
-opts=strip(opts,'L')                   /*strip leading blanks.     */
-data=strip(data,'l')                   /*strip leading blanks.     */
+-- Use arguments -c,alpha beta,-h,gamma
+say 'COMMAND-LINE ARGUMENTS (COMMA SEPARATED)'
+say version
 say
-say 'options='opts
-say '   data='data
+say 'parse arg xx:'
+parse arg xx; say xx
+say
+say 'arg xx:'
+arg xx; say xx
+say
+say 'parse arg x1,x2,x3,x4:'
+parse arg x1','x2','x3','x4; say 'x1' x1 'x2' x2 'x3' x3 'x4' x4
+say
+say 'arg x1,x2,x3,x4:'
+arg x1','x2','x3','x4; say 'x1' x1 'x2' x2 'x3' x3 'x4' x4
+say
+say 'parse arg x1,.,x3 (placeholder):'
+parse arg x1','.','x3; say 'x1' x1 'x3' x3
+say
+say 'arg(1):'
+say arg(1)
+exit
+
+include Abend

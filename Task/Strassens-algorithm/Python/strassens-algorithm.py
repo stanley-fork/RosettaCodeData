@@ -1,19 +1,65 @@
-"""Matrix multiplication using Strassen's algorithm. Requires Python >= 3.7."""
+"""Matrix multiplication using Strassen's algorithm. Requires Python >= 3.10."""
 
 from __future__ import annotations
+
+from collections.abc import MutableSequence
 from itertools import chain
-from typing import List
+from typing import Iterable
+from typing import Iterator
 from typing import NamedTuple
-from typing import Optional
+from typing import TypeAlias
+from typing import cast
+from typing import overload
+
+N: TypeAlias = int | float
+Row: TypeAlias = list[N]
 
 
-class Shape(NamedTuple):
-    rows: int
-    cols: int
+class Matrix(MutableSequence[Row]):
+    def __init__(self, data: Iterable[Iterable[N]] | None = None) -> None:
+        if data is None:
+            self._data: list[Row] = []
+        else:
+            self._data = [list(row) for row in data]
 
+    @overload
+    def __getitem__(self, index: int) -> Row: ...
+    @overload
+    def __getitem__(self, index: slice) -> Matrix: ...
 
-class Matrix(List):
-    """A matrix implemented as a two-dimensional list."""
+    def __getitem__(self, index: int | slice) -> Row | Matrix:
+        if isinstance(index, slice):
+            return Matrix(self._data[index])
+        return self._data[index]
+
+    @overload
+    def __setitem__(self, index: int, value: Row) -> None: ...
+    @overload
+    def __setitem__(self, index: slice, value: Iterable[Row]) -> None: ...
+
+    def __setitem__(self, index: int | slice, value: Row | Iterable[Row]) -> None:
+        if isinstance(index, slice):
+            rows = [list(row) for row in cast(Iterable[Row], value)]
+            self._data[index] = rows
+        else:
+            if not isinstance(value, list):
+                raise TypeError("single row assignment requires a list of int or float")
+            self._data[index] = value
+
+    def __delitem__(self, index: int | slice) -> None:
+        del self._data[index]
+
+    def __len__(self) -> int:
+        return len(self._data)
+
+    def insert(self, index: int, value: Row) -> None:
+        self._data.insert(index, value)
+
+    def __iter__(self) -> Iterator[Row]:
+        return iter(self._data)
+
+    def __repr__(self) -> str:
+        return f"Matrix({self._data!r})"
 
     @classmethod
     def block(cls, blocks) -> Matrix:
@@ -27,7 +73,9 @@ class Matrix(List):
 
     def dot(self, b: Matrix) -> Matrix:
         """Return a new Matrix that is the product of this matrix and matrix `b`.
-        Uses 'simple' or 'naive' matrix multiplication."""
+
+        Uses 'simple' or 'naive' matrix multiplication.
+        """
         assert self.shape.cols == b.shape.rows
         m = Matrix()
         for row in self:
@@ -59,7 +107,9 @@ class Matrix(List):
 
     def strassen(self, b: Matrix) -> Matrix:
         """Return a new Matrix that is the product of this matrix and matrix `b`.
-        Uses strassen algorithm."""
+
+        Uses strassen's algorithm.
+        """
         rows, cols = self.shape
 
         assert rows == cols, "matrices must be square"
@@ -96,13 +146,18 @@ class Matrix(List):
 
         return Matrix.block([[c11, c12], [c21, c22]])
 
-    def round(self, ndigits: Optional[int] = None) -> Matrix:
+    def round(self, ndigits: int | None = None) -> Matrix:
         return Matrix([[round(i, ndigits) for i in row] for row in self])
 
     @property
     def shape(self) -> Shape:
         cols = len(self[0]) if self else 0
         return Shape(len(self), cols)
+
+
+class Shape(NamedTuple):
+    rows: int
+    cols: int
 
 
 def examples():

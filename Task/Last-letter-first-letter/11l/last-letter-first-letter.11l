@@ -19,7 +19,8 @@ F llfl(words)
    V byfirst = order_words(words)
    R max((words.map(word -> linkfirst(&@byfirst, [word]))), key' s -> s.len)
 
-V pokemon_str = ‘audino bagon baltoy banette bidoof braviary bronzor carracosta charmeleon
+V pokemon_str = \/‘
+audino bagon baltoy banette bidoof braviary bronzor carracosta charmeleon
 cresselia croagunk darmanitan deino emboar emolga exeggcute gabite
 girafarig gulpin haxorus heatmor heatran ivysaur jellicent jumpluff kangaskhan
 kricketune landorus ledyba loudred lumineon lunatone machamp magnezone mamoswine

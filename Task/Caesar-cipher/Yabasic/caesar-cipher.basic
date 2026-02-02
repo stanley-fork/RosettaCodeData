@@ -11,25 +11,25 @@ print encrypted$ : print
 print criptex$(encrypted$, key$, DECIPHER)
 
 sub criptex$(text$, key$, mode)
-	local i, k, delta, longtext, longPattern, longkey, pattern$, res$
-	
-	pattern$ = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 .,;:()-"
-	
-	longPattern = len(pattern$)
-	longtext = len(text$)
-	longkey = len(key$)
-	
-	for i = 1 to longtext
-		k = k + 1 : if k > longkey k = 1
-		delta = instr(pattern$, mid$(text$, i, 1))
-		delta = delta + (mode * instr(pattern$, mid$(key$, k, 1)))
-		if delta > longPattern then
-			delta = delta - longPattern
-		elseif delta < 1 then
-			delta = longPattern + delta
-		end if
-		res$ = res$ + mid$(pattern$, delta, 1)
-	next i
+   local i, k, delta, longtext, longPattern, longkey, pattern$, res$
 
-	return res$
+   pattern$ = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 .,;:()-"
+
+   longPattern = len(pattern$)
+   longtext = len(text$)
+   longkey = len(key$)
+
+   for i = 1 to longtext
+      k = k + 1 : if k > longkey k = 1
+      delta = instr(pattern$, mid$(text$, i, 1))
+      delta = delta + (mode * instr(pattern$, mid$(key$, k, 1)))
+      if delta > longPattern then
+         delta = delta - longPattern
+      elseif delta < 1 then
+         delta = longPattern + delta
+      end if
+      res$ = res$ + mid$(pattern$, delta, 1)
+   next i
+
+   return res$
 end sub

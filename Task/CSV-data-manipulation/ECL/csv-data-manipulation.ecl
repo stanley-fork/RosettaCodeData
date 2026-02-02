@@ -5,7 +5,7 @@ STRING Field2;
 STRING Field3;
 STRING Field4;
 STRING Field5;
-END;							
+END;
 
 MyDataset := DATASET ('~Rosetta::myCSVFile', MyFileLayout,CSV(SEPARATOR(',')));
 

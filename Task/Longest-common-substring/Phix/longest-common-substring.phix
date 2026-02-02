@@ -1,26 +1,25 @@
-(phixonline)-->
- <span style="color: #008080;">function</span> <span style="color: #000000;">lcs</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">longest</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
- <span style="color: #004080;">string</span> <span style="color: #000000;">best</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #000000;">b</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">then</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span>
-                 <span style="color: #008080;">while</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">n</span><span style="color: #0000FF;"><=</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
-                   <span style="color: #008080;">and</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">+</span><span style="color: #000000;">n</span><span style="color: #0000FF;"><=</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
-                   <span style="color: #008080;">and</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">b</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">+</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-                     <span style="color: #000000;">n</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">></span><span style="color: #000000;">longest</span> <span style="color: #008080;">then</span>
-                     <span style="color: #000000;">longest</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">n</span>
-                     <span style="color: #000000;">best</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">..</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">best</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #0000FF;">?</span><span style="color: #000000;">lcs</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"thisisatest"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"testing123testing"</span><span style="color: #0000FF;">)</span>
- <span style="color: #0000FF;">?</span><span style="color: #000000;">lcs</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"testing123testing"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"thisisatest"</span><span style="color: #0000FF;">)</span>
-<!--
+function lcs(string a, b)
+    integer la = length(a),
+            lb = length(b),
+        longest = 0
+    string best = ""
+    for i,ch in a do
+        for j=1 to lb do
+            if ch=b[j] then
+                integer l=1
+                while i+l<=la
+                  and j+l<=lb
+                  and a[i+l]=b[j+l] do
+                    l += 1
+                end while
+                if l>longest then
+                    longest = l
+                    best = a[i..i+l-1]
+                end if
+            end if
+        end for
+    end for
+    return best
+end function
+?lcs("thisisatest","testing123testing")
+?lcs("testing123testing","thisisatest")

@@ -1,5 +1,0 @@
-(let ((val 0) done)
-  (while (not done)
-    (setq val (1+ val))
-    (message "%d" val)
-    (setq done (zerop (mod val 6)))))

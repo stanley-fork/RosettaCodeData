@@ -1,55 +1,41 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
+with javascript_semantics
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">radixSortn</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">buckets</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">({},</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">digit</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]/</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)),</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span>
-         <span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">digit</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">digit</span><span style="color: #0000FF;">],</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">buckets</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">len</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">len</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">len</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">or</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-             <span style="color: #008080;">else</span>
-                 <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">radixSortn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function radixSortn(sequence s, integer n)
+    sequence buckets = repeat({},10), res = {}
+    for i,si in s do
+        integer digit = remainder(floor(si/power(10,n-1)),10)+1
+        buckets[digit] = append(buckets[digit],si)
+    end for
+    for b in buckets do
+        res &= iff(length(b)<=1 or n=1?b:radixSortn(b,n-1))
+    end for
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">split_by_sign</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">buckets</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{},{}}</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">si</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">si</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],-</span><span style="color: #000000;">si</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">],</span><span style="color: #000000;">si</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">buckets</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function split_by_sign(sequence s)
+    sequence buckets = {{},{}}
+    for i=1 to length(s) do
+        integer si = s[i], bn = 1+(si>=0)
+        buckets[bn] = append(buckets[bn],abs(si))
+    end for
+    return buckets
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">radixSort</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">mins</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">min</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">),</span>
-             <span style="color: #000000;">passes</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">max</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">),</span><span style="color: #7060A8;">abs</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mins</span><span style="color: #0000FF;">))</span>
-     <span style="color: #000000;">passes</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">log10</span><span style="color: #0000FF;">(</span><span style="color: #000000;">passes</span><span style="color: #0000FF;">))+</span><span style="color: #000000;">1</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">mins</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">buckets</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">split_by_sign</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">reverse</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">sq_uminus</span><span style="color: #0000FF;">(</span><span style="color: #000000;">radixSortn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span><span style="color: #000000;">passes</span><span style="color: #0000FF;">)))</span>
-           <span style="color: #0000FF;">&</span> <span style="color: #000000;">radixSortn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">buckets</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">],</span><span style="color: #000000;">passes</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">radixSortn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">passes</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function radixSort(sequence s)
+    integer mins = min(s),
+            passes = max(max(s),abs(mins))
+    passes = floor(log10(passes))+1
+    if mins<0 then
+        sequence buckets = split_by_sign(s)
+        s = reverse(sq_uminus(radixSortn(buckets[1],passes)))
+                            & radixSortn(buckets[2],passes)
+    else
+        s = radixSortn(s,passes)
+    end if
+    return s
+end function
 
- <span style="color: #0000FF;">?</span><span style="color: #000000;">radixSort</span><span style="color: #0000FF;">({</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">8</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">9</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">8</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">7</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">6</span><span style="color: #0000FF;">})</span>
- <span style="color: #0000FF;">?</span><span style="color: #000000;">radixSort</span><span style="color: #0000FF;">({</span><span style="color: #000000;">170</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">45</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">75</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">90</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">24</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">802</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">66</span><span style="color: #0000FF;">})</span>
- <span style="color: #0000FF;">?</span><span style="color: #000000;">radixSort</span><span style="color: #0000FF;">({</span><span style="color: #000000;">170</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">45</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">75</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">90</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">24</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">802</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">66</span><span style="color: #0000FF;">})</span>
- <span style="color: #0000FF;">?</span><span style="color: #000000;">radixSort</span><span style="color: #0000FF;">({</span><span style="color: #000000;">100000</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">10000</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">400</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">23</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">10000</span><span style="color: #0000FF;">})</span>
-<!--
+?radixSort({1, 3, 8, 9, 0, 0, 8, 7, 1, 6})
+?radixSort({170, 45, 75, 90, 2, 24, 802, 66})
+?radixSort({170, 45, 75, 90, 2, 24, -802, -66})
+?radixSort({100000, -10000, 400, 23, 10000})

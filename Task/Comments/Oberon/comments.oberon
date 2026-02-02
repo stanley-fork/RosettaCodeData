@@ -1,4 +1,4 @@
-(* this is a comment *)
+(* Oberon-07/Oberon-2 use the same style of comments as Modula-2: this is a comment *)
 (*
    and this is a
    multiline comment

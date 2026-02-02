@@ -1,7 +1,7 @@
-public program()
+public Program()
 {
     var Δ := 1;
     Δ := Δ + 1;
 
-    console.writeLine(Δ)
+    Console.writeLine(Δ)
 }

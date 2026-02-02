@@ -1,6 +1,6 @@
 // 10,True  --> 101,111,121,131,141,151,161,171,181,191,202, ..
 // 10,False --> 1001,1111,1221,1331,1441,1551,1661,1771,1881,..
-fcn createPalindromeW(start,oddLength){	//--> iterator
+fcn createPalindromeW(start,oddLength){   //--> iterator
    [start..].tweak('wrap(z){
       p,n := z,z;
       if(oddLength) n/=10;
@@ -8,7 +8,7 @@ fcn createPalindromeW(start,oddLength){	//--> iterator
       p
    })
 }
-fcn palindromicGapfulW(endsWith){	//--> iterator
+fcn palindromicGapfulW(endsWith){   //--> iterator
    po,pe := createPalindromeW(10,True), createPalindromeW(10,False);
    div:=endsWith*10 + endsWith;
    Walker.zero().tweak('wrap{

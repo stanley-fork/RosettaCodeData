@@ -1,197 +1,191 @@
-(notonline)-->
- <span style="color: #000080;font-style:italic;">--
- -- demo\rosetta\Compiler\cgen.exw
- -- ==============================
- --
- --  Generates 32-bit machine code (see note in vm.exw)
- --</span>
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span> <span style="color: #000080;font-style:italic;">-- (machine code!)</span>
- <span style="color: #008080;">include</span> <span style="color: #000000;">cgen</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+-- demo\rosetta\Compiler\cgen.exw
+--  Generates 32-bit machine code (see note in vm.exw)
+without js -- (machine code!)
+include cgen.e
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">get_var_name</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">addr</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">addr</span><span style="color: #0000FF;">-</span><span style="color: #000000;">var_mem</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">4</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;"><</span><span style="color: #000000;">1</span> <span style="color: #008080;">or</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">></span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">vars</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #0000FF;">?</span><span style="color: #000000;">9</span><span style="color: #0000FF;">/</span><span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">vars</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function get_var_name(atom addr)
+    integer n = (addr-var_mem)/4+1
+    if n<1 or n>length(vars) then ?9/0 end if
+    return vars[n]
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">oh</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">fmt</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">args</span><span style="color: #0000FF;">={})</span>
- <span style="color: #000080;font-style:italic;">-- helper routine to display the octal/hex bytes just decoded,
- -- along with the code offset and the human-readable text.</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000000;">fmt</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">,</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">octhex</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">base</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">len</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">if</span> <span style="color: #004080;">integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">oh</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000080;font-style:italic;">-- all octal</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">oh</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">octhex</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">octhex</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"0o%03o"</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">base</span><span style="color: #0000FF;">)))</span>
-             <span style="color: #000000;">base</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #000000;">len</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">oh</span>
-     <span style="color: #008080;">else</span>    <span style="color: #000080;font-style:italic;">-- some octal and some hex</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">oh</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">by</span> <span style="color: #000000;">2</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">oh</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-                 <span style="color: #000000;">octhex</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">octhex</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"0o%03o"</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">base</span><span style="color: #0000FF;">)))</span>
-                 <span style="color: #000000;">base</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-             <span style="color: #000000;">len</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">oh</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">oh</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-                 <span style="color: #000000;">octhex</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">octhex</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"#%02x"</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">base</span><span style="color: #0000FF;">)))</span>
-                 <span style="color: #000000;">base</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-             <span style="color: #000000;">len</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">oh</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">output_file</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%4d: %-30s %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">octhex</span><span style="color: #0000FF;">,</span><span style="color: #008000;">","</span><span style="color: #0000FF;">),</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">len</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function hxl(integer pc, object oh, string fmt, sequence args={})
+-- helper routine to display the octal/hex bytes just decoded,
+-- along with the code offset and the human-readable text.
+    if length(args) then fmt = sprintf(fmt,args) end if
+    sequence octhex = {}
+    atom base = code_mem+pc
+    integer len = 0
+    if integer(oh) then -- all octal
+        for i=1 to oh do
+            octhex = append(octhex,sprintf("0o%03o",peek(base)))
+            base += 1
+        end for
+        len = oh
+    else    -- some octal and some hex
+        for i=1 to length(oh) by 2 do
+            for j=1 to oh[i] do
+                octhex = append(octhex,sprintf("0o%03o",peek(base)))
+                base += 1
+            end for
+            len += oh[i]
+            for j=1 to oh[i+1] do
+                octhex = append(octhex,sprintf("#%02x",peek(base)))
+                base += 1
+            end for
+            len += oh[i+1]
+        end for
+    end if
+    printf(output_file,"%4d: %-30s %s\n",{pc+1,join(octhex,","),fmt})
+    return len
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">cccodes</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"o?"</span> <span style="color: #0000FF;">,</span><span style="color: #008000;">"no?"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"b?"</span> <span style="color: #0000FF;">,</span><span style="color: #008000;">"ae?"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"z"</span> <span style="color: #0000FF;">,</span><span style="color: #008000;">"ne"</span> <span style="color: #0000FF;">,</span><span style="color: #008000;">"be?"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"a?"</span><span style="color: #0000FF;">,</span>
- <span style="color: #000080;font-style:italic;">--                    0  ,  1  ,  2  ,  3  ,  4 ,  5  ,  6  , 7  ,</span>
-                     <span style="color: #008000;">"s?"</span> <span style="color: #0000FF;">,</span><span style="color: #008000;">"ns?"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"pe?"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"po?"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"l"</span> <span style="color: #0000FF;">,</span><span style="color: #008000;">"ge"</span> <span style="color: #0000FF;">,</span><span style="color: #008000;">"le"</span> <span style="color: #0000FF;">,</span><span style="color: #008000;">"g"</span> <span style="color: #0000FF;">}</span>
- <span style="color: #000080;font-style:italic;">--                    8  ,  9  , 10  , 11  , 12 , 13  , 14  , 15</span>
+constant cccodes = {"o?" ,"no?","b?" ,"ae?","z" ,"ne" ,"be?","a?",
+--                    0  ,  1  ,  2  ,  3  ,  4 ,  5  ,  6  , 7  ,
+                    "s?" ,"ns?","pe?","po?","l" ,"ge" ,"le" ,"g" }
+--                    8  ,  9  , 10  , 11  , 12 , 13  , 14  , 15
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">regs</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"eax"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"ecx"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"edx"</span><span style="color: #0000FF;">}</span> <span style="color: #000080;font-style:italic;">-- (others as/when needed)</span>
+constant regs = {"eax","ecx","edx"} -- (others as/when needed)
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">decode</span><span style="color: #0000FF;">()</span>
- <span style="color: #000080;font-style:italic;">-- for a much more complete (and better organised) disassembler, see p2asm.e</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">pc</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000080;font-style:italic;">-- nb 0-based</span>
-         <span style="color: #000000;">opcode</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">xrm</span>
+procedure decode()
+-- for a much more complete (and better organised) disassembler, see p2asm.e
+integer pc = 0, -- nb 0-based
+        opcode, xrm
 
-     <span style="color: #008080;">while</span> <span style="color: #000000;">pc</span><span style="color: #0000FF;"><</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">opcode</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">xrm</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span>
-         <span style="color: #008080;">switch</span> <span style="color: #000000;">opcode</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o150</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #004080;">atom</span> <span style="color: #000000;">vaddr</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek4s</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">vaddr</span><span style="color: #0000FF;">,</span><span style="color: #000000;">stringptrs</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #004080;">object</span> <span style="color: #000000;">arg</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">?</span><span style="color: #000000;">enquote</span><span style="color: #0000FF;">(</span><span style="color: #000000;">strings</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">])</span>
-                                   <span style="color: #0000FF;">:</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">vaddr</span><span style="color: #0000FF;">))</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">},</span><span style="color: #008000;">"push %s"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">arg</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o217</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o377</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">0o217</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o377</span><span style="color: #0000FF;">})</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"pop"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"push"</span><span style="color: #0000FF;">}[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #000000;">xrm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">!=</span><span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">0o005</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o065</span><span style="color: #0000FF;">})</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #004080;">atom</span> <span style="color: #000000;">addr</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek4u</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">},</span><span style="color: #008000;">"%s [%s]"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">op</span><span style="color: #0000FF;">,</span><span style="color: #000000;">get_var_name</span><span style="color: #0000FF;">(</span><span style="color: #000000;">addr</span><span style="color: #0000FF;">)})</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o061</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o071</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o205</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">0o061</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o071</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o205</span><span style="color: #0000FF;">})</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"xor"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"cmp"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"test"</span><span style="color: #0000FF;">}[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #000000;">xrm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">if</span> <span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o300</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">0o300</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">r1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">regs</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o070</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">0o010</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">r2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">regs</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o007</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s %s,%s"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">op</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r2</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o017</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #000000;">xrm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">switch</span> <span style="color: #000000;">xrm</span> <span style="color: #008080;">do</span>
-                     <span style="color: #008080;">case</span> <span style="color: #000000;">0o224</span><span style="color: #0000FF;">:</span>
-                     <span style="color: #008080;">case</span> <span style="color: #000000;">0o225</span><span style="color: #0000FF;">:</span>
-                     <span style="color: #008080;">case</span> <span style="color: #000000;">0o234</span><span style="color: #0000FF;">:</span>
-                     <span style="color: #008080;">case</span> <span style="color: #000000;">0o235</span><span style="color: #0000FF;">:</span>
-                     <span style="color: #008080;">case</span> <span style="color: #000000;">0o236</span><span style="color: #0000FF;">:</span>
-                     <span style="color: #008080;">case</span> <span style="color: #000000;">0o237</span><span style="color: #0000FF;">:</span>
-                         <span style="color: #004080;">string</span> <span style="color: #000000;">cc</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">cccodes</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o017</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-                         <span style="color: #000000;">xrm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-                         <span style="color: #008080;">if</span> <span style="color: #000000;">xrm</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0o300</span> <span style="color: #008080;">then</span>
-                             <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"set%s al"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">cc</span><span style="color: #0000FF;">})</span>
-                         <span style="color: #008080;">elsif</span> <span style="color: #000000;">xrm</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0o301</span> <span style="color: #008080;">then</span>
-                             <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"set%s cl"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">cc</span><span style="color: #0000FF;">})</span>
-                         <span style="color: #008080;">else</span>
-                             <span style="color: #008080;">exit</span>
-                         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                     <span style="color: #008080;">case</span> <span style="color: #000000;">0o204</span><span style="color: #0000FF;">:</span>
-                         <span style="color: #004080;">integer</span> <span style="color: #000000;">offset</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek4s</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-                         <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">},</span><span style="color: #008000;">"jz %d"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">6</span><span style="color: #0000FF;">+</span><span style="color: #000000;">offset</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">})</span>
-                     <span style="color: #008080;">else</span>
-                         <span style="color: #008080;">exit</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o010</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o040</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #000000;">xrm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">xrm</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0o310</span> <span style="color: #008080;">then</span>
-                     <span style="color: #004080;">string</span> <span style="color: #000000;">lop</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"or"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"and"</span><span style="color: #0000FF;">}[</span><span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">0o010</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o040</span><span style="color: #0000FF;">})]</span>
-                     <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s al,cl"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">lop</span><span style="color: #0000FF;">})</span>
-                 <span style="color: #008080;">else</span>
-                     <span style="color: #008080;">exit</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o120</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o122</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o130</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o131</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o132</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"push"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"pop"</span><span style="color: #0000FF;">}[</span><span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o070</span><span style="color: #0000FF;">),{</span><span style="color: #000000;">0o020</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o030</span><span style="color: #0000FF;">})]</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">reg</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">regs</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o007</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s %s"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">op</span><span style="color: #0000FF;">,</span><span style="color: #000000;">reg</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o231</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"cdq"</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o164</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o353</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">jop</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0o164</span><span style="color: #0000FF;">?</span><span style="color: #008000;">"jz"</span><span style="color: #0000FF;">:</span><span style="color: #008000;">"jmp"</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">offset</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">peek1s</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">},</span><span style="color: #008000;">"%s %d"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">jop</span><span style="color: #0000FF;">,</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">+</span><span style="color: #000000;">offset</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o351</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">offset</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek4s</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">},</span><span style="color: #008000;">"jmp %d"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">5</span><span style="color: #0000FF;">+</span><span style="color: #000000;">offset</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o303</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"ret"</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o350</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">offset</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek4s</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #004080;">atom</span> <span style="color: #000000;">addr</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">offset</span><span style="color: #0000FF;">+</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">5</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">addr</span><span style="color: #0000FF;">,</span><span style="color: #000000;">builtins</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">},</span><span style="color: #008000;">"call :%s"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">builtin_names</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]})</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o001</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o041</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o051</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">0o001</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o041</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o051</span><span style="color: #0000FF;">})</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"add"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"and"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"sub"</span><span style="color: #0000FF;">}[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #000000;">xrm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">switch</span> <span style="color: #000000;">xrm</span> <span style="color: #008080;">do</span>
-                     <span style="color: #008080;">case</span> <span style="color: #000000;">0o004</span><span style="color: #0000FF;">:</span>
-                         <span style="color: #008080;">if</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0o044</span> <span style="color: #008080;">then</span>
-                             <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s [esp],eax"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">op</span><span style="color: #0000FF;">})</span>
-                         <span style="color: #008080;">else</span>
-                             <span style="color: #008080;">exit</span>
-                         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                     <span style="color: #008080;">else</span>
-                         <span style="color: #008080;">exit</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">0o367</span><span style="color: #0000FF;">:</span>
-                 <span style="color: #000000;">xrm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">+</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">if</span> <span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o300</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">0o300</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o070</span><span style="color: #0000FF;">),{</span><span style="color: #000000;">0o030</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o040</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o070</span><span style="color: #0000FF;">})</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"neg"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"mul"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"idiv"</span><span style="color: #0000FF;">}[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">reg</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">regs</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0o007</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #000000;">pc</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">hxl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s %s"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">op</span><span style="color: #0000FF;">,</span><span style="color: #000000;">reg</span><span style="color: #0000FF;">})</span>
-             <span style="color: #008080;">else</span>
-                 <span style="color: #008080;">exit</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">pc</span><span style="color: #0000FF;"><</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">code</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #0000FF;">?</span><span style="color: #008000;">"incomplete:"</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">xrm</span><span style="color: #0000FF;">=-</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span>
-             <span style="color: #0000FF;">?{</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"0o%03o"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">)}</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #0000FF;">?{</span><span style="color: #000000;">pc</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"0o%03o 0o%03o"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">opcode</span><span style="color: #0000FF;">,</span><span style="color: #000000;">xrm</span><span style="color: #0000FF;">})}</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+    while pc<length(code) do
+        opcode = peek(code_mem+pc)
+        xrm = -1
+        switch opcode do
+            case 0o150:
+                atom vaddr = peek4s(code_mem+pc+1)
+                integer n = find(vaddr,stringptrs)
+                object arg = iff(n?enquote(strings[n])
+                                  :sprintf("%d",vaddr))
+                pc += hxl(pc,{1,4},"push %s",{arg})
+            case 0o217:
+            case 0o377:
+                integer n = find(opcode,{0o217,0o377})
+                string op = {"pop","push"}[n]
+                xrm = peek(code_mem+pc+1)
+                if n!=find(xrm,{0o005,0o065}) then exit end if
+                atom addr = peek4u(code_mem+pc+2)
+                pc += hxl(pc,{2,4},"%s [%s]",{op,get_var_name(addr)})
+            case 0o061:
+            case 0o071:
+            case 0o205:
+                integer n = find(opcode,{0o061,0o071,0o205})
+                string op = {"xor","cmp","test"}[n]
+                xrm = peek(code_mem+pc+1)
+                if and_bits(xrm,0o300)!=0o300 then exit end if
+                string r1 = regs[and_bits(xrm,0o070)/0o010+1]
+                string r2 = regs[and_bits(xrm,0o007)+1]
+                pc += hxl(pc,2,"%s %s,%s",{op,r1,r2})
+            case 0o017:
+                xrm = peek(code_mem+pc+1)
+                switch xrm do
+                    case 0o224:
+                    case 0o225:
+                    case 0o234:
+                    case 0o235:
+                    case 0o236:
+                    case 0o237:
+                        string cc = cccodes[and_bits(xrm,0o017)+1]
+                        xrm = peek(code_mem+pc+2)
+                        if xrm=0o300 then
+                            pc += hxl(pc,3,"set%s al",{cc})
+                        elsif xrm=0o301 then
+                            pc += hxl(pc,3,"set%s cl",{cc})
+                        else
+                            exit
+                        end if
+                    case 0o204:
+                        integer offset = peek4s(code_mem+pc+2)
+                        pc += hxl(pc,{2,4},"jz %d",{pc+6+offset+1})
+                    else
+                        exit
+                end switch
+            case 0o010:
+            case 0o040:
+                xrm = peek(code_mem+pc+1)
+                if xrm=0o310 then
+                    string lop = {"or","and"}[find(opcode,{0o010,0o040})]
+                    pc += hxl(pc,2,"%s al,cl",{lop})
+                else
+                    exit
+                end if
+            case 0o120:
+            case 0o122:
+            case 0o130:
+            case 0o131:
+            case 0o132:
+                string op = {"push","pop"}[find(and_bits(opcode,0o070),{0o020,0o030})]
+                string reg = regs[and_bits(opcode,0o007)+1]
+                pc += hxl(pc,1,"%s %s",{op,reg})
+            case 0o231:
+                pc += hxl(pc,1,"cdq")
+            case 0o164:
+            case 0o353:
+                string jop = iff(opcode=0o164?"jz":"jmp")
+                integer offset = peek1s(code_mem+pc+1)
+                pc += hxl(pc,{1,1},"%s %d",{jop,pc+2+offset+1})
+            case 0o351:
+                integer offset = peek4s(code_mem+pc+1)
+                pc += hxl(pc,{1,4},"jmp %d",{pc+5+offset+1})
+            case 0o303:
+                pc += hxl(pc,1,"ret")
+            case 0o350:
+                integer offset = peek4s(code_mem+pc+1)
+                atom addr = offset+code_mem+pc+5
+                integer n = find(addr,builtins)
+                pc += hxl(pc,{1,4},"call :%s",{builtin_names[n]})
+            case 0o001:
+            case 0o041:
+            case 0o051:
+                integer n = find(opcode,{0o001,0o041,0o051})
+                string op = {"add","and","sub"}[n]
+                xrm = peek(code_mem+pc+1)
+                switch xrm do
+                    case 0o004:
+                        if peek(code_mem+pc+2)=0o044 then
+                            pc += hxl(pc,3,"%s [esp],eax",{op})
+                        else
+                            exit
+                        end if
+                    else
+                        exit
+                end switch
+            case 0o367:
+                xrm = peek(code_mem+pc+1)
+                if and_bits(xrm,0o300)!=0o300 then exit end if
+                integer n = find(and_bits(xrm,0o070),{0o030,0o040,0o070})
+                if n=0 then exit end if
+                string op = {"neg","mul","idiv"}[n]
+                string reg = regs[and_bits(xrm,0o007)+1]
+                pc += hxl(pc,2,"%s %s",{op,reg})
+            else
+                exit
+        end switch
+    end while
+    if pc<length(code) then
+        ?"incomplete:"
+        if xrm=-1 then
+            ?{pc+1,sprintf("0o%03o",opcode)}
+        else
+            ?{pc+1,sprintf("0o%03o 0o%03o",{opcode,xrm})}
+        end if
+    end if
+end procedure
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">main</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">cl</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">open_files</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">toks</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">lex</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">parse</span><span style="color: #0000FF;">()</span>
-     <span style="color: #000000;">code_gen</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">fixup</span><span style="color: #0000FF;">()</span>
-     <span style="color: #000000;">decode</span><span style="color: #0000FF;">()</span>
-     <span style="color: #7060A8;">free</span><span style="color: #0000FF;">({</span><span style="color: #000000;">var_mem</span><span style="color: #0000FF;">,</span><span style="color: #000000;">code_mem</span><span style="color: #0000FF;">})</span>
-     <span style="color: #000000;">close_files</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure main(sequence cl)
+    open_files(cl)
+    toks = lex()
+    object t = parse()
+    code_gen(t)
+    fixup()
+    decode()
+    free({var_mem,code_mem})
+    close_files()
+end procedure
 
- <span style="color: #000080;font-style:italic;">--main(command_line())</span>
- <span style="color: #000000;">main</span><span style="color: #0000FF;">({</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"gcd.c"</span><span style="color: #0000FF;">})</span>
-<!--
+--main(command_line())
+main({0,0,"gcd.c"})

@@ -21,7 +21,7 @@ extension op
                     swapped := true
                 }
             };
-            ifnot (swapped)
+            if:not (swapped)
             {
                 ^ list
             };
@@ -41,10 +41,10 @@ extension op
     }
 }
 
-public program()
+public Program()
 {
     var list := new int[]{3, 5, 1, 9, 7, 6, 8, 2, 4 };
 
-    console.printLine("before:", list.asEnumerable());
-    console.printLine("after :", list.cocktailSort().asEnumerable())
+    Console.printLine("before:", list.asEnumerable());
+    Console.printLine("after :", list.cocktailSort().asEnumerable())
 }

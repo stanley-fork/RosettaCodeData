@@ -16,7 +16,7 @@ local function gen(k, n)
     for i = 1, n do
         while !k_prime(m, k) do ++m end
         r[i] = m
-        ++m
+        m += 1
     end
     return r
 end

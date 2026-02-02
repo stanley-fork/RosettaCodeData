@@ -4,9 +4,9 @@
 
 GLOBAL n%, k%, limit%, flags%[]
 
-limit = 100			// search primes up to this number
+limit = 100       // search primes up to this number
 
-DIM flags[limit+1]		// GLBasic arrays start at 0
+DIM flags[limit+1]      // GLBasic arrays start at 0
 
 FOR n = 2 TO SQR(limit)
     IF flags[n] = 0

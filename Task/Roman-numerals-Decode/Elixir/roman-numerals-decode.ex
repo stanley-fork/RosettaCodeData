@@ -17,6 +17,6 @@ defmodule Roman_numeral do
   defp to_value(?I), do:    1
 end
 
-Enum.each(['MCMXC', 'MMVIII', 'MDCLXVI', 'IIIID'], fn clist ->
-  IO.puts "#{clist}\t: #{Roman_numeral.decode(clist)}"
+Enum.each(["MCMXC", "MMVIII", "MDCLXVI", "IIIID"], fn clist ->
+  IO.puts "#{clist}\t: #{Roman_numeral.decode(to_charlist(clist))}"
 end)

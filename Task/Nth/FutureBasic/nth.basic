@@ -1,28 +1,21 @@
-CFStringRef local fn Suffix( n as int )
-  if ( n % 100 / 10 == 1 ) then exit fn
-  select ( n % 10 )
-    case 1 : return @"st"
-    case 2 : return @"nd"
-    case 3 : return @"rd"
-  end select
-end fn = @"th"
+CFStringRef local fn ordinalSuffix( num as int )
+  num = ( num % 100 / 10 - 1 ) ? num % 10 * 2 : 0
+end fn = mid( @"thstndrdththththththth", num, 2 )
 
-void local fn DoIt
-  int i
 
-  for i = 0 to 25
-    print i;fn Suffix(i);@" ";
+void local fn show( min as int, max as int )
+  int sz = len( str(max) ) + 2, count = 54 / sz
+  CFStringRef f = concat( @"%", mid( str( sz ), 1 ), @"d%@\b" )
+  for int i = min to max
+    printf f, i, fn OrdinalSuffix( i )
+    if !( ( i + 1 - min ) % count ) then print
   next
-  print
-  for i = 250 to 265
-    print i;fn Suffix(i);@" ";
-  next
-  print
-  for i = 1000 to 1025
-    print i;fn Suffix(i);@" ";
-  next
+  print @"\n"
 end fn
 
-fn DoIt
+//  DEMO  //
+fn show( 0, 25 )
+fn show( 250, 265 )
+fn show( 1000, 1025 )
 
-HandleEvents
+handleevents

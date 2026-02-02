@@ -1,15 +1,15 @@
 ld hl,MyString
 
 GetStringLength:
-	ld b,0        ;zero the length counter
+    ld b,0        ;zero the length counter
 loop_getStringLength:
-	ld a,(hl)
-	or a          ;compare A to zero
-	ret z         ;exit if zero
+    ld a,(hl)
+    or a          ;compare A to zero
+    ret z         ;exit if zero
 
-	inc hl        ;next char
-	inc b         ;add 1 to length counter
-	jr loop_getStringLength
+    inc hl        ;next char
+    inc b         ;add 1 to length counter
+    jr loop_getStringLength
 
 ld a,b    ;load B into A
 or a      ;compare A to zero (effectively comparing B to zero)

@@ -100,9 +100,9 @@ func choose(ch,ym)
          ok
 
 func msgBox(text) {
-	m = new qMessageBox(win1) {
-	       setWindowTitle("21 Game")
-	       setText(text)
-	       show()
-	       }
+    m = new qMessageBox(win1) {
+           setWindowTitle("21 Game")
+           setText(text)
+           show()
+           }
         }

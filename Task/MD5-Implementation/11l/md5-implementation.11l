@@ -32,7 +32,7 @@ F md5(=message)
    L(chunk_ofst) (0 .< message.len).step(64)
       V (a, b, c, d) = hash_pieces
       V chunk = message[chunk_ofst .+ 64]
-      L(i) 64
+      L(i) 0.<64
          V f = :functions[i I/ 16](b, c, d)
          V g = :index_functions[i I/ 16](i)
          V to_rotate = a + f + :constants[i] + UInt32(bytes' chunk[4 * g .+ 4])

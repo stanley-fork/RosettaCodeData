@@ -13,25 +13,25 @@ curry_second(F,Y) ->
 % Usual curry
 
 curry(Fun,Arg) ->
-	case erlang:fun_info(Fun,arity) of
-		{arity,0} ->
-			erlang:error(badarg);
-		{arity,ArityFun} ->
-			create_ano_fun(ArityFun,Fun,Arg);
-		_ ->
-			erlang:error(badarg)
-	end.
+    case erlang:fun_info(Fun,arity) of
+        {arity,0} ->
+            erlang:error(badarg);
+        {arity,ArityFun} ->
+            create_ano_fun(ArityFun,Fun,Arg);
+        _ ->
+            erlang:error(badarg)
+    end.
 
 create_ano_fun(Arity,Fun,Arg) ->
-	Pars =
-		[{var,1,list_to_atom(lists:flatten(io_lib:format("X~p", [N])))}
-		 || N <- lists:seq(2,Arity)],
-	Ano =
-		{'fun',1,
-			{clauses,[{clause,1,Pars,[],
-				[{call,1,{var,1,'Fun'},[{var,1,'Arg'}] ++ Pars}]}]}},
-	{_,Result,_} = erl_eval:expr(Ano, [{'Arg',Arg},{'Fun',Fun}]),
-	Result.
+    Pars =
+        [{var,1,list_to_atom(lists:flatten(io_lib:format("X~p", [N])))}
+         || N <- lists:seq(2,Arity)],
+    Ano =
+        {'fun',1,
+            {clauses,[{clause,1,Pars,[],
+                [{call,1,{var,1,'Fun'},[{var,1,'Arg'}] ++ Pars}]}]}},
+    {_,Result,_} = erl_eval:expr(Ano, [{'Arg',Arg},{'Fun',Fun}]),
+    Result.
 
 % Generalization of the currying
 

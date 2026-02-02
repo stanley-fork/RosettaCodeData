@@ -1,6 +1,8 @@
 global cnt[] .
-proc primcnt limit .
-   cnt[] = [ 0 1 1 ]
+fastproc primcnt limit .
+   cnt[] &= 0
+   cnt[] &= 1
+   cnt[] &= 1
    for i = 4 step 2 to limit
       cnt[] &= 0
       cnt[] &= 1
@@ -21,14 +23,13 @@ proc primcnt limit .
       cnt[i] = sum
    .
 .
-func log n .
-   e = 2.7182818284590452354
-   return log10 n / log10 e
+fastfunc logn n .
+   return log n 0
 .
-func ramamax n .
-   return floor (4 * n * log (4 * n))
+fastfunc ramamax n .
+   return floor (4 * n * logn (4 * n))
 .
-func ramaprim_twins n .
+fastfunc ramaprim_twins n .
    i = ramamax n
    i -= i mod 2
    while i >= 2

@@ -9,22 +9,22 @@ function even n {($n & 1) == 0}
 function mult {a b} {
     $a < 1 ? 0 :
     even($a) ? [logmult STRUCK] + mult(halve($a), double($b))
-	     : [logmult KEPT]   + mult(halve($a), double($b)) + $b
+         : [logmult KEPT]   + mult(halve($a), double($b)) + $b
 }
 
 # Wrapper to set up the logging
 proc ethiopianMultiply {a b {tutor false}} {
     if {$tutor} {
-	set wa [expr {[string length $a]+1}]
-	set wb [expr {$wa+[string length $b]-1}]
-	puts stderr "Ethiopian multiplication of $a and $b"
-	interp alias {} logmult {} apply {{wa wb msg} {
-	    upvar 1 a a b b
-	    puts stderr [format "%*d %*d %s" $wa $a $wb $b $msg]
-	    return 0
-	}} $wa $wb
+    set wa [expr {[string length $a]+1}]
+    set wb [expr {$wa+[string length $b]-1}]
+    puts stderr "Ethiopian multiplication of $a and $b"
+    interp alias {} logmult {} apply {{wa wb msg} {
+        upvar 1 a a b b
+        puts stderr [format "%*d %*d %s" $wa $a $wb $b $msg]
+        return 0
+    }} $wa $wb
     } else {
-	proc logmult args {return 0}
+    proc logmult args {return 0}
     }
     return [expr {mult($a,$b)}]
 }

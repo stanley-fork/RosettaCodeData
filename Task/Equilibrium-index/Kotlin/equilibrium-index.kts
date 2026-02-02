@@ -3,7 +3,7 @@
 fun equilibriumIndices(a: IntArray): MutableList<Int> {
    val ei = mutableListOf<Int>()
    if (a.isEmpty()) return ei // empty list
-   val sumAll  = a.sumBy { it }
+   val sumAll  = a.sumOf { it }
    var sumLeft = 0
    var sumRight: Int
    for (i in 0 until a.size) {

@@ -56,4 +56,6 @@ Module  FourBitAdder {
 	k=each(res() end to start)  ' k is an iterator, now configure to read items in reverse
 	Print "A+B",v, k, k_low   ' print  1 1 0 0 0 0 1 0 1
 }
+Form 60
+Print $(, 6)  ' 6 characters tab width
 FourBitAdder

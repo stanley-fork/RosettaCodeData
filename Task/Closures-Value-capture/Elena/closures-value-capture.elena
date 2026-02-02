@@ -1,7 +1,7 @@
 import system'routines;
 import extensions;
 
-public program()
+public Program()
 {
     var functions := Array.allocate(10).populate::(int i => { ^ i * i} );
 

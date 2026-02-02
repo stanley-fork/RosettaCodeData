@@ -1,52 +1,49 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+with javascript_semantics
+include mpfr.e
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">juggler</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">bool</span> <span style="color: #000000;">bDigits</span><span style="color: #0000FF;">=</span><span style="color: #004600;">false</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">(),</span> <span style="color: #000000;">t1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()+</span><span style="color: #000000;">1</span>
-     <span style="color: #7060A8;">assert</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">mpz</span> <span style="color: #000000;">a</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">),</span>
-         <span style="color: #000000;">h</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">l</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>
-             <span style="color: #000000;">hi</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">while</span> <span style="color: #7060A8;">mpz_cmp_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_odd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #7060A8;">mpz_pow_ui</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #7060A8;">mpz_sqrt</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">l</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_cmp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">h</span><span style="color: #0000FF;">)></span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">h</span><span style="color: #0000FF;">,</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">hi</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">l</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()!=</span><span style="color: #004600;">JS</span> <span style="color: #008080;">and</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()></span><span style="color: #000000;">t1</span> <span style="color: #008080;">then</span>
-             <span style="color: #7060A8;">progress</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"working (l=%d)\r"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">l</span><span style="color: #0000FF;">})</span>
-             <span style="color: #000000;">t1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()+</span><span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">hd</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">bDigits</span><span style="color: #0000FF;">?</span><span style="color: #7060A8;">mpz_sizeinbase</span><span style="color: #0000FF;">(</span><span style="color: #000000;">h</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">):</span><span style="color: #7060A8;">mpz_get_atom</span><span style="color: #0000FF;">(</span><span style="color: #000000;">h</span><span style="color: #0000FF;">))</span>
-     <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t0</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">?</span><span style="color: #008000;">" ("</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t0</span><span style="color: #0000FF;">)&</span><span style="color: #008000;">")"</span><span style="color: #0000FF;">:</span><span style="color: #008000;">""</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">l</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">hd</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">hi</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function juggler(integer n, bool bDigits=false)
+    atom t0 = time(), t1 = time()+1
+    assert(n>=1)
+    mpz a = mpz_init(n),
+        h = mpz_init(n)
+    integer l = 0,
+            hi = 0
+    while mpz_cmp_si(a,1)!=0 do
+        if mpz_odd(a) then
+            mpz_pow_ui(a,a,3)
+        end if
+        mpz_sqrt(a,a)
+        l += 1
+        if mpz_cmp(a,h)>0 then
+            mpz_set(h,a)
+            hi = l
+        end if
+        if platform()!=JS and time()>t1 then
+            progress("working (l=%d)\r",{l})
+            t1 = time()+1
+        end if
+    end while
+    atom hd = iff(bDigits?mpz_sizeinbase(h,10):mpz_get_atom(h))
+    t0 = time()-t0
+    string t = iff(t0>=1?" ("&elapsed(t0)&")":"")
+    return {n, l, hd, hi, t}
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">main</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">" n  l[n]                 h[n]  i[n]\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"-----------------------------------\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">20</span> <span style="color: #008080;">to</span> <span style="color: #000000;">39</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%2d    %2d   %,18d    %2d %s\n"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">juggler</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">nums</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">113</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">173</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">193</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2183</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">11229</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">15065</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">15845</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">30817</span><span style="color: #0000FF;">}</span>
-                     <span style="color: #000080;font-style:italic;">-- alas mpz_sqrt() throws a wobbly over the rest:
- --                   48443, 275485, 1267909, 2264915, 5812827, 7110201}</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n        n  l[n]    d[n]  i[n]\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"-----------------------------\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000080;font-style:italic;">--  ... and pwa/p2js(/mpfr.js) only copes with the first 3</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">3</span><span style="color: #0000FF;">:</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">nums</span><span style="color: #0000FF;">))</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%9d   %3d  %,6d    %2d %s\n"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">juggler</span><span style="color: #0000FF;">(</span><span style="color: #000000;">nums</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #004600;">true</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #0000FF;">?</span><span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
- <span style="color: #000000;">main</span><span style="color: #0000FF;">()</span>
-<!--
+procedure main()
+    atom t0 = time()
+    printf(1," n  l[n]                 h[n]  i[n]\n")
+    printf(1,"-----------------------------------\n")
+    for n=20 to 39 do
+        printf(1,"%2d    %2d   %,18d    %2d %s\n", juggler(n))
+    end for
+    sequence nums = {113, 173, 193, 2183, 11229, 15065, 15845, 30817,
+                   48443, 275485, 1267909, 2264915, 5812827, 7110201}
+    printf(1,"\n        n  l[n]        d[n]  i[n]\n")
+    printf(1,"---------------------------------\n")
+    --  ... and pwa/p2js(/mpfr.js) only copes with the first 3
+    for i=1 to iff(platform()=JS?3:length(nums)) do
+        printf(1,"%9d %5d %,11d %5d %s\n", juggler(nums[i],true))
+    end for
+    ?elapsed(time()-t0)
+end procedure
+main()

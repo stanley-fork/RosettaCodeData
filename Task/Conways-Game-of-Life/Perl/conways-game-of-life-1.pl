@@ -33,8 +33,8 @@ sub nexgen {
 sub printlife {
    my @life = @_;
    if ($printed) {
-	# Move the cursor up to print over prior generation.
-	print "\e[1A" x $height;
+   # Move the cursor up to print over prior generation.
+   print "\e[1A" x $height;
    }
    $printed = 1;
    foreach my $row ( 0 .. $height - 1 ) {

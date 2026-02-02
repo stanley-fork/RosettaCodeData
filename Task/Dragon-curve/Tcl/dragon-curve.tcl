@@ -15,14 +15,14 @@ proc forward {len} {
 proc dragon {len split {d 1}} {
     global r2 coords
     if {$split == 0} {
-	forward $len
-	return
+    forward $len
+    return
     }
 
     # This next part is only necessary to allow the illustration of progress
     if {$split == 10 && [llength $::coords]>2} {
-	.c coords dragon $::coords
-	update
+    .c coords dragon $::coords
+    update
     }
 
     incr split -1

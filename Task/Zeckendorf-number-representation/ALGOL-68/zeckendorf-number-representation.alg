@@ -22,29 +22,14 @@ PROC to zeckendorf = ( INT n )STRING:
             f pos -:= 1
         OD;
         # if we found a digit, build the representation                   #
-        IF f pos >= LWB fibonacci THEN
-            # have a digit                                                #
-            BOOL skip digit := FALSE;
-            WHILE f pos >= LWB fibonacci DO
-                IF   rest <= 0 THEN
-                    result    +:= "0"
-                ELIF skip digit THEN
-                    # we used the previous digit                          #
-                    skip digit := FALSE;
-                    result    +:= "0"
-                ELIF rest < fibonacci[ f pos ] THEN
-                    # can't use the digit at f pos                        #
-                    skip digit := FALSE;
-                    result    +:= "0"
-                ELSE
-                    # can use this digit                                  #
-                    skip digit := TRUE;
-                    result    +:= "1";
-                    rest      -:= fibonacci[ f pos ]
-                FI;
-                f pos -:= 1
-            OD
-        FI;
+        FOR f FROM f pos BY -1 TO LWB fibonacci DO
+            IF rest < fibonacci[ f ] THEN
+                result +:= "0"
+            ELSE
+                result +:= "1";
+                rest   -:= fibonacci[ f ]
+            FI
+        OD;
         IF rest = 0 THEN
             # found a representation                                      #
             result

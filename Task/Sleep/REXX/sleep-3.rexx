@@ -1,6 +1,7 @@
-include Settings
+-- 24 Aug 2025
+include Setting
 
-say 'SLEEP - 2 Mar 2025'
+say 'SLEEP'
 say version
 say
 call Sleep 1

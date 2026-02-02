@@ -1,13 +1,17 @@
--- 30 Jul 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'Factorial'
 say version
 say
 call First20
-call Imp 10, '1 13 71 450 3249 25206 205022 1723508 14842907 130202808'
-call ReC 10, '1 13 71 450 3249 25206 205022'
-call Imp 1E6,'1 13 71 450 3249 25206'
+call Imperative 10, '1 13 71 450 3249 25206 205022 1723508 14842907 130202808'
+if pos('Regina',version) > 0 then
+   call Recursive 10, '1 13 71 450 3249 25206 205022'
+else
+   call Recursive 10, '1 13 71 450 3249'
+call Imperative 1E5,'1 13 71 450 3249 25206'
+call Timer
 exit
 
 First20:
@@ -19,9 +23,9 @@ end
 say
 return
 
-Imp:
+Imperative:
 call ResetMemo
-call Time('r')
+call Time('R')
 arg d,p
 numeric digits d; Fact. = 0
 say 'Imperative in' d 'digits precision...'
@@ -36,14 +40,14 @@ end
 say
 return
 
-ReC:
+Recursive:
 call ResetMemo
-call Time('r')
+call Time('R')
 arg d,p
 numeric digits d; Fact. = 0
 say 'Recursive in' d 'digits precision...'
 do i = 1 to Words(p)
-   call Time('r'); f = Word(p,i); h = Recursive(f)
+   call Time('r'); f = Word(p,i); h = Recurs(f)
    parse var h 'E' e
    if e = '' then
       say Right(f'!',10) 'has exact' Right(Length(h),9)  'digits' '('Format(Time('e'),,3)'s)'
@@ -53,12 +57,12 @@ end
 say
 return
 
-Recursive:
+Recurs:
 procedure
 arg xx
 if xx = 0 then
    return 1
 else
-   return xx*Recursive(xx-1)
+   return xx*Recurs(xx-1)
 
 include Math

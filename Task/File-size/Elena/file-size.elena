@@ -1,7 +1,7 @@
 import system'io;
 import extensions;
 
-public program()
+public Program()
 {
     Console.printLine(File.assign("input.txt").Length);
 

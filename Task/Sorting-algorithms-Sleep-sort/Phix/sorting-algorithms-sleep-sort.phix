@@ -1,29 +1,27 @@
-(notonline)-->
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span> <span style="color: #000080;font-style:italic;">-- (multitasking)</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">count</span>
+without js -- (multitasking)
+integer count
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">sleeper</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">key</span><span style="color: #0000FF;">)</span>
-     <span style="color: #0000FF;">?</span> <span style="color: #000000;">key</span> <span style="color: #000080;font-style:italic;">-- (or maybe res &= key)</span>
-     <span style="color: #000000;">count</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">1</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure sleeper(integer key)
+    ? key -- (or maybe res &= key)
+    count -= 1
+end procedure
 
- <span style="color: #000080;font-style:italic;">--sequence s = command_line()[3..$]</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"3 1 4 1 5 9 2 6 5"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-     <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Nothing to sort.\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">else</span>
-     <span style="color: #000000;">count</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">object</span> <span style="color: #000000;">si</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">to_number</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span>
-         <span style="color: #008080;">if</span> <span style="color: #004080;">integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">si</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #004080;">atom</span> <span style="color: #000000;">task</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">task_create</span><span style="color: #0000FF;">(</span><span style="color: #000000;">sleeper</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">si</span><span style="color: #0000FF;">})</span>
-             <span style="color: #7060A8;">task_schedule</span><span style="color: #0000FF;">(</span><span style="color: #000000;">task</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">si</span><span style="color: #0000FF;">/</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">si</span><span style="color: #0000FF;">/</span><span style="color: #000000;">10</span><span style="color: #0000FF;">})</span>
-             <span style="color: #000000;">count</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
+--sequence s = command_line()[3..$]
+sequence s = split("3 1 4 1 5 9 2 6 5")
+if length(s)=0 then
+    puts(1,"Nothing to sort.\n")
+else
+    count = 0
+    for i=1 to length(s) do
+        object si = to_number(s[i])
+        if integer(si) then
+            atom task = task_create(sleeper,{si})
+            task_schedule(task,{si/10,si/10})
+            count += 1
+        end if
+    end for
 
-     <span style="color: #008080;">while</span> <span style="color: #000000;">count</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">task_yield</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-<!--
+    while count do
+        task_yield()
+    end while
+end if

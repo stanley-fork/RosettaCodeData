@@ -1,5 +1,5 @@
--- 25 Mar 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 
 say 'PERFECT NUMBERS'
 say version
@@ -33,6 +33,4 @@ say Format(Time('e'),,3) 'seconds'
 say
 return
 
-include Numbers
-include Functions
-include Abend
+include Math

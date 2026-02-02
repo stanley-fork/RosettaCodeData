@@ -1,14 +1,11 @@
-from time import (now)
+# Legendre Prime Counting Function Using Partial Sieving...
+
+# compile with "mojo build -march native <filename>"...
+
+# from memory import (memset)
+from time import (monotonic)
 
 alias cLIMIT: UInt64 = 100_000_000_000
-
-@always_inline
-fn mkMasks() -> DTypePointer[DType.uint8]:
-  let rslt = DTypePointer[DType.uint8].alloc(8)
-  for i in range(8): rslt.offset(i).store(1 << i)
-  return rslt
-
-let masksp = mkMasks()
 
 fn intsqrt(n: UInt64) -> UInt64:
   if n < 4:
@@ -22,130 +19,136 @@ fn intsqrt(n: UInt64) -> UInt64:
       q = 1 << (qn - 2); qn = 0
     else:
       q >>= 2
-    let t: UInt64 =  r + q
+    var t: UInt64 =  r + q
     r >>= 1
     if x >= t:
       x -= t; r += q
   return r
 
-fn countPrimes(n: UInt64) -> Int64:
-  if n < 3:
-    if n < 2: return 0
-    else: return 1
-  let rtlmt: Int = intsqrt(n).to_int() # precision limits range to maybe 1e16!
-  let mxndx = (rtlmt - 1) >> 1
+fn countPrimes(limit: UInt64) -> Int64:
+  if limit < 3: return 0 if limit < 2 else 1
+
+  var rtlmt: Int = Int(intsqrt(limit))
+  var mxndx = (rtlmt - 1) >> 1
+  var rtrtlmt = Int(intsqrt(rtlmt))
+  # converts `x` to Pi`x` through Phi(x, 1) so does not contain "one" where
+  # the one means only divides by p2 which is two...
   @always_inline
-  fn half(n: Int64) -> Int64    : return ((n - 1) // 2)
+  fn pip2(x: Int64) -> Int64 : return ((x - 1) // 2)
   @always_inline
-  fn divide(nm: UInt64, d: UInt64) -> Int64: return ((nm * 1.0) / (d * 1.0)).to_int()
-  let smalls = # current accumulated counts of odd primes 1 to sqrt range
-    DTypePointer[DType.uint32].alloc(mxndx + 1)
-  # initialized for no sieving whatsoever other than odds-only - partial sieved by 2:
+  fn tondx(x: Int64) -> Int64 : return ((x - 1) // 2) # aame function; to doc
+  @always_inline
+  fn divide(n: UInt64, d: Int64) -> Int64: return Int64(n // UInt64(d))
+  var pisndxs = # current accumulated counts of odd primes 1 to sqrt range
+    UnsafePointer[UInt32].alloc(mxndx + 1)
+  # initialized for no sieving other than odds-only - partial sieved by 2:
   #   0 odd primes to 1; 1 odd prime to 3, etc....
-  for i in range(mxndx + 1): smalls.offset(i).store(i)
-  let roughs = # current odd k-rough numbers up to sqrt of range; k = 2
-    DTypePointer[DType.uint32].alloc(mxndx + 1)
+  for i in range(mxndx + 1): pisndxs[i] = i
   # initialized to all odd positive numbers 1, 3, 5, ... sqrt range...
-  for i in range(mxndx + 1): roughs.offset(i).store(i + i + 1)
+  var roughs = # current odd k-rough numbers up to sqrt of range; k = 2
+    UnsafePointer[UInt32].alloc(mxndx + 1)
+  for i in range(mxndx + 1): roughs[i] = i + i + 1
   # array of current phi counts for above roughs...
   # these are not strictly `phi`'s since they also include the
-  # count of base primes in order to match the above `smalls` definition!
-  let larges = # starts as size of counts just as `roughs` so they align!
-    DTypePointer[DType.uint64].alloc(mxndx + 1)
+  # count of base primes in order to match the above `pisndxs` definition!
+  var pis = # starts as size of counts just as `roughs` so they align!
+    UnsafePointer[Int64].alloc(mxndx + 1)
   # initialized for current roughs after accounting for even prime of two...
-  for i in range(mxndx + 1): larges.offset(i).store((n // (i + i + 1) - 1) // 2)
+  for i in range(mxndx + 1): pis[i] = pip2(divide(limit, Int64(roughs[i])))
   # cmpsts is a bit-packed boolean array representing
   # odd composite numbers from 1 up to rtlmt used for sieving...
   # initialized as "zeros" meaning all odd positives are potentially prime
   # note that this array starts at (and keeps) 1 to match the algorithm even
   # though 1 is not a prime, as 1 is important in computation of phi...
-  let cmpsts = DTypePointer[DType.uint8].alloc((mxndx + 8) // 8)
-  memset_zero(cmpsts, (mxndx + 8) // 8)
 
   # number of found base primes and current highest used rough index...
-  var npc: Int = 0; var mxri: Int = mxndx
-  for i in range(1, mxndx + 1): # start at index for 3; i will never reach mxndx...
-    let sqri = (i + i) * (i + 1) # computation of square index!
-    if sqri > mxndx: break # stop partial sieving due to square index limit!
-    if (cmpsts.offset(i >> 3).load() & masksp.offset(i & 7).load()) != 0: continue # if not prime
-    # culling the base prime from cmpsts means it will never be found again
-    let cp = cmpsts.offset(i >> 3)
-    cp.store(cp.load() | masksp.offset(i & 7).load()) # cull base prime
-    let bp = i + i + 1 # base prime from index!
-    for c in range(sqri, mxndx + 1, bp): # SoE culling of all bp multiples...
-      let cp = cmpsts.offset(c >> 3); cp.store(cp.load() | masksp.offset(c & 7).load())
-    # partial sieving to current base prime is now completed!
+  var numbps: Int = 0; var mxri: Int = mxndx
+  while True:
+    var bp = roughs[1]
+    if bp > rtrtlmt: break
 
-    var ri: Int = 0 # to keep track of current used roughs index!
-    for k in range(mxri + 1): # processing over current roughs size...
+    # mark `roughs` for all current multiples of `bp`;
+    # this is "partial sieving because it only culls by `bp` at a time...
+    roughs[1] = 0 # mark off the `bp` in `roughs` itself
+    for cullpos in range(bp * bp, rtlmt, bp + bp):
+      var ndx = Int(pisndxs[cullpos >> 1]) - numbps
+      if roughs[ndx] == UInt32(cullpos): roughs[ndx] = 0
+
+    var roi: Int = 0 # to keep track of current used roughs index!
+    for rii in range(mxri + 1): # processing over current roughs size...
       # q is not necessarily a prime but may be a
       # product of primes not yet culled by partial sieving;
       # this is what saves operations compared to recursive Legendre:
-      let q: UInt64 = roughs.offset(k).load().to_int(); let qi = q >> 1 # index of always odd q!
+      var q: Int64 = Int64(roughs[rii])
       # skip over values of `q` already culled in the last partial sieve:
-      if (cmpsts.offset(qi >> 3).load() & masksp.offset(qi & 7).load()) != 0: continue
-      # since `q` cannot be equal to bp due to cull of bp and above skip;
-      let d: UInt64 = bp * q # `d` is odd product of some combination of odd primes!
-      # the following computation is essential to the algorithm's speed:
-      # see above description in the text for how this works:
-      larges.offset(ri).store(larges.offset(k).load() -
-                   (larges.offset(smalls.offset(d >> 1).load().to_int() - npc).load() if d <= rtlmt
-                    else smalls.offset(half(divide(n, d))).load().to_int()) + npc)
-      # eliminate rough values that have been culled in partial sieve:
-      # note that `larges` and `roughs` indices relate to each other!
-      roughs.offset(ri).store(q.to_int()); ri += 1 # update rough value; advance rough index
+      if q == 0: continue # already marked!
 
-    var m = mxndx # adjust `smalls` counts for the newly culled odds...
+      # since `q` cannot be equal to bp due to cull of bp and above skip;
+      # the following computation is essential to the algorithm's speed:
+      # see above description in the text for how this works...
+      var d: Int64 = Int64(bp) * q # `d` odd product of combination odd primes!
+      pis[roi] = pis[rii] -
+                   ( pis[Int(pisndxs[d >> 1]) - numbps] if d <= rtlmt
+                     else Int64(pisndxs[tondx(divide(limit, d))]) )
+                       + Int64(numbps)
+      # eliminate rough values that have been culled in partial sieve:
+      # note that `pis` and `roughs` indices relate to each other!
+      roughs[roi] = UInt32(q) # update rough value
+      roi += 1 # advance rough "out" index
+
+    var m = mxndx # adjust `pisndxs` counts for the newly culled odds...
     # this is faster than recounting over the `cmpsts` array for each loop...
-    for k in range(((rtlmt // bp) - 1) | 1, bp - 1, -2): # k always odd!
+    for cp in range(((rtlmt // bp) - 1) | 1, bp - 1, -2): # `cp` always odd!
       # `c` is correction from current count to desired count...
       # `e` is end limit index no correction is necessary for current cull...
-      let c = smalls.offset(k >> 1).load() - npc; let e = (k * bp) >> 1
+      var c = pisndxs[cp >> 1] - numbps; var e = Int((cp * bp) >> 1)
       while m >= e:
-        let cp = smalls.offset(m)
-        cp.store(cp.load() - c); m -= 1 # correct over range down to `e`
-    mxri = ri - 1; npc += 1 # set next loop max roughs index; count base prime
-  # now `smalls` is a LUT of odd prime accumulated counts for all odd primes;
+        pisndxs[m] -= c; m -= 1 # correct over range down to `e`
+
+    mxri = roi - 1 # set next loop max roughs index
+    numbps += 1 # count base prime
+
+  # now `pisndxs` is a LUT of odd prime accumulated counts for all odd primes;
   # `roughs` is exactly the "k-roughs" up to the sqrt of range with `k` the
   #    index of the next prime above the quad root of the range;
-  # `larges` is the partial prime counts for each of the `roughs` values...
-  # note that `larges` values include the count of the odd base primes!!!
-  # `cmpsts` are never used again!
+  # `pis` is the partial prime counts for each of the `roughs` values...
+  # note that `pis` values include the count of the odd base primes!!!
 
   # the following does the top most "phi tree" calculation:
-  var result: Int64 = larges.load().to_int() # the answer to here is all valid `phis`
-  for i in range(1, mxri + 1): result -= larges.offset(i).load().to_int() # combined here by subtraction
+  var result: Int64 = pis[0] # the answer to here is all valid `phis`
+  for i in range(1, mxri + 1): result -= Int64(pis[i]) # combined by subtraction
   # compensate for the included odd base prime counts over subracted above:
-  result += ((mxri + 1 + 2 * (npc - 1)) * mxri // 2)
+  result += ((mxri + 1 + 2 * (numbps - 1)) * mxri // 2)
 
   # This loop adds the counts due to the products of the `roughs` primes,
   # of which we only use two different ones at a time, as all the
   # combinations with lower primes than the cube root of the range have
   # already been computed and included with the previous major loop...
   # see text description above for how this works...
-  for j in range(1, mxri + 1):  # for all `roughs` (now prime) not including one:
-    let p: UInt64 = roughs.offset(j).load().to_int()
-    let m: UInt64 = (n // p) # `m` is the `p` quotient
-    # so that the end limit `e` can be calculated based on `n`/(`p`^2)
-    let e: Int = smalls.offset(half((m // p).to_int())).load().to_int() - npc
+  for p1i in range(1, mxri + 1):  # for all `roughs` (now prime) not including one:
+    var p1: UInt64 = UInt64(roughs[p1i])
+    var m: UInt64 = limit // p1 # `m` is the `p` quotient
+    # so that the end limit `e` can be calculated based on `limit`/(`p`^2)
+    var endndx: Int = Int(pisndxs[tondx(Int64(m // p1))]) - numbps
     # following break test equivalent to non-memoization/non-splitting optmization:
-    if e <= j: break # stop at about `p` of cube root of range!
-    for k in range(j + 1, e + 1): # for all `roughs` greater than `p` to end limit:
-      result += smalls.offset(half(divide(m, roughs.offset(k).load().to_int()))).load().to_int()
+    if endndx <= p1i: break # stop at about `p` of cube root of range!
+    for p2i in range(p1i + 1, endndx + 1): # for all `roughs` greater than `p` to end limit:
+      result += Int64(pisndxs[tondx(divide(m, Int64(roughs[p2i])))])
     # compensate for all the extra base prime counts just added!
-    result -= ((e - j) * (npc + j - 1))
+    result -= ((endndx - p1i) * (numbps + p1i - 1))
 
   result += 1 # include the count for the only even prime of two
-  smalls.free(); roughs.free(); larges.free(); cmpsts.free()
+  pisndxs.free(); roughs.free(); pis.free()
 
   return result
 
 fn main():
   var pow: Int = 1
   for i in range(10):
-    print('10^', i, '=', countPrimes(pow))
+    print('10**', i, ' = ', countPrimes(pow), sep='')
     pow *= 10
-  let start = now()
-  let answr = countPrimes(cLIMIT)
-  let elpsd = (now() - start) / 1000000
+
+  var start = monotonic()
+  var answr = countPrimes(cLIMIT)
+  var elpsd = (monotonic() - start) / 1000000
   print("Found", answr, "primes up to", cLIMIT, "in", elpsd, "milliseconds.")

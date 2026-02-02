@@ -3,8 +3,8 @@
 -export( [matrix/1, task/0] ).
 
 matrix( N ) ->
-	{{_X_Y, N}, Proplist} = lists:foldl( fun matrix_as_proplist/2, {{{0, 0}, N}, []}, lists:seq(0, (N * N) - 1) ),
-	[columns( X, Proplist ) || X <- lists:seq(0, N - 1)].
+   {{_X_Y, N}, Proplist} = lists:foldl( fun matrix_as_proplist/2, {{{0, 0}, N}, []}, lists:seq(0, (N * N) - 1) ),
+   [columns( X, Proplist ) || X <- lists:seq(0, N - 1)].
 
 task() -> matrix( 5 ).
 
@@ -13,8 +13,8 @@ task() -> matrix( 5 ).
 columns( Column, Proplist ) -> lists:sort( [Value || {{_X, Y}, Value} <- Proplist, Y =:= Column] ).
 
 matrix_as_proplist( N, {{X_Y, Max}, Acc} ) ->
-	Next = next_indexes( X_Y, Max ),
-	{{Next, Max}, [{X_Y, N} | Acc]}.
+   Next = next_indexes( X_Y, Max ),
+   {{Next, Max}, [{X_Y, N} | Acc]}.
 
 next_indexes( {X, Y}, Max ) when Y + 1 =:= Max, (X + Y) rem 2 =:= 0  -> {X + 1, Y - 1};
 next_indexes( {X, Y}, Max ) when Y + 1 =:= Max, (X + Y) rem 2 =:= 1  -> {X + 1, Y};

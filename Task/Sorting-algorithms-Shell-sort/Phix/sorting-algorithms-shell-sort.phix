@@ -1,22 +1,20 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
+with javascript_semantics
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">shell_sort</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">gap</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">2</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">j</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">gap</span><span style="color: #0000FF;">></span><span style="color: #000000;">0</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">gap</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #004080;">object</span> <span style="color: #000000;">si</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-             <span style="color: #000000;">j</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">gap</span>
-             <span style="color: #008080;">while</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">1</span> <span style="color: #008080;">and</span> <span style="color: #000000;">si</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-                 <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">+</span><span style="color: #000000;">gap</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]</span>
-                 <span style="color: #000000;">j</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">gap</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-             <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">+</span><span style="color: #000000;">gap</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">si</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #000000;">gap</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">gap</span><span style="color: #0000FF;">/</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function shell_sort(sequence s)
+    integer gap = floor(length(s)/2), j
+    while gap>0 do
+        for i=gap to length(s) do
+            object si = s[i]
+            j = i-gap
+            while j>=1 and si<=s[j] do
+                s[j+gap] = s[j]
+                j -= gap
+            end while
+            s[j+gap] = si
+        end for
+        gap = floor(gap/2)
+    end while
+    return s
+end function
 
- <span style="color: #0000FF;">?</span><span style="color: #000000;">shell_sort</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">shuffle</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)))</span>
-<!--
+?shell_sort(shuffle(tagset(10)))

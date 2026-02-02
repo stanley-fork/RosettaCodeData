@@ -1,5 +1,5 @@
-PROGRAM	"Euclidean rhythm"
-VERSION	"0.0001"
+PROGRAM  "Euclidean rhythm"
+VERSION "0.0001"
 IMPORT "xma"
 
 DECLARE FUNCTION  Entry ()
@@ -29,15 +29,15 @@ FUNCTION  Entry ()
 END FUNCTION
 
 FUNCTION Euler (paso)
-	tiempo! = 0
-	temperatura! = 100.0
-	PRINT FORMAT$ ("Step ## ", paso);
+    tiempo! = 0
+    temperatura! = 100.0
+    PRINT FORMAT$ ("Step ## ", paso);
 
-	DO WHILE tiempo! <= 100
-		IF (tiempo! MOD 10) = 0 THEN PRINT FORMAT$ ("####.##", temperatura!);
-		temperatura! = temperatura! + SINGLE(paso) * (-0.07 * (temperatura! - 20.0))
-		tiempo! = tiempo! + paso
-	LOOP
-	PRINT
+    DO WHILE tiempo! <= 100
+        IF (tiempo! MOD 10) = 0 THEN PRINT FORMAT$ ("####.##", temperatura!);
+        temperatura! = temperatura! + SINGLE(paso) * (-0.07 * (temperatura! - 20.0))
+        tiempo! = tiempo! + paso
+    LOOP
+    PRINT
 END FUNCTION
 END PROGRAM

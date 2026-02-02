@@ -16,10 +16,10 @@ extension op
     }
 }
 
-public program()
+public Program()
 {
-    var list := new int[]{3, 4, 1, 8, 7, -2, 0};
+    auto list := new int[]{3, 4, 1, 8, 7, -2, 0};
 
-    console.printLine("before:", list.asEnumerable());
-    console.printLine("after :", list.bogoSorter().asEnumerable())
+    Console.printLine("before:", list.asEnumerable());
+    Console.printLine("after :", list.bogoSorter().asEnumerable())
 }

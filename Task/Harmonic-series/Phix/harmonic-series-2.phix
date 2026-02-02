@@ -1,25 +1,24 @@
-(phixonline)-->
- <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">gn</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">hn</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">gt</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
- <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"First twenty harmonic numbers as fractions:\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">while</span> <span style="color: #000000;">gn</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">10</span> <span style="color: #008080;">do</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">20</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%18.15f%s"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">hn</span><span style="color: #0000FF;">,</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)?</span><span style="color: #008000;">" "</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">100</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\nOne Hundredth: %18.15f\n\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">hn</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">hn</span><span style="color: #0000FF;">></span><span style="color: #000000;">gn</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">gt</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">n</span>
-         <span style="color: #000000;">gn</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">n</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #000000;">hn</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">/</span><span style="color: #000000;">n</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"(one based) Index of first value:\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">gt</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"  greater than %2d: %,6d (%s term)\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">gt</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #7060A8;">ordinal</span><span style="color: #0000FF;">(</span><span style="color: #000000;">gt</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">wait_key</span><span style="color: #0000FF;">()</span>
-<!--
+with javascript_semantics
+integer n = 1, gn = 1
+atom hn = 1
+sequence gt = {}
+puts(1,"First twenty harmonic numbers as fractions:\n")
+while gn<=10 do
+    if n<=20 then
+        printf(1,"%18.15f%n",{hn,mod(n,5)=0})
+    end if
+    if n=100 then
+        printf(1,"\nOne Hundredth: %18.15f\n\n",{hn})
+    end if
+    if hn>gn then
+        gt &= n
+        gn += 1
+    end if
+    n += 1
+    hn += 1/n
+end while
+printf(1,"(one based) Index of first value:\n")
+for i,g in gt do
+    printf(1,"  greater than %2d: %,6d (%s term)\n",{i,g,ordinal(g)})
+end for
+wait_key()

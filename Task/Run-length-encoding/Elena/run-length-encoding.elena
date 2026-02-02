@@ -3,7 +3,7 @@ import system'routines;
 import extensions;
 import extensions'text;
 
-singleton compressor
+singleton Compressor
 {
     string compress(string s)
     {
@@ -54,13 +54,13 @@ singleton compressor
     }
 }
 
-public program()
+public Program()
 {
     var s := "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW";
 
-    s := compressor.compress(s);
-    console.printLine(s);
+    s := Compressor.compress(s);
+    Console.printLine(s);
 
-    s := compressor.decompress(s);
-    console.printLine(s)
+    s := Compressor.decompress(s);
+    Console.printLine(s)
 }

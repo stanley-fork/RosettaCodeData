@@ -1,8 +1,13 @@
 stack = [] of Int32
-(1..10).each do |x|
-  stack.push x
-end
+# push
+stack.push 10
+stack << 10
 
-10.times do
-  puts stack.pop
-end
+# pop
+var = stack.pop
+
+# empty
+flag = stack.empty?
+
+# top / peek
+var = stack.last

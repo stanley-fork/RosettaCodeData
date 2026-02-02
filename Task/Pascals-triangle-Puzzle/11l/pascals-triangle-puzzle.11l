@@ -37,7 +37,7 @@ V diff = [0.0] * 15
 iterate(&v, &diff)
 
 V idx = 0
-L(i) 5
+L(i) 0.<5
    L(j) 0..i
       print(‘#4’.format(Int(0.5 + v[idx])), end' I j < i {‘ ’} E "\n")
       idx++

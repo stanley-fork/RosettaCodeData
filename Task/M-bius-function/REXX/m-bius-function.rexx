@@ -1,6 +1,7 @@
-include Settings
+-- 23 Aug 2025
+include Setting
 
-say 'MOEBIUS FUNCTION - 4 Mar 2025'
+say 'MOEBIUS FUNCTION'
 say version
 say
 numeric digits 100
@@ -24,7 +25,4 @@ say Format(Time('e'),,3) 'seconds'
 say
 return
 
-include Functions
-include Numbers
-include Sequences
-include Abend
+include Math

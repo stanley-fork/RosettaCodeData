@@ -77,12 +77,12 @@ for i = 1 to 12 // 12 steps so animation will pause on final state.
          g.fillEllipseCenter[x1,y1,1,1]
       }
       toggle@tval = status // This will be overwritten if needed by neighbor check conditions below.
-	  // Check if off point has 3 on point neighbors
+     // Check if off point has 3 on point neighbors
       if status == 0 && pointsum == 3
       {
          toggle@tval = 1
       }
-	  // Check if on point has between 2 and 3 on point neighbors
+     // Check if on point has between 2 and 3 on point neighbors
       if status == 1 && (pointsum < 2 || pointsum > 3)
       {
          toggle@tval = 0

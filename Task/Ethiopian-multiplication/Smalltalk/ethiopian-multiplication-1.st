@@ -20,7 +20,7 @@ Number extend [
                         ifTrue: [
                            tutor ifTrue: [
                              ('%1, %2 struck' % { multiplier. multiplicand })
-			       displayNl
+                   displayNl
                            ]
                         ].
         multiplier := multiplier halve.

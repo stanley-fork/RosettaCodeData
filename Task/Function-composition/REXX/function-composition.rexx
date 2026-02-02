@@ -1,3 +1,21 @@
-compose: procedure;  parse arg f,g,x;    interpret  'return'  f"("  g'('  x  "))"
+-- 12 Sep 2025
+include Setting
 
-exit        /*control should never gets here,  but this was added just in case.*/
+say 'FUNCTION COMPOSITION'
+say version
+say
+parse value 'Sin' 'ArcSin' 0.5 with ff gg xx
+say 'Compose('ff','gg','xx')' '=' Compose(ff,gg,xx) ',' ff'('gg'('xx'))' '=' Sin(ArcSin(xx))
+parse value 'ArcSin' 'Sin' 0.5 with ff gg xx
+say 'Compose('ff','gg','xx')' '=' Compose(ff,gg,xx) ',' ff'('gg'('xx'))' '=' ArcSin(Sin(xx))
+parse value 'Zeta' 'Gamma' 0.5 with ff gg xx
+say 'Compose('ff','gg','xx')' '=' Compose(ff,gg,xx) ',' ff'('gg'('xx'))' '=' Zeta(Gamma(xx))
+exit
+
+Compose:
+procedure expose Memo.
+arg ff,gg,xx
+interpret 'rr='ff'('gg'('xx'))'
+return rr
+
+include Math

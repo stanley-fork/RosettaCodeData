@@ -1,4 +1,7 @@
-&fras "unixdict.txt" # read file as string
-⊜□≠@\n.              # split on newlines
-▽∵◇(/×≥0°\+utf).     # keep ordered words
-▽=⊸/↥∵◇⧻.            # keep all max length words
+# Experimental!
+# Grab the entire contents of the page as an array of bytes, then decode it into a string of text:
+°utf₈ &fetch "https://raw.githubusercontent.com/thundergnat/rc-run/refs/heads/master/rc/resources/unixdict.txt"
+°/$"_\n_"   # Split the string into words by line breaks
+▽⊸≡◇(≍⊸⍆)   # Keep the words that are sorted, i.e. have their letters in alphabetical order
+▽⊸(=⊸/↥≡◇⧻) # Keep the remaining words that are the longest
+≡◇&p        # Print out each word individually

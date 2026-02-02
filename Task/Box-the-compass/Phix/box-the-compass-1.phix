@@ -1,48 +1,46 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">get225</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">p1</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">p2</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">p4</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">p3</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">p1</span><span style="color: #0000FF;">&</span><span style="color: #008000;">'-'</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">lower</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p2</span><span style="color: #0000FF;">)</span>
-            <span style="color: #000000;">p2</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">" by "</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">lower</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p1</span><span style="color: #0000FF;">)</span>
-            <span style="color: #000000;">p1</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">" by "</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">lower</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p4</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">d</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">p1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p2</span><span style="color: #0000FF;">}</span>       <span style="color: #000080;font-style:italic;">-- eg {North by east,North-northeast,Northeast by north}</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">p2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p1</span><span style="color: #0000FF;">}</span>       <span style="color: #000080;font-style:italic;">-- eg {Northeast by east,East-northeast,East by north}</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+function get225(integer d, string p1, string p2, string p4)
+    string p3 = p1&'-'&lower(p2)
+           p2 &= " by "&lower(p1)
+           p1 &= " by "&lower(p4)
+    if d then
+        return {p1,p3,p2}       -- eg {North by east,North-northeast,Northeast by north}
+    else
+        return {p2,p3,p1}       -- eg {Northeast by east,East-northeast,East by north}
+    end if
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">get45</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">p1</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">p2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">p3</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p1</span><span style="color: #0000FF;">)</span>        <span style="color: #000080;font-style:italic;">-- North/East/South/West</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">d</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">p3</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">p1</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">lower</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p2</span><span style="color: #0000FF;">)</span>       <span style="color: #000080;font-style:italic;">-- Northeast/Southwest</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #000000;">p3</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">p2</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">lower</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p1</span><span style="color: #0000FF;">)</span>       <span style="color: #000080;font-style:italic;">-- Southeast/Northwest</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">get225</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p2</span><span style="color: #0000FF;">)</span>   <span style="color: #000080;font-style:italic;">-- eg get225(1,North,Northeast,East)
-                                 -- -&gt; {North by east,North-northeast,Northeast by north}</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">)</span>        <span style="color: #000080;font-style:italic;">-- Northeast/Southeast/Southwest/Northwest</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">get225</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p1</span><span style="color: #0000FF;">)</span>   <span style="color: #000080;font-style:italic;">-- eg get225(0,East,Northeast,North)
-                                 -- -&gt; {Northeast by east,East-northeast,East by north}</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function get45(sequence res, integer d, string p1, string p2)
+    string p3
+    res = append(res,p1)        -- North/East/South/West
+    if d then
+        p3 = p1&lower(p2)       -- Northeast/Southwest
+    else
+        p3 = p2&lower(p1)       -- Southeast/Northwest
+    end if
+    res &= get225(1,p1,p3,p2)   -- eg get225(1,North,Northeast,East)
+                                -- -> {North by east,North-northeast,Northeast by north}
+    res = append(res,p3)        -- Northeast/Southeast/Southwest/Northwest
+    res &= get225(0,p2,p3,p1)   -- eg get225(0,East,Northeast,North)
+                                -- -> {Northeast by east,East-northeast,East by north}
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">get90</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">points</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">points</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get45</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">),</span><span style="color: #000000;">points</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span><span style="color: #000000;">points</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span> <span style="color: #000080;font-style:italic;">-- ie get45(1,North,East)
-             --    get45(0,East,South)
-             --    get45(1,South,West)
-             --    get45(0,West,North)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function get90(sequence points)
+    sequence res = {}
+    for i=1 to length(points) do
+        res = get45(res,remainder(i,2),points[i],points[remainder(i,4)+1])
+    end for -- ie get45(1,North,East)
+            --    get45(0,East,South)
+            --    get45(1,South,West)
+            --    get45(0,West,North)
+    return res
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">compass_points</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get90</span><span style="color: #0000FF;">({</span><span style="color: #008000;">"North"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"East"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"South"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"West"</span><span style="color: #0000FF;">})</span>
+constant compass_points = get90({"North","East","South","West"})
 
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">33</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">test_point</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">11.25</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">5.62</span><span style="color: #0000FF;">*(</span><span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">compass_point</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">test_point</span><span style="color: #0000FF;">*</span><span style="color: #000000;">32</span><span style="color: #0000FF;">/</span><span style="color: #000000;">360</span><span style="color: #0000FF;">+</span><span style="color: #000000;">0.5</span><span style="color: #0000FF;">),</span><span style="color: #000000;">32</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"%2d  %-22s  %6.2f\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">compass_point</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">compass_points</span><span style="color: #0000FF;">[</span><span style="color: #000000;">compass_point</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">test_point</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+for i=1 to 33 do
+    atom test_point = (i-1)*11.25 + 5.62*(remainder(i,3)-1)
+    integer compass_point = remainder(floor(test_point*32/360+0.5),32)+1
+    printf(1, "%2d  %-22s  %6.2f\n", {compass_point, compass_points[compass_point], test_point})
+end for

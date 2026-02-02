@@ -41,7 +41,7 @@ classifyNumbers(int bound, ref int abundant, ref int deficient, ref int perfect)
     perfect := p
 }
 
-public program()
+public Program()
 {
     int abundant := 0;
     int deficient := 0;

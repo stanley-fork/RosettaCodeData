@@ -1,161 +1,155 @@
-(phixonline)-->
- <span style="color: #000080;font-style:italic;">--
- -- demo\rosetta\Compiler\core.e
- -- ============================
- --
- --  Standard declarations and routines used by lex.exw, parse.exw, cgen.exw, and interp.exw
- --  (included in distribution as above, which contains some additional sanity checks)
- --</span>
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">global</span> <span style="color: #008080;">constant</span> <span style="color: #000000;">EOF</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">STDIN</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">STDOUT</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
+-- demo\rosetta\Compiler\core.e
+--  Standard declarations and routines used by lex.exw, parse.exw, cgen.exw, and interp.exw
+--  (included in distribution as above, which contains some additional sanity checks)
+with javascript_semantics
+global constant EOF = -1, STDIN = 0, STDOUT = 1
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">enum</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">UNARY</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BINARY</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span>
- <span style="color: #008080;">global</span> <span style="color: #008080;">type</span> <span style="color: #000000;">nary</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">return</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">NONE</span> <span style="color: #008080;">or</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">UNARY</span> <span style="color: #008080;">or</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">BINARY</span> <span style="color: #008080;">end</span> <span style="color: #008080;">type</span>
+global enum NONE=0, UNARY=1, BINARY=2
+global type nary(integer n) return n=NONE or n=UNARY or n=BINARY end type
 
- <span style="color: #008080;">global</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">tkNames</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>    <span style="color: #000080;font-style:italic;">-- eg/ie {"Op_multiply","Op_divide",..}</span>
- <span style="color: #008080;">global</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">precedences</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
- <span style="color: #008080;">global</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">narys</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>  <span style="color: #000080;font-style:italic;">-- NONE/UNARY/BINARY</span>
- <span style="color: #008080;">global</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">operators</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span> <span style="color: #000080;font-style:italic;">-- eg/ie {"*","/","+","-","&lt;","&lt;=",..}</span>
- <span style="color: #008080;">global</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">opcodes</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>    <span style="color: #000080;font-style:italic;">-- idx to tkNames, matching operators</span>
+global sequence tkNames = {}    -- eg/ie {"Op_multiply","Op_divide",..}
+global sequence precedences = {}
+global sequence narys = {}  -- NONE/UNARY/BINARY
+global sequence operators = {} -- eg/ie {"*","/","+","-","<","<=",..}
+global sequence opcodes = {}    -- idx to tkNames, matching operators
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">constant</span> <span style="color: #000000;">KEYWORDS</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">new_dict</span><span style="color: #0000FF;">()</span>   <span style="color: #000080;font-style:italic;">-- eg/ie {"if"=&gt;idx to tkNames}</span>
+global constant KEYWORDS = new_dict()   -- eg/ie {"if"=>idx to tkNames}
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">enum</span> <span style="color: #000000;">OPERATOR</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">DIGIT</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">LETTER</span>   <span style="color: #000080;font-style:italic;">-- character classes</span>
+global enum OPERATOR=1, DIGIT, LETTER   -- character classes
 
- <span style="color: #008080;">global</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">charmap</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">255</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #008000;">'0'</span><span style="color: #0000FF;">..</span><span style="color: #008000;">'9'</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">DIGIT</span>
-                 <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #008000;">'A'</span><span style="color: #0000FF;">..</span><span style="color: #008000;">'Z'</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">LETTER</span>
-                 <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #008000;">'a'</span><span style="color: #0000FF;">..</span><span style="color: #008000;">'z'</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">LETTER</span>
-                 <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #008000;">'_'</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">LETTER</span>
+global sequence charmap = repeat(0,255)
+                charmap['0'..'9'] = DIGIT
+                charmap['A'..'Z'] = LETTER
+                charmap['a'..'z'] = LETTER
+                charmap['_'] = LETTER
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">nary</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">precedence</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">tkNames</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tkNames</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">narys</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">narys</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">precedences</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">precedences</span><span style="color: #0000FF;">,</span><span style="color: #000000;">precedence</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tkNames</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function tkName(string s, nary n = NONE, integer precedence = -1)
+    tkNames = append(tkNames,s)
+    narys = append(narys,n)
+    precedences = append(precedences,precedence)
+    return length(tkNames)
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">op</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">nary</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">precedence</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">precedence</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">operators</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">operators</span><span style="color: #0000FF;">,</span><span style="color: #000000;">op</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">opcodes</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">opcodes</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">op</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">charmap</span><span style="color: #0000FF;">[</span><span style="color: #000000;">op</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">OPERATOR</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function tkOp(string s, string op, nary n, integer precedence)
+    integer res = tkName(s, n, precedence)
+    operators = append(operators,op)
+    opcodes = append(opcodes,res)
+    for i=1 to length(op) do
+        charmap[op[i]] = OPERATOR
+    end for
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">tkKw</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">keyword</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">putd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">keyword</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">KEYWORDS</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function tkKw(string s, string keyword)
+    integer res = tkName(s)
+    putd(keyword, res, KEYWORDS)
+    return res
+end function
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">constant</span>
-     <span style="color: #000000;">tk_EOI</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"End_of_input"</span><span style="color: #0000FF;">),</span>                      <span style="color: #000080;font-style:italic;">--1</span>
-     <span style="color: #000000;">tk_mul</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_multiply"</span><span style="color: #0000FF;">,</span>      <span style="color: #008000;">"*"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">13</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--2</span>
-     <span style="color: #000000;">tk_div</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_divide"</span><span style="color: #0000FF;">,</span>        <span style="color: #008000;">"/"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">13</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--3</span>
-     <span style="color: #000000;">tk_mod</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_mod"</span><span style="color: #0000FF;">,</span>           <span style="color: #008000;">"%"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">13</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--4</span>
-     <span style="color: #000000;">tk_add</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_add"</span><span style="color: #0000FF;">,</span>           <span style="color: #008000;">"+"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">12</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--5</span>
-     <span style="color: #000000;">tk_sub</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_subtract"</span><span style="color: #0000FF;">,</span>      <span style="color: #008000;">"-"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">12</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--6</span>
-     <span style="color: #000000;">tk_neg</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_negate"</span><span style="color: #0000FF;">,</span>           <span style="color: #000000;">UNARY</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">14</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--7</span>
-     <span style="color: #000000;">tk_not</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_not"</span><span style="color: #0000FF;">,</span>           <span style="color: #008000;">"!"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">UNARY</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">14</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--8</span>
-     <span style="color: #000000;">tk_lt</span>            <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_less"</span><span style="color: #0000FF;">,</span>          <span style="color: #008000;">"&lt;"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--9</span>
-     <span style="color: #000000;">tk_le</span>            <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_lessequal"</span><span style="color: #0000FF;">,</span>     <span style="color: #008000;">"&lt;="</span><span style="color: #0000FF;">,</span><span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--10</span>
-     <span style="color: #000000;">tk_gt</span>            <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_greater"</span><span style="color: #0000FF;">,</span>       <span style="color: #008000;">"&gt;"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--11</span>
-     <span style="color: #000000;">tk_ge</span>            <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_greaterequal"</span><span style="color: #0000FF;">,</span>  <span style="color: #008000;">"&gt;="</span><span style="color: #0000FF;">,</span><span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--12</span>
-     <span style="color: #000000;">tk_eq</span>            <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_equal"</span><span style="color: #0000FF;">,</span>         <span style="color: #008000;">"=="</span><span style="color: #0000FF;">,</span><span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">9</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--13</span>
-     <span style="color: #000000;">tk_ne</span>            <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_notequal"</span><span style="color: #0000FF;">,</span>      <span style="color: #008000;">"!="</span><span style="color: #0000FF;">,</span><span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">9</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--14</span>
-     <span style="color: #000000;">tk_assign</span>        <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_assign"</span><span style="color: #0000FF;">,</span>        <span style="color: #008000;">"="</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">,</span>  <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--15</span>
-     <span style="color: #000000;">tk_and</span>           <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_and"</span><span style="color: #0000FF;">,</span>           <span style="color: #008000;">"&&"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">5</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--16</span>
-     <span style="color: #000000;">tk_or</span>            <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Op_or"</span><span style="color: #0000FF;">,</span>            <span style="color: #008000;">"||"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">BINARY</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--17</span>
-     <span style="color: #000000;">tk_if</span>            <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkKw</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Keyword_if"</span><span style="color: #0000FF;">,</span>   <span style="color: #008000;">"if"</span><span style="color: #0000FF;">),</span>                  <span style="color: #000080;font-style:italic;">--18</span>
-     <span style="color: #000000;">tk_else</span>          <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkKw</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Keyword_else"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"else"</span><span style="color: #0000FF;">),</span>                <span style="color: #000080;font-style:italic;">--19</span>
-     <span style="color: #000000;">tk_while</span>         <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkKw</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Keyword_while"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"while"</span><span style="color: #0000FF;">),</span>               <span style="color: #000080;font-style:italic;">--20</span>
-     <span style="color: #000000;">tk_print</span>         <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkKw</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Keyword_print"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"print"</span><span style="color: #0000FF;">),</span>               <span style="color: #000080;font-style:italic;">--21</span>
-     <span style="color: #000000;">tk_putc</span>          <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkKw</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Keyword_putc"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"putc"</span><span style="color: #0000FF;">),</span>                <span style="color: #000080;font-style:italic;">--22</span>
-     <span style="color: #000000;">tk_LeftParen</span>     <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"LeftParen"</span><span style="color: #0000FF;">,</span>        <span style="color: #008000;">"("</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">,</span>  <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--23</span>
-     <span style="color: #000000;">tk_RightParen</span>    <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"RightParen"</span><span style="color: #0000FF;">,</span>       <span style="color: #008000;">")"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">,</span>  <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--24</span>
-     <span style="color: #000000;">tk_LeftBrace</span>     <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"LeftBrace"</span><span style="color: #0000FF;">,</span>        <span style="color: #008000;">"{"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">,</span>  <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--25</span>
-     <span style="color: #000000;">tk_RightBrace</span>    <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"RightBrace"</span><span style="color: #0000FF;">,</span>       <span style="color: #008000;">"}"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">,</span>  <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--26</span>
-     <span style="color: #000000;">tk_Semicolon</span>     <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Semicolon"</span><span style="color: #0000FF;">,</span>        <span style="color: #008000;">";"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">,</span>  <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--27</span>
-     <span style="color: #000000;">tk_Comma</span>         <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkOp</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Comma"</span><span style="color: #0000FF;">,</span>            <span style="color: #008000;">","</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">NONE</span><span style="color: #0000FF;">,</span>  <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">--28</span>
-     <span style="color: #000000;">tk_Identifier</span>    <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Identifier"</span><span style="color: #0000FF;">),</span>                        <span style="color: #000080;font-style:italic;">--29</span>
-     <span style="color: #000000;">tk_Integer</span>       <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Integer"</span><span style="color: #0000FF;">),</span>                           <span style="color: #000080;font-style:italic;">--30</span>
-     <span style="color: #000000;">tk_String</span>        <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"String"</span><span style="color: #0000FF;">),</span>                            <span style="color: #000080;font-style:italic;">--31</span>
-     <span style="color: #000000;">tk_Sequence</span>      <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Sequence"</span><span style="color: #0000FF;">),</span>                          <span style="color: #000080;font-style:italic;">--32</span>
-     <span style="color: #000000;">tk_Prints</span>        <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"tk_Prints"</span><span style="color: #0000FF;">),</span>                         <span style="color: #000080;font-style:italic;">--33</span>
-     <span style="color: #000000;">tk_Printi</span>        <span style="color: #0000FF;">=</span> <span style="color: #000000;">tkName</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"tk_Printi"</span><span style="color: #0000FF;">)</span>                          <span style="color: #000080;font-style:italic;">--34</span>
+global constant
+    tk_EOI           = tkName("End_of_input"),                      --1
+    tk_mul           = tkOp("Op_multiply",      "*", BINARY,13),    --2
+    tk_div           = tkOp("Op_divide",        "/", BINARY,13),    --3
+    tk_mod           = tkOp("Op_mod",           "%", BINARY,13),    --4
+    tk_add           = tkOp("Op_add",           "+", BINARY,12),    --5
+    tk_sub           = tkOp("Op_subtract",      "-", BINARY,12),    --6
+    tk_neg           = tkName("Op_negate",           UNARY, 14),    --7
+    tk_not           = tkOp("Op_not",           "!", UNARY, 14),    --8
+    tk_lt            = tkOp("Op_less",          "<", BINARY,10),    --9
+    tk_le            = tkOp("Op_lessequal",     "<=",BINARY,10),    --10
+    tk_gt            = tkOp("Op_greater",       ">", BINARY,10),    --11
+    tk_ge            = tkOp("Op_greaterequal",  ">=",BINARY,10),    --12
+    tk_eq            = tkOp("Op_equal",         "==",BINARY, 9),    --13
+    tk_ne            = tkOp("Op_notequal",      "!=",BINARY, 9),    --14
+    tk_assign        = tkOp("Op_assign",        "=", NONE,  -1),    --15
+    tk_and           = tkOp("Op_and",           "&&",BINARY, 5),    --16
+    tk_or            = tkOp("Op_or",            "||",BINARY, 4),    --17
+    tk_if            = tkKw("Keyword_if",   "if"),                  --18
+    tk_else          = tkKw("Keyword_else", "else"),                --19
+    tk_while         = tkKw("Keyword_while","while"),               --20
+    tk_print         = tkKw("Keyword_print","print"),               --21
+    tk_putc          = tkKw("Keyword_putc", "putc"),                --22
+    tk_LeftParen     = tkOp("LeftParen",        "(", NONE,  -1),    --23
+    tk_RightParen    = tkOp("RightParen",       ")", NONE,  -1),    --24
+    tk_LeftBrace     = tkOp("LeftBrace",        "{", NONE,  -1),    --25
+    tk_RightBrace    = tkOp("RightBrace",       "}", NONE,  -1),    --26
+    tk_Semicolon     = tkOp("Semicolon",        ";", NONE,  -1),    --27
+    tk_Comma         = tkOp("Comma",            ",", NONE,  -1),    --28
+    tk_Identifier    = tkName("Identifier"),                        --29
+    tk_Integer       = tkName("Integer"),                           --30
+    tk_String        = tkName("String"),                            --31
+    tk_Sequence      = tkName("Sequence"),                          --32
+    tk_Prints        = tkName("tk_Prints"),                         --33
+    tk_Printi        = tkName("tk_Printi")                          --34
 
- <span style="color: #008080;">global</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">input_file</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">STDIN</span><span style="color: #0000FF;">,</span>
-                <span style="color: #000000;">output_file</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">STDOUT</span>
+global integer input_file = STDIN,
+               output_file = STDOUT
 
- <span style="color: #008080;">type</span> <span style="color: #000000;">strint</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">o</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #004080;">string</span><span style="color: #0000FF;">(</span><span style="color: #000000;">o</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">or</span> <span style="color: #004080;">integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">o</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">type</span>
+type strint(object o)
+    return string(o) or integer(o)
+end type
 
- <span style="color: #008080;">global</span> <span style="color: #000000;">strint</span> <span style="color: #000000;">tok_line</span><span style="color: #0000FF;">,</span> <span style="color: #000080;font-style:italic;">-- save of line/col at the start of</span>
-               <span style="color: #000000;">tok_col</span>   <span style="color: #000080;font-style:italic;">-- token/comment, for result/errors</span>
+global strint tok_line, -- save of line/col at the start of
+              tok_col   -- token/comment, for result/errors
 
- <span style="color: #008080;">global</span> <span style="color: #004080;">object</span> <span style="color: #000000;">oneline</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
+global object oneline = ""
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">errfmt</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"Line %s column %s:\n%s%s"</span>
+constant errfmt = "Line %s column %s:\n%s%s"
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">errline</span><span style="color: #0000FF;">()</span>
-     <span style="color: #000000;">oneline</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">substitute</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">trim</span><span style="color: #0000FF;">(</span><span style="color: #000000;">oneline</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\r\n"</span><span style="color: #0000FF;">),</span><span style="color: #008000;">'\t'</span><span style="color: #0000FF;">,</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">padding</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tok_col</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%s\n%s^ "</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">oneline</span><span style="color: #0000FF;">,</span><span style="color: #000000;">padding</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function errline()
+    oneline = substitute(trim(oneline,"\r\n"),'\t',' ')
+    string padding = repeat(' ',tok_col)
+    return sprintf("%s\n%s^ ",{oneline,padding})
+end function
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">procedure</span> <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">args</span><span style="color: #0000FF;">={})</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">msg</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">el</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span><span style="color: #0000FF;">(</span><span style="color: #000000;">oneline</span><span style="color: #0000FF;">)?</span><span style="color: #008000;">""</span><span style="color: #0000FF;">:</span><span style="color: #000000;">errline</span><span style="color: #0000FF;">())</span>
-     <span style="color: #008080;">if</span> <span style="color: #004080;">integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tok_line</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000000;">tok_line</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tok_line</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #004080;">integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tok_col</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000000;">tok_col</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tok_col</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">STDOUT</span><span style="color: #0000FF;">,</span><span style="color: #000000;">errfmt</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">tok_line</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tok_col</span><span style="color: #0000FF;">,</span><span style="color: #000000;">el</span><span style="color: #0000FF;">,</span><span style="color: #000000;">msg</span><span style="color: #0000FF;">})</span>
-     <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">wait_key</span><span style="color: #0000FF;">()</span>
-     <span style="color: #7060A8;">abort</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+global procedure error(sequence msg, sequence args={})
+    if length(args) then
+        msg = sprintf(msg,args)
+    end if
+    string el = iff(atom(oneline)?"":errline())
+    if integer(tok_line) then tok_line = sprintf("%d",tok_line) end if
+    if integer(tok_col) then tok_col = sprintf("%d",tok_col) end if
+    printf(STDOUT,errfmt,{tok_line,tok_col,el,msg})
+    {} = wait_key()
+    abort(1)
+end procedure
 
- <span style="color: #008080;">include</span> <span style="color: #000000;">js_io</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span> <span style="color: #000080;font-style:italic;">-- fake file i/o for running under pwa/p2js</span>
+include js_io.e -- fake file i/o for running under pwa/p2js
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">open_file</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">file_name</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">mode</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">fn</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">js_open</span><span style="color: #0000FF;">(</span><span style="color: #000000;">file_name</span><span style="color: #0000FF;">)</span>
-                                   <span style="color: #0000FF;">:</span><span style="color: #7060A8;">open</span><span style="color: #0000FF;">(</span><span style="color: #000000;">file_name</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">mode</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">fn</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">STDOUT</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Could not open %s"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">file_name</span><span style="color: #0000FF;">})</span>
-         <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">wait_key</span><span style="color: #0000FF;">()</span>
-         <span style="color: #7060A8;">abort</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">fn</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function open_file(string file_name, string mode)
+    integer fn = iff(platform()=JS?js_open(file_name)
+                                  :open(file_name, mode))
+    if fn<=0 then
+        printf(STDOUT, "Could not open %s", {file_name})
+        {} = wait_key()
+        abort(1)
+    end if
+    return fn
+end function
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">procedure</span> <span style="color: #000000;">open_files</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">cl</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">)></span><span style="color: #000000;">2</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">input_file</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">open_file</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">],</span><span style="color: #008000;">"r"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">)></span><span style="color: #000000;">3</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">output_file</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">open_file</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">[</span><span style="color: #000000;">4</span><span style="color: #0000FF;">],</span><span style="color: #008000;">"w"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+global procedure open_files(sequence cl)
+    if length(cl)>2 then
+        input_file = open_file(cl[3],"r")
+        if length(cl)>3 then
+            output_file = open_file(cl[4],"w")
+        end if
+    end if
+end procedure
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">procedure</span> <span style="color: #000000;">close_files</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()!=</span><span style="color: #004600;">JS</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">input_file</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">STDIN</span> <span style="color: #008080;">then</span> <span style="color: #7060A8;">close</span><span style="color: #0000FF;">(</span><span style="color: #000000;">input_file</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">output_file</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">STDOUT</span> <span style="color: #008080;">then</span> <span style="color: #7060A8;">close</span><span style="color: #0000FF;">(</span><span style="color: #000000;">output_file</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+global procedure close_files()
+    if platform()!=JS then
+        if input_file!=STDIN then close(input_file) end if
+        if output_file!=STDOUT then close(output_file) end if
+    end if
+end procedure
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">function</span> <span style="color: #000000;">enquote</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">`"%s"`</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">substitute</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\\n"</span><span style="color: #0000FF;">))</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+global function enquote(string s)
+    return sprintf(`"%s"`,substitute(s,"\n","\\n"))
+end function
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">function</span> <span style="color: #000000;">unquote</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]!=</span><span style="color: #008000;">'\"'</span> <span style="color: #008080;">then</span> <span style="color: #0000FF;">?</span><span style="color: #000000;">9</span><span style="color: #0000FF;">/</span><span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[$]!=</span><span style="color: #008000;">'\"'</span> <span style="color: #008080;">then</span> <span style="color: #0000FF;">?</span><span style="color: #000000;">9</span><span style="color: #0000FF;">/</span><span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">substitute</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">..-</span><span style="color: #000000;">2</span><span style="color: #0000FF;">],</span><span style="color: #008000;">"\\n"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
-<!--
+global function unquote(string s)
+    if s[1]!='\"' then ?9/0 end if
+    if s[$]!='\"' then ?9/0 end if
+    s = substitute(s[2..-2],"\\n","\n")
+    return s
+end function

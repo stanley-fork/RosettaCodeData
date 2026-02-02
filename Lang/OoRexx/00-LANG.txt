@@ -11,3 +11,6 @@ ooRexx can be used to run many programs shown here in the [[REXX]] category.
 
 See http://rosettacode.org/wiki/Rosetta_Code:Village_Pump/Dialects#REXX.2C_ooRexx.2C_and_others
 for differences.
+
+== Rosetta Code tasks not implemented in OoRexx ==
+[[Tasks not implemented in OoRexx]]

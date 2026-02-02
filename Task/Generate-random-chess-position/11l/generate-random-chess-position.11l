@@ -17,7 +17,7 @@ F pawn_on_promotion_square(pc, pr)
    R 0B
 
 F populate_board(&brd, wp, bp)
-   L(x) 2
+   L(x) 0.<2
       Int piece_amount
       [Char] pieces
       I x == 0

@@ -18,7 +18,7 @@ val rec nextPrimebit =                                                          
      fn Bits =>
      fn pos  =>
         if pos+1 >= BitArray.length Bits
-	  then    NONE
+     then    NONE
           else    ( if BitArray.sub ( Bits,pos) then SOME (i2inf pos) else nextPrimebit Bits (pos+1) );
 
 
@@ -68,9 +68,9 @@ val sieveThroughSegment =
        in
 
           ( sweep (nums, step, k, n) ;
-	    if ( p*p <= up  andalso  Option.isSome nxt )
-	       then    oldprimes ( inf2i (p-st+1) ) ctlist
-	       else    oldprimes 0 t                                                                    (* next segment B *)
+       if ( p*p <= up  andalso  Option.isSome nxt )
+          then    oldprimes ( inf2i (p-st+1) ) ctlist
+          else    oldprimes 0 t                                                                    (* next segment B *)
           )
 
        end
@@ -85,9 +85,9 @@ val sieveThroughSegment =
 
 
 val rec workSegmentsDown = fn firstFn =>
-    			   fn nextFns =>
-			   fn sizeSeg : int =>
-			   fn upLimit : IntInf.int =>
+               fn nextFns =>
+            fn sizeSeg : int =>
+            fn upLimit : IntInf.int =>
  let
    val residual = upLimit mod i2inf sizeSeg
  in

@@ -4,7 +4,7 @@ F cusip_check(=cusip)
 
    cusip = cusip.uppercase()
    V total = 0
-   L(i) 8
+   L(i) 0.<8
       V v = 0
       V c = cusip[i]
       I c.is_digit()

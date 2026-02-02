@@ -1,1 +1,15 @@
-{{stub}}{{language|goboscript}}
+{{stub}}{{language
+|tags=compiled, transpiled, Scratch
+| site=https://aspizu.github.io/goboscript/
+|parampass=value
+|goboscript}}
+
+From [https://github.com/aspizu/goboscript/ the goboscript repo]:<br>
+
+<q>goboscript is a text-based programming language that compiles to Scratch. Write Scratch projects in text, and compile it into a .sb3 file -- which can be opened in the Scratch editor, TurboWarp or be uploaded to the Scratch website.</q>
+
+===Package managers===
+Despite being a relatively new programming language, goboscript has multiple package managers.
+
+* [https://github.com/aspizu/backpack backpack] - The official goboscript package manager
+* [https://github.com/inflated-goboscript/inflator inflator] - A more powerful package manager inspired by Python's pip

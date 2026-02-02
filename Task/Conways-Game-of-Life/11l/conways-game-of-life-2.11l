@@ -9,7 +9,7 @@ universe[2][4] = 1B
 universe[3][4] = 1B
 V nextgeneration = [[0B] * cellcountx] * cellcounty
 
-L(i) 4
+L(i) 0.<4
    print("\nGeneration "i‘:’)
    L(row) 0 .< cellcounty
       print(‘  ’, end' ‘’)

@@ -131,6 +131,29 @@ This flag is set if the <code>BRK</code> command was executed. The BRK basically
 * Set with: <code>BRK</code>
 * Cleared with: <code>RTI</code>
 * There are no branches associated with this command.
+
+This flag is used only for differentiating a <code>BRK</code> from an hardware <code>IRQ</code>
+<syntaxhighlight lang="6502asm">IRQ:
+	STA saveAccumulator			; save accumulator
+	PLA							; get flags
+	STA saveFlags				; save flags
+	AND #$10					; check "break" flag
+	BNE IRQ_fromBreak			; if(break flag set){ goto IRQ_fromBreak; }
+		JMP IRQ_fromHardware	; else{ goto IRQ_fromInterrupt; }
+IRQ_fromBreak:
+	LDA saveFlags				; load flags from temp address
+	PHA							; restore flags to stack
+	LDA saveAccumulator			; restore accumulator
+	;...
+	RTI							; return from interrupt
+
+IRQ_fromInterrupt:
+	LDA saveFlags				; load flags from temp address
+	PHA							; restore flags to stack
+	LDA saveAccumulator			; restore accumulator
+	;...
+	RTI							; return from interrupt
+	</syntaxhighlight>
 <br><br>
 
 ===Decimal===

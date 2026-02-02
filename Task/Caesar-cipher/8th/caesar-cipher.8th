@@ -8,7 +8,7 @@
   >r
   (
     \ Ignore anything below '.' as punctuation:
-    dup '. n:> if
+    dup '. n:> if|rebp;
       \ Do the conversion
       dup r@ n:+ swap
       \ Wrap appropriately

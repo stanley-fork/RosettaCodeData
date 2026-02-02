@@ -1,8 +1,7 @@
-F = {0: 0, 1: 1, 2: 1}
-def fib(n):
-    if n in F:
-        return F[n]
-    f1 = fib(n // 2 + 1)
-    f2 = fib((n - 1) // 2)
-    F[n] = (f1 * f1 + f2 * f2 if n & 1 else f1 * f1 - f2 * f2)
-    return F[n]
+def fib(n, c={0:1, 1:1}):
+    if n not in c:
+        x = n // 2
+        c[n] = fib(x-1) * fib(n-x-1) + fib(x) * fib(n - x)
+    return c[n]
+
+fib(10000000)  # calculating it takes a few seconds, printing it takes eons

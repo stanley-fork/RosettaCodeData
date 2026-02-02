@@ -5,7 +5,7 @@ gcd = (m,n => (n == 0) ? (m.Absolute) : (gcd(n,n.mod(m))));
 
 lcm = (m,n => (m * n).Absolute / gcd(m,n));
 
-public program()
+public Program()
 {
-    console.printLine("lcm(12,18)=",lcm(12,18))
+    Console.printLine("lcm(12,18)=",lcm(12,18))
 }

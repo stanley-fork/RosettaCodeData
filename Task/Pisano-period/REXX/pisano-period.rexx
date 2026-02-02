@@ -1,5 +1,5 @@
--- 26 Mar 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 call Time('r')
 numeric digits 500
 
@@ -17,7 +17,7 @@ GetFibo:
 procedure expose fibo.
 arg xx
 say 'Get first' xx 'Fibonacci numbers...'
-call Fibonaccis -xx
+call fibonaccis -xx
 say fibo.0 'numbers found'
 say
 return
@@ -63,8 +63,4 @@ do i = 1
 end
 return i
 
-include Sequences
-include Numbers
-include Functions
-include Constants
-include Abend
+include Math

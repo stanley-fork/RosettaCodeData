@@ -1,4 +1,4 @@
-public program()
+public Program()
 {
-    console.setCursorPosition(3,6).write("Hello")
+    Console.setCursorPosition(3,6).write("Hello")
 }

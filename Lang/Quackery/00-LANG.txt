@@ -3,7 +3,7 @@
 {{language programming paradigm|Imperative}}
 Quackery is an open-source, lightweight, entry-level concatenative language for educational and recreational programming, and an extensible compiler for a hypothetical processor, the Quackery Engine.
 
-It is coded as a Python 3 function in about 48k of Pythonscript, about half of which is a string of Quackery code.
+It is coded as a Python 3 function in about 50k of Pythonscript, about half of which is a string of Quackery code.
 
 The Quackery GitHub repository, which includes the Quackery manual "The Book of Quackery" as a pdf, is at [https://github.com/GordonCharlton/Quackery github.com/GordonCharlton/Quackery].
 

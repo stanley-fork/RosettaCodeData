@@ -6,7 +6,7 @@ public program()
     {
         while (reader.Available)
         {
-           console.writeLine(reader.readLine())
+           Console.writeLine(reader.readLine())
         }
     }
 }

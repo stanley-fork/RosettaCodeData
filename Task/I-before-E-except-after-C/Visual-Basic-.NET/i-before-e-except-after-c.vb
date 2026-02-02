@@ -9,7 +9,7 @@ Imports System.Text.RegularExpressions
 
 Module Program
     ' Supports both local and remote files
-    Const WORDLIST_URI = "http://wiki.puzzlers.org/pub/wordlists/unixdict.txt"
+    Const WORDLIST_URI = "https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt"
 
 
     ' The support factor of a word for EI or IE is the number of occurrences that support the rule minus the number that oppose it.

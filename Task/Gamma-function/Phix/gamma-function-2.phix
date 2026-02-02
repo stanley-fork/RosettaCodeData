@@ -1,109 +1,107 @@
--->
- <span style="color: #008080;">without</span> <span style="color: #008080;">javascript_semantics</span> <span style="color: #000080;font-style:italic;">-- (no mpfr_exp(), mpfr_gamma() in pwa/p2js)</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">dp</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">30</span>
- <span style="color: #004080;">string</span> <span style="color: #000000;">fmt</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"%5s:  %33s,  %33s,  %32s\n"</span>
- <span style="color: #7060A8;">requires</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1.0.2"</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- (mpfr_get_fixed(maxlen), mpfr_gamma)</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
- <span style="color: #7060A8;">mpfr_set_default_precision</span><span style="color: #0000FF;">(-</span><span style="color: #000000;">87</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- 87 decimal places. </span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">mc</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_inits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">40</span><span style="color: #0000FF;">)</span>
+without javascript_semantics -- (no mpfr_exp(), mpfr_gamma() in pwa/p2js)
+constant dp = 30
+string fmt = "%5s:  %33s,  %33s,  %32s\n"
+requires("1.0.2") -- (mpfr_get_fixed(maxlen), mpfr_gamma)
+include mpfr.e
+mpfr_set_default_precision(-87) -- 87 decimal places.
+sequence mc = mpfr_inits(40)
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">mpfr_spouge_gamma</span><span style="color: #0000FF;">(</span><span style="color: #004080;">mpfr</span> <span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">mpfr</span> <span style="color: #000000;">accm</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">mc</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpfr_cmp_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #000080;font-style:italic;">-- mc[1] := sqrt(2*PI)</span>
-         <span style="color: #7060A8;">mpfr_const_pi</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpfr_mul_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpfr_sqrt</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000080;font-style:italic;">-- k1_factrl = (k - 1)!*(-1)^k with 0!==1</span>
-         <span style="color: #004080;">mpfr</span> <span style="color: #000000;">k1_factrl</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">tmk</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">(),</span>
-              <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">()</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mc</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #000080;font-style:italic;">-- mc[k] = exp(13-k)*power(13-k,k-1.5)/k1_factrl</span>
-             <span style="color: #7060A8;">mpfr_set_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tmk</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mc</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">-</span><span style="color: #000000;">k</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">mpfr_exp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mc</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">],</span><span style="color: #000000;">tmk</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpfr_set_d</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1.5</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">mpfr_pow</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tmk</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpfr_div</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k1_factrl</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpfr_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mc</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">],</span><span style="color: #000000;">mc</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">],</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000080;font-style:italic;">-- k1_factrl *= -(k-1)</span>
-             <span style="color: #7060A8;">mpfr_mul_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k1_factrl</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k1_factrl</span><span style="color: #0000FF;">,-(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">))</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">accm</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mc</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000080;font-style:italic;">-- accm += mc[k]/(z+k-1)</span>
-         <span style="color: #004080;">mpfr</span> <span style="color: #000000;">ck</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mc</span><span style="color: #0000FF;">[</span><span style="color: #000000;">k</span><span style="color: #0000FF;">]),</span>
-              <span style="color: #000000;">zk</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpfr_add_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">zk</span><span style="color: #0000FF;">,</span><span style="color: #000000;">zk</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpfr_div</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ck</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ck</span><span style="color: #0000FF;">,</span><span style="color: #000000;">zk</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpfr_add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ck</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #000080;font-style:italic;">-- atom zc = z+length(mc)
-     -- accm *= exp(-zc)*power(zc,z+0.5) -- Gamma(z+1)</span>
-     <span style="color: #004080;">mpfr</span> <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">),</span>
-          <span style="color: #000000;">ez</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">(),</span>
-          <span style="color: #000000;">zh</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0.5</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpfr_add_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mc</span><span style="color: #0000FF;">))</span>
-     <span style="color: #7060A8;">mpfr_neg</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ez</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">mpfr_exp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ez</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ez</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpfr_add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">zh</span><span style="color: #0000FF;">,</span><span style="color: #000000;">zh</span><span style="color: #0000FF;">,</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">mpfr_pow</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">zh</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpfr_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ez</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpfr_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000080;font-style:italic;">-- return accm/z</span>
-     <span style="color: #7060A8;">mpfr_div</span><span style="color: #0000FF;">(</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">accm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">accm</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function mpfr_spouge_gamma(mpfr z)
+    mpfr accm = mc[1]
+    if mpfr_cmp_si(accm,0)=0 then
+        -- mc[1] := sqrt(2*PI)
+        mpfr_const_pi(accm)
+        mpfr_mul_si(accm,accm,2)
+        mpfr_sqrt(accm,accm)
+        -- k1_factrl = (k - 1)!*(-1)^k with 0!==1
+        mpfr k1_factrl = mpfr_init(1),
+             tmk = mpfr_init(),
+             p = mpfr_init()
+        for k=2 to length(mc) do
+            -- mc[k] = exp(13-k)*power(13-k,k-1.5)/k1_factrl
+            mpfr_set_si(tmk,length(mc)+1-k)
+            mpfr_exp(mc[k],tmk)
+            mpfr_set_d(p,k-1.5)
+            mpfr_pow(p,tmk,p)
+            mpfr_div(p,p,k1_factrl)
+            mpfr_mul(mc[k],mc[k],p)
+            -- k1_factrl *= -(k-1)
+            mpfr_mul_si(k1_factrl,k1_factrl,-(k-1))
+        end for
+    end if
+    accm = mpfr_init_set(accm)
+    for k=2 to length(mc) do
+        -- accm += mc[k]/(z+k-1)
+        mpfr ck = mpfr_init_set(mc[k]),
+             zk = mpfr_init_set(z)
+        mpfr_add_si(zk,zk,k-1)
+        mpfr_div(ck,ck,zk)
+        mpfr_add(accm,accm,ck)
+    end for
+    -- atom zc = z+length(mc)
+    -- accm *= exp(-zc)*power(zc,z+0.5) -- Gamma(z+1)
+    mpfr p = mpfr_init_set(z),
+         ez = mpfr_init(),
+         zh = mpfr_init(0.5)
+    mpfr_add_si(p,p,length(mc))
+    mpfr_neg(ez,p)
+    mpfr_exp(ez,ez)
+    mpfr_add(zh,zh,z)
+    mpfr_pow(p,p,zh)
+    mpfr_mul(accm,accm,ez)
+    mpfr_mul(accm,accm,p)
+    -- return accm/z
+    mpfr_div(accm,accm,z)
+    return accm
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">mPI</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">(),</span>
-         <span style="color: #000000;">mqPI</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">()</span>
- <span style="color: #7060A8;">mpfr_const_pi</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mPI</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">string</span> <span style="color: #000000;">pistr</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_get_fixed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mPI</span><span style="color: #0000FF;">,</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">mpfr_sqrt</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #000000;">mPI</span><span style="color: #0000FF;">)</span>
+constant mPI = mpfr_init(),
+        mqPI = mpfr_init()
+mpfr_const_pi(mPI)
+string pistr = mpfr_get_fixed(mPI,dp)
+mpfr_sqrt(mqPI,mPI)
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">makempfr</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">mpfr</span> <span style="color: #000000;">res</span>
-     <span style="color: #008080;">if</span> <span style="color: #004080;">string</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">split</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'/'</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span>
-         <span style="color: #7060A8;">mpfr_div_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">to_integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]))</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #0000FF;">{</span><span style="color: #004080;">mpfr</span> <span style="color: #000000;">x1</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">x2</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">x</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x1</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #004080;">string</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x2</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #004080;">mpfr</span> <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x2</span><span style="color: #0000FF;">)</span>
-             <span style="color: #7060A8;">mpfr_div</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #7060A8;">mpfr_div_d</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x2</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function makempfr(object x)
+    mpfr res
+    if string(x) then
+        x = split(x,'/')
+        res = mpfr_init(x[1])
+        mpfr_div_si(res,res,to_integer(x[2]))
+    elsif sequence(x) then
+        {mpfr x1, object x2} = x
+        res = mpfr_init_set(x1)
+        if string(x2) then
+            mpfr d = mpfr_init(x2)
+            mpfr_div(res,res,d)
+        else
+            mpfr_div_d(res,res,x2)
+        end if
+    else
+        res = mpfr_init(x)
+    end if
+    return res
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">mq</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">zm</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">=</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">mpfr</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">mul</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">apply</span><span style="color: #0000FF;">(</span><span style="color: #000000;">zm</span><span style="color: #0000FF;">,</span><span style="color: #000000;">makempfr</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">mpfr</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">mpfr_spouge_gamma</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_get_fixed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">maxlen</span><span style="color: #0000FF;">:=</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">mpfr</span> <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init</span><span style="color: #0000FF;">()</span>
-     <span style="color: #7060A8;">mpfr_gamma</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">,</span><span style="color: #000000;">z</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">mpfr</span> <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_init_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpfr_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">mul</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpfr_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">zs</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_get_fixed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">z</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">),</span>
-            <span style="color: #000000;">es</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_get_fixed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">maxlen</span><span style="color: #0000FF;">:=</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">),</span>
-            <span style="color: #000000;">ps</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpfr_get_fixed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">zs</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #000000;">es</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ps</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure mq(sequence zm, integer d=dp)
+    mpfr {z, mul} = apply(zm,makempfr)
+    mpfr s = mpfr_spouge_gamma(z)
+    string t = mpfr_get_fixed(s,d,10,maxlen:=dp+2)
+    mpfr e = mpfr_init()
+    mpfr_gamma(e,z)
+    mpfr p = mpfr_init_set(s)
+    mpfr_mul(p,p,mul)
+    mpfr_mul(p,p,p)
+    string zs = mpfr_get_fixed(z,3),
+           es = mpfr_get_fixed(e,d,10,maxlen:=dp+2),
+           ps = mpfr_get_fixed(p,dp,10)
+    printf(1,fmt,{zs,t,es,ps})
+end procedure
 
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"   z     %s    %s   %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">pad</span><span style="color: #0000FF;">(</span><span style="color: #008000;">" spouge "</span><span style="color: #0000FF;">,</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"BOTH"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'-'</span><span style="color: #0000FF;">),</span><span style="color: #7060A8;">pad</span><span style="color: #0000FF;">(</span><span style="color: #008000;">" expected "</span><span style="color: #0000FF;">,</span><span style="color: #000000;">dp</span><span style="color: #0000FF;">+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"BOTH"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'-'</span><span style="color: #0000FF;">),</span><span style="color: #000000;">pistr</span><span style="color: #0000FF;">})</span>
- <span style="color: #7060A8;">papply</span><span style="color: #0000FF;">({{-</span><span style="color: #000000;">1.5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0.75</span><span style="color: #0000FF;">},{-</span><span style="color: #000000;">0.5</span><span style="color: #0000FF;">,-</span><span style="color: #000000;">0.5</span><span style="color: #0000FF;">},{</span><span style="color: #000000;">0.5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">},{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">}},{</span><span style="color: #000000;">1.5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">},{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">}},{</span><span style="color: #000000;">2.5</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"4/3"</span><span style="color: #0000FF;">},{</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">}},{</span><span style="color: #000000;">3.5</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"8/15"</span><span style="color: #0000FF;">},{</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #000000;">6</span><span style="color: #0000FF;">}}},</span><span style="color: #000000;">mq</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">mq</span><span style="color: #0000FF;">({</span><span style="color: #008000;">"1/1000"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"999.4237724845954661149822012996"</span><span style="color: #0000FF;">}},</span><span style="color: #000000;">28</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">mq</span><span style="color: #0000FF;">({</span><span style="color: #008000;">"1/100"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"99.43258511915060371353298887051"</span><span style="color: #0000FF;">}},</span><span style="color: #000000;">29</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">mq</span><span style="color: #0000FF;">({</span><span style="color: #008000;">"1/10"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"9.513507698668731836292487177265"</span><span style="color: #0000FF;">}},</span><span style="color: #000000;">30</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">mq</span><span style="color: #0000FF;">({</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #000000;">362880</span><span style="color: #0000FF;">}},</span><span style="color: #000000;">25</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">mq</span><span style="color: #0000FF;">({</span><span style="color: #000000;">100</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"9.332621544394415268169923885627e155"</span><span style="color: #0000FF;">}},</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">mq</span><span style="color: #0000FF;">({</span><span style="color: #000000;">150</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">mqPI</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"3.80892263763056972698595524350735e260"</span><span style="color: #0000FF;">}},</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-<!--
+printf(1,"   z     %s    %s   %s\n",{pad(" spouge ",dp+2,"BOTH",'-'),pad(" expected ",dp+2,"BOTH",'-'),pistr})
+papply({{-1.5,0.75},{-0.5,-0.5},{0.5,1},{1,{mqPI,1}},{1.5,2},{2,{mqPI,1}},{2.5,"4/3"},{3,{mqPI,2}},{3.5,"8/15"},{4,{mqPI,6}}},mq)
+mq({"1/1000",{mqPI,"999.4237724845954661149822012996"}},28)
+mq({"1/100",{mqPI,"99.43258511915060371353298887051"}},29)
+mq({"1/10",{mqPI,"9.513507698668731836292487177265"}},30)
+mq({10,{mqPI,362880}},25)
+mq({100,{mqPI,"9.332621544394415268169923885627e155"}},0)
+mq({150,{mqPI,"3.80892263763056972698595524350735e260"}},0)

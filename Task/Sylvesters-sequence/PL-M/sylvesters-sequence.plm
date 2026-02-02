@@ -1,4 +1,4 @@
-100H: /* CALCULATE ELEMENTS OF SYLVESTOR'S SEQUENCE                          */
+100H: /* CALCULATE ELEMENTS OF SYLVESTER'S SEQUENCE                          */
 
    BDOS: PROCEDURE( FN, ARG ); /* CP/M BDOS SYSTEM CALL                      */
       DECLARE FN BYTE, ARG ADDRESS;
@@ -96,7 +96,7 @@
          END;
       END;
    END ADD$BYTE$TO$LONG$INTEGER;
-   /* FIND THE FIRST 10 ELEMENTS OF SYLVESTOR'S SEQUENCE                     */
+   /* FIND THE FIRST 10 ELEMENTS OF SYLVESTER'S SEQUENCE                     */
    DECLARE ( SEQ$ELEMENT, PRODUCT ) LONG$INTEGER;
    DECLARE ( I, D )                 BYTE;
    DO D = 2 TO LAST( PRODUCT     ); PRODUCT(     D ) = 0; END;

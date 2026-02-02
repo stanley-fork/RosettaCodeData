@@ -8,11 +8,11 @@ str tr(str content) = item("tr", content);
 str td(str content) = item("td", content);
 
 public str generateTable(int rows){
-	int i(){return arbInt(10000);};
-	rows = (tr(td("")+td("X")+td("Y")+td("Z"))
-			| it + tr(td("<x>")+td("<i()>")+td("<i()>")+td("<i()>"))
-			| x <- [1..rows]);
-	writeFile(|file:///location|,
-	           html("Rosetta Code Table", table(rows)));
-	return "written";
+   int i(){return arbInt(10000);};
+   rows = (tr(td("")+td("X")+td("Y")+td("Z"))
+         | it + tr(td("<x>")+td("<i()>")+td("<i()>")+td("<i()>"))
+         | x <- [1..rows]);
+   writeFile(|file:///location|,
+              html("Rosetta Code Table", table(rows)));
+   return "written";
 }

@@ -1,5 +1,5 @@
 PROGRAM  "Identity matrix"
-VERSION	"0.0000"
+VERSION  "0.0000"
 
 DECLARE FUNCTION  Entry ()
 

@@ -1,15 +1,24 @@
-fastfunc isprim num .
-   i = 2
-   while i <= sqrt num
-      if num mod i = 0 : return 0
-      i += 1
+limit = 1000000
+len sieve[] limit
+fastproc mksieve .
+   sieve[1] = 1
+   maxs = sqrt len sieve[]
+   for i = 2 to maxs : if sieve[i] = 0
+      j = i * i
+      while j <= len sieve[]
+         sieve[j] = 1
+         j += i
+      .
    .
-   return 1
 .
+mksieve
 fastfunc nextprime n .
    n += 1
-   while isprim n = 0 : n += 1
+   while sieve[n] = 1 : n += 1
    return n
+.
+func isprim n .
+   return 1 - sieve[n]
 .
 func spd n d[] .
    if isprim n = 0 : return 0
@@ -27,11 +36,11 @@ proc print_set n d[] .
    .
    print ")"
 .
-proc show max d[] .
+proc show d[] .
    write "Differences of "
    for d in d[] : write d & " "
    print ""
-   for n = 2 to max - d[len d[]]
+   for n = 2 to limit - d[len d[]]
       if spd n d[] = 1
          c += 1
          if c = 1 : print_set n d[]
@@ -42,9 +51,9 @@ proc show max d[] .
    print "Number of occurrences: " & c
    print ""
 .
-show 1000000 [ 2 ]
-show 1000000 [ 1 ]
-show 1000000 [ 2 2 ]
-show 1000000 [ 2 4 ]
-show 1000000 [ 4 2 ]
-show 1000000 [ 6 4 2 ]
+show [ 2 ]
+show [ 1 ]
+show [ 2 2 ]
+show [ 2 4 ]
+show [ 4 2 ]
+show [ 6 4 2 ]

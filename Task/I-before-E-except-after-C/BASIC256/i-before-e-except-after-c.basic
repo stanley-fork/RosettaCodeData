@@ -2,13 +2,13 @@ CI = 0 : XI = 0 : CE = 0 : XE = 0
 open 1, "unixdict.txt"
 
 do
-	pal$ = readline (1)
-	if instr(pal$, "ie") then
-		if instr(pal$, "cie") then CI += 1 else XI += 1
-	endif
-	if instr(pal$, "ei") then
-		if instr(pal$, "cei") then CE += 1 else XE += 1
-	endif
+   pal$ = readline (1)
+   if instr(pal$, "ie") then
+      if instr(pal$, "cie") then CI += 1 else XI += 1
+   endif
+   if instr(pal$, "ei") then
+      if instr(pal$, "cei") then CE += 1 else XE += 1
+   endif
 until eof(1)
 close 1
 

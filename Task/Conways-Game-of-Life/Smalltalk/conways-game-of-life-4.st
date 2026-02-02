@@ -12,7 +12,7 @@ GameOfLifeView class>>openFor: aGameOfLife
 
 GameOfLifeView class>>blinker
   ^GameOfLife withAliveCells: { 4@2. 4@3. 4@4. 3@3. 4@3. 5@3 } ofSize: 10@10
-  	
+
 GameOfLifeView class>>toad
   ^GameOfLife withAliveCells: { 2@4. 3@4. 4@4. 3@3. 4@3. 5@3 } ofSize: 10@10
 
@@ -20,7 +20,7 @@ GameOfLifeView class>>openBlinker
   ^self openFor: self blinker
 
 GameOfLifeView class>>openToad
-  ^self openFor: self toad  	
+  ^self openFor: self toad
 
 initializeFor: aGameOfLife
   game := aGameOfLife.

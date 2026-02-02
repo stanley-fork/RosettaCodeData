@@ -1,9 +1,9 @@
 curry := method(fn,
-	a := call evalArgs slice(1)
-	block(
-		b := a clone appendSeq(call evalArgs)
-		performWithArgList("fn", b)
-	)
+    a := call evalArgs slice(1)
+    block(
+        b := a clone appendSeq(call evalArgs)
+        performWithArgList("fn", b)
+    )
 )
 
 // example:

@@ -1,5 +1,6 @@
-gcolor 060
-for i = 1 to 200000
+gbackground 000
+gcolor 263
+for i = 1 to 100000
    r = randomf
    if r < 0.01
       nx = 0

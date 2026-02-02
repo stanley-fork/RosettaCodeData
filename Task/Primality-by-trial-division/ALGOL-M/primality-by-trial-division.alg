@@ -1,52 +1,41 @@
-BEGIN
+begin
 
-% RETURN P MOD Q %
-INTEGER FUNCTION MOD(P, Q);
-INTEGER P, Q;
-BEGIN
-  MOD := P - Q * (P / Q);
-END;
+% return n mod m %
+integer function mod(n, m);
+integer n, m;
+begin
+  mod := n - m * (n / m);
+end;
 
-% RETURN INTEGER SQUARE ROOT OF N %
-INTEGER FUNCTION ISQRT(N);
-INTEGER N;
-BEGIN
-  INTEGER R1, R2;
-  R1 := N;
-  R2 := 1;
-  WHILE R1 > R2 DO
-    BEGIN
-      R1 := (R1+R2) / 2;
-      R2 := N / R1;
-    END;
-  ISQRT := R1;
-END;
 
-% RETURN 1 IF N IS PRIME, OTHERWISE 0 %
-INTEGER FUNCTION ISPRIME(N);
-INTEGER N;
-BEGIN
-  IF N = 2 THEN
-    ISPRIME := 1
-  ELSE IF (N < 2) OR (MOD(N,2) = 0) THEN
-    ISPRIME := 0
-  ELSE % TEST ODD NUMBERS UP TO SQRT OF N %
-    BEGIN
-      INTEGER I, LIMIT;
-      LIMIT := ISQRT(N);
-      I := 3;
-      WHILE I <= LIMIT AND MOD(N,I) <> 0 DO
-        I := I + 2;
-      ISPRIME := (IF I <= LIMIT THEN 0 ELSE 1);
-    END;
-END;
+% return 1 if n is prime, otherwise 0 %
+integer function isprime(n);
+integer n;
+begin
+  if n = 2 then
+    isprime := 1
+  else if (n < 2) or (mod(n,2) = 0) then
+    isprime := 0
+  else % test odd numbers up to sqrt of n %
+    begin
+      integer i, divisors;
+      i := 3;
+      divisors := 0;
+      while i * i <= n and divisors = 0 do
+        begin
+          if mod(n, i) = 0 then divisors := divisors + 1;
+          i := i + 2;
+        end;
+      isprime := (if divisors = 0 then 1 else 0);
+    end;
+ end;
 
-% TEST FOR PRIMES IN RANGE 1 TO 50 %
-INTEGER I;
-WRITE("");
-FOR I := 1 STEP 1 UNTIL 50 DO
-  BEGIN
-    IF ISPRIME(I)=1 THEN WRITEON(I,"  "); % WORKS FOR 80 COL SCREEN %
-  END;
+% test for primes in range 1 to 50 %
+integer i;
+write("");
+for i := 1 step 1 until 50 do
+  begin
+    if isprime(i) = 1 then writeon(i,"  ");
+  end;
 
-END
+end

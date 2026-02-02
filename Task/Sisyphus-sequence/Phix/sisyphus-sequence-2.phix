@@ -1,28 +1,26 @@
-(notonline)-->
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span>
- <span style="color: #008080;">include</span> <span style="color: #000000;">builtins</span><span style="color: #0000FF;">/</span><span style="color: #000000;">primesieve</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span> <span style="color: #000080;font-style:italic;">-- (can provide if desired, ask me on either my or this tasks talk page)</span>
- <span style="color: #7060A8;">requires</span><span style="color: #0000FF;">(</span><span style="color: #004600;">WINDOWS</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">requires</span><span style="color: #0000FF;">(</span><span style="color: #000000;">64</span><span style="color: #0000FF;">,</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">(),</span> <span style="color: #000000;">t1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()+</span><span style="color: #000000;">1</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">np</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">count</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">p</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">next</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
- <span style="color: #008080;">while</span> <span style="color: #000000;">next</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">36</span> <span style="color: #008080;">do</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">even</span><span style="color: #0000FF;">(</span><span style="color: #000000;">next</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">next</span> <span style="color: #0000FF;">/=</span> <span style="color: #000000;">2</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">primesieve_next_prime</span><span style="color: #0000FF;">()</span>
-         <span style="color: #000000;">next</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">p</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">count</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()></span><span style="color: #000000;">t1</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">cpc</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">count</span><span style="color: #0000FF;">/</span><span style="color: #000000;">77_534_485_877</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">100</span><span style="color: #0000FF;">,</span>
-              <span style="color: #000000;">ppc</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">/</span><span style="color: #000000;">677_121_348_413</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">100</span>
-         <span style="color: #7060A8;">progress</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"count: %,d (%2.2f%%)  p: %,d (%2.2f%%)\r"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">count</span><span style="color: #0000FF;">,</span><span style="color: #000000;">cpc</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ppc</span><span style="color: #0000FF;">})</span>
-         <span style="color: #000000;">t1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()+</span><span style="color: #000000;">1</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #7060A8;">progress</span><span style="color: #0000FF;">(</span><span style="color: #008000;">""</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%,d%s member is: %,d and highest prime needed: %,d\n"</span><span style="color: #0000FF;">,</span>
-              <span style="color: #0000FF;">{</span><span style="color: #000000;">count</span><span style="color: #0000FF;">,</span> <span style="color: #7060A8;">ord</span><span style="color: #0000FF;">(</span><span style="color: #000000;">count</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">next</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">})</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span><span style="color: #0000FF;">)</span>
-<!--
+without js
+include builtins/primesieve.e -- (can provide if desired, ask me on either my or this tasks talk page)
+requires(WINDOWS)
+requires(64,true)
+atom t0 = time(), t1 = time()+1
+integer np = 0, count = 1, p
+atom next = 1
+while next!=36 do
+    if even(next) then
+        next /= 2
+    else
+        p = primesieve_next_prime()
+        next += p
+    end if
+    count += 1
+    if time()>t1 then
+        atom cpc = (count/77_534_485_877)*100,
+             ppc = (p/677_121_348_413)*100
+        progress("count: %,d (%2.2f%%)  p: %,d (%2.2f%%)\r",{count,cpc,p,ppc})
+        t1 = time()+1
+    end if
+end while
+progress("")
+printf(1,"%,d%s member is: %,d and highest prime needed: %,d\n",
+             {count, ord(count), next, p})
+?elapsed(time()-t0)

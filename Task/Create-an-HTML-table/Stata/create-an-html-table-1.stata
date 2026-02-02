@@ -16,19 +16,19 @@ file write `f' `"<table border="1">"' _n
 file write `f' "<tr>" _n
 file write `f' "<td></td>" _n
 forv j = 1/`nc' {
-	local s `: word `j' of `cn''
-	file write `f' `"<td>`s'</td>"' _n
+   local s `: word `j' of `cn''
+   file write `f' `"<td>`s'</td>"' _n
 }
 file write `f' "</tr>" _n
 * write row names & data
 forv i = 1/`nr' {
-	file write `f' "<tr>" _n
-	local s `: word `i' of `rn''
-	file write `f' `"<td>`s'</td>"' _n
-	forv j = 1/`nc' {
-		file write `f' `"<td>`=el(`1',`i',`j')'</td>"' _n
-	}
-	file write `f' "</tr>" _n
+   file write `f' "<tr>" _n
+   local s `: word `i' of `rn''
+   file write `f' `"<td>`s'</td>"' _n
+   forv j = 1/`nc' {
+      file write `f' `"<td>`=el(`1',`i',`j')'</td>"' _n
+   }
+   file write `f' "</tr>" _n
 }
 file write `f' "</table>" _n
 file write `f' "</body>" _n

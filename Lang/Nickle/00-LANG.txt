@@ -19,7 +19,7 @@ Other datatypes include multi-dimensional arrays, strings, structures, tagged un
 The reference implementation includes an interactive top level with byte code compilation before evaluation.
 
 Example:
-<lang c>/* Arrays to JSON */
+<syntaxhighlight lang="c">/* Arrays to JSON */
 autoimport JSON;
 int [*] d = {1,2,3};
 poly [*] p = {1, "abc", 42};
@@ -39,7 +39,8 @@ print f;
 for (int i = 0; i < dim(p); i++) {
     printf("%v ", p[i]);
 }
-printf("\n");</lang>
+printf("\n");
+</syntaxhighlight>
 
 {{out}}
 <pre>prompt$ nickle sampler.5c

@@ -11,18 +11,18 @@ do  -- find some Humble numbers - numbers with no prime factors above 7
         local m = math.min( p2, p3, p5, p7 )
         h[ n ] = m
         if n <= maxShownHumble then io.write( " ", m ) end
-        if m == p2 then ++ last2   p2 = 2 * h[ last2 ] end
-        if m == p3 then ++ last3   p3 = 3 * h[ last3 ] end
-        if m == p5 then ++ last5   p5 = 5 * h[ last5 ] end
-        if m == p7 then ++ last7   p7 = 7 * h[ last7 ] end
-        ++ hCount[ ( m <        10 ) ? 1
-                 : ( m <       100 ) ? 2
-                 : ( m <     1_000 ) ? 3
-                 : ( m <    10_000 ) ? 4
-                 : ( m <   100_000 ) ? 5
-                 : ( m < 1_000_000 ) ? 6
-                 :                     0
-                 ]
+        if m == p2 then last2 += 1  p2 = 2 * h[ last2 ] end
+        if m == p3 then last3 += 1  p3 = 3 * h[ last3 ] end
+        if m == p5 then last5 += 1  p5 = 5 * h[ last5 ] end
+        if m == p7 then last7 += 1  p7 = 7 * h[ last7 ] end
+        hCount[ ( m <        10 ) ? 1
+              : ( m <       100 ) ? 2
+              : ( m <     1_000 ) ? 3
+              : ( m <    10_000 ) ? 4
+              : ( m <   100_000 ) ? 5
+              : ( m < 1_000_000 ) ? 6
+              :                     0
+              ] += 1
     end
     io.write( "\n" )
     for i = 1, 6 do

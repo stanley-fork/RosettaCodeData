@@ -25,7 +25,7 @@ class HistoryVariable
 
     undo()
     {
-        ifnot (previous.isEmpty())
+        if:not (previous.isEmpty())
         {
             value := previous.pop()
         }
@@ -40,7 +40,7 @@ class HistoryVariable
     string toPrintable() => this value;
 }
 
-public program()
+public Program()
 {
     var o := new HistoryVariable();
     o.Value := 5;

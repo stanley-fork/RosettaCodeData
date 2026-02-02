@@ -1,4 +1,4 @@
-public program()
+public Program()
 {
-   console.clear()
+   Console.clear()
 }

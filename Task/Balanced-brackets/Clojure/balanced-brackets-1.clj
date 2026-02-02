@@ -5,10 +5,10 @@
 
 (defn balanced? [s]
   (loop [[first & coll] (seq s)
-	 stack '()]
+     stack '()]
     (if first
       (if (= first \[)
-	(recur coll (conj stack \[))
-	(when (= (peek stack) \[)
-	  (recur coll (pop stack))))
+    (recur coll (conj stack \[))
+    (when (= (peek stack) \[)
+      (recur coll (pop stack))))
       (zero? (count stack)))))

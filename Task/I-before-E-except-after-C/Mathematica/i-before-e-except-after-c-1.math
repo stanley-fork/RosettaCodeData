@@ -1,5 +1,5 @@
 wordlist =
-  Import["http://wiki.puzzlers.org/pub/wordlists/unixdict.txt",
+  Import["https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt",
    "Words"];
 Print["The number of words in unixdict.txt = " <>
   ToString[Length[wordlist]]]

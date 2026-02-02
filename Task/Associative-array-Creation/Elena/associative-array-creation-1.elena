@@ -1,9 +1,9 @@
 import system'collections;
 
-public program()
+public Program()
 {
     // 1. Create
-    var map := Dictionary.new();
+    auto map := Dictionary.new();
     map["key"] := "foox";
     map["key"] := "foo";
     map["key2"]:= "foo2";

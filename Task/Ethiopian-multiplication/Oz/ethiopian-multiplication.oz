@@ -10,9 +10,9 @@ declare
                L in X; L>0;  {Halve L}  %% C-like iterator: "Init; While; Next"
                R in Y; true; {Double R}
                collect:Collect
-	    do
-	       {Collect L#R}
-	    end
+        do
+           {Collect L#R}
+        end
 
      OddRows = {Filter Rows LeftIsOdd}
      RightColumn = {Map OddRows SelectRight}

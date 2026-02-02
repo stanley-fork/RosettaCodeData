@@ -47,7 +47,7 @@
                                            format-line)))
 
 (defn -main []
-  (with-open [rdr (clojure.java.io/reader "http://wiki.puzzlers.org/pub/wordlists/unixdict.txt")]
+  (with-open [rdr (clojure.java.io/reader "https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt")]
    (i-before-e-except-after-c-plausible? "Check unixdist list" (apply-freq-1 (line-seq rdr))))
   (with-open [rdr (clojure.java.io/reader "http://ucrel.lancs.ac.uk/bncfreq/lists/1_2_all_freq.txt")]
    (i-before-e-except-after-c-plausible? "Word frequencies (stretch goal)" (map format-freq-line (drop 1 (line-seq rdr))))))

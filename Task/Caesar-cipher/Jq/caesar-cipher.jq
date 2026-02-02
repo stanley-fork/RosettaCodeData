@@ -12,11 +12,11 @@ def encrypt(key):
              else if ($c >= 97 and $c <= 122) # 'a' to 'z'
                   then .d = $c + $offset
                   | if (.d > 122)
-		    then .d += -26
-		    else .
-		    end
-		  else .
-		  end
+          then .d += -26
+          else .
+          end
+        else .
+        end
              end
            | .chars[$i] = .d )
         | .chars | implode

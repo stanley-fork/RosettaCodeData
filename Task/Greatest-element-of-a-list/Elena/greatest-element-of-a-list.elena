@@ -24,7 +24,7 @@ extension op
     }
 }
 
-public program()
+public Program()
 {
     console.printLine(new int[]{1,2,3,4,20,10,9,8}.Maximal)
 }

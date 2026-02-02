@@ -1,4 +1,2 @@
-(phixonline)-->
- <span style="color: #000000;">JortSort</span> <span style="color: #000000;">ok</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">}</span>
- <span style="color: #000000;">JortSort</span> <span style="color: #000000;">bad</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,</span><span style="color: #000000;">6</span><span style="color: #0000FF;">}</span>
-<!--
+JortSort ok = {1,2,3}
+JortSort bad = {5,4,6}

@@ -4,7 +4,7 @@ import system'collections;
 F = (n => (n == 0) ? 1 : (n - M(F(n-1))) );
 M = (n => (n == 0) ? 0 : (n - F(M(n-1))) );
 
-public program()
+public Program()
 {
     var ra := new ArrayList();
     var rb := new ArrayList();
@@ -15,6 +15,6 @@ public program()
         rb.append(M(i))
     };
 
-    console.printLine(ra.asEnumerable());
-    console.printLine(rb.asEnumerable())
+    Console.printLine(ra.asEnumerable());
+    Console.printLine(rb.asEnumerable())
 }

@@ -22,10 +22,10 @@ singleton rotConvertor
         = s.selectBy::(ch => rotConvertor.convert(ch)).summarize(new StringWriter());
 }
 
-public program()
+public Program()
 {
-    if (program_arguments.Length > 1)
+    if (Program_arguments.Length > 1)
     {
-        console.printLine(rotConvertor.convert(program_arguments[1]))
+        Console.printLine(rotConvertor.convert(program_arguments[1]))
     }
 }

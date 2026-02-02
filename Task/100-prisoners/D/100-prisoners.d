@@ -37,7 +37,7 @@ bool playRandom() {
 
 double exec(const size_t n, bool function() play) {
     size_t success = 0;
-    for (int i = n; i > 0; i--) {
+    for (size_t i = n; i > 0; i--) {
         if (play()) {
             success++;
         }

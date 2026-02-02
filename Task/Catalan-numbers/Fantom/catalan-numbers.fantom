@@ -41,7 +41,7 @@ class Main
 
   public static Void main ()
   {
-    (1..15).each |n|
+    (0..15).each |n|
     {
       echo (n.toStr.padl(4) +
             catalanA(n).toStr.padl(10) +

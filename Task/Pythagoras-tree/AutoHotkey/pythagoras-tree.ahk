@@ -28,7 +28,7 @@ Pythagoras_tree(x1, y1, x2, y2, depth){
     ; draw box/triangle
     Gdip_FillPolygon(G, Brush%depth%, x1 "," y1 "|" x2 "," y2 "|" x3 "," y3 "|" x4 "," y4 "|" x1 "," y1)
     Gdip_FillPolygon(G, Brush%depth%, x4 "," y4 "|" x5 "," y5 "|" x3 "," y3 "|" x4 "," y4)
-	
+
     ; draw outline
     Gdip_DrawLines(G, Pen, x1 "," y1 "|" x2 "," y2 "|" x3 "," y3 "|" x4 "," y4 "|" x1 "," y1)
     Gdip_DrawLines(G, Pen, x4 "," y4 "|" x5 "," y5 "|" x3 "," y3 "|" x4 "," y4)

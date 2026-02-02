@@ -11,10 +11,10 @@ F lah(BigInt n, BigInt k)
 
 print(‘Unsigned Lah numbers: L(n, k):’)
 print(‘n/k ’, end' ‘ ’)
-L(i) 13
+L(i) 0.<13
    print(‘#11’.format(i), end' ‘ ’)
 print()
-L(row) 13
+L(row) 0.<13
    print(‘#<4’.format(row), end' ‘ ’)
    L(i) 0 .. row
       V l = lah(row, i)

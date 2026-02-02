@@ -1,6 +1,6 @@
 scope # find the Pisano period of some primes and composites
 
-    local procedure pisano( m :: number ) :: number # returns the Pisano period of m
+    local proc pisano( m :: number ) :: number # returns the Pisano period of m
         local p, c := 0, 1;
         for i from 0 to ( m * m ) - 1 do
             p, c := c, ( p + c ) mod m;
@@ -10,7 +10,7 @@ scope # find the Pisano period of some primes and composites
     end;
 
     # returns the Pisano period of p^k or 0 if p is not prime or k < 1
-    local procedure pisanoPrime( p :: number, k :: number ) :: number
+    local proc pisanoPrime( p :: number, k :: number ) :: number
          return if not numtheory.isprime( p ) or k < 1 then 0 else entier ( p ^ ( k - 1 ) * pisano( p ) ) fi
     end;
 

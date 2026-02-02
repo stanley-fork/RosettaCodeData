@@ -28,10 +28,10 @@ extension op
     }
 }
 
-public program()
+public Program()
 {
-    var list := new Range(0, 10).selectBy::(i => randomGenerator.nextInt(10)).toArray();
+    var list := new Range(0, 10).selectBy::(i => Random.nextInt(10)).toArray();
 
-    console.printLine("before:", list.asEnumerable());
-    console.printLine("after :", list.countingSort().asEnumerable())
+    Console.printLine("before:", list.asEnumerable());
+    Console.printLine("after :", list.countingSort().asEnumerable())
 }

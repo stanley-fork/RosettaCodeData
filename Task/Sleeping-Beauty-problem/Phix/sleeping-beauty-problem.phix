@@ -1,14 +1,15 @@
-(phixonline)-->
- <span style="color: #008080;">constant</span> <span style="color: #000000;">iterations</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1_000_000</span><span style="color: #0000FF;">,</span>
- <span style="color: #000000;">fmt</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"""
- Wakings over %,d repetitions = %,d
- Percentage probability of heads on waking = %f%%
- """</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">heads</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">wakings</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">iterations</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">flip</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">rand</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- 1==heads, 2==tails</span>
-     <span style="color: #000000;">wakings</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span> <span style="color: #0000FF;">+</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">flip</span><span style="color: #0000FF;">==</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">heads</span> <span style="color: #0000FF;">+=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">flip</span><span style="color: #0000FF;">==</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">iterations</span><span style="color: #0000FF;">,</span><span style="color: #000000;">wakings</span><span style="color: #0000FF;">,</span><span style="color: #000000;">heads</span><span style="color: #0000FF;">/</span><span style="color: #000000;">wakings</span><span style="color: #0000FF;">*</span><span style="color: #000000;">100</span><span style="color: #0000FF;">})</span>
-<!--
+constant iterations = 1_000_000,
+fmt = """
+Wakings over %,d repetitions = %,d
+Percentage probability of heads on waking = %f%%
+"""
+integer heads = 0, wakings = 0
+for i=1 to iterations do
+    integer flip = rand(2) -- 1==heads, 2==tails
+    wakings += 1 + (flip==2)
+    heads += (flip==1)
+end for
+-- or (same output, <1% of the time):
+--integer heads = sum(sq_eq(sq_rand(repeat(2,iterations)),1)),
+--        wakings = 2*iterations-heads
+printf(1,fmt,{iterations,wakings,heads/wakings*100})

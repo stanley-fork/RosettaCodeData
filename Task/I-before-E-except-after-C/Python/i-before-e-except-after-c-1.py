@@ -17,7 +17,7 @@ def plausibility_check(comment, x, y):
                   % (x, y, x / y))
     return x > PLAUSIBILITY_RATIO * y
 
-def simple_stats(url='http://wiki.puzzlers.org/pub/wordlists/unixdict.txt'):
+def simple_stats(url='https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt'):
     words = urllib.request.urlopen(url).read().decode().lower().split()
     cie = len({word for word in words if 'cie' in word})
     cei = len({word for word in words if 'cei' in word})

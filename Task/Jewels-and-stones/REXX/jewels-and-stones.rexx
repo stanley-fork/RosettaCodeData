@@ -1,13 +1,50 @@
-/*REXX pgm counts how many letters (in the 1st string) are in common with the 2nd string*/
-say  count('aAAbbbb', "aA")
-say  count('ZZ'     , "z" )
-exit                                /*stick a fork in it,  we're all done. */
-/*──────────────────────────────────────────────────────────────────────────*/
-count: procedure
-parse arg stones,jewels  /*obtain the two strings specified.    */
-number= 0                                     /*initialize number  to  zero.*/
-do j=1  for length(stones)           /*scan STONES for matching JEWELS chars*/
-  x= substr(stones, j, 1)            /*obtain a character of the STONES var.*/
-  if datatype(x, 'M')  then if pos(x, jewels)\==0  then number=number + 1
-end   /*j*/                    /* [↑]  if a letter and a match, bump number */
-return number                        /*return the number of common letters. */
+-- 10 Nov 2025
+include Setting
+
+say 'JEWELS AND STONES'
+say version
+say
+call Header
+call Show 'aAAbbbb','aA'
+call Show 'zz','Z'
+call Show 'Abc',''
+call Show '','Abc'
+call Show 'aBCdEF','abcdef'
+call Show 'abcdeabcde','abc'
+call Show 'abc','abcdef'
+exit
+
+Header:
+procedure
+say 'Stones     Jewels     N'
+say '-----------------------'
+return
+
+Show:
+procedure
+parse arg stones,jewels
+say Left(stones,10) Left(jewels,10) Count1(stones,jewels)
+say Left(stones,10) Left(jewels,10) Count2(stones,jewels)
+say
+return
+
+Count1:
+procedure
+parse arg stones,jewels
+n=0
+do i=1 to Length(stones)
+   s=Substr(stones,i,1); n+=(Pos(s,jewels)>0)
+end
+return n
+
+Count2:
+procedure
+parse arg stones,jewels
+n=0
+do i=1 to Length(jewels)
+   s=Substr(jewels,i,1); n+=Countstr(s,stones)
+end
+return n
+
+-- Abend
+include Abend

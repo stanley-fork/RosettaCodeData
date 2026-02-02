@@ -12,11 +12,11 @@ SUB dragon (length AS Double, split AS Integer, d AS Double)
     IF split=0 THEN
         forward length
     ELSE
-	turn d*45
-	dragon length/1.4142136, split-1, 1
-	turn -d*90
-	dragon length/1.4142136, split-1, -1
-	turn d*45
+    turn d*45
+    dragon length/1.4142136, split-1, 1
+    turn -d*90
+    dragon length/1.4142136, split-1, -1
+    turn d*45
     END IF
 END SUB
 

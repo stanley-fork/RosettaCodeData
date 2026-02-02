@@ -48,7 +48,7 @@ F check_from_top(&cell) -> (Int, Int)?
 
 V sample_printed = 0B
 [Float = Int] pcount
-L(p10) 11
+L(p10) 0.<11
    V p = p10 / 10.0
    pcount[p] = 0
    L(tries) 0 .< t

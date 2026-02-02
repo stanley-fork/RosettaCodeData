@@ -1,7 +1,7 @@
 import system'routines;
 import extensions;
 
-public program()
+public Program()
 {
     var list := new int[]{1, 2, 3, 4, 5 };
 

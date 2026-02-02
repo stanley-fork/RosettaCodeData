@@ -35,7 +35,7 @@ static void _heap_destroy(heap_t *heap)
   free(heap);
 }
 
-#define swap_(I,J) do { int t_; t_ = a[(I)];	\
+#define swap_(I,J) do { int t_; t_ = a[(I)]; \
       a[(I)] = a[(J)]; a[(J)] = t_; } while(0)
 static void _heap_sort(heap_t *heap)
 {

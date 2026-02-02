@@ -1,35 +1,58 @@
-/*REXX pgm  finds and displays  N  numbers that have an equal number of rises and falls,*/
-parse arg n .                                    /*obtain optional argument from the CL.*/
-if n=='' | n==","  then n= 200                   /*Not specified?  Then use the default.*/
-append= n>0                                      /*a flag that is used to append numbers*/
-n= abs(n)                                        /*use the absolute value of  N.        */
-call init                                        /*initialize the  rise/fall  database. */
-          do j=1  until #==n                     /*test integers until we have N of them*/
-          s= 0                                   /*initialize the sum of  rises/falls.  */
-                        do k=1  for length(j)-1  /*obtain a set of two digs from number.*/
-                        t= substr(j, k, 2)       /*obtain a set of two digs from number.*/
-                        s= s + @.t               /*sum the rises and falls in the number*/
-                        end   /*k*/
-          if s\==0  then iterate                 /*Equal # of rises & falls? Then add it*/
-          #= # + 1                               /*bump the count of numbers found.     */
-          if append  then $= $ j                 /*append to the list of numbers found. */
-          end   /*j*/
+-- 21 Sep 2025
+include Setting
 
-if append  then call show                        /*display a list of  N  numbers──►term.*/
-           else say  'the '  commas(n)th(n)  " number is: "   commas(j)    /*show Nth #.*/
-exit 0                                           /*stick a fork in it,  we're all done. */
-/*──────────────────────────────────────────────────────────────────────────────────────*/
-commas:  parse arg _;  do c=length(_)-3  to 1  by -3; _=insert(',', _, c); end;   return _
-th:      parse arg th;  return word('th st nd rd',1+(th//10)*(th//100%10\==1)*(th//10<4))
-/*──────────────────────────────────────────────────────────────────────────────────────*/
-init: @.= 0;   do i=1  for 9;    _= i' ';     @._= 1;    _= '0'i;   @._= +1;   end  /*i*/
-               do i=10  to 99;   parse var i  a 2 b;     if a>b  then              @.i= -1
-                                                                 else if a<b  then @.i= +1
-               end   /*i*/;      #= 0;        $=;        return
-/*──────────────────────────────────────────────────────────────────────────────────────*/
-show: say 'the first '   commas(#)   " numbers are:";   say;       w= length( word($, #) )
-      _=;    do o=1  for n;     _= _ right( word($, o), w);    if o//20\==0  then iterate
-             say substr(_, 2);  _=               /*display a line;  nullify a new line. */
-             end   /*o*/                         /* [↑]  display  20  numbers to a line.*/
+say 'NUMBERS WITH EQUAL RISES AND FALLS'
+say version
+say
+call Task1 200
+call Task2 10000000
+call Timer 'r'
+exit
 
-      if _\==''  then say substr(_, 2);   return /*handle any residual numbers in list. */
+Task1:
+-- Show the first n numbers with rises = falls
+procedure
+arg nn
+say 'First' nn 'numbers...'
+n=0
+do i=1 until n=nn
+   if RisesEqFalls(i) then do
+      n+=1
+      call CharOut ,Right(i,4)
+      if n//20=0 then
+         say
+   end
+end
+say
+return
+
+Task2:
+-- Show nth number with rises = falls
+procedure
+arg nn
+n=0
+do i=1 until n=nn
+   if RisesEqFalls(i) then
+      n+=1
+end
+say 'The' nn'th number is' i
+say
+return
+
+RisesEqFalls:
+-- Is for a number rises = falls?
+procedure
+arg nn
+nr=0; nf=0; b=nn//10; nn%=10
+do while nn>0
+   a=nn//10
+   if a<b then
+      nr+=1
+   else
+      if a>b then
+         nf+=1
+   b=a; nn%=10
+end
+return (nr=nf)
+
+include Math

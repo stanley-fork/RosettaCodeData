@@ -25,7 +25,7 @@ F printtable(data)
       print(row.map(cell -> ‘#<5’.format(cell)).join(‘ ’))
 
 V m = [[3, 2], [2, 1]]
-L(i) 5
+L(i) 0.<5
    print("\n#.:".format(i))
    printtable(matrixExp(m, i))
 

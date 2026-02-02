@@ -1,4 +1,4 @@
-# count the how many numbers up to 100 000 000 have squared digit sums of 89            #
+# count how many numbers up to 100 000 000 have squared digit sums of 89                #
 
 # compute a table of the sum of the squared digits of the numbers 00 to 99              #
 [ 0 : 99 ]INT    digit pair square sum;

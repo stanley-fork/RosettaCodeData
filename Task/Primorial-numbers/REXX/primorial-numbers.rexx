@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 
 say 'PRIMORIAL NUMBERS'
 say version
@@ -8,7 +8,7 @@ call GetPrimes -9
 call ShowFirst10
 call GetPrimes -1e6
 call UseFloat 1e6
-call UseInt 1e4
+call UseInt 1e5
 exit
 
 GetPrimes:
@@ -81,9 +81,4 @@ end
 say Format(Time('e'),,3) 'seconds'; say
 return
 
-include Numbers
-include Functions
-include Special
-include Sequences
-include Constants
-include Abend
+include Math

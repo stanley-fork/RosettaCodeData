@@ -1,6 +1,6 @@
--- 28 Jul 2025
-include Settings
-numeric digits 50
+-- 8 Nov 2025
+include Setting
+numeric digits 100
 
 say 'HOME PRIMES'
 say version
@@ -8,22 +8,23 @@ say
 do i = 1 to 48
    call Home i
 end
+call Home 65
 exit
 
 Home:
-procedure expose fact. Memo. work.
+procedure expose Glob. Fact. Memo. Work.
 arg xx
-call Time('r')
+call Timer('x')
 if xx = 1 then
-   call charout ,'HP1 = 1'
+   call Charout ,'HP1 = 1'
 else do
    yy = xx/1
 -- Collect chain
    n = 0
-   do while Factors(yy) > 1
-      n = n+1; work.n = yy; yy = ''
-      do i = 1 to fact.0
-         yy = yy||fact.i
+   do while FactorS(yy) > 1
+      n = n+1; Work.n = yy; yy=''
+      do i = 1 to Fact.0
+         yy = yy||Fact.i
       end
    end
 -- Show results
@@ -31,14 +32,16 @@ else do
       call Charout ,'HP'xx '= '
    else do
       do i = 1 to n
-         call Charout ,'HP'work.i'('n-i+1') = '
+         call Charout ,'HP'Work.i'('n-i+1') = '
       end
    end
    call Charout ,yy
 end
 say
 call Timer
-say
 return
 
-include Math
+-- FactorS
+include Sequence
+-- Timer
+include Timer

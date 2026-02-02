@@ -4,19 +4,19 @@
 
 <cffunction name="double">
     <cfargument name="number" type="numeric" required="true">
-	<cfset answer = number * 2>
+    <cfset answer = number * 2>
     <cfreturn answer>
 </cffunction>
 
 <cffunction name="halve">
     <cfargument name="number" type="numeric" required="true">
-	<cfset answer = int(number / 2)>
+    <cfset answer = int(number / 2)>
     <cfreturn answer>
 </cffunction>
 
 <cffunction name="even">
     <cfargument name="number" type="numeric" required="true">
-	<cfset answer = number mod 2>
+    <cfset answer = number mod 2>
     <cfreturn answer>
 </cffunction>
 
@@ -33,10 +33,10 @@ Ethiopian multiplication of #Number_A# and #Number_B#...
 
 
    <cfif even(Number_A) EQ 1>
-   	<cfset Result = Result + Number_B>
+    <cfset Result = Result + Number_B>
         <cfset Action = "Keep">
    <cfelse>
-	<cfset Action = "Strike">
+    <cfset Action = "Strike">
    </cfif>
 
   <tr>

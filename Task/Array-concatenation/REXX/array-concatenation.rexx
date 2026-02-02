@@ -1,5 +1,5 @@
--- 1 Jun 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'ARRAY CONCATENATION'
 say version
@@ -16,6 +16,8 @@ a.0=j
 do i = 1 to a.0
    say i a.i
 end
+say
+call DumpVariables
 exit
 
-include Abend
+include Math

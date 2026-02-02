@@ -5,7 +5,7 @@ singleton Alphabet : Enumerable
 {
     Enumerator enumerator() = new Enumerator
     {
-        char current;
+        char? current;
 
         get Value() = current;
 
@@ -36,7 +36,7 @@ singleton Alphabet : Enumerable
     };
 }
 
-public program()
+public Program()
 {
-    console.printLine(Alphabet)
+    Console.printLine(Alphabet)
 }

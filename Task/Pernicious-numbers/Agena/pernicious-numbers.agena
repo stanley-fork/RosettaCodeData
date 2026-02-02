@@ -1,6 +1,6 @@
 scope  # find some pernicious numbers - numbers with a prime population count
 
-    local procedure populationCount( n :: number ) :: number
+    local proc populationCount( n :: number ) :: number
         local v, count := abs n, 0;
         while v > 0 do
             if v && 1 = 1 then count +:= 1 fi;
@@ -9,7 +9,7 @@ scope  # find some pernicious numbers - numbers with a prime population count
         return count
     end;
 
-    local procedure isPernicious( p :: number ) :: boolean
+    local proc isPernicious( p :: number ) :: boolean
         return p > 0 and numtheory.isprime( populationCount( p ) )
     end
 

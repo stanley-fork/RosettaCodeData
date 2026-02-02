@@ -1,11 +1,11 @@
 repeat with each item word in [
-	"A",
-	"BARK",
-	"BOOK",
-	"TREAT",
-	"COMMON",
-	"SQUAD",
-	"CONFUSE"
+   "A",
+   "BARK",
+   "BOOK",
+   "TREAT",
+   "COMMON",
+   "SQUAD",
+   "CONFUSE"
         ]
-	put CanMakeWord(word)
+   put CanMakeWord(word)
 end repeat

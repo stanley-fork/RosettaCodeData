@@ -40,17 +40,17 @@ _NGames = 10000
 float NWins = 0
 short Game
 
-FOR Game = 0 TO _NGames
+FOR Game = 1 TO _NGames
   IF fn IsGameWon(0) <> 0 THEN NWins = NWins + 1
 NEXT Game
 
 
 PRINT "NOT switching doors wins car in ";
-PRINT USING "##.##" ; NWins / 100 ;
+PRINT USING "##.##" ; NWins / _NGames * 100 ;
 PRINT " % of games."
 
 NWins = 0
-FOR Game = 0 TO _NGames
+FOR Game = 1 TO _NGames
   IF fn IsGameWon(1) <> 0 THEN NWins = NWins + 1
 NEXT Game
 PRINT "But switching doors wins car in ";

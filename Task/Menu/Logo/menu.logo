@@ -1,4 +1,5 @@
 to select :prompt [:options]
+  if empty? :options [output []]
   foreach :options [(print # ?)]
   forever [
     type :prompt type "| |

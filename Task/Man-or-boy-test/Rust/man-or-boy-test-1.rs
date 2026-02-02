@@ -5,15 +5,17 @@ trait Arg {
 }
 
 impl Arg for i32 {
-    fn run(&self) -> i32 { *self }
+    fn run(&self) -> i32 {
+        *self
+    }
 }
 
 struct B<'a> {
     k: &'a Cell<i32>,
-    x1: &'a Arg,
-    x2: &'a Arg,
-    x3: &'a Arg,
-    x4: &'a Arg,
+    x1: &'a dyn Arg,
+    x2: &'a dyn Arg,
+    x3: &'a dyn Arg,
+    x4: &'a dyn Arg,
 }
 
 impl<'a> Arg for B<'a> {
@@ -23,14 +25,18 @@ impl<'a> Arg for B<'a> {
     }
 }
 
-fn a(k: i32, x1: &Arg, x2: &Arg, x3: &Arg, x4: &Arg, x5: &Arg) -> i32 {
+fn a(k: i32, x1: &dyn Arg, x2: &dyn Arg, x3: &dyn Arg, x4: &dyn Arg, x5: &dyn Arg) -> i32 {
     if k <= 0 {
         x4.run() + x5.run()
     } else {
-        B{
+        B {
             k: &Cell::new(k),
-            x1, x2, x3, x4
-        }.run()
+            x1,
+            x2,
+            x3,
+            x4,
+        }
+        .run()
     }
 }
 

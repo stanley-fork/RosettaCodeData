@@ -1,18 +1,16 @@
-(notonline)-->
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span> <span style="color: #000080;font-style:italic;">-- (threads)</span>
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">echo</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">sleep</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">rand</span><span style="color: #0000FF;">(</span><span style="color: #000000;">100</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">100</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">enter_cs</span><span style="color: #0000FF;">()</span>
-     <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'\n'</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">leave_cs</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+without js -- (threads)
+procedure echo(string s)
+    sleep(rand(100)/100)
+    enter_cs()
+    puts(1,s)
+    puts(1,'\n')
+    leave_cs()
+end procedure
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">threads</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">create_thread</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">routine_id</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"echo"</span><span style="color: #0000FF;">),{</span><span style="color: #008000;">"Enjoy"</span><span style="color: #0000FF;">}),</span>
-                     <span style="color: #000000;">create_thread</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">routine_id</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"echo"</span><span style="color: #0000FF;">),{</span><span style="color: #008000;">"Rosetta"</span><span style="color: #0000FF;">}),</span>
-                     <span style="color: #000000;">create_thread</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">routine_id</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"echo"</span><span style="color: #0000FF;">),{</span><span style="color: #008000;">"Code"</span><span style="color: #0000FF;">})}</span>
+constant threads = {create_thread(routine_id("echo"),{"Enjoy"}),
+                    create_thread(routine_id("echo"),{"Rosetta"}),
+                    create_thread(routine_id("echo"),{"Code"})}
 
- <span style="color: #000000;">wait_thread</span><span style="color: #0000FF;">(</span><span style="color: #000000;">threads</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"done"</span><span style="color: #0000FF;">)</span>
- <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">wait_key</span><span style="color: #0000FF;">()</span>
-<!--
+wait_thread(threads)
+puts(1,"done")
+{} = wait_key()

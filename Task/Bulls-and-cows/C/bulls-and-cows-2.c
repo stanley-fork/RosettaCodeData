@@ -76,7 +76,7 @@ int main()
       mvaddstrf(20, 0, "You guessed %s correctly in %d attempts!", number, tries);
     else
       mvaddstrf(20,0, "Sorry, you had only %d tries...; the number was %s",
-		MAX_NUM_TRIES, number);
+      MAX_NUM_TRIES, number);
     again = ask_play_again();
     tries = 0;
   } while(again);

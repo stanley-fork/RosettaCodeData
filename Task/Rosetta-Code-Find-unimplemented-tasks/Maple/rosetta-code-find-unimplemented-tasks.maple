@@ -5,5 +5,5 @@ x := StringTools:-StringSplit(x, "<h2><span class=\"mw-headline\" id=\"Not_imple
 x := StringTools:-StringSplit(x, "<span class=\"mw-headline\" id=\"Draft_tasks_without_implementation\">Draft tasks without implementation</span>")[1]:
 x := StringTools:-StringSplit(x,"<li><a href=\"/wiki/")[2..]:
 for problem in x do
-	printf("%s\n", StringTools:-SubstituteAll(StringTools:-Decode(StringTools:-StringSplit(problem, "\" title=")[1], 'percent'), "_", " "));
+    printf("%s\n", StringTools:-SubstituteAll(StringTools:-Decode(StringTools:-StringSplit(problem, "\" title=")[1], 'percent'), "_", " "));
 end do:

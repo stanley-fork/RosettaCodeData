@@ -2,7 +2,7 @@
 
 (for i  (range 1 101)
      i2 (range (dec i) 100 i)
-  (var! doors (set-at [i2] (! (i2 doors))))
+  (var! doors (set-at [i2] (not (i2 doors))))
   (continue))
 
 (-> (xmap vec doors)

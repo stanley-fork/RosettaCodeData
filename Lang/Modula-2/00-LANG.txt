@@ -27,3 +27,10 @@ Modula-2 was designed by Niklaus Wirth at ETH Zurich as a systems implementation
 
 ==Modula-2 on IRC==
 * [irc://irc.freenode.net/#modula-2 irc://irc.freenode.net/#modula-2]
+
+===See also===
+* [[Modula-3]]
+* [[Oberon-07]]
+* [[Oberon-2]]
+* [[Component Pascal]]
+* [[Zonnon]]

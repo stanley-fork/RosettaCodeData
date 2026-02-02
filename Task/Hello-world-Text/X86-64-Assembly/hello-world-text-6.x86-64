@@ -2,10 +2,10 @@
 ;                 chmod 755 hello
 ;run with:        ./hello
 
-format ELF64 executable 3            ;Linux 64 bit executable
-entry _start                         ;label to start execution
+format ELF64 executable 3            ; Linux 64 bit executable
+entry _start                         ; label to start execution
 
-segment executable readable          ;code segment
+segment executable readable          ; code segment
 _start:
   .write:
     mov    rax, 1                    ; sys_write

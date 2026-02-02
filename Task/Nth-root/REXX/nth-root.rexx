@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 
 say 'NTH ROOT'
 say version
@@ -18,7 +18,4 @@ say 'digits = ' digs
 say 'answer = ' Nroot(x,root)
 exit
 
-include Numbers
-include Functions
-include Constants
-include Abend
+include Math

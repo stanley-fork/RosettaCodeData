@@ -34,7 +34,7 @@ partial_sum x y = pq where
            q_ab = q_ac*q_cb
 
 -- c is the real constant that is used in the formula for primes
--- c = sum_{1<i} p_i / (2i+1)!
+-- c = sum_{1<=i} p_i / (2i+1)!
 -- where p_i is i-th prime.
 -- This will work for any sequence of integers p, where |p_n| < 2n(2n+1) * 0.375
 c = crMemoize f where

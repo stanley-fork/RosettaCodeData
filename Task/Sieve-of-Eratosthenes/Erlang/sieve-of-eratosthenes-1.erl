@@ -3,11 +3,11 @@
 -export( [primes_upto/1] ).
 
 primes_upto( N ) ->
-	Ns = lists:seq( 2, N ),
-	Dict = dict:from_list( [{X, potential_prime} || X <- Ns] ),
-	{Upto_sqrt_ns, _T} = lists:split( erlang:round(math:sqrt(N)), Ns ),
-	{N, Prime_dict} = lists:foldl( fun find_prime/2, {N, Dict}, Upto_sqrt_ns ),
-	lists:sort( dict:fetch_keys(Prime_dict) ).
+   Ns = lists:seq( 2, N ),
+   Dict = dict:from_list( [{X, potential_prime} || X <- Ns] ),
+   {Upto_sqrt_ns, _T} = lists:split( erlang:round(math:sqrt(N)), Ns ),
+   {N, Prime_dict} = lists:foldl( fun find_prime/2, {N, Dict}, Upto_sqrt_ns ),
+   lists:sort( dict:fetch_keys(Prime_dict) ).
 
 
 

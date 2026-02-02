@@ -1,33 +1,33 @@
 set letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"::split();
 
 func caesar(text,shift:number=1){
-	set res:string="";
-	for(i=0;?text-1;1){
-		set t=text::at(i);
-		set n=(letters::find(t::upper())+shift)%?letters;
-		while(n<0){
-			n=?letters+n;
-		}
-		set l=letters[n];
-		(t::upper()==t)|=>l=l::lower()
-		res+=l;
-	}
-	send res;
+   set res:string="";
+   for(i=0;?text-1;1){
+      set t=text::at(i);
+      set n=(letters::find(t::upper())+shift)%?letters;
+      while(n<0){
+         n=?letters+n;
+      }
+      set l=letters[n];
+      (t::upper()==t)|=>l=l::lower()
+      res+=l;
+   }
+   send res;
 }
 
 func decode(text,shift:number=1){
-	set res:string="";
-	for(i=0;?text-1;1){
-		set t=text::at(i);
-		set n=(letters::find(t::upper())-shift)%?letters;
-		while(n<0){
-			n=?letters+n;
-		}
-		set l=letters[n];
-		(t::upper()==t)|=>l=l::lower()
-		res+=l;
-	}
-	send res;
+   set res:string="";
+   for(i=0;?text-1;1){
+      set t=text::at(i);
+      set n=(letters::find(t::upper())-shift)%?letters;
+      while(n<0){
+         n=?letters+n;
+      }
+      set l=letters[n];
+      (t::upper()==t)|=>l=l::lower()
+      res+=l;
+   }
+   send res;
 }
 
 set e=caesar("Hi",20);

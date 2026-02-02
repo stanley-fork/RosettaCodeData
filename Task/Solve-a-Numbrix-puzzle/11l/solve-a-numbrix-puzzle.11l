@@ -1,87 +1,91 @@
-V neighbours = [[-1, 0], [0, -1], [1, 0], [0, 1]]
-[Int] exists
-V lastNumber = 0
-V wid = 0
-V hei = 0
+V MOVES = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 
-F find_next(pa, x, y, z)
-   L(i) 4
-      V a = x + :neighbours[i][0]
-      V b = y + :neighbours[i][1]
-      I a C -1 <.< :wid & b C -1 <.< :hei
-         I pa[a][b] == z
-            R (a, b)
-   R (-1, -1)
+T Numbrix
+   [[Int]] grid
+   [Int] clues
+   Int totalToFill
+   Int startRow
+   Int startCol
 
-F find_solution(&pa, x, y, z)
-   I z > :lastNumber
-      R 1
-   I :exists[z] == 1
-      V s = find_next(pa, x, y, z)
-      I s[0] < 0
-         R 0
-      R find_solution(&pa, s[0], s[1], z + 1)
+   F solve(row, col, Int count, Int =nextClue) -> Bool
+      I count > .totalToFill
+         R 1B
+      V back = .grid[row][col]
+      I back !C [0, count]
+         R 0B
+      I back == 0 & nextClue < .clues.len & .clues[nextClue] == count
+         R 0B
+      nextClue = nextClue
+      I back == count
+         nextClue++
+      .grid[row][col] = count
+      L(move) :MOVES
+         I .solve(row + move[1], col + move[0], count + 1, nextClue)
+            R 1B
+      .grid[row][col] = back
+      R 0B
 
-   L(i) 4
-      V a = x + :neighbours[i][0]
-      V b = y + :neighbours[i][1]
-      I a C -1 <.< :wid & b C -1 <.< :hei
-         I pa[a][b] == 0
-            pa[a][b] = z
-            V r = find_solution(&pa, a, b, z + 1)
-            I r == 1
-               R 1
-            pa[a][b] = 0
-   R 0
-
-F solve(pz, w, h)
-   :lastNumber = w * h
-   :wid = w
-   :hei = h
-   :exists = [0] * (:lastNumber + 1)
-
-   V pa = [[0] * h] * w
-   V st = pz.split(‘ ’)
-   V idx = 0
-
-   L(j) 0 .< h
-      L(i) 0 .< w
-         I st[idx] == ‘.’
-            idx++
-         E
-            pa[i][j] = Int(st[idx])
-            :exists[pa[i][j]] = 1
-            idx++
-
-   V x = 0
-   V y = 0
-   V t = w * h + 1
-   L(j) 0 .< h
-      L(i) 0 .< w
-         I pa[i][j] != 0 & pa[i][j] < t
-            t = pa[i][j]
-            x = i
-            y = j
-
-   R (find_solution(&pa, x, y, t + 1), pa)
-
-F show_result(r)
-   I r[0] == 1
-      L(j) 0 .< :hei
-         L(i) 0 .< :wid
-            print(‘ #02’.format(r[1][i][j]), end' ‘’)
+   F xprint()
+      L(row) .grid
+         L(val) row
+            I val != -1
+               print(f:‘{val:02} ’, end' ‘’)
          print()
+
+F initNumbrix([String] board) -> Numbrix
+   V result = Numbrix()
+   V nRows = board.len
+   V nCols = board[0].split(‘,’).len
+   result.grid = [[-1] * (nCols + 2)] * (nRows + 2)
+   result.totalToFill = nRows * nCols
+   [Int] xlist
+   L(row) board
+      V r = L.index
+      L(tile) row.split(‘,’)
+         V c = L.index
+         V val = Int(tile)
+         result.grid[r + 1][c + 1] = val
+         I val > 0
+            xlist.append(val)
+            I val == 1
+               result.startRow = r + 1
+               result.startCol = c + 1
+   xlist.sort()
+   result.clues = xlist
+   R result
+
+V EXAMPLE1 = [‘00,00,00,00,00,00,00,00,00’,
+              ‘00,00,46,45,00,55,74,00,00’,
+              ‘00,38,00,00,43,00,00,78,00’,
+              ‘00,35,00,00,00,00,00,71,00’,
+              ‘00,00,33,00,00,00,59,00,00’,
+              ‘00,17,00,00,00,00,00,67,00’,
+              ‘00,18,00,00,11,00,00,64,00’,
+              ‘00,00,24,21,00,01,02,00,00’,
+              ‘00,00,00,00,00,00,00,00,00’]
+V EXAMPLE2 = [‘00,00,00,00,00,00,00,00,00’,
+              ‘00,11,12,15,18,21,62,61,00’,
+              ‘00,06,00,00,00,00,00,60,00’,
+              ‘00,33,00,00,00,00,00,57,00’,
+              ‘00,32,00,00,00,00,00,56,00’,
+              ‘00,37,00,01,00,00,00,73,00’,
+              ‘00,38,00,00,00,00,00,72,00’,
+              ‘00,43,44,47,48,51,76,77,00’,
+              ‘00,00,00,00,00,00,00,00,00’]
+V EXAMPLE3 = [‘17,00,00,00,11,00,00,00,59’,
+              ‘00,15,00,00,06,00,00,61,00’,
+              ‘00,00,03,00,00,00,63,00,00’,
+              ‘00,00,00,01,66,00,00,00,00’,
+              ‘23,24,00,68,67,78,00,54,55’,
+              ‘00,00,00,00,72,00,00,00,00’,
+              ‘00,00,35,00,00,00,49,00,00’,
+              ‘00,29,00,00,40,00,00,47,00’,
+              ‘31,00,00,00,39,00,00,00,45’]
+
+L(board) [EXAMPLE1, EXAMPLE2, EXAMPLE3]
+   V numbrix = initNumbrix(board)
+   I numbrix.solve(numbrix.startRow, numbrix.startCol, 1, 0)
+      print(‘Solution for example ’(L.index + 1)‘:’, end' ‘’)
+      numbrix.xprint()
    E
-      print(‘No Solution!’)
-
-   print()
-
-V r = solve(‘. . . . . . . . . . . 46 45 . 55 74 . . . 38 . . 43 . . 78 . . 35 . . . . . 71 . . . 33 . . . 59 . . . 17’""
-            ‘ . . . . . 67 . . 18 . . 11 . . 64 . . . 24 21 . 1 2 . . . . . . . . . . .’, 9, 9)
-show_result(r)
-r = solve(‘. . . . . . . . . . 11 12 15 18 21 62 61 . . 6 . . . . . 60 . . 33 . . . . . 57 . . 32 . . . . . 56 . . 37’""
-          ‘ . 1 . . . 73 . . 38 . . . . . 72 . . 43 44 47 48 51 76 77 . . . . . . . . . .’, 9, 9)
-show_result(r)
-r = solve(‘17 . . . 11 . . . 59 . 15 . . 6 . . 61 . . . 3 . . . 63 . . . . . . 66 . . . . 23 24 . 68 67 78 . 54 55’""
-          ‘ . . . . 72 . . . . . . 35 . . . 49 . . . 29 . . 40 . . 47 . 31 . . . 39 . . . 45’, 9, 9)
-show_result(r)
+      print(‘No solution.’)

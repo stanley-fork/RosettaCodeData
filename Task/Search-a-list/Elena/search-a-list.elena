@@ -1,9 +1,9 @@
 import system'routines;
 import extensions;
 
-public program()
+public Program()
 {
-    var haystack := new string[]{"Zig", "Zag", "Wally", "Ronald", "Bush", "Krusty", "Charlie", "Bush", "Bozo"};
+    auto haystack := new string[]{"Zig", "Zag", "Wally", "Ronald", "Bush", "Krusty", "Charlie", "Bush", "Bozo"};
 
     new string[]{"Washington", "Bush"}.forEach::(needle)
     {
@@ -11,11 +11,11 @@ public program()
 
         if (index == -1)
         {
-            console.printLine(needle," is not in haystack")
+            Console.printLine(needle," is not in haystack")
         }
         else
         {
-            console.printLine(needle, " - ", index)
+            Console.printLine(needle, " - ", index)
         }
     }
 }

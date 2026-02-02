@@ -1,240 +1,238 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">maxDigits</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">10</span><span style="color: #0000FF;">:</span><span style="color: #000000;">15</span><span style="color: #0000FF;">)</span>
+with javascript_semantics
+constant maxDigits = iff(platform()=JS?10:15)
 
- <span style="color: #008080;">enum</span> <span style="color: #000000;">COEFF</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">TDXA</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">TDXB</span>  <span style="color: #000080;font-style:italic;">-- struct term = {atom coeff, integer idxa, idxb}
-                         -- (see allTerms below)</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">nd</span><span style="color: #0000FF;">,</span>     <span style="color: #000080;font-style:italic;">-- number of digits</span>
-         <span style="color: #000000;">count</span>   <span style="color: #000080;font-style:italic;">-- of solutions found earlier, for lower nd</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">rares</span>  <span style="color: #000080;font-style:italic;">-- (cleared after sorting/printing for each nd)</span>
+enum COEFF, TDXA, TDXB  -- struct term = {atom coeff, integer idxa, idxb}
+                        -- (see allTerms below)
+integer nd,     -- number of digits
+        count   -- of solutions found earlier, for lower nd
+sequence rares  -- (cleared after sorting/printing for each nd)
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">to_atom</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">digits</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- convert digits array to an atom value</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">digits</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">*</span> <span style="color: #000000;">10</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">digits</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">r</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function to_atom(sequence digits)
+-- convert digits array to an atom value
+    atom r = 0
+    for i=1 to length(digits) do
+        r = r * 10 + digits[i]
+    end for
+    return r
+end function
 
- <span style="color: #000080;font-style:italic;">-- psq eliminates 52 out of 64 of numbers fairly cheaply, which translates
- -- to approximately 66% of numbers, or around 10% off the overall time.
- -- NB: only tested to 9,007,199,254,740,991, then again I found no more new
- --      bit patterns after just 15^2.</span>
+-- psq eliminates 52 out of 64 of numbers fairly cheaply, which translates
+-- to approximately 66% of numbers, or around 10% off the overall time.
+-- NB: only tested to 9,007,199,254,740,991, then again I found no more new
+--      bit patterns after just 15^2.
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">psq</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">int_to_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">#02030213</span><span style="color: #0000FF;">,</span><span style="color: #000000;">32</span><span style="color: #0000FF;">)&</span>   <span style="color: #000080;font-style:italic;">-- #0202021202030213 --&gt; bits,</span>
-                <span style="color: #7060A8;">int_to_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">#02020212</span><span style="color: #0000FF;">,</span><span style="color: #000000;">32</span><span style="color: #0000FF;">)</span>    <span style="color: #000080;font-style:italic;">-- in 32/64-bit compatible way.</span>
+constant psq = int_to_bits(#02030213,32)&   -- #0202021202030213 --> bits,
+               int_to_bits(#02020212,32)    -- in 32/64-bit compatible way.
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">isSquare</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>   <span style="color: #000080;font-style:italic;">--  determine if n is a perfect square or not</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">psq</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">63</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">sqrt</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">))</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">*</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">n</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #004600;">false</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function isSquare(atom n)   --  determine if n is a perfect square or not
+    if psq[and_bits(n,63)+1] then
+        atom r = floor(sqrt(n))
+        return r * r = n
+    end if
+    return false
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">fnpr</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">level</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">atom</span> <span style="color: #000000;">nmr</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">di</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dis</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">indices</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">fml</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dmd</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- generate (n+r) candidates from (n-r) candidates</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">level</span><span style="color: #0000FF;">></span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dis</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">digits</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">nd</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000080;font-style:italic;">-- (the precise why of how this populates digits has eluded me...)</span>
-         <span style="color: #004080;">integer</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">indices</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span>
-                 <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span>
-                 <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">di</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">1</span>
-         <span style="color: #000000;">digits</span><span style="color: #0000FF;">[</span><span style="color: #000000;">a</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">fml</span><span style="color: #0000FF;">[</span><span style="color: #000000;">c</span><span style="color: #0000FF;">][</span><span style="color: #000000;">d</span><span style="color: #0000FF;">][</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-         <span style="color: #000000;">digits</span><span style="color: #0000FF;">[</span><span style="color: #000000;">b</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">fml</span><span style="color: #0000FF;">[</span><span style="color: #000000;">c</span><span style="color: #0000FF;">][</span><span style="color: #000000;">d</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">le</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">di</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">nd</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">nd</span><span style="color: #0000FF;">/</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span>
-             <span style="color: #000000;">digits</span><span style="color: #0000FF;">[</span><span style="color: #000000;">d</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">di</span><span style="color: #0000FF;">[</span><span style="color: #000000;">le</span><span style="color: #0000FF;">]</span>
-             <span style="color: #000000;">le</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">dx</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #000000;">le</span> <span style="color: #008080;">do</span>
-             <span style="color: #0000FF;">{</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">indices</span><span style="color: #0000FF;">[</span><span style="color: #000000;">dx</span><span style="color: #0000FF;">]</span>
-             <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">[</span><span style="color: #000000;">dx</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">10</span>
-             <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">di</span><span style="color: #0000FF;">[</span><span style="color: #000000;">dx</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">1</span>
-             <span style="color: #000000;">digits</span><span style="color: #0000FF;">[</span><span style="color: #000000;">a</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">dmd</span><span style="color: #0000FF;">[</span><span style="color: #000000;">c</span><span style="color: #0000FF;">][</span><span style="color: #000000;">d</span><span style="color: #0000FF;">][</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-             <span style="color: #000000;">digits</span><span style="color: #0000FF;">[</span><span style="color: #000000;">b</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">dmd</span><span style="color: #0000FF;">[</span><span style="color: #000000;">c</span><span style="color: #0000FF;">][</span><span style="color: #000000;">d</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">npr</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">nmr</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">to_atom</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">reverse</span><span style="color: #0000FF;">(</span><span style="color: #000000;">digits</span><span style="color: #0000FF;">))*</span><span style="color: #000000;">2</span> <span style="color: #000080;font-style:italic;">-- (npr == 'n + r')</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">isSquare</span><span style="color: #0000FF;">(</span><span style="color: #000000;">npr</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">rares</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">to_atom</span><span style="color: #0000FF;">(</span><span style="color: #000000;">digits</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">if</span> <span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()!=</span><span style="color: #004600;">JS</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000080;font-style:italic;">-- (note this gets overwritten by sorted set:)</span>
-                 <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"working...  %2d: %,d\r"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">count</span><span style="color: #0000FF;">+</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rares</span><span style="color: #0000FF;">),</span><span style="color: #000000;">rares</span><span style="color: #0000FF;">[$]})</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #000000;">di</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">di</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">dis</span><span style="color: #0000FF;">[</span><span style="color: #000000;">level</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">di</span><span style="color: #0000FF;">[</span><span style="color: #000000;">level</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">n</span>
-             <span style="color: #000000;">fnpr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">level</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">nmr</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">di</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dis</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">indices</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">fml</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dmd</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure fnpr(integer level, atom nmr, sequence di, dis, candidates, indices, fml, dmd)
+-- generate (n+r) candidates from (n-r) candidates
+    if level>length(dis) then
+        sequence digits = repeat(0,nd)
+        -- (the precise why of how this populates digits has eluded me...)
+        integer {a,b} = indices[1],
+                c = candidates[1]+1,
+                d = di[1]+1
+        digits[a] = fml[c][d][1]
+        digits[b] = fml[c][d][2]
+        integer le = length(di)
+        if remainder(nd,2) then
+            d = floor(nd/2)+1
+            digits[d] = di[le]
+            le -= 1
+        end if
+        for dx=2 to le do
+            {a,b} = indices[dx]
+            c = candidates[dx]+10
+            d = di[dx]+1
+            digits[a] = dmd[c][d][1]
+            digits[b] = dmd[c][d][2]
+        end for
+        atom npr = nmr + to_atom(reverse(digits))*2 -- (npr == 'n + r')
+        if isSquare(npr) then
+            rares &= to_atom(digits)
+            if platform()!=JS then
+                -- (note this gets overwritten by sorted set:)
+                printf(1,"working...  %2d: %,d\r", {count+length(rares),rares[$]})
+            end if
+        end if
+    else
+        di = deep_copy(di)
+        for n=0 to dis[level] do
+            di[level] = n
+            fnpr(level+1, nmr, di, dis, candidates, indices, fml, dmd)
+        end for
+    end if
+end procedure
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">fnmr</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">terms</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">list</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">indices</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">fml</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dmd</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">level</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- generate (n-r) candidates with a given number of digits.</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">level</span><span style="color: #0000FF;">></span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">list</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">nmr</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span> <span style="color: #000080;font-style:italic;">-- (nmr == 'n - r')</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">nmr</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">terms</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">][</span><span style="color: #000000;">COEFF</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">*</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">nmr</span><span style="color: #0000FF;">></span><span style="color: #000000;">0</span> <span style="color: #008080;">and</span> <span style="color: #000000;">isSquare</span><span style="color: #0000FF;">(</span><span style="color: #000000;">nmr</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #004080;">integer</span> <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span>
-                     <span style="color: #000000;">l</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fml</span><span style="color: #0000FF;">[</span><span style="color: #000000;">c</span><span style="color: #0000FF;">])-</span><span style="color: #000000;">1</span>
-             <span style="color: #004080;">sequence</span> <span style="color: #000000;">dis</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">l</span><span style="color: #0000FF;">}</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">candidates</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-                 <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">10</span>
-                 <span style="color: #000000;">l</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dmd</span><span style="color: #0000FF;">[</span><span style="color: #000000;">c</span><span style="color: #0000FF;">])-</span><span style="color: #000000;">1</span>
-                 <span style="color: #000000;">dis</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dis</span><span style="color: #0000FF;">,</span><span style="color: #000000;">l</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-             <span style="color: #008080;">if</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">nd</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000000;">dis</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dis</span><span style="color: #0000FF;">,</span><span style="color: #000000;">9</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000080;font-style:italic;">-- (above generates dis of eg {1,4,7,9} for nd=7, which as far
-             --  as I (lightly) understand it scans for far fewer candidate
-             --  pairs than a {9,9,9,9} would, or something like that.)</span>
-             <span style="color: #004080;">sequence</span> <span style="color: #000000;">di</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dis</span><span style="color: #0000FF;">))</span>
-             <span style="color: #000080;font-style:italic;">-- (di is the current "dis-scan", eg {0,0,0,0} to {1,4,7,9})</span>
-             <span style="color: #000000;">fnpr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">nmr</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">di</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dis</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">indices</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">fml</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dmd</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #000000;">candidates</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">candidates</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">list</span><span style="color: #0000FF;">[</span><span style="color: #000000;">level</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">candidates</span><span style="color: #0000FF;">[</span><span style="color: #000000;">level</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">list</span><span style="color: #0000FF;">[</span><span style="color: #000000;">level</span><span style="color: #0000FF;">][</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]</span>
-             <span style="color: #000000;">fnmr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">list</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">indices</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">fml</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dmd</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">level</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure fnmr(sequence terms, list, candidates, indices, fml, dmd, integer level)
+-- generate (n-r) candidates with a given number of digits.
+    if level>length(list) then
+        atom nmr = 0 -- (nmr == 'n - r')
+        for i=1 to length(terms) do
+            nmr += terms[i][COEFF] * candidates[i]
+        end for
+        if nmr>0 and isSquare(nmr) then
+            integer c = candidates[1]+1,
+                    l = length(fml[c])-1
+            sequence dis = {l}
+            for i=2 to length(candidates) do
+                c = candidates[i]+10
+                l = length(dmd[c])-1
+                dis = append(dis,l)
+            end for
+            if remainder(nd,2) then dis = append(dis,9) end if
+            -- (above generates dis of eg {1,4,7,9} for nd=7, which as far
+            --  as I (lightly) understand it scans for far fewer candidate
+            --  pairs than a {9,9,9,9} would, or something like that.)
+            sequence di = repeat(0,length(dis))
+            -- (di is the current "dis-scan", eg {0,0,0,0} to {1,4,7,9})
+            fnpr(1, nmr, di, dis, candidates, indices, fml, dmd)
+        end if
+    else
+        candidates = deep_copy(candidates)
+        for n=1 to length(list[level]) do
+            candidates[level] = list[level][n]
+            fnmr(terms, list, candidates, indices, fml, dmd, level+1)
+        end for
+    end if
+end procedure
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">dl</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">9</span><span style="color: #0000FF;">,-</span><span style="color: #000000;">9</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">-- all  differences (-9..+9 by 1)</span>
-          <span style="color: #000000;">zl</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">),</span>    <span style="color: #000080;font-style:italic;">-- zero difference  (0 only)</span>
-          <span style="color: #000000;">el</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">8</span><span style="color: #0000FF;">,-</span><span style="color: #000000;">8</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">),</span> <span style="color: #000080;font-style:italic;">-- even differences (-8 to +8 by 2)</span>
-          <span style="color: #000000;">ol</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">9</span><span style="color: #0000FF;">,-</span><span style="color: #000000;">9</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">),</span> <span style="color: #000080;font-style:italic;">-- odd  differences (-9..+9 by 2)</span>
-          <span style="color: #000000;">il</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">9</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>     <span style="color: #000080;font-style:italic;">-- all integers (0..9 by 1)</span>
+constant dl = tagset(9,-9),    -- all  differences (-9..+9 by 1)
+         zl = tagset(0, 0),    -- zero difference  (0 only)
+         el = tagset(8,-8, 2), -- even differences (-8 to +8 by 2)
+         ol = tagset(9,-9, 2), -- odd  differences (-9..+9 by 2)
+         il = tagset(9, 0)     -- all integers (0..9 by 1)
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">main</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">start</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()</span>
+procedure main()
+    atom start = time()
 
-     <span style="color: #000080;font-style:italic;">-- terms of (n-r) expression for number of digits from 2 to maxdigits</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">allTerms</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">pow</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #000000;">maxDigits</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">terms</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-         <span style="color: #000000;">pow</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">10</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">p1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">pow</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">p2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">tdxa</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tdxb</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span>
-         <span style="color: #008080;">while</span> <span style="color: #000000;">tdxa</span> <span style="color: #0000FF;"><</span> <span style="color: #000000;">tdxb</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">terms</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">p1</span><span style="color: #0000FF;">-</span><span style="color: #000000;">p2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tdxa</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tdxb</span><span style="color: #0000FF;">})</span> <span style="color: #000080;font-style:italic;">-- {COEFF,TDXA,TDXB}</span>
-             <span style="color: #000000;">p1</span> <span style="color: #0000FF;">/=</span> <span style="color: #000000;">10</span>
-             <span style="color: #000000;">p2</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">10</span>
-             <span style="color: #000000;">tdxa</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-             <span style="color: #000000;">tdxb</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-         <span style="color: #000000;">allTerms</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">allTerms</span><span style="color: #0000FF;">,</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #000080;font-style:italic;">--/*
- --(This is what the above loop creates:)
- --pp(allTerms,{pp_Nest,1,pp_StrFmt,3,pp_IntCh,false,pp_IntFmt,"%d",pp_FltFmt,"%d",pp_Maxlen,148})
- <nowiki>{{</nowiki>{9,0,1<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>99,0,2<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>999,0,3}, {90,1,2<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>9999,0,4}, {990,1,3<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>99999,0,5}, {9990,1,4}, {900,2,3<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>999999,0,6}, {99990,1,5}, {9900,2,4<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>9999999,0,7}, {999990,1,6}, {99900,2,5}, {9000,3,4<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>99999999,0,8}, {9999990,1,7}, {999900,2,6}, {99000,3,5<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>999999999,0,9}, {99999990,1,8}, {9999900,2,7}, {999000,3,6}, {90000,4,5<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>9999999999,0,10}, {999999990,1,9}, {99999900,2,8}, {9999000,3,7}, {990000,4,6<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>99999999999,0,11}, {9999999990,1,10}, {999999900,2,9}, {99999000,3,8}, {9990000,4,7}, {900000,5,6<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>999999999999,0,12}, {99999999990,1,11}, {9999999900,2,10}, {999999000,3,9}, {99990000,4,8}, {9900000,5,7<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>9999999999999,0,13}, {999999999990,1,12}, {99999999900,2,11}, {9999999000,3,10}, {999990000,4,9}, {99900000,5,8}, {9000000,6,7<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>99999999999999,0,14}, {9999999999990,1,13}, {999999999900,2,12}, {99999999000,3,11}, {9999990000,4,10}, {999900000,5,9}, {99000000,6,8<nowiki>}}</nowiki>}
- --*/
+    -- terms of (n-r) expression for number of digits from 2 to maxdigits
+    sequence allTerms = {}
+    atom pow = 1
+    for r=2 to maxDigits do
+        sequence terms = {}
+        pow *= 10
+        atom p1 = pow, p2 = 1
+        integer tdxa = 0, tdxb = r-1
+        while tdxa < tdxb do
+            terms = append(terms,{p1-p2, tdxa, tdxb}) -- {COEFF,TDXA,TDXB}
+            p1 /= 10
+            p2 *= 10
+            tdxa += 1
+            tdxb -= 1
+        end while
+        allTerms = append(allTerms,terms)
+    end for
+--/*
+--(This is what the above loop creates:)
+--pp(allTerms,{pp_Nest,1,pp_StrFmt,3,pp_IntCh,false,pp_IntFmt,"%d",pp_FltFmt,"%d",pp_Maxlen,148})
+{{{9,0,1}},
+ {{99,0,2}},
+ {{999,0,3}, {90,1,2}},
+ {{9999,0,4}, {990,1,3}},
+ {{99999,0,5}, {9990,1,4}, {900,2,3}},
+ {{999999,0,6}, {99990,1,5}, {9900,2,4}},
+ {{9999999,0,7}, {999990,1,6}, {99900,2,5}, {9000,3,4}},
+ {{99999999,0,8}, {9999990,1,7}, {999900,2,6}, {99000,3,5}},
+ {{999999999,0,9}, {99999990,1,8}, {9999900,2,7}, {999000,3,6}, {90000,4,5}},
+ {{9999999999,0,10}, {999999990,1,9}, {99999900,2,8}, {9999000,3,7}, {990000,4,6}},
+ {{99999999999,0,11}, {9999999990,1,10}, {999999900,2,9}, {99999000,3,8}, {9990000,4,7}, {900000,5,6}},
+ {{999999999999,0,12}, {99999999990,1,11}, {9999999900,2,10}, {999999000,3,9}, {99990000,4,8}, {9900000,5,7}},
+ {{9999999999999,0,13}, {999999999990,1,12}, {99999999900,2,11}, {9999999000,3,10}, {999990000,4,9}, {99900000,5,8}, {9000000,6,7}},
+ {{99999999999999,0,14}, {9999999999990,1,13}, {999999999900,2,12}, {99999999000,3,11}, {9999990000,4,10}, {999900000,5,9}, {99000000,6,8}}}
+--*/
 
-     -- map of first minus last digits for 'n' to pairs giving this value</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">fml</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">({},</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- (aka 0..9)
-     --      (fml == 'first minus last')</span>
-     <span style="color: #000000;">fml</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">8</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">8</span><span style="color: #0000FF;">}}</span>
-     <span style="color: #000000;">fml</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">6</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">5</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">8</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">7</span><span style="color: #0000FF;">}}</span>
-     <span style="color: #000000;">fml</span><span style="color: #0000FF;">[</span><span style="color: #000000;">5</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">}}</span>
- <span style="color: #000080;font-style:italic;">--  fml[6] = <nowiki>{{</nowiki>8, 3<nowiki>}}</nowiki>   -- (um? - needs longer lists, & that append(lists[4],dl) below)</span>
-     <span style="color: #000000;">fml</span><span style="color: #0000FF;">[</span><span style="color: #000000;">7</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #000000;">6</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">},</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">8</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">}}</span>
- <span style="color: #000080;font-style:italic;">--  sequence lists = <nowiki>{{</nowiki>{0<nowiki>}}</nowiki>,<nowiki>{{</nowiki>1<nowiki>}}</nowiki>,<nowiki>{{</nowiki>4<nowiki>}}</nowiki>,<nowiki>{{</nowiki>5<nowiki>}}</nowiki>,<nowiki>{{</nowiki>6<nowiki>}}</nowiki>}</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">lists</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{{</span><span style="color: #000000;">0</span><span style="color: #0000FF;">}},{{</span><span style="color: #000000;">1</span><span style="color: #0000FF;">}},{{</span><span style="color: #000000;">4</span><span style="color: #0000FF;">}},{{</span><span style="color: #000000;">6</span><span style="color: #0000FF;">}}}</span>
-     <span style="color: #000080;font-style:italic;">-- map of other digit differences for 'n' to pairs giving this value</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">dmd</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">({},</span><span style="color: #000000;">19</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- (aka -9..+9, so add 10 when indexing dmd)
-     --      (dmd == 'digit minus digit')</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">tens</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">9</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tens</span><span style="color: #0000FF;">+</span><span style="color: #000000;">10</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">ones</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">9</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">dmd</span><span style="color: #0000FF;">[</span><span style="color: #000000;">d</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dmd</span><span style="color: #0000FF;">[</span><span style="color: #000000;">d</span><span style="color: #0000FF;">],</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tens</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ones</span><span style="color: #0000FF;">})</span>
-             <span style="color: #000000;">d</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #000080;font-style:italic;">--/*
- --(This is what the above loop creates:)
- --pp(dmd,{pp_Nest,1,pp_StrFmt,3,pp_IntCh,false})
- <nowiki>{{</nowiki>{0,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,8}, {1,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,7}, {1,8}, {2,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,6}, {1,7}, {2,8}, {3,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,5}, {1,6}, {2,7}, {3,8}, {4,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,4}, {1,5}, {2,6}, {3,7}, {4,8}, {5,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,3}, {1,4}, {2,5}, {3,6}, {4,7}, {5,8}, {6,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,2}, {1,3}, {2,4}, {3,5}, {4,6}, {5,7}, {6,8}, {7,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,1}, {1,2}, {2,3}, {3,4}, {4,5}, {5,6}, {6,7}, {7,8}, {8,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>0,0}, {1,1}, {2,2}, {3,3}, {4,4}, {5,5}, {6,6}, {7,7}, {8,8}, {9,9<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>1,0}, {2,1}, {3,2}, {4,3}, {5,4}, {6,5}, {7,6}, {8,7}, {9,8<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>2,0}, {3,1}, {4,2}, {5,3}, {6,4}, {7,5}, {8,6}, {9,7<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>3,0}, {4,1}, {5,2}, {6,3}, {7,4}, {8,5}, {9,6<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>4,0}, {5,1}, {6,2}, {7,3}, {8,4}, {9,5<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>5,0}, {6,1}, {7,2}, {8,3}, {9,4<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>6,0}, {7,1}, {8,2}, {9,3<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>7,0}, {8,1}, {9,2<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>8,0}, {9,1<nowiki>}}</nowiki>,
-  <nowiki>{{</nowiki>9,0<nowiki>}}</nowiki>}
- --*/</span>
-     <span style="color: #000000;">count</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"digits time  nth rare numbers:\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">nd</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">2</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">nd</span> <span style="color: #0000FF;"><=</span> <span style="color: #000000;">maxDigits</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">rares</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">terms</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">allTerms</span><span style="color: #0000FF;">[</span><span style="color: #000000;">nd</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">nd</span><span style="color: #0000FF;">=</span><span style="color: #000000;">4</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span><span style="color: #000000;">zl</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">],</span><span style="color: #000000;">ol</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">],</span><span style="color: #000000;">el</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">--          lists[4] = append(lists[4],dl)  -- if fml[6] = <nowiki>{{</nowiki>8, 3<nowiki>}}</nowiki>
- --          lists[5] = append(lists[5],ol)  --      ""
- --          lists[4] = append(lists[4],ol)  -- else</span>
-             <span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">4</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">4</span><span style="color: #0000FF;">]),</span><span style="color: #000000;">ol</span><span style="color: #0000FF;">)</span>   <span style="color: #000080;font-style:italic;">-- else</span>
-         <span style="color: #008080;">elsif</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">)></span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lists</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
- <span style="color: #000080;font-style:italic;">--              lists[i] = append(lists[i],dl)</span>
-                 <span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]),</span><span style="color: #000000;">dl</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">indices</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #004080;">sequence</span> <span style="color: #000000;">term</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">terms</span><span style="color: #0000FF;">[</span><span style="color: #000000;">t</span><span style="color: #0000FF;">]</span>
-             <span style="color: #000080;font-style:italic;">-- (we may as well make this 1-based while here)</span>
-             <span style="color: #000000;">indices</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">indices</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">term</span><span style="color: #0000FF;">[</span><span style="color: #000000;">TDXA</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">term</span><span style="color: #0000FF;">[</span><span style="color: #000000;">TDXB</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">})</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">lists</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #004080;">sequence</span> <span style="color: #000000;">list</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">lists</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span>
-                      <span style="color: #000000;">candidates</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">list</span><span style="color: #0000FF;">))</span>
-             <span style="color: #000000;">fnmr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">list</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">candidates</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">indices</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">fml</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dmd</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #000080;font-style:italic;">-- (re-)output partial results for this nd-set in sorted order:
- --      rares = sort(rares)</span>
-         <span style="color: #000000;">rares</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sort</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rares</span><span style="color: #0000FF;">))</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rares</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">count</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-             <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%12s %2d: %,19d \n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">""</span><span style="color: #0000FF;">,</span><span style="color: #000000;">count</span><span style="color: #0000FF;">,</span><span style="color: #000000;">rares</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]})</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"  %2d  %5s\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">nd</span><span style="color: #0000FF;">,</span> <span style="color: #7060A8;">elapsed_short</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">start</span><span style="color: #0000FF;">)})</span>
-         <span style="color: #000000;">nd</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
- <span style="color: #000000;">main</span><span style="color: #0000FF;">()</span>
-<!--
+    -- map of first minus last digits for 'n' to pairs giving this value
+    sequence fml = repeat({},10) -- (aka 0..9)
+    --      (fml == 'first minus last')
+    fml[1] = {{2, 2}, {8, 8}}
+    fml[2] = {{6, 5}, {8, 7}}
+    fml[5] = {{4, 0}}
+--  fml[6] = {{8, 3}}   -- (um? - needs longer lists, & that append(lists[4],dl) below)
+    fml[7] = {{6, 0}, {8, 2}}
+--  sequence lists = {{{0}},{{1}},{{4}},{{5}},{{6}}}
+    sequence lists = {{{0}},{{1}},{{4}},{{6}}}
+    -- map of other digit differences for 'n' to pairs giving this value
+    sequence dmd = repeat({},19) -- (aka -9..+9, so add 10 when indexing dmd)
+    --      (dmd == 'digit minus digit')
+    for tens=0 to 9 do
+        integer d = tens+10
+        for ones=0 to 9 do
+            dmd[d] = append(dmd[d], {tens,ones})
+            d -= 1
+        end for
+    end for
+--/*
+--(This is what the above loop creates:)
+--pp(dmd,{pp_Nest,1,pp_StrFmt,3,pp_IntCh,false})
+{{{0,9}},
+ {{0,8}, {1,9}},
+ {{0,7}, {1,8}, {2,9}},
+ {{0,6}, {1,7}, {2,8}, {3,9}},
+ {{0,5}, {1,6}, {2,7}, {3,8}, {4,9}},
+ {{0,4}, {1,5}, {2,6}, {3,7}, {4,8}, {5,9}},
+ {{0,3}, {1,4}, {2,5}, {3,6}, {4,7}, {5,8}, {6,9}},
+ {{0,2}, {1,3}, {2,4}, {3,5}, {4,6}, {5,7}, {6,8}, {7,9}},
+ {{0,1}, {1,2}, {2,3}, {3,4}, {4,5}, {5,6}, {6,7}, {7,8}, {8,9}},
+ {{0,0}, {1,1}, {2,2}, {3,3}, {4,4}, {5,5}, {6,6}, {7,7}, {8,8}, {9,9}},
+ {{1,0}, {2,1}, {3,2}, {4,3}, {5,4}, {6,5}, {7,6}, {8,7}, {9,8}},
+ {{2,0}, {3,1}, {4,2}, {5,3}, {6,4}, {7,5}, {8,6}, {9,7}},
+ {{3,0}, {4,1}, {5,2}, {6,3}, {7,4}, {8,5}, {9,6}},
+ {{4,0}, {5,1}, {6,2}, {7,3}, {8,4}, {9,5}},
+ {{5,0}, {6,1}, {7,2}, {8,3}, {9,4}},
+ {{6,0}, {7,1}, {8,2}, {9,3}},
+ {{7,0}, {8,1}, {9,2}},
+ {{8,0}, {9,1}},
+ {{9,0}}}
+--*/
+    count = 0
+    printf(1,"digits time  nth rare numbers:\n")
+    nd = 2
+    while nd <= maxDigits do
+        rares = {}
+        sequence terms = allTerms[nd-1]
+        if nd=4 then
+            lists[1] = append(lists[1],zl)
+            lists[2] = append(lists[2],ol)
+            lists[3] = append(lists[3],el)
+--          lists[4] = append(lists[4],dl)  -- if fml[6] = {{8, 3}}
+--          lists[5] = append(lists[5],ol)  --      ""
+--          lists[4] = append(lists[4],ol)  -- else
+            lists[4] = append(deep_copy(lists[4]),ol)   -- else
+        elsif length(terms)>length(lists[1]) then
+            for i=1 to length(lists) do
+--              lists[i] = append(lists[i],dl)
+                lists[i] = append(deep_copy(lists[i]),dl)
+            end for
+        end if
+        sequence indices = {}
+        for t=1 to length(terms) do
+            sequence term = terms[t]
+            -- (we may as well make this 1-based while here)
+            indices = append(indices,{term[TDXA]+1,term[TDXB]+1})
+        end for
+        for i=1 to length(lists) do
+            sequence list = lists[i],
+                     candidates = repeat(0,length(list))
+            fnmr(terms, list, candidates, indices, fml, dmd, 1)
+        end for
+        -- (re-)output partial results for this nd-set in sorted order:
+--      rares = sort(rares)
+        rares = sort(deep_copy(rares))
+        for i=1 to length(rares) do
+            count += 1
+            printf(1,"%12s %2d: %,19d \n", {"",count,rares[i]})
+        end for
+        printf(1,"  %2d  %5s\n", {nd, elapsed_short(time()-start)})
+        nd += 1
+    end while
+end procedure
+main()

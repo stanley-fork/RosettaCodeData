@@ -37,14 +37,14 @@ def PythagorasTree:
     else ($x2 - $x1) as $dx
          | ($y1 - $y2) as $dy
          | ($x2 - $dy) as $x3
-	 | ($y2 - $dx) as $y3
+     | ($y2 - $dx) as $y3
          | ($x1 - $dy) as $x4
          | ($y1 - $dx)  as $y4
-	 | ($x4 + 0.5 * ($dx - $dy)) as $x5
+     | ($x4 + 0.5 * ($dx - $dy)) as $x5
          | ($y4 - 0.5 * ($dx + $dy)) as $y5
 
          # draw a square
-	 | "rgb(\(256 - $depth * 20), 0, 0)" as $col
+     | "rgb(\(256 - $depth * 20), 0, 0)" as $col
          | Square([$x1, $y1]; [$x2, $y2]; [$x3, $y3] ;  [$x4, $y4] ; $col; "lightgray")
 
          # draw a triangle

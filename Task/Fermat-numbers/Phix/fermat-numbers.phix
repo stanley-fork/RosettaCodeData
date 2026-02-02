@@ -1,51 +1,52 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #000080;font-style:italic;">-- demo\rosetta\Fermat.exw</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+-- demo\rosetta\Fermat.exw
+with javascript_semantics
+include mpfr.e
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">fermat</span><span style="color: #0000FF;">(</span><span style="color: #004080;">mpz</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">pn</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpz_ui_pow_ui</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">pn</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpz_add_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure fermat(mpz res, integer n)
+    integer pn = power(2,n)
+    mpz_ui_pow_ui(res,2,pn)
+    mpz_add_si(res,res,1)
+end procedure
 
- <span style="color: #004080;">mpz</span> <span style="color: #000000;">fn</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">lim</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">18</span><span style="color: #0000FF;">:</span><span style="color: #000000;">29</span><span style="color: #0000FF;">),</span> <span style="color: #000080;font-style:italic;">-- (see note)</span>
-          <span style="color: #000000;">print_lim</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">16</span><span style="color: #0000FF;">:</span><span style="color: #000000;">20</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">lim</span> <span style="color: #008080;">do</span>
-     <span style="color: #000000;">fermat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fn</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">i</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">print_lim</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"F%d = %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fn</span><span style="color: #0000FF;">))})</span>
-     <span style="color: #008080;">else</span> <span style="color: #000080;font-style:italic;">-- (since printing it takes too long...)</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"F%d has %,d digits\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">mpz_sizeinbase</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fn</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
+mpz fn = mpz_init()
+constant lim = iff(platform()=JS?18:29), -- (see note)
+         print_lim = iff(platform()=JS?16:20)
+atom t
+for i=0 to lim do
+    t = time()
+    fermat(fn,i)
+    string ts = elapsed(t,0.2," [%s]")
+    if i<=print_lim then
+        printf(1,"F%d = %s%s\n",{i,shorten(mpz_get_str(fn)),ts})
+    else -- (since printing it takes too long...)
+        printf(1,"F%d has %,d digits%s\n",{i,mpz_sizeinbase(fn,10),ts})
+    end if
+end for
 
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">flimit</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">11</span><span style="color: #0000FF;">:</span><span style="color: #000000;">13</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">flimit</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()</span>
-     <span style="color: #000000;">fermat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fn</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_prime_factors</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fn</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">200000</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">fs</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span><span style="color: #0000FF;">,</span>
-            <span style="color: #000000;">ts</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">[$])=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span> <span style="color: #000080;font-style:italic;">-- (as per docs)</span>
-         <span style="color: #7060A8;">mpz_set_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fn</span><span style="color: #0000FF;">,</span><span style="color: #000000;">f</span><span style="color: #0000FF;">[$][</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span>
-         <span style="color: #008080;">if</span> <span style="color: #008080;">not</span> <span style="color: #7060A8;">mpz_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fn</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000000;">fs</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">" (not prime)"</span>
-             <span style="color: #008080;">else</span>
-                 <span style="color: #000000;">fs</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">" (last factor is not prime)"</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">f</span><span style="color: #0000FF;">[$][</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">[$][</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">1</span>
-       <span style="color: #008080;">and</span> <span style="color: #7060A8;">mpz_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">fn</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">fs</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">" (prime)"</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">fs</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_factorstring</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">)&</span><span style="color: #000000;">fs</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Factors of F%d: %s [%s]\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fs</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ts</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+printf(1,"\n")
+constant flimit = iff(platform()=JS?11:13)
+for i=0 to flimit do
+    t = time()
+    fermat(fn,i)
+    sequence f = mpz_prime_factors(fn, 200000)
+    t = time()-t
+    string fs = "",
+           ts = elapsed(t,0.2," [%s]")
+    if length(f[$])=1 then -- (as per docs)
+        mpz_set_str(fn,f[$][1])
+        if not mpz_prime(fn) then
+            if length(f)=1 then
+                fs = " (not prime)"
+            else
+                fs = " (last factor is not prime)"
+            end if
+        end if
+        f = deep_copy(f)
+        f[$][1] = shorten(f[$][1],ml:=15)
+    elsif length(f)=1
+      and mpz_prime(fn) then
+        fs = " (prime)"
+    end if
+    fs = mpz_factorstring(f)&fs
+    printf(1,"Factors of F%d: %s%s\n",{i,fs,ts})
+end for

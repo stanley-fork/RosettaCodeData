@@ -1,3 +1,4 @@
+using Base64
 using CodecZlib
 
 b64 = b"""eNrtVE1rwzAMvedXaKdeRn7ENrb21rHCzmrs1m49K9gOJv9+cko/HBcGg0LHcpOfnq2np0QL

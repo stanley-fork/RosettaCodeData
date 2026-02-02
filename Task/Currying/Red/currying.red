@@ -1,36 +1,96 @@
-Red[ "Currying in Red - Hinjo, 21 July 2025" ]
+Red [ "Real Currying in Red - Hinjolicious" ]
 
-; define a custome simple currying function
-c!: func ['f x][do compose/deep [func [y] [do compose [(get f) (x) y]]]]
-
-; test with Red's built-in functions "add" and "multiply"
-add10: c! add 10
-print add10 5
-print add10 7
-
-double: c! multiply 2
-print double 5
-print double 100
-
-; test with a custom function to get x to power of y
-my-power: func [x y][either y = 0 [1][tot: 1 loop y [tot: tot * x]]]
-
-; create a binary power by currying it
-my-binary-power: c! my-power 2
-foreach i [0 1 2 3 4 5 6 7 8 9 10] [print my-binary-power i]
-
-; this is currying the built-in Red's "if" function!
-doit: c! if true
-doit [print "Hello currying world!"]
-
-; simulate a realistic use
-random/seed now
-test: func [bCond bAction] [if do bCond bAction]
-system-failed?: c! test [(random 100) > 80]
-
-; how many time failures in ten years?
-fail: 0  year: 1  while [year <= 10] [  print [year " "]
-    system-failed? [ fail: fail + 1  print "Maintenance!" ]
-    year: year + 1
+; helper func
+get-args: function [f][
+	collect [foreach e spec-of :f [
+		if refinement? e [break]
+		if any [word? e lit-word? e] [keep e]
+	]]
 ]
-print ["Failed " fail]
+
+; currying
+curry: function [f v][
+	f?: function? :f ; a func?
+	ff: either f? [:f][get f] ; get func directly or by its name
+	
+	sp: spec-of :ff ; raw spec
+	a: get-args :ff ; cleaned args
+	
+	; curried? get skip counter
+	sc: either c?: sp/1 = "C!" [to-integer sp/2][0]
+	
+	ca: copy a  na: copy a
+	
+	either v = [] [ ; skipping
+		sc: sc + 1 ; spec unchanged
+	][
+		either sc > 0 [ ; skip some args
+			remove skip ca sc ; removed curried arg from spec
+			na/(sc + 1): v ; replace with value
+			na: skip na sc  a: skip a sc ; point to next args
+		][ ; normal
+			ca: next ca ; skip curried arg
+			na/1: v ; replace with value
+		]
+	]
+
+	; add marker and counter
+	f: func compose ["C!" (to-string sc) (ca)] either c? [ ; curried?
+		replace copy body-of :ff a na ; chained curry		
+	][
+		compose [(:f)(na)] ; first curry
+	]
+	either empty? ca [f][:f] ; return function or result
+]
+
+->: make op! :curry ; curry operator
+
+; This function will print a string as a heading and print any codes
+; to the screen before executing it.
+demo: function [s b] [print ["^/==" s "==^/^/" mold/only b "^/>>"] do b]
+
+demo "Real Currying in Red" [
+
+sum: func [a b c][a + b + c] ;
+]
+
+demo "Curry one arg from 'sum', return func with two args (s1)" [
+s1: 'sum -> 1
+print s1 2 3	; 6
+]
+
+demo "Curry one arg from 's2', return func with one arg (s2)" [
+s2: 's1 -> 2
+print s2 3		; 6
+]
+
+demo "Curry one arg from 's3', return the result" [
+s3: 's2 -> 3
+print s3		; 6
+]
+
+demo "Currying all args at once, return the result" [
+print 'sum -> 1 -> 2 -> 3	; 6
+]
+
+demo "Currying native control" [
+i: 1
+'while -> [i <= 10] -> [print i i: i + 1]
+]
+
+demo "Currying native control" [
+'repeat -> 'i -> 10 -> [print ["repeating" i]]
+]
+
+demo "Currying anonymous function (lambda)" [
+print (func [a b][a + b]) -> 10 -> 20 ; 30
+]
+
+demo "Skipping args" [
+f: 'sum -> [] -> [] -> 30
+print f 10 20
+]
+
+demo "Sample generated code" [
+?? f
+]

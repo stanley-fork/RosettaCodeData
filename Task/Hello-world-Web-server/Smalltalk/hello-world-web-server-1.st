@@ -6,7 +6,7 @@ service := HTTPPluggableActionService new.
 service
     register:[:request |
         self halt: 'debugging'.
-        request reply:'<HTML><BODY><H1>Hello World</H1></BODY></HTML>'
+        request reply:'<HTML><BODY><H1>Goodbye, world!</H1></BODY></HTML>'
     ]
     as:'hello'.
 service linkNames:#('/' ).

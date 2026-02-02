@@ -15,7 +15,7 @@ Haversine(lat1,lon1,lat2,lon2)
     ^ R * 2 * a.sqrt().arcsin()
 }
 
-public program()
+public Program()
 {
     console.printLineFormatted("The distance between coordinates {0},{1} and {2},{3} is: {4}", 36.12r, -86.67r, 33.94r, -118.40r,
         Haversine(36.12r, -86.67r, 33.94r, -118.40r))

@@ -1,6 +1,7 @@
-include Settings
+-- 23 Aug 2025
+include Setting
 
-say 'FRACTRAN - 3 Mar 2025'
+say 'FRACTRAN'
 say version
 say
 parse arg n','t
@@ -72,5 +73,4 @@ end
 say Format(Time('e'),,3) 'seconds'; say
 return
 
-include Functions
-include Abend
+include Math

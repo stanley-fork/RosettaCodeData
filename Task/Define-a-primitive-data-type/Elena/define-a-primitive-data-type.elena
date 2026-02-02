@@ -48,7 +48,7 @@ sealed struct TinyInt : BaseNumber
       => value;
 }
 
-public program()
+public Program()
 {
    TinyInt i := 4t;
    TinyInt j := i + i;

@@ -16,4 +16,3 @@ Calculate and show on this page the Wilson primes, if any, for orders '''n = 1 t
 ;Related task
 :* [[Primality by Wilson's theorem]]
 
-

@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'DIGITAL ROOT'
 say version
@@ -24,7 +24,4 @@ Show:
 arg x
 return 'Number:' x 'Digital root:' Digitroot(x) 'Additive persistence:' Persistence(x)
 
-include Functions
-include Special
-include Numbers
-include Abend
+include Math

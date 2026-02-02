@@ -29,13 +29,13 @@ F getRank(vec)
    R mrRank1(&v, &inv, vec.len)
 
 V tv3 = [0] * 3
-L(r) 6
+L(r) 0.<6
    getPermutation(&tv3, r)
    print(‘#2 -> #. -> #.’.format(r, tv3, getRank(tv3)))
 
 print()
 V tv4 = [0] * 4
-L(r) 24
+L(r) 0.<24
    getPermutation(&tv4, r)
    print(‘#2 -> #. -> #.’.format(r, tv4, getRank(tv4)))
 

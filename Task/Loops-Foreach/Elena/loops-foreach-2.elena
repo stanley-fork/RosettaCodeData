@@ -1,11 +1,11 @@
 import extensions;
 
-public program()
+public Program()
 {
     var things := new string[]{"Apple", "Banana", "Coconut"};
 
     foreach(var thing; in things)
     {
-        console.printLine(thing)
+        Console.printLine(thing)
     }
 }

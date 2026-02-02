@@ -1,4 +1,4 @@
-public program()
+public Program()
 {
     var stack := new system'collections'Stack();
 

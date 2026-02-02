@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'EMIRP PRIMES'
 say version
@@ -90,6 +90,4 @@ say: say 'The last emirp:'
 say prim.p
 return
 
-include Functions
-include Sequences
-include Abend
+include Math

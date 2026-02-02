@@ -21,7 +21,7 @@ proc fitness s {
     global target
     set count 0
     foreach c1 $s c2 $target {
-	if {$c1 eq $c2} {incr count}
+    if {$c1 eq $c2} {incr count}
     }
     return [expr {$count/double([llength $target])}]
 }
@@ -32,14 +32,14 @@ proc mutateRate {parent} {
 proc mutate {rate} {
     global charset parent
     foreach c $parent {
-	lappend result [expr {rand() <= $rate ? randchar($charset) : $c}]
+    lappend result [expr {rand() <= $rate ? randchar($charset) : $c}]
     }
     return $result
 }
 proc que {} {
     global iterations parent
     puts [format "#%-4i, fitness %4.1f%%, '%s'" \
-	    $iterations [expr {[fitness $parent]*100}] [join $parent {}]]
+        $iterations [expr {[fitness $parent]*100}] [join $parent {}]]
 }
 
 while {$parent ne $target} {
@@ -47,7 +47,7 @@ while {$parent ne $target} {
     if {!([incr iterations] % 100)} que
     set copies [list [list $parent [fitness $parent]]]
     for {set i 0} {$i < $C} {incr i} {
-	lappend copies [list [set copy [mutate $rate]] [fitness $copy]]
+    lappend copies [list [set copy [mutate $rate]] [fitness $copy]]
     }
     set parent [lindex [lsort -real -decreasing -index 1 $copies] 0 0]
 }

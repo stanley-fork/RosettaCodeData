@@ -70,7 +70,7 @@ int main(void) {
     // iterate over every pixel of image
     for (size_t y = 0; y < img_size; ++y) {
         for (size_t x = 0; x < img_size; ++x) {
-            // if distance from pixel to center of image - we inside of the colorwheel
+            // if distance from current pixel to center of image is less than radius - we inside of the colorwheel
             float dist = vecdist(center, (Vector2){x, y});
             if (dist <= radius) {
                 // angle between x-axis and line from center to pixel in radians

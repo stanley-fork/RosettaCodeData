@@ -14,3 +14,21 @@ The four operations to be implemented are:
 * Vector <big><b> / </b></big> scalar division
 <br><br>
 
+;Related tasks:
+
+* &nbsp; [[Array]]
+* &nbsp; [[Arrays]]
+* &nbsp; [[Vector]]
+* &nbsp; [[Matrices]]
+* &nbsp; [[Dot product]]
+* &nbsp; [[Vector products]]
+* &nbsp; [[Bivector]]
+* &nbsp; [[Antivector]]
+* &nbsp; [[Tensor]]
+* &nbsp; [[Quaternion]]
+* &nbsp; [[Rotor]]
+* &nbsp; [[Motor]]
+* &nbsp; [[Sedenion]]
+* &nbsp; [[Octonion]]
+<br><br>
+

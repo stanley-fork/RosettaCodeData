@@ -23,6 +23,6 @@ F primorial(n)
    R r
 
 print(‘First ten primorials: ’(0.<10).map(n -> primorial(n)))
-L(e) 6
+L(e) 0.<6
    V n = 10 ^ e
    print(‘primorial(#.) has #. digits’.format(n, String(primorial(n)).len))

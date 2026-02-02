@@ -21,13 +21,13 @@ string input =               "55
      06 71 28 75 94 48 37 10 23 51 06 48 53 18 74 98 15
    27 02 92 23 08 71 76 84 15 52 92 63 81 10 44 10 69 93";
 
-public program()
+public Program()
 {
     var list := IntMatrix.allocate(18,19);
 
     int i := 0;
     int j := 0;
-    input.splitBy(newLineConstant).forEach::(string line)
+    input.splitBy(NewLineConstant).forEach::(string line)
     {
         j := 0;
         line.trim().splitBy(" ").forEach::(string num)
@@ -48,5 +48,5 @@ public program()
         }
     };
 
-    console.printLine("Maximum total: ", list[0][0])
+    Console.printLine("Maximum total: ", list[0][0])
 }

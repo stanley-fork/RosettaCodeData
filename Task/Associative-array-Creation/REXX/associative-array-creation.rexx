@@ -1,5 +1,5 @@
--- 8 Aug 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'ASSOCIATIVE ARRAY: CREATION'
 say version
@@ -28,12 +28,10 @@ a1='x.y.z'; a.a1='periods'
 a2=a1; say 'a.'a2 '=' a.a2
 a1='x y z'; a.a1='spaces'
 a2=a1; say 'a.'a2 '=' a.a2
-a1='ÀÁÂÃÄÅ'; a.a1='special characters'
+a1='└┴┬├─┼'; a.a1='special characters'
 a2=a1; say 'a.'a2 '=' a.a2
 say
-if Pos('Regina',version) > 0 then
-   call Library
-call SysDumpVariables
+call DumpVariables
 exit
 
 Capital:
@@ -46,9 +44,4 @@ arg mm,dd
 say mm dd 'is day no' day.mm.dd 'and week no' week.mm.dd
 return
 
-Library:
-call RxFuncAdd 'SysLoadFuncs','RegUtil','SysLoadFuncs'
-call SysLoadFuncs
-return
-
-include Abend
+include Math

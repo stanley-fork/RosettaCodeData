@@ -9,6 +9,6 @@ fcn mutate(s){ s.apply(fcn(c){ if((0.0).random(1) < P) rnd() else c }) }
 parent := target.len().pump(String,rnd);  // random string of "A..Z "
 gen:=0; do{  // mutate C copies of parent and pick the fittest
    parent = (0).pump(C,List,T(Void,parent),mutate)
-	    .reduce(fcn(a,b){ if(fitness(a)<fitness(b)) a else b });
+        .reduce(fcn(a,b){ if(fitness(a)<fitness(b)) a else b });
    println("Gen %2d, dist=%2d: %s".fmt(gen+=1, fitness(parent), parent));
 }while(parent != target);

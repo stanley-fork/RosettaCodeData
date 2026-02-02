@@ -35,7 +35,7 @@ scope # find some abundant snumbers
             fi;
             odd_number +:= 2
         od;
-        printf( "1000th abundant odd number:\n    %d proper divisor sum: %d\n", odd_number, d_sum );
+        printf( "1000th abundant odd number:\n    %d proper divisor sum: %d\n", odd_number - 2, d_sum );
         # first odd abundant number > one billion
         odd_number  := 1_000_000_001;
         local found := false;
@@ -43,7 +43,7 @@ scope # find some abundant snumbers
             d_sum := divisor_sum( odd_number );
             if d_sum > odd_number then
                 found := true;
-                print( "First abundant odd_number > 1 000 000 000:" );
+                print( "First abundant odd number > 1 000 000 000:" );
                 printf( "    %d proper divisor sum: %d\n", odd_number, d_sum );
             fi;
             odd_number +:= 2

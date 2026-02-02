@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'HUMBLE NUMBERS'
 say version
@@ -43,6 +43,4 @@ end
 say l
 return
 
-include Abend
-include Functions
-include Sequences
+include Math

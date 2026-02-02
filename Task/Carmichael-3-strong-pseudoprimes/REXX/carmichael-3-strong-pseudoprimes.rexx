@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'CARMICHAEL 3 STRONG PSEUDOPRIMES'
 say version
@@ -20,7 +20,4 @@ say c 'Carmichael numbers found up to first prime' n
 say time('e') 'seconds'
 exit
 
-include Sequences
-include Numbers
-include Functions
-include Abend
+include Math

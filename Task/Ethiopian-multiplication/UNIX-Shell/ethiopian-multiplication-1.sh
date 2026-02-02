@@ -19,9 +19,9 @@ ethiopicmult()
     plicand=$2
     r=0
     while [ "$plier" -ge 1 ]; do
-	is_even "$plier" || r=`expr $r + "$plicand"`
-	plier=`halve "$plier"`
-	plicand=`double "$plicand"`
+    is_even "$plier" || r=`expr $r + "$plicand"`
+    plier=`halve "$plier"`
+    plicand=`double "$plicand"`
     done
     echo $r
 }

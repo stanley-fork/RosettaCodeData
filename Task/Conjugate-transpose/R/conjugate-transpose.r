@@ -1,69 +1,39 @@
-conjugate_transpose<- function(M){
-  t(Conj(M))}
+conj_t <- function(mat) t(Conj(mat))
 
-is_hermitian <- function(M,eps=10**-10){
-  all(abs(M-conjugate_transpose(M))<eps)
+near_eq <- function(x, y, eps=10^-10) all(abs(x-y)<eps)
+
+is_hermitian <- function(mat) near_eq(mat, conj_t(mat))
+
+is_normal <- function(mat){
+  mat_h <- conj_t(mat)
+  near_eq(mat%*%mat_h, mat_h%*%mat)
 }
 
-is_normal <-function(M,eps=10**-10){
-  conjugate <- conjugate_transpose(M)
- all(abs(M%*%conjugate- conjugate%*%M)<eps)
+is_unitary <- function(mat){
+  id <- diag(nrow(mat))
+  near_eq(mat%*%conj_t(mat), id)
 }
 
-is_unitary  <-function(M,eps=10**-10){
- all(abs(M%*% conjugate_transpose(M)-diag(nrow(M)))<eps)
+mat1 <- matrix(c(3+0i, 2-1i, 2+1i, 1+0i), nrow=2)
+
+mat2 <- matrix(complex(real=c(1, 0, 1, 1, 1, 0, 0, 1, 1),
+                       imaginary=0),
+               nrow=3)
+
+s <- sqrt(2)/2
+mat3 <- matrix(complex(real=c(s, 0, 0, s, rep(0, 5)),
+                       imaginary=c(0, -s, 0, 0, s, 0, 0, 0, 1)),
+               nrow=3)
+
+conj_tests <- function(mat){
+  cat("\nChosen matrix:\n")
+  print(mat)
+  cat("\nConjugate transpose:\n")
+  print(conj_t(mat))
+  test_funs <- c(is_hermitian, is_normal, is_unitary)
+  results <- sapply(test_funs, function(f) f(mat))
+  queries <- c("Hermitian?", "Normal?", "Unitary?")
+  writeLines(paste(queries, results))
 }
 
-M1 = matrix(c(3+0i,2-1i,
-              2+1i,1+0i),nrow=2)
-cat("M1")
-cat("\n")
-print(M1)
-cat("\n")
-Conj_M1 = conjugate_transpose(M1)
-cat("Conjugate transpose of M1")
-cat("\n")
-print(Conj_M1)
-cat(paste0("Hermitian ? ", is_hermitian(M1)))
-cat("\n")
-cat(paste0("Normal ? ", is_normal(M1)))
-cat("\n")
-cat(paste0("Unitary ? ", is_unitary(M1)))
-
-
-M2 = matrix(c(1+0i,0+0i,1+0i,
-              1+0i,1+0i,0+0i,
-              0+0i,1+0i,1+0i),nrow=3)
-cat("\n")
-cat("M2")
-cat("\n")
-print(M2)
-cat("\n")
-Conj_M2 = conjugate_transpose(M2)
-cat("Conjugate transpose of M2")
-cat("\n")
-print(Conj_M2)
-cat(paste0("Hermitian ? ", is_hermitian(M2)))
-cat("\n")
-cat(paste0("Normal ? ", is_normal(M2)))
-cat("\n")
-cat(paste0("Unitary ? ", is_unitary(M2)))
-
-
-M3 = matrix(c(sqrt(2)/2+0i,0-(sqrt(2)/2)*1i,0+0i,
-              sqrt(2)/2+0i,0+(sqrt(2)/2)*1i,0+0i,
-              0+0i,0+0i,0+1i),ncol=3)
-cat("\n")
-cat("M3")
-cat("\n")
-print(M3)
-cat("\n")
-Conj_M3 = conjugate_transpose(M3)
-cat("Conjugate transpose of M3")
-cat("\n")
-print(Conj_M3)
-cat(paste0("Hermitian ? ", is_hermitian(M3)))
-cat("\n")
-cat(paste0("Normal ? ", is_normal(M3)))
-cat("\n")
-cat(paste0("Unitary ? ", is_unitary(M3)))
+sapply(list(mat1, mat2, mat3), conj_tests) |> invisible()

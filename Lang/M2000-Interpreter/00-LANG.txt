@@ -471,4 +471,26 @@ M2000 Interpreter can work with Structures and Buffers. Buffer is a memory block
       \\
       Print Eval(P, 0!x)=1212.12~, Eval(P, 0!y)=21.1212~
 }
-Kappa</syntaxhighlight>
+Kappa
+Module Kappa {
+      Function Theta(x) {
+             Structure Points_single {
+                  x as single
+                  y as single
+            }
+            Buffer Clear Points as Points_single*x
+            =Points
+      }
+      P=Theta(100)
+      Print Len(P)=800 ' 2x4x100 bytes
+      ' new way to use fields of structure
+      P[0]|x=1212.12
+      P[0]|y=21.1212
+      Print Eval(P, 0!x)=1212.12~, Eval(P, 0!y)=21.1212~
+      Print P[0]|x=1212.12~, P[0]|y=21.1212~
+      P[4]=P[0]   ' copy of structure at offser 4*len of structrure Points_single
+      ' p(0) is address of first struct, p(4) is address of 5th struct
+      Print P[4]|x=1212.12~, P[4]|y=21.1212~, p(4)-p(0)=32
+}
+Kappa
+</syntaxhighlight>

@@ -1,5 +1,5 @@
--- 30 Jul 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 numeric digits 16
 arg xx
 if xx = '' then
@@ -10,29 +10,25 @@ say 'BERNOULLI NUMBERS'
 say version
 say
 
-call Time('r')
 call Rational1 xx
 if ss then
    call ShowFractions xx
-call Timer
+call Timer 'R'
 
-call Time('r')
 call Rational2 xx
 if ss then
    call ShowFractions xx
-call Timer
+call Timer 'R'
 
-call Time('r')
 call Decimal1 xx
 if ss then
    call ShowDecimals xx
-call Timer
+call Timer 'R'
 
-call Time('r')
 call Decimal2 xx
 if ss then
    call ShowDecimals xx
-call Timer
+call Timer 'R'
 exit
 
 Rational1:

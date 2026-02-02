@@ -1,3 +1,6 @@
 @echo off
-set /p var=
-echo %var% 75000
+setlocal enableextensions
+set /p istr=
+set /p inum=
+set /a val=inum
+if not "%val%"=="75000" echo Second input should be 75000.

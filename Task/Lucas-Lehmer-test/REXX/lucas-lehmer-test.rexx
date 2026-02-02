@@ -1,7 +1,8 @@
-include Settings
+-- 23 Aug 2025
+include Setting
 numeric digits 5000
 
-say 'LUCAS-LEHMER TEST - 10 Mar 2025'
+say 'LUCAS-LEHMER TEST'
 say version
 say
 call LucasLehmer
@@ -58,6 +59,4 @@ if Prime(m) then do
 end
 return
 
-include Numbers
-include Functions
-include Abend
+include Math

@@ -14,15 +14,15 @@ proc log msg {
 proc get_tasks {category} {
     global cache
     if {[info exists cache($category)]} {
-	return $cache($category)
+    return $cache($category)
     }
     set base_url http://www.rosettacode.org/mw/api.php
     set query {
-	action	query
-	list	categorymembers
-	cmtitle	Category:%s
-	format	json
-	cmlimit	500
+    action  query
+    list    categorymembers
+    cmtitle Category:%s
+    format  json
+    cmlimit 500
     }
     set query [list {*}$query]; # remove excess whitespace
     set this_query [dict create {*}[split [format $query $category]]]
@@ -32,7 +32,7 @@ proc get_tasks {category} {
         set url [join [list $base_url [http::formatQuery {*}$this_query]] ?]
         while 1 {
             set response [http::geturl $url]
-	    # Process redirects
+        # Process redirects
             if {[http::ncode $response] == 301} {
                 set newurl [dict get [http::meta $response] Location]
                 if {[string match http://* $newurl]} {
@@ -43,17 +43,17 @@ proc get_tasks {category} {
                 }
                 continue
             }
-	    # Check for oopsies!
+        # Check for oopsies!
             if {
-		[set s [http::status $response]] ne "ok"
-		|| [http::ncode $response] != 200
-	    } then {
+        [set s [http::status $response]] ne "ok"
+        || [http::ncode $response] != 200
+        } then {
                 error "Oops: url=$url\nstatus=$s\nhttp code=[http::code $response]"
             }
             break
         }
 
-	# Get the data out of the message
+    # Get the data out of the message
         set data [json::json2dict [http::data $response]]
         http::cleanup $response
 
@@ -63,8 +63,8 @@ proc get_tasks {category} {
         }
 
         if {[catch {
-	    dict get $data query-continue categorymembers cmcontinue
-	} continue_task]} then {
+        dict get $data query-continue categorymembers cmcontinue
+    } continue_task]} then {
             # no more continuations, we're done
             break
         }
@@ -88,7 +88,7 @@ proc get_unimplemented {lang} {
 
     puts "\n$lang has [llength $unimplemented] unimplemented programming tasks:"
     if {[llength $unimplemented]} {
-	puts "  [join [lsort $unimplemented] "\n  "]"
+    puts "  [join [lsort $unimplemented] "\n  "]"
     }
 }
 

@@ -15,7 +15,7 @@ local function magic_square_doubly_even(n)
         for c = 1, n do
             local bitpos = (c - 1) // mult + (r - 1) // mult * 4
             result[r][c] = ((bits & (1 << bitpos)) != 0) ? i + 1: size - i
-            ++i
+            i += 1
         end
     end
     return result

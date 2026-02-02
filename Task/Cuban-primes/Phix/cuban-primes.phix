@@ -1,34 +1,32 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">np</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>
-         <span style="color: #000000;">i</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">2</span>
- <span style="color: #004080;">mpz</span> <span style="color: #000000;">p3</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">*</span><span style="color: #000000;">1</span><span style="color: #0000FF;">*</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span>
-     <span style="color: #000000;">i3</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(),</span>
-     <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(),</span>
-     <span style="color: #000000;">pn</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">()</span>
+with javascript_semantics
+include mpfr.e
+integer np = 0,
+        i = 2
+mpz p3 = mpz_init(1*1*1),
+    i3 = mpz_init(),
+    p = mpz_init(),
+    pn = mpz_init()
 
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"The first 200 cuban primes are:\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">first200</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">lim</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">platform</span><span style="color: #0000FF;">()=</span><span style="color: #004600;">JS</span><span style="color: #0000FF;">?</span><span style="color: #000000;">10000</span><span style="color: #0000FF;">:</span><span style="color: #000000;">100000</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">while</span> <span style="color: #000000;">np</span><span style="color: #0000FF;"><</span><span style="color: #000000;">lim</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">mpz_ui_pow_ui</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">mpz_sub</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">mpz_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pn</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">np</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">np</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">200</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">first200</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">first200</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%,9d"</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">mpz_get_integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pn</span><span style="color: #0000FF;">)))</span>
-             <span style="color: #008080;">if</span> <span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">np</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-                 <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s\n"</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">first200</span><span style="color: #0000FF;">[-</span><span style="color: #000000;">10</span><span style="color: #0000FF;">..-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]))</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #7060A8;">mpz_set</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i3</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">i</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\nThe %,dth cuban prime is %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">np</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pn</span><span style="color: #0000FF;">,</span><span style="color: #000000;">comma_fill</span><span style="color: #0000FF;">:=</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)})</span>
- <span style="color: #0000FF;">{</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_free</span><span style="color: #0000FF;">({</span><span style="color: #000000;">p3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">})</span>
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span><span style="color: #0000FF;">)</span>
-<!--
+printf(1,"The first 200 cuban primes are:\n")
+sequence first200 = {}
+atom t0 = time()
+constant lim = iff(platform()=JS?10000:100000)
+while np<lim do
+    mpz_ui_pow_ui(i3,i,3)
+    mpz_sub(p,i3,p3)
+    if mpz_prime(p) then
+        mpz_set(pn,p)
+        np += 1
+        if np<=200 then
+            first200 = append(first200,sprintf("%,9d",mpz_get_integer(pn)))
+            if mod(np,10)=0 then
+                printf(1,"%s\n",join(first200[-10..-1]))
+            end if
+        end if
+    end if
+    mpz_set(p3,i3)
+    i += 1
+end while
+printf(1,"\nThe %,dth cuban prime is %s\n",{np,mpz_get_str(pn,comma_fill:=true)})
+{p3,i3,p} = mpz_free({p3,i3,p})
+?elapsed(time()-t0)

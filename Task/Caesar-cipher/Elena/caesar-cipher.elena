@@ -59,7 +59,7 @@ extension encryptOp
         = new Encrypting(26 - key, self).summarize(new StringWriter());
 }
 
-public program()
+public Program()
 {
     Console.printLine("Original text :",TestText);
 

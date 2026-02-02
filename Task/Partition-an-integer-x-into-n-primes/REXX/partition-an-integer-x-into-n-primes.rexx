@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 
 say 'PARTITION AN INTEGER X INTO N PRIMES'
 say version
@@ -79,7 +79,4 @@ do i = 1 to yy
 end
 return s
 
-include Sequences
-include Functions
-include Constants
-include Abend
+include Math

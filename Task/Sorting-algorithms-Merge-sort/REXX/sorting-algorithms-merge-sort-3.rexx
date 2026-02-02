@@ -1,6 +1,7 @@
-include Settings
+-- 23 Aug 2025
+include Setting
 
-say 'MERGE SORT - 4 Mar 2025'
+say 'MERGE SORT'
 say version
 say
 call Generate

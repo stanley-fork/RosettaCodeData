@@ -33,7 +33,7 @@ class Circle : Point
         R := r
     }
 
-    print() { console.printLine("Circle") }
+    print() { Console.printLine("Circle") }
 }
 
 public program()

@@ -1,6 +1,3 @@
-fibseq = [1,1,]
-fiblength = 21
-for x in range(1,fiblength-1):
-	xcount = fibseq[x-1] + fibseq[x]
-	fibseq.append(xcount)
-print(xcount)
+def fib(n):
+    from functools import reduce
+    return reduce(lambda x, y: (x[1], x[0] + x[1]), range(n), (0, 1))[0]

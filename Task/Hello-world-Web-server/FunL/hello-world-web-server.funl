@@ -8,6 +8,6 @@ printf( 'Listening at port %1$d\n', port )
 
 forever
   socket = listener.accept()
-  PrintWriter( socket.getOutputStream(), true ).println( 'hello world' )
+  PrintWriter( socket.getOutputStream(), true ).println( 'Goodbye, World!' )
   socket.shutdownOutput()
   socket.close()

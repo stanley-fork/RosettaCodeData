@@ -4,8 +4,8 @@ T Sudoku
 
    F (rows)
       assert(rows.len == 9 & all(rows.map(row -> row.len == 9)), ‘Grid must be 9 x 9’)
-      L(i) 9
-         L(j) 9
+      L(i) 0.<9
+         L(j) 0.<9
             .grid[9 * i + j] = Int(rows[i][j])
 
    F solve()
@@ -33,7 +33,7 @@ T Sudoku
             .grid[pos] = 0
 
    F checkValidity(v, x, y)
-      L(i) 9
+      L(i) 0.<9
          I .grid[y * 9 + i] == v |
            .grid[i * 9 + x] == v
             R 0B
@@ -49,8 +49,8 @@ T Sudoku
 
    F String()
       V s = ‘’
-      L(i) 9
-         L(j) 9
+      L(i) 0.<9
+         L(j) 0.<9
             s ‘’= .grid[i * 9 + j]‘ ’
             I j C (2, 5)
                s ‘’= ‘| ’

@@ -11,12 +11,12 @@ sub ethiopicmult
     my $r = 0;
     while ($plier >= 1)
     {
-	$r += $plicand unless iseven($plier);
-	if ($tutor) {
-	    print "$plier, $plicand ", (iseven($plier) ? " struck" : " kept"), "\n";
-	}
-	$plier = halve($plier);
-	$plicand = double($plicand);
+    $r += $plicand unless iseven($plier);
+    if ($tutor) {
+        print "$plier, $plicand ", (iseven($plier) ? " struck" : " kept"), "\n";
+    }
+    $plier = halve($plier);
+    $plicand = double($plicand);
     }
     return $r;
 }

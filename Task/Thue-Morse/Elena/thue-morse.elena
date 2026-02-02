@@ -1,7 +1,7 @@
 import extensions;
 import system'text;
 
-sequence(int steps)
+Sequence(int steps)
 {
     var sb1 := TextBuilder.load("0");
     var sb2 := TextBuilder.load("1");
@@ -11,10 +11,10 @@ sequence(int steps)
         sb1.write(sb2);
         sb2.write(tmp)
     };
-    console.printLine(sb1).readLine()
+    Console.printLine(sb1).readLine()
 }
 
-public program()
+public Program()
 {
-    sequence(6)
+    Sequence(6)
 }

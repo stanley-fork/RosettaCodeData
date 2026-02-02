@@ -1,154 +1,149 @@
-(phixonline)-->
- <span style="color: #000080;font-style:italic;">--
- -- demo\rosetta\Compiler\parse.e
- -- =============================
- --
- --  The reusable part of parse.exw
- --</span>
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #000000;">lex</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+-- demo\rosetta\Compiler\parse.e
+--  The reusable part of parse.exw
+with javascript_semantics
+include lex.e
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">tok</span>
+sequence tok
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">errd</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">args</span><span style="color: #0000FF;">={})</span>
-     <span style="color: #0000FF;">{</span><span style="color: #000000;">tok_line</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tok_col</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tok</span>
-     <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure errd(sequence msg, sequence args={})
+    {tok_line,tok_col} = tok
+    error(msg,args)
+end procedure
 
- <span style="color: #008080;">global</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">toks</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">next_tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
+global sequence toks
+integer next_tok = 1
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">toks</span><span style="color: #0000FF;">[</span><span style="color: #000000;">next_tok</span><span style="color: #0000FF;">]</span>
-     <span style="color: #000000;">next_tok</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">tok</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function get_tok()
+    sequence tok = toks[next_tok]
+    next_tok += 1
+    return tok
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">tk</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">tk</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">s</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">errd</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%s: Expecting '%s', found '%s'\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tkNames</span><span style="color: #0000FF;">[</span><span style="color: #000000;">s</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">tkNames</span><span style="color: #0000FF;">[</span><span style="color: #000000;">tk</span><span style="color: #0000FF;">]})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure expect(string msg, integer s)
+    integer tk = tok[3]
+    if tk!=s then
+        errd("%s: Expecting '%s', found '%s'\n", {msg, tkNames[s], tkNames[tk]})
+    end if
+    tok = get_tok()
+end procedure
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">expr</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">NULL</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">node</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span>
+function expr(integer p)
+    object x = NULL, node
+    integer op = tok[3]
 
-     <span style="color: #008080;">switch</span> <span style="color: #000000;">op</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_LeftParen</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">()</span>
-             <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">expr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"expr"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tk_RightParen</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_sub</span><span style="color: #0000FF;">:</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_add</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">()</span>
-             <span style="color: #000000;">node</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">expr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">precedences</span><span style="color: #0000FF;">[</span><span style="color: #000000;">tk_neg</span><span style="color: #0000FF;">]);</span>
-             <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">op</span><span style="color: #0000FF;">==</span><span style="color: #000000;">tk_sub</span><span style="color: #0000FF;">?{</span><span style="color: #000000;">tk_neg</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">node</span><span style="color: #0000FF;">,</span> <span style="color: #004600;">NULL</span><span style="color: #0000FF;">}:</span><span style="color: #000000;">node</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_not</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-             <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_not</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">expr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">precedences</span><span style="color: #0000FF;">[</span><span style="color: #000000;">tk_not</span><span style="color: #0000FF;">]),</span> <span style="color: #004600;">NULL</span><span style="color: #0000FF;">}</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Identifier</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Identifier</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">4</span><span style="color: #0000FF;">]}</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Integer</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Integer</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">4</span><span style="color: #0000FF;">]}</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-         <span style="color: #008080;">default</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">errd</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Expecting a primary, found: %s\n"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tkNames</span><span style="color: #0000FF;">[</span><span style="color: #000000;">op</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
+    switch op do
+        case tk_LeftParen:
+            tok = get_tok()
+            x = expr(0)
+            expect("expr",tk_RightParen)
+        case tk_sub:
+        case tk_add:
+            tok = get_tok()
+            node = expr(precedences[tk_neg]);
+            x = iff(op==tk_sub?{tk_neg, node, NULL}:node)
+        case tk_not:
+            tok = get_tok();
+            x = {tk_not, expr(precedences[tk_not]), NULL}
+        case tk_Identifier:
+            x = {tk_Identifier, tok[4]}
+            tok = get_tok();
+        case tk_Integer:
+            x = {tk_Integer, tok[4]}
+            tok = get_tok();
+        default:
+            errd("Expecting a primary, found: %s\n", tkNames[op])
+    end switch
 
-     <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">narys</span><span style="color: #0000FF;">[</span><span style="color: #000000;">op</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">BINARY</span>
-       <span style="color: #008080;">and</span> <span style="color: #000000;">precedences</span><span style="color: #0000FF;">[</span><span style="color: #000000;">op</span><span style="color: #0000FF;">]>=</span><span style="color: #000000;">p</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">()</span>
-         <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">op</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">expr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">precedences</span><span style="color: #0000FF;">[</span><span style="color: #000000;">op</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)}</span>
-         <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">;</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+    op = tok[3]
+    while narys[op]=BINARY
+      and precedences[op]>=p do
+        tok = get_tok()
+        x = {op, x, expr(precedences[op]+1)}
+        op = tok[3]
+    end while
+    return x;
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">paren_expr</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">msg</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_LeftParen</span><span style="color: #0000FF;">);</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">expr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #000000;">msg</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_RightParen</span><span style="color: #0000FF;">);</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">t</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function paren_expr(string msg)
+    expect(msg, tk_LeftParen);
+    object t = expr(0)
+    expect(msg, tk_RightParen);
+    return t
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">stmt</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">NULL</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s</span>
+function stmt()
+    object t = NULL, e, s
 
-     <span style="color: #008080;">switch</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_if</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-             <span style="color: #004080;">object</span> <span style="color: #000000;">condition</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">paren_expr</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"If-cond"</span><span style="color: #0000FF;">);</span>
-             <span style="color: #004080;">object</span> <span style="color: #000000;">ifblock</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">stmt</span><span style="color: #0000FF;">();</span>
-             <span style="color: #004080;">object</span> <span style="color: #000000;">elseblock</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">NULL</span><span style="color: #0000FF;">;</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">==</span> <span style="color: #000000;">tk_else</span> <span style="color: #008080;">then</span>
-                 <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-                 <span style="color: #000000;">elseblock</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">stmt</span><span style="color: #0000FF;">();</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_if</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">condition</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_if</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">ifblock</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">elseblock</span><span style="color: #0000FF;">}}</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_putc</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-             <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">paren_expr</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Prtc"</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_putc</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">,</span> <span style="color: #004600;">NULL</span><span style="color: #0000FF;">}</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Putc"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_Semicolon</span><span style="color: #0000FF;">);</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_print</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Print"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tk_LeftParen</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">while</span> <span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">==</span> <span style="color: #000000;">tk_String</span> <span style="color: #008080;">then</span>
-                     <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Prints</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_String</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">4</span><span style="color: #0000FF;">]},</span> <span style="color: #004600;">NULL</span><span style="color: #0000FF;">}</span>
-                     <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-                 <span style="color: #008080;">else</span>
-                     <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Printi</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">expr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">),</span> <span style="color: #004600;">NULL</span><span style="color: #0000FF;">}</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Sequence</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">}</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]!=</span><span style="color: #000000;">tk_Comma</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Print"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_Comma</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Print"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_RightParen</span><span style="color: #0000FF;">);</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"Print"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_Semicolon</span><span style="color: #0000FF;">);</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Semicolon</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Identifier</span><span style="color: #0000FF;">:</span>
-             <span style="color: #004080;">object</span> <span style="color: #000000;">v</span>
-             <span style="color: #000000;">v</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Identifier</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">4</span><span style="color: #0000FF;">]}</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"assign"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_assign</span><span style="color: #0000FF;">);</span>
-             <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">expr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">);</span>
-             <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_assign</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">v</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">}</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"assign"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_Semicolon</span><span style="color: #0000FF;">);</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_while</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">();</span>
-             <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">paren_expr</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"while"</span><span style="color: #0000FF;">);</span>
-             <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">stmt</span><span style="color: #0000FF;">();</span>
-             <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_while</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">}</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_LeftBrace</span><span style="color: #0000FF;">:</span>      <span style="color: #000080;font-style:italic;">/* {stmt} */</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"LeftBrace"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_LeftBrace</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">while</span> <span style="color: #008080;">not</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">],{</span><span style="color: #000000;">tk_RightBrace</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tk_EOI</span><span style="color: #0000FF;">})</span> <span style="color: #008080;">do</span>
-                 <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Sequence</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">stmt</span><span style="color: #0000FF;">()}</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-             <span style="color: #000000;">expect</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"LeftBrace"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tk_RightBrace</span><span style="color: #0000FF;">);</span>
-             <span style="color: #008080;">break</span><span style="color: #0000FF;">;</span>
-         <span style="color: #008080;">case</span> <span style="color: #000000;">tk_EOI</span><span style="color: #0000FF;">:</span>
-             <span style="color: #008080;">break</span><span style="color: #0000FF;">;</span>
-         <span style="color: #008080;">default</span><span style="color: #0000FF;">:</span>
-             <span style="color: #000000;">errd</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"expecting start of statement, found '%s'\n"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tkNames</span><span style="color: #0000FF;">[</span><span style="color: #000000;">tok</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]]);</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">t</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+    switch tok[3] do
+        case tk_if:
+            tok = get_tok();
+            object condition = paren_expr("If-cond");
+            object ifblock = stmt();
+            object elseblock = NULL;
+            if tok[3] == tk_else then
+                tok = get_tok();
+                elseblock = stmt();
+            end if
+            t = {tk_if, condition, {tk_if, ifblock, elseblock}}
+        case tk_putc:
+            tok = get_tok();
+            e = paren_expr("Prtc")
+            t = {tk_putc, e, NULL}
+            expect("Putc", tk_Semicolon);
+        case tk_print:
+            tok = get_tok();
+            expect("Print",tk_LeftParen)
+            while 1 do
+                if tok[3] == tk_String then
+                    e = {tk_Prints, {tk_String, tok[4]}, NULL}
+                    tok = get_tok();
+                else
+                    e = {tk_Printi, expr(0), NULL}
+                end if
+                t = {tk_Sequence, t, e}
+                if tok[3]!=tk_Comma then exit end if
+                expect("Print", tk_Comma)
+            end while
+            expect("Print", tk_RightParen);
+            expect("Print", tk_Semicolon);
+        case tk_Semicolon:
+            tok = get_tok();
+        case tk_Identifier:
+            object v
+            v = {tk_Identifier, tok[4]}
+            tok = get_tok();
+            expect("assign", tk_assign);
+            e = expr(0);
+            t = {tk_assign, v, e}
+            expect("assign", tk_Semicolon);
+        case tk_while:
+            tok = get_tok();
+            e = paren_expr("while");
+            s = stmt();
+            t = {tk_while, e, s}
+        case tk_LeftBrace:      /* {stmt} */
+            expect("LeftBrace", tk_LeftBrace)
+            while not find(tok[3],{tk_RightBrace,tk_EOI}) do
+                t = {tk_Sequence, t, stmt()}
+            end while
+            expect("LeftBrace", tk_RightBrace);
+            break;
+        case tk_EOI:
+            break;
+        default:
+            errd("expecting start of statement, found '%s'\n", tkNames[tok[3]]);
+    end switch
+    return t
+end function
 
- <span style="color: #008080;">global</span> <span style="color: #008080;">function</span> <span style="color: #000000;">parse</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">NULL</span>
-     <span style="color: #000000;">tok</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">get_tok</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">object</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">stmt</span><span style="color: #0000FF;">()</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">=</span><span style="color: #004600;">NULL</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">tk_Sequence</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">}</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">t</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
-<!--
+global function parse()
+    object t = NULL
+    tok = get_tok()
+    while 1 do
+        object s = stmt()
+        if s=NULL then exit end if
+        t = {tk_Sequence, t, s}
+    end while
+    return t
+end function
+And a simple test driver for the specific task:

@@ -1,5 +1,5 @@
--- 25 Apr 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 arg xx
 if xx = '' then
    xx = 99
@@ -112,7 +112,4 @@ say 'M1 thru M'xx 'crosses zero' b 'times'
 say Format(Time('e'),,3) 'seconds'; say
 return
 
-include Numbers
-include Sequences
-include Functions
-include Abend
+include Math

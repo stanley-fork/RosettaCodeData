@@ -2,7 +2,7 @@ T Sandpile
    DefaultDict[(Int, Int), Int] grid
 
    F (gridtext)
-      V array = gridtext.split_py().map(x -> Int(x))
+      V array = gridtext.split((‘ ’, "\n")).map(Int)
       L(x) array
          .grid[(L.index I/ 3, L.index % 3)] = x
 
@@ -39,21 +39,25 @@ T Sandpile
 
    F String()
       [String] txt
-      L(row) 3
+      L(row) 0.<3
          txt.append((0.<3).map(col -> String(@.grid[(@row, col)])).join(‘ ’))
       R txt.join("\n")
 
-V unstable = Sandpile(‘4 3 3
-                       3 1 2
-                       0 2 3’)
-V s1 = Sandpile(‘1 2 0
-                 2 1 1
-                 0 1 3’)
-V s2 = Sandpile(‘2 1 3
-                 1 0 1
-                 0 1 0’)
-V s3 = Sandpile(‘3 3 3  3 3 3  3 3 3’)
-V s3_id = Sandpile(‘2 1 2  1 0 1  2 1 2’)
+V unstable = Sandpile(|‘4 3 3
+                        3 1 2
+                        0 2 3’)
+V s1 = Sandpile(|‘1 2 0
+                  2 1 1
+                  0 1 3’)
+V s2 = Sandpile(|‘2 1 3
+                  1 0 1
+                  0 1 0’)
+V s3 = Sandpile(|‘3 3 3
+                  3 3 3
+                  3 3 3’)
+V s3_id = Sandpile(|‘2 1 2
+                     1 0 1
+                     2 1 2’)
 
 print(unstable)
 print()

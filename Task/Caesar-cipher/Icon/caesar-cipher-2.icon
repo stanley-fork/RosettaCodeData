@@ -7,6 +7,6 @@
 (let original "The Quick Brown Fox Jumps Over The Lazy Dog."
      encrypted (caeser -1 original)
      decrypted (caeser 1 encrypted))
-(str "Original:  " original "
-Encrypted: " encrypted "
-Decrypted: " decrypted)
+"Original:  {original}
+Encrypted: {encrypted}
+Decrypted: {decrypted}"

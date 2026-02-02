@@ -1,3 +1,1 @@
-(phixonline)-->
- <span style="color: #0000FF;">?</span><span style="color: #7060A8;">choose</span><span style="color: #0000FF;">(</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">)</span>
-<!--
+?choose(5,3)

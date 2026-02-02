@@ -29,7 +29,6 @@ void main() {
     writeln(value);
 
     comment("Show the ten highest numbers that can be expressed");
-    const int n = stat.countSum.keys.length;
     auto sums = stat.countSum.keys;
     sums.sort!"a>b"
         .take(10)

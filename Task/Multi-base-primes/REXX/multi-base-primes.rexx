@@ -1,63 +1,65 @@
--- 28 Jul 2025
-include Settings
+-- 15 Nov 2025
+include Setting
 arg ww
-if ww = '' then
-   ww = 4
+if ww='' then
+   ww=4
 
 say 'MULTI-BASE PRIMES'
 say version
 say
 call GetPrimes
+call Timer 'r'
 call Collect
+call Timer 'r'
 call Report
+call Timer 'r'
 exit
 
 GetPrimes:
-call time('r')
-a = 2*36*10**ww
+a=2*36*10**ww
 say 'Get primes up to' a'...'
-call Primes 2*36*10**ww
-say Time('e')/1 'seconds'; say
+call Primes a
 return
 
 Collect:
-call time('r')
 say 'Collect bases up to' ww'-character numbers...'
-base. = ''
-do j = 1 to prim.0
-   do b = 36 by -1 to 2
-      n = Basenn(prim.j,b); l = Length(n)
-      if l > ww then
+Base. = ''
+do j=1 to Prim.0
+   do b=36 by -1 to 2
+      n=D2n(Prim.j,b); l=Length(n)
+      if l>ww then
          iterate
-      if l = 1 then
-         base.l.n = b base.l.n
+      if l=1 then
+         Base.l.n=b Base.l.n
       else
-         base.l.n = base.l.n b
+         Base.l.n=Base.l.n b
    end
 end
-say Time('e')/1 'seconds'; say
 return
 
 Report:
-call time('r')
 say 'Report bases up to' ww'-character numbers...'
-do w = 1 to ww
-   a = Left(1,w,0); b = Left(9,w,9); c = 0
-   do n = a to b
-      y = Words(base.w.n)
-      if y > c then do
-         mxn = n;  c = Max(c,y)
+do w=1 to ww
+   a=Left(1,w,0); b=Left(9,w,9); c=0
+   do n=a to b
+      y=Words(Base.w.n)
+      if y>c then do
+         mxn=n; c=Max(c,y)
       end
    end
    say w'-character numbers that are prime in the most bases ('c')'
-   do n = a to b
-      y = Words(base.w.n)
-      if y = c then
-         say n  'in' Strip(base.w.n)
+   do n=a to b
+      y=Words(Base.w.n)
+      if y=c then
+         say n  'in' Strip(Base.w.n)
    end
    say
 end
-say Time('e')/1 'seconds'; say
 return
 
-include Math
+-- D2n (convert decimal to base n)
+include Base
+-- Primes (get primes)
+include Sequence
+-- Timer
+include Timer

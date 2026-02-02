@@ -1,6 +1,6 @@
 (function measure
   (let [start result end] [(time) (... . args) (time)])
-  (str result " took " (- end start) "ms"))
+  "{result} took {- end start}ms")
 
 (function fib n
   (if (< n 2) n

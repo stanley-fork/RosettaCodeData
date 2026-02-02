@@ -1,4 +1,6 @@
 import logging
+from typing import Any
+from typing import Dict
 from typing import Iterable
 from typing import NamedTuple
 from typing import Set
@@ -49,11 +51,12 @@ def get_session() -> requests.Session:
     session = requests.Session()
     session.mount("https://", adapter)
     session.mount("http://", adapter)
+    session.headers["User-Agent"] = "Rosetta Code Task bot"
     return session
 
 
 def category_members(category: str, url: str = URL) -> Iterable[PageInfo]:
-    params = {**CM_QUERY, "gcmtitle": category}
+    params: Dict[str, Any] = {**CM_QUERY, "gcmtitle": category}
     session = get_session()
 
     response = session.get(url, params=params)

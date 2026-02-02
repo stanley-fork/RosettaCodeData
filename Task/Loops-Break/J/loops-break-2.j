@@ -1,7 +1,1 @@
-loopexample=: {{
-  while. do.
-    echo k=. ?20
-    if. 10=k do. return. end.
-    echo ?20
-  end.
-}}
+   ]F.((echo@?@20`(_2 Z:1:)@.(10&=) [ echo)@?@20)''

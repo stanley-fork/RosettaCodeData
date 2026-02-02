@@ -1,46 +1,35 @@
-/*REXX program shows various ways to display the system time, including other options.  */
+-- 24 Sep 2025
+include Setting
+numeric digits 20
 
-say '════════════ Normal format of time'
-say 'hh:mm:ss        ◄─────────────── hh= is  00 ──► 23'
-say 'hh:mm:ss        ◄─────────────── hh= hour   mm= minute   ss= second'
-say time()
-say time('n')                                    /*    (same as the previous example.)  */
-say time('N')                                    /*       "   "  "      "       "       */
-say time('Normal')                               /*       "   "  "      "       "       */
-say time('nitPick')                              /*       "   "  "      "       "       */
+say 'SYSTEM TIME'
+say version
+say
+say 'Below examples may be coded with full option or only first letter.'
+say 'Both uppercase and lowercase are accepted.'
+say 'Not shown here, but the Time() function also supports conversions.'
+say
+say 'Consume some time...'
+do 100000000
+end
+say
+w=18
+say 'Time() function...'
+say 'Default ' Left(Time(),w)    'same as Normal'
+say 'Civil   ' Left(Time('C'),w) 'am/pm notation'
+say 'Elapsed ' Left(Time('E'),w) 'sss.ddd000 seconds'
+if Pos('ooRexx',version) > 0 then
+   say 'Full    ' Left(Time('F'),w) 'microsecs since Jan 1, 0001, 00:00:00 (ooRexx)'
+say 'Hours   ' Left(Time('H'),w) 'since midnight'
+if Pos('Regina',version) > 0 then
+   say 'Job     ' Left(Time('J'),w) 'cpu seconds (Regina)'
+say 'Long    ' Left(Time('L'),w) 'hh:mm:ss.ddd000'
+say 'Minutes ' Left(Time('M'),w) 'since midnight'
+say 'Normal  ' Left(Time('N'),w) 'hh:mm:ss'
+say 'Offset  ' Left(Time('O'),w) 'microsecs local (summer) time minus UTC'
+say 'Reset   ' Left(Time('R'),w) 'reset elapsed'
+say 'Seconds ' Left(Time('S'),w) 'since midnight'
+say 'Ticks   ' Left(Time('T'),w) 'seconds since Jan 1, 1970, 00:00:00'
+exit
 
-say
-say '════════════ Civil format of time'
-say 'hh:mmcc         ◄─────────────── hh= is   1 ──► 12'
-say 'hh:mmam         ◄─────────────── hh= hour   mm= minute   am= ante meridiem'
-say 'hh:mmpm         ◄───────────────                         pm= post meridiem'
-say time('C')
-say time('civil')                                /*    (same as the previous example.)  */
-                                                 /*ante meridiem≡Latin for before midday*/
-                                                 /*post    "       "    "   after   "   */
-say
-say '════════════ long format of time'
-say 'hh:mm:ss        ◄─────────────── hh= is   0 ──► 23'
-say 'hh:mm:ss.ffffff ◄─────────────── hh= hour   mm= minute   fffff= fractional seconds'
-say time('L')
-say time('long')                                 /*    (same as the previous example.)  */
-say time('long time no see')                     /*       "   "  "      "       "       */
-
-say
-say '════════════ complete hours since midnight'
-say 'hh              ◄─────────────── hh =  0 ───► 23'
-say time('H')
-say time('hours')                                /*    (same as the previous example.)  */
-
-say
-say '════════════ complete minutes since midnight'
-say 'mmmm            ◄─────────────── mmmm =  0 ───► 1439'
-say time('M')
-say time('minutes')                              /*    (same as the previous example.)  */
-
-say
-say '════════════  complete seconds since midnight'
-say 'sssss           ◄─────────────── sssss =  0 ───► 86399'
-say time('S')
-say time('seconds')                              /*    (same as the previous example.)  */
-                                                 /*stick a fork in it,  we're all done. */
+include Abend

@@ -1,32 +1,32 @@
 function ZigZagMatrix($num) {
     $matrix = array();
     for ($i = 0; $i < $num; $i++){
-		$matrix[$i] = array();
-	}
-	
+      $matrix[$i] = array();
+   }
+
     $i=1;
-	$j=1;
+   $j=1;
     for ($e = 0; $e < $num*$num; $e++) {
         $matrix[$i-1][$j-1] = $e;
         if (($i + $j) % 2 == 0) {
             if ($j < $num){
-				$j++;
-			}else{
-				$i += 2;
-			}
+            $j++;
+         }else{
+            $i += 2;
+         }
             if ($i > 1){
-				$i --;
-			}
+            $i --;
+         }
         } else {
             if ($i < $num){
-				$i++;
-			}else{
-				$j += 2;
-			}
+            $i++;
+         }else{
+            $j += 2;
+         }
             if ($j > 1){
-				$j --;
-			}
+            $j --;
+         }
         }
     }
-	return $matrix;
+   return $matrix;
 }

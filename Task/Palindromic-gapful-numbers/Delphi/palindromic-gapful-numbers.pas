@@ -30,10 +30,10 @@ H2:=H1;
 if (k and 1)<>0 then H2:=H2 div 10;
 {Reverse H2 and add to H1}
 while H2>0 do
-	begin
-	H1:=H1 * 10 + (H2 mod 10);
-	H2:=H2 div 10;
-	end;
+   begin
+   H1:=H1 * 10 + (H2 mod 10);
+   H2:=H2 div 10;
+   end;
 Result:=H1;
 end;
 
@@ -47,20 +47,20 @@ begin
 R1:=0;
 {Step through number of digits}
 for Result:=1 to 36 do
-	begin
-	{Calculate new Range step: 9,9,90,90,90,900,900...}
-	if (Result and 1)<>0 then Step:=9 * Trunc(Power(10,Result div 2));
-	{Calculate R2}
-	R2:=(R1 + Step)-1;
-	{See if N falls between R1 and R2}
-	if (N>=R1) and (N<=R2) then
-		begin
-		{Calculate offset and exit}
-		Offset:=(N - R1)+1;
-		exit;
-		end;
-	R1:=R2+1;
-	end;
+   begin
+   {Calculate new Range step: 9,9,90,90,90,900,900...}
+   if (Result and 1)<>0 then Step:=9 * Trunc(Power(10,Result div 2));
+   {Calculate R2}
+   R2:=(R1 + Step)-1;
+   {See if N falls between R1 and R2}
+   if (N>=R1) and (N<=R2) then
+      begin
+      {Calculate offset and exit}
+      Offset:=(N - R1)+1;
+      exit;
+      end;
+   R1:=R2+1;
+   end;
 end;
 
 
@@ -83,20 +83,20 @@ SetLength(Pals,Count);
 Inx:=0;
 {Handle palindromes up to 18 digits}
 for D:=1 to 18 do
-	begin
-	{Get maximum count for palindrom of D digits}
-	if (D and 1)=1 then Max:=Trunc(Power(10,(D + 1) div 2))
-	else Max:=Trunc(Power(10,D div 2));
-	{Step through all the numbers half the size of the number of digits}
-	for I:=1 to Max-Max div 10 do
-		begin
-		{Store palindrome}
-		Pals[Inx]:=GetNKPalindrome(I,D);
-		Inc(Inx);
-		{Exit when array is full}
-		if Inx>=Count then break;
-		end;
-	end;
+   begin
+   {Get maximum count for palindrom of D digits}
+   if (D and 1)=1 then Max:=Trunc(Power(10,(D + 1) div 2))
+   else Max:=Trunc(Power(10,D div 2));
+   {Step through all the numbers half the size of the number of digits}
+   for I:=1 to Max-Max div 10 do
+      begin
+      {Store palindrome}
+      Pals[Inx]:=GetNKPalindrome(I,D);
+      Inc(Inx);
+      {Exit when array is full}
+      if Inx>=Count then break;
+      end;
+   end;
 end;
 
 
@@ -139,20 +139,20 @@ Result:='Ending in: '+IntToStr(EndDigit)+CRLF;
 Cnt:=0;
 {Get palindromes and test them}
 for I:=0 to high(Integer) do
-	begin
-	{Get next palinedrome}
-	P:=GetNthPalindrome(I);
-	{Is Gapful and has specified EndDigit}
-	if IsGapFul(P) and HasEndDigit(P,EndDigit) then
-		begin
-		Inc(Cnt);
-		{Display it}
-		Result:=Result+Format('%8d',[P]);
-		if (Cnt mod 5)=0 then Result:=Result+CRLF;
-		{Break when finished}
-		if Cnt>=Max then break;
-		end;
-	end;
+   begin
+   {Get next palinedrome}
+   P:=GetNthPalindrome(I);
+   {Is Gapful and has specified EndDigit}
+   if IsGapFul(P) and HasEndDigit(P,EndDigit) then
+      begin
+      Inc(Cnt);
+      {Display it}
+      Result:=Result+Format('%8d',[P]);
+      if (Cnt mod 5)=0 then Result:=Result+CRLF;
+      {Break when finished}
+      if Cnt>=Max then break;
+      end;
+   end;
 end;
 
 
@@ -169,24 +169,24 @@ Result:='Ending in: '+IntToStr(EndDigit)+CRLF;
 {Get count number of items}
 Inx:=0;
 for I:=0 to Count-1  do
-	begin
-	{Keep getting palindromes until}
-	{they Gapful and have specified last digit}
-	repeat
-		begin
-		P:=GetNthPalindrome(Inx);
-		Inc(Inx);
-		end
-	until IsGapFul(P) and HasEndDigit(P,EndDigit);
-	{Save item}
-	IA[I]:=P;
-	end;
+   begin
+   {Keep getting palindromes until}
+   {they Gapful and have specified last digit}
+   repeat
+      begin
+      P:=GetNthPalindrome(Inx);
+      Inc(Inx);
+      end
+   until IsGapFul(P) and HasEndDigit(P,EndDigit);
+   {Save item}
+   IA[I]:=P;
+   end;
 {Get last items}
 for I:=Count-Last to Count-1 do
-	begin
-	Result:=Result+Format('%12d',[IA[I]]);
-	if (I mod 5)=4 then Result:=Result+CRLF;
-	end;
+   begin
+   Result:=Result+Format('%12d',[IA[I]]);
+   if (I mod 5)=4 then Result:=Result+CRLF;
+   end;
 end;
 
 

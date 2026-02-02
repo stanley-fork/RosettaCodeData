@@ -11,7 +11,7 @@ If there's no separator, then the triangles have an overlap of positive area.
 }
 {$IFDEF FPC}
   {$mode objfpc}{$H+}
-{$ENDIF}}
+{$ENDIF}
 
 uses Math, SysUtils;
 

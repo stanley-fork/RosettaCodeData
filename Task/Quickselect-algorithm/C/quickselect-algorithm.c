@@ -3,7 +3,7 @@
 
 int qselect(int *v, int len, int k)
 {
-#	define SWAP(a, b) { tmp = v[a]; v[a] = v[b]; v[b] = tmp; }
+#define SWAP(a, b) { tmp = v[a]; v[a] = v[b]; v[b] = tmp; }
 	int i, st, tmp;
 
 	for (st = i = 0; i < len - 1; i++) {
@@ -21,7 +21,7 @@ int qselect(int *v, int len, int k)
 
 int main(void)
 {
-#	define N (sizeof(x)/sizeof(x[0]))
+#define N (sizeof(x)/sizeof(x[0]))
 	int x[] = {9, 8, 7, 6, 5, 0, 1, 2, 3, 4};
 	int y[N];
 

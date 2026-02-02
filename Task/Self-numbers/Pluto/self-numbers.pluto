@@ -6,7 +6,7 @@ local function done_after_adding(interval, n)
     -- Advance to the next self number in the sequence, append it to the output if required, indicate if finished.
     for _ = 1, n do
         current_self += interval
-        ++counter
+        counter += 1
         if counter >= start_index then
             output:insert(current_self)
         end

@@ -3,10 +3,10 @@ import scala.io.Source
 object parseCSV extends App {
 
   val rawData = """|C1,C2,C3,C4,C5
-		  		   |1,5,9,13,17
-		  		   |2,6,10,14,18
-		  		   |3,7,11,15,19
-		  		   |20,21,22,23,24""".stripMargin
+               |1,5,9,13,17
+               |2,6,10,14,18
+               |3,7,11,15,19
+               |20,21,22,23,24""".stripMargin
 
   val data = Seq((Source.fromString(rawData).getLines()).map(_.split(",")).toSeq: _*)
 

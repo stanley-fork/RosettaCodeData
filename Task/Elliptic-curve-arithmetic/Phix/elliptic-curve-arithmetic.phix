@@ -1,81 +1,79 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">X</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Y</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">bCoeff</span><span style="color: #0000FF;">=</span><span style="color: #000000;">7</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">INF</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1e300</span><span style="color: #0000FF;">*</span><span style="color: #000000;">1e300</span>
+with javascript_semantics
+constant X=1, Y=2, bCoeff=7, INF = 1e300*1e300
 
- <span style="color: #008080;">type</span> <span style="color: #000000;">point</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">pt</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pt</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pt</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">2</span> <span style="color: #008080;">and</span> <span style="color: #004080;">atom</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pt</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">and</span> <span style="color: #004080;">atom</span><span style="color: #0000FF;">(</span><span style="color: #000000;">pt</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">])</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">type</span>
+type point(object pt)
+    return sequence(pt) and length(pt)=2 and atom(pt[X]) and atom(pt[Y])
+end type
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">zero</span><span style="color: #0000FF;">()</span>
-     <span style="color: #000000;">point</span> <span style="color: #000000;">pt</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">INF</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">INF</span><span style="color: #0000FF;">}</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">pt</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function zero()
+    point pt = {INF, INF}
+    return pt
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">is_zero</span><span style="color: #0000FF;">(</span><span style="color: #000000;">point</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]></span><span style="color: #000000;">1e20</span> <span style="color: #008080;">or</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]<-</span><span style="color: #000000;">1e20</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function is_zero(point p)
+    return p[X]>1e20 or p[X]<-1e20
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">neg</span><span style="color: #0000FF;">(</span><span style="color: #000000;">point</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">],</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]}</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">p</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function neg(point p)
+    p = {p[X], -p[Y]}
+    return p
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">dbl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">point</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">point</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">p</span>
-     <span style="color: #008080;">if</span> <span style="color: #008080;">not</span> <span style="color: #000000;">is_zero</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">L</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">3</span><span style="color: #0000FF;">*</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]*</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">])/(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">])</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">L</span><span style="color: #0000FF;">*</span><span style="color: #000000;">L</span><span style="color: #0000FF;">-</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]</span>
-         <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">L</span><span style="color: #0000FF;">*(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]}</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">r</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function dbl(point p)
+    point r = p
+    if not is_zero(p) then
+        atom L = (3*p[X]*p[X])/(2*p[Y])
+        atom x = L*L-2*p[X]
+        r = {x, L*(p[X]-x)-p[Y]}
+    end if
+    return r
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">point</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">point</span> <span style="color: #000000;">q</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">==</span><span style="color: #000000;">q</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">dbl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">is_zero</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">q</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">is_zero</span><span style="color: #0000FF;">(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">p</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">L</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">])/(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">])</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">L</span><span style="color: #0000FF;">*</span><span style="color: #000000;">L</span><span style="color: #0000FF;">-</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">q</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]</span>
-     <span style="color: #000000;">point</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">L</span><span style="color: #0000FF;">*(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]}</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">r</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function add(point p, point q)
+    if p==q then return dbl(p) end if
+    if is_zero(p) then return q end if
+    if is_zero(q) then return p end if
+    atom L = (q[Y]-p[Y])/(q[X]-p[X])
+    atom x = L*L-p[X]-q[X]
+    point r = {x, L*(p[X]-x)-p[Y]}
+    return r
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">point</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">point</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">zero</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">i</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">i</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">p</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">dbl</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">i</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">*</span><span style="color: #000000;">2</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">r</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function mul(point p, integer n)
+    point r = zero()
+    integer i = 1
+    while i<=n do
+        if and_bits(i, n) then r = add(r, p) end if
+        p = dbl(p)
+        i = i*2
+    end while
+    return r
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">point</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">&</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">is_zero</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)?</span><span style="color: #008000;">"Zero\n"</span><span style="color: #0000FF;">:</span><span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"(%.3f, %.3f)\n"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)))</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure show(string s, point p)
+    puts(1, s&iff(is_zero(p)?"Zero\n":sprintf("(%.3f, %.3f)\n", p)))
+end procedure
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">cbrt</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">/</span><span style="color: #000000;">3</span><span style="color: #0000FF;">):-</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(-</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">/</span><span style="color: #000000;">3</span><span style="color: #0000FF;">))</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function cbrt(atom c)
+    return iff(c>=0?power(c,1/3):-power(-c,1/3))
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">from_y</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">y</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">point</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">cbrt</span><span style="color: #0000FF;">(</span><span style="color: #000000;">y</span><span style="color: #0000FF;">*</span><span style="color: #000000;">y</span><span style="color: #0000FF;">-</span><span style="color: #000000;">bCoeff</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">y</span><span style="color: #0000FF;">}</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">r</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function from_y(atom y)
+    point r = {cbrt(y*y-bCoeff), y}
+    return r
+end function
 
- <span style="color: #000000;">point</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span>
+point a, b, c, d
 
- <span style="color: #000000;">a</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">from_y</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">b</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">from_y</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">neg</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
+a = from_y(1)
+b = from_y(2)
+c = add(a, b)
+d = neg(c)
 
- <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"a = "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"b = "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"c = a + b = "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"d = -c = "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"c + d = "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">))</span>
- <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"a + b + d = "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">add</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">)))</span>
- <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"a * 12345 = "</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">12345</span><span style="color: #0000FF;">))</span>
-<!--
+show("a = ", a)
+show("b = ", b)
+show("c = a + b = ", c)
+show("d = -c = ", d)
+show("c + d = ", add(c, d))
+show("a + b + d = ", add(a, add(b, d)))
+show("a * 12345 = ", mul(a, 12345))

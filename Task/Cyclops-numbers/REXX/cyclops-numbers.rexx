@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'CYCLOPS NUMBERS'
 say version
@@ -99,7 +99,4 @@ do i = 2 to cycl.0
 end
 return
 
-include Sequences
-include Numbers
-include Functions
-include Abend
+include Math

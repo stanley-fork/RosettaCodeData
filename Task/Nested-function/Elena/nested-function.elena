@@ -4,12 +4,12 @@ MakeList(separator)
 {
     var counter := 1;
 
-    var makeItem := (item){ var retVal := counter.toPrintable() + separator + item + newLineConstant; counter += 1; ^ retVal };
+    var makeItem := (item){ var retVal := counter.toPrintable() + separator + item + NewLineConstant; counter += 1; ^ retVal };
 
     ^ makeItem("first") + makeItem("second") + makeItem("third")
 }
 
-public program()
+public Program()
 {
-    console.printLine(MakeList(". "))
+    Console.printLine(MakeList(". "))
 }

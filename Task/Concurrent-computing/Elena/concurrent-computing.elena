@@ -1,7 +1,7 @@
 import system'threading;
 import extensions'threading;
 
-async public program()
+async public Program()
 {
    Task t1 := Task.run({ Console.printLineConcurrent("Enjoy") });
    Task t2 := Task.run({ Console.printLineConcurrent("Rosetta") });

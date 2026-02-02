@@ -11,9 +11,9 @@ proc s {args} {
     if [regexp {[()]} $args] {
         eval s [string map {( "\[s " ) \]} $args]
     } elseif {"*" in $args} {
-	s [s_group $args *]
+    s [s_group $args *]
     } elseif {"/" in $args} {
-	s [s_group $args /]
+    s [s_group $args /]
     } elseif {"+" in $args} {
         s [s_group $args +]
     } elseif {"-" in $args} {

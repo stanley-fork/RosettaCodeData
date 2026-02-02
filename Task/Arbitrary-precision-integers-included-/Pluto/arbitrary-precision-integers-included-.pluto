@@ -1,10 +1,11 @@
-local bigint = require "bigint"
+require "bignum"
 local fmt = require "fmt"
+
 local p = bigint.new(3) ^ bigint.new(2)
 p = bigint.new(4) ^ p
 p = bigint.new(5) ^ p
-
-local s = p:tostring()
+mpz.init()
+local s = mpz.tostring(p)
 fmt.print("5 ^ 4 ^ 3 ^ 2 has %s digits.\n", fmt.int(#s))
 print("The first twenty and last twenty are: ")
 print(fmt.abridge(s, 20))

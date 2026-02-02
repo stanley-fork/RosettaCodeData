@@ -25,7 +25,7 @@ extension op : IntNumber
     }
 }
 
-public program()
+public Program()
 {
     (N.AmicablePairs)::forEach<Tuple<int,int>>::(pair)
     {

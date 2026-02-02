@@ -1,71 +1,71 @@
-(phixonline)-->
- <span style="color: #008080;">constant</span> <span style="color: #000000;">aleph</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"0123456789ABCDEF"</span>
+with javascript_semantics
+constant aleph = "0123456789ABCDEF"
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">efill</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000080;font-style:italic;">-- min-fill, like 10101 or 54321 or 32101</span>
-     <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ch</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">>=</span><span style="color: #008000;">'1'</span><span style="color: #0000FF;">?</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'A'</span><span style="color: #0000FF;">?</span><span style="color: #008000;">'9'</span><span style="color: #0000FF;">:</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">):</span><span style="color: #008000;">'1'</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ch</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function efill(string s, integer ch, i)
+    -- min-fill, like 10101 or 54321 or 32101
+    s[i] = ch
+    for j=i+1 to length(s) do
+        ch = iff(ch>='1'?iff(ch='A'?'9':ch-1):'1')
+        s[j] = ch
+    end for
+    return s
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">esthetic</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">base</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000080;font-style:italic;">-- generate the next esthetic number after s
-     -- (nb unpredictable results if s is not esthetic, or "")</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">to</span> <span style="color: #000000;">1</span> <span style="color: #008080;">by</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">ch</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">cp</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">></span><span style="color: #000000;">1</span><span style="color: #0000FF;">?</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]:</span><span style="color: #008000;">'0'</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;"><</span><span style="color: #000000;">cp</span> <span style="color: #008080;">and</span> <span style="color: #000000;">cp</span><span style="color: #0000FF;"><</span><span style="color: #000000;">aleph</span><span style="color: #0000FF;">[</span><span style="color: #000000;">base</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">return</span> <span style="color: #000000;">efill</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">aleph</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">,</span><span style="color: #000000;">aleph</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">2</span><span style="color: #0000FF;">],</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">elsif</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">and</span> <span style="color: #000000;">ch</span><span style="color: #0000FF;"><</span><span style="color: #000000;">aleph</span><span style="color: #0000FF;">[</span><span style="color: #000000;">base</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">return</span> <span style="color: #000000;">efill</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">=</span><span style="color: #008000;">'9'</span><span style="color: #0000FF;">?</span><span style="color: #008000;">'A'</span><span style="color: #0000FF;">:</span><span style="color: #000000;">ch</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">efill</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1"</span><span style="color: #0000FF;">&</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'1'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function esthetic(string s, integer base = 10)
+    -- generate the next esthetic number after s
+    -- the special case of s="" always yields "1"
+    -- (nb otherwise s is assumed to be esthetic)
+    for i=length(s) to 1 by -1 do
+        integer ch = s[i], cp = iff(i>1?s[i-1]:'0')
+        if ch<cp and cp<aleph[base] then
+            return efill(s,aleph[find(ch,aleph)+2],i)
+        elsif i=1 and ch<aleph[base] then
+            return efill(s,iff(ch='9'?'A':ch+1),i)
+        end if
+    end for
+    return efill("1"&s,'1',1)
+end function
 
- <span style="color: #004080;">string</span> <span style="color: #000000;">s</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">base</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #000000;">16</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">hi</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">base</span><span style="color: #0000FF;">*</span><span style="color: #000000;">6</span><span style="color: #0000FF;">,</span>
-             <span style="color: #000000;">lo</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">base</span><span style="color: #0000FF;">*</span><span style="color: #000000;">4</span>
-     <span style="color: #0000FF;">{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">""</span><span style="color: #0000FF;">,{}}</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">hi</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">esthetic</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">base</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">lo</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"numbers"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">))</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Base %d esthetic numbers[%d..%d]: %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">base</span><span style="color: #0000FF;">,</span><span style="color: #000000;">lo</span><span style="color: #0000FF;">,</span><span style="color: #000000;">hi</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
+string s
+sequence res
+for base=2 to 16 do
+    integer hi = base*6,
+            lo = base*4
+    {s,res} = {"",{}}
+    for i=1 to hi do
+        s = esthetic(s, base)
+        if i>=lo then
+            res = append(res,s)
+        end if
+    end for
+    res = join(shorten(res,"numbers",4))
+    printf(1,"Base %d esthetic numbers[%d..%d]: %s\n",{base,lo,hi,res})
+end for
 
- <span style="color: #0000FF;">{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">efill</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1000"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'1'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),{}}</span>
- <span style="color: #008080;">while</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">4</span> <span style="color: #008080;">do</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">esthetic</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"numbers"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">5</span><span style="color: #0000FF;">))}</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\nBase 10 esthetic numbers between 1,000 and 9,999: %s\n\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">)</span>
+{s,res} = {efill("1000",'1',1),{}}
+while length(s)=4 do
+    res = append(res,s)
+    s = esthetic(s)
+end while
+res = {join(shorten(res,"numbers",5))}
+printf(1,"\nBase 10 esthetic numbers between 1,000 and 9,999: %s\n\n",res)
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">comma</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #000000;">2</span> <span style="color: #008080;">by</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">3</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">..</span><span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">","</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function comma(string s)
+    for i=length(s)-2 to 2 by -3 do
+        s[i..i-1] = ","
+    end for
+    return s
+end function
 
- <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">7</span> <span style="color: #008080;">to</span> <span style="color: #000000;">19</span> <span style="color: #008080;">by</span> <span style="color: #000000;">3</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"10"</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">'0'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k</span><span style="color: #0000FF;">),</span>
-            <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"13"</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #008000;">'0'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k</span><span style="color: #0000FF;">)</span>
-     <span style="color: #0000FF;">{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">efill</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">,</span><span style="color: #008000;">'1'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),{}}</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">s</span><span style="color: #0000FF;"><</span><span style="color: #000000;">t</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">esthetic</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">shorten</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"numbers"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">))</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Base 10 esthetic numbers between %s and %s: %s\n"</span><span style="color: #0000FF;">,</span>
-              <span style="color: #0000FF;">{</span><span style="color: #000000;">comma</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">),</span><span style="color: #000000;">comma</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">),</span><span style="color: #000000;">res</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+for k=7 to 19 by 3 do
+    string f = "10"&repeat('0',k),
+           t = "13"&repeat('0',k)
+    {s,res} = {efill(f,'1',1),{}}
+    while s<t do
+        res = append(res,s)
+        s = esthetic(s)
+    end while
+    res = join(shorten(res,"numbers",1))
+    printf(1,"Base 10 esthetic numbers between %s and %s: %s\n",
+             {comma(f),comma(t),res})
+end for

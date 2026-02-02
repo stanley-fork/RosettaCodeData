@@ -50,7 +50,7 @@ singleton AksTest
     }
 }
 
-public program()
+public Program()
 {
     for (int n := 0; n < 10; n += 1) {
         AksTest.coef(n);

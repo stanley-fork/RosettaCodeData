@@ -1,47 +1,40 @@
-(notonline)-->
- <span style="color: #000080;font-style:italic;">--
- -- demo\rosetta\Generator_Exponential.exw
- -- ======================================
- --</span>
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span> <span style="color: #000080;font-style:italic;">-- tasks</span>
- <span style="color: #004080;">bool</span> <span style="color: #000000;">terminate</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">false</span>
+-- demo\rosetta\Generator_Exponential.exw
+without js -- tasks
 
- <span style="color: #004080;">atom</span> <span style="color: #000000;">res</span>
+atom res
+bool terminate = false
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">powers</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span>
-     <span style="color: #008080;">while</span> <span style="color: #008080;">not</span> <span style="color: #000000;">terminate</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">task_suspend</span><span style="color: #0000FF;">(</span><span style="color: #000000;">task_self</span><span style="color: #0000FF;">())</span>
-         <span style="color: #000000;">task_yield</span><span style="color: #0000FF;">()</span>
-         <span style="color: #000000;">i</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure powers(integer p)
+    integer i = 0
+    while not terminate do
+        res = power(i,p)
+        task_suspend(task_self())
+        task_yield()
+        i += 1
+    end while
+end procedure
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">squares</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">task_create</span><span style="color: #0000FF;">(</span><span style="color: #000000;">powers</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">2</span><span style="color: #0000FF;">}),</span>
-          <span style="color: #000000;">cubes</span>   <span style="color: #0000FF;">=</span> <span style="color: #000000;">task_create</span><span style="color: #0000FF;">(</span><span style="color: #000000;">powers</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">3</span><span style="color: #0000FF;">})</span>
+constant squares = task_create(powers,{2}),
+         cubes   = task_create(powers,{3})
 
- <span style="color: #004080;">atom</span> <span style="color: #000000;">square</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">cube</span>
- <span style="color: #000000;">task_schedule</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cubes</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">task_yield</span><span style="color: #0000FF;">()</span>
- <span style="color: #000000;">cube</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">30</span> <span style="color: #008080;">do</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">task_schedule</span><span style="color: #0000FF;">(</span><span style="color: #000000;">squares</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">task_yield</span><span style="color: #0000FF;">()</span>
-         <span style="color: #000000;">square</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">res</span>
-         <span style="color: #008080;">while</span> <span style="color: #000000;">cube</span><span style="color: #0000FF;"><</span><span style="color: #000000;">square</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">task_schedule</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cubes</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">task_yield</span><span style="color: #0000FF;">()</span>
-             <span style="color: #000000;">cube</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">res</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">square</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">cube</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">></span><span style="color: #000000;">20</span> <span style="color: #008080;">then</span>
-         <span style="color: #0000FF;">?</span><span style="color: #000000;">square</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-
- <span style="color: #000000;">terminate</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
- <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">wait_key</span><span style="color: #0000FF;">()</span>
-<!--
+atom square, cube
+task_schedule(cubes,1)
+task_yield()
+cube = res
+sequence snq = {}
+for i=1 to 30 do
+    do
+        task_schedule(squares,1)
+        task_yield()
+        square = res
+        while cube<square do
+            task_schedule(cubes,1)
+            task_yield()
+            cube = res
+        end while
+    until square!=cube
+    if i>20 then snq &= square end if
+end for
+?snq
+terminate = 1
+wait_key()

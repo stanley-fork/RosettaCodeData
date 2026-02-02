@@ -9,7 +9,7 @@ int[][] zigZag(in int n) pure nothrow {
 
     auto result = new typeof(return)(n, n);
     foreach (immutable i, immutable p; L)
-        result[p.y][p.x] = i;
+        result[p.y][p.x] = cast(int) i;
     return result;
 }
 

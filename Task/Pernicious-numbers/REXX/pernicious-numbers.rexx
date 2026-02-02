@@ -1,5 +1,5 @@
--- 28 Jul 2025
-include Settings
+-- 10 Oct 2025
+include Setting
 numeric digits 100
 
 say 'PERNICIOUS NUMBERS'
@@ -11,7 +11,6 @@ exit
 
 Show:
 procedure
-call Time('r')
 arg xx,yy
 if yy = '' then
    yy = xx
@@ -20,7 +19,7 @@ say 'Pernicious numbers between' xx 'and' yy'...'
 say
 n = 0
 do i = xx to yy
-   if Prime(Digitsum(Basenn(i,2))) then do
+   if Prime(Digitsum(D2b(i))) then do
       n = n+1
       call Charout ,i' '
       if n//10 = 0 then
@@ -28,9 +27,13 @@ do i = xx to yy
    end
 end
 say
-say n 'such numbers found'
-say Format(Time('e'),,3) 'seconds'
+say n 'found'
 say
 return
 
-include Math
+-- Db2
+include Base
+-- Prime
+include Ntheory
+-- Digitsum
+include Special

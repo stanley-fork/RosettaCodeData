@@ -1,7 +1,20 @@
-loopexample2=: verb define
-  while. do.
-    echo k=. ?20
-    if. 10=k do. break. end.
-    echo ?20
-  end.
-)
+   ]F.((_2 Z: 10&= [ echo)@?@20)''
+15
+6
+5
+10
+
+   ]F.((_2 Z: 10&= [ echo)@?@20)''
+14
+9
+3
+8
+19
+14
+5
+13
+8
+1
+19
+2
+10

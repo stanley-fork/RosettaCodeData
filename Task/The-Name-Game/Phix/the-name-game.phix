@@ -1,26 +1,24 @@
--->
- <span style="color: #008080;">constant</span> <span style="color: #000000;">fmt</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"""
- %s, %s, bo-%s
- Banana-fana fo-%s
- Fee-fi-mo-%s
- %s!
+constant fmt = """
+%s, %s, bo-%s
+Banana-fana fo-%s
+Fee-fi-mo-%s
+%s!
 
- """</span>
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">printVerse</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">name</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">lower</span><span style="color: #0000FF;">(</span><span style="color: #000000;">name</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">x1</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">upper</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]),</span>
-             <span style="color: #000000;">vowel</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"AEIUO"</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">0</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">y</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">-</span><span style="color: #000000;">vowel</span><span style="color: #0000FF;">..$],</span>
-            <span style="color: #000000;">b</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'b'</span><span style="color: #0000FF;">&</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'f'</span><span style="color: #0000FF;">&</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">m</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">'m'</span><span style="color: #0000FF;">&</span><span style="color: #000000;">y</span>
-     <span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">x1</span>
-     <span style="color: #008080;">switch</span> <span style="color: #000000;">x1</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">case</span> <span style="color: #008000;">'B'</span><span style="color: #0000FF;">:</span> <span style="color: #000000;">b</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">y</span>
-         <span style="color: #008080;">case</span> <span style="color: #008000;">'F'</span><span style="color: #0000FF;">:</span> <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">y</span>
-         <span style="color: #008080;">case</span> <span style="color: #008000;">'M'</span><span style="color: #0000FF;">:</span> <span style="color: #000000;">m</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">y</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fmt</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">x</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">m</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+"""
+procedure printVerse(string name)
+    string x = lower(name)
+    integer x1 = upper(x[1]),
+            vowel = find(x1,"AEIUO")!=0
+    string y = x[2-vowel..$],
+           b = 'b'&y, f = 'f'&y, m = 'm'&y
+    x[1] = x1
+    switch x1 do
+        case 'B': b = y
+        case 'F': f = y
+        case 'M': m = y
+    end switch
+    printf(1,fmt,{x, x, b, f, m, x})
+end procedure
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">tests</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"gARY"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Earl"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Billy"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Felix"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Mary"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"SHIRley"</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span> <span style="color: #000000;">printVerse</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+constant tests = {"gARY", "Earl", "Billy", "Felix", "Mary", "SHIRley"}
+for i=1 to length(tests) do printVerse(tests[i]) end for

@@ -17,16 +17,16 @@ extension op
 
                 lock(sync)
                 {
-                    console.printLine(n)
+                    Console.printLine(n)
                 }
             })
         }
     }
 }
 
-public program()
+public Program()
 {
-   program_arguments.skipping(1).selectBy(mssgconst toInt<intConvertOp>[1]).toArray().sleepSort();
+   Program_arguments.skipping(1).selectBy(mssgconst toInt<intConvertOp>[1]).toArray().sleepSort();
 
-   console.readChar()
+   Console.readChar()
 }

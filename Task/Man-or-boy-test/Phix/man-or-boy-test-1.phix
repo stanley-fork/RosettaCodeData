@@ -1,25 +1,23 @@
--->
- <span style="color: #008080;">without</span> <span style="color: #008080;">js</span> <span style="color: #000080;font-style:italic;">-- allocate()</span>
- <span style="color: #008080;">forward</span> <span style="color: #008080;">function</span> <span style="color: #000000;">A</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">x1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x5</span><span style="color: #0000FF;">)</span>
+without js -- allocate()
+forward function A(integer k, object x1, x2, x3, x4, x5)
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">B</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">object</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">kptr</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x4</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">peek4s</span><span style="color: #0000FF;">(</span><span style="color: #000000;">kptr</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">1</span>
-     <span style="color: #7060A8;">poke4</span><span style="color: #0000FF;">(</span><span style="color: #000000;">kptr</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">A</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">kptr</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x4</span><span style="color: #0000FF;">},</span><span style="color: #000000;">x1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x4</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function B(sequence s)
+    object {kptr,x1,x2,x3,x4} = s
+    integer k = peek4s(kptr)-1
+    poke4(kptr,k)
+    return A(k,{kptr,x1,x2,x3,x4},x1,x2,x3,x4)
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">A</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">x1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">x5</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">k</span><span style="color: #0000FF;"><=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x4</span><span style="color: #0000FF;">)?</span><span style="color: #000000;">B</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x4</span><span style="color: #0000FF;">):</span><span style="color: #000000;">x4</span><span style="color: #0000FF;">)+</span>
-                <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x5</span><span style="color: #0000FF;">)?</span><span style="color: #000000;">B</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x5</span><span style="color: #0000FF;">):</span><span style="color: #000000;">x5</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">kptr</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">allocate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">4</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">poke4</span><span style="color: #0000FF;">(</span><span style="color: #000000;">kptr</span><span style="color: #0000FF;">,</span><span style="color: #000000;">k</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">B</span><span style="color: #0000FF;">({</span><span style="color: #000000;">kptr</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x3</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x4</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function A(integer k, object x1, x2, x3, x4, x5)
+    if k<=0 then
+        return iff(sequence(x4)?B(x4):x4)+
+               iff(sequence(x5)?B(x5):x5)
+    end if
+    atom kptr = allocate(4,1)
+    poke4(kptr,k)
+    return B({kptr,x1,x2,x3,x4})
+end function
 
- <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">23</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"A(%d) = %d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">k</span><span style="color: #0000FF;">,</span><span style="color: #000000;">A</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+for k=0 to iff(machine_bits()=32?23:26) do
+    printf(1,"A(%d) = %d\n",{k,A(k,1,-1,-1,1,0)})
+end for

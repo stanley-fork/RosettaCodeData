@@ -19,7 +19,7 @@ F cut_it(=h, =w)
       V t = y * (@w + 1) + x
       @grid[t] = @grid[@blen - t] = 1B
 
-      L(i) 4
+      L(i) 0.<4
          I !@grid[t + @next[i]]
             count = @walk(y + @dirs[i][0], x + @dirs[i][1], count)
 

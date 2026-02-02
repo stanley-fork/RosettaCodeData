@@ -1,86 +1,81 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #000000;">javascript_semantics</span>
- <span style="color: #008080;">enum</span> <span style="color: #000000;">SUB</span><span style="color: #0000FF;">=-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">NOP</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">ADD</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span>
+with javascript_semantics
+enum SUB=-1, NOP=0, ADD=1
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">evaluate</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">tmp</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">ADD</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">NOP</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">tmp</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tmp</span><span style="color: #0000FF;">*</span><span style="color: #000000;">10</span><span style="color: #0000FF;">+</span><span style="color: #000000;">i</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">op</span><span style="color: #0000FF;">*</span><span style="color: #000000;">tmp</span>
-             <span style="color: #000000;">tmp</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span>
-             <span style="color: #000000;">op</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">op</span><span style="color: #0000FF;">*</span><span style="color: #000000;">tmp</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function evaluate(sequence s)
+    integer res = 0, tmp = 0, op = ADD
+    for i=1 to length(s) do
+        if s[i]=NOP then
+            tmp = tmp*10+i
+        else
+            res += op*tmp
+            tmp = i
+            op = s[i]
+        end if
+    end for
+    return res + op*tmp
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">show</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
- <span style="color: #004080;">string</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]!=</span><span style="color: #000000;">NOP</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">','</span><span style="color: #0000FF;">-</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">'0'</span><span style="color: #0000FF;">+</span><span style="color: #000000;">i</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s = %d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #000000;">evaluate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure show(sequence s)
+    string res = ""
+    for i=1 to length(s) do
+        if s[i]!=NOP then
+            res &= ','-s[i]
+        end if
+        res &= '0'+i
+    end for
+    printf(1,"%s = %d\n",{res,evaluate(s)})
+end procedure
 
- <span style="color: #000080;font-style:italic;">-- Logically this intersperses -/nop/+ between each digit, but you do not actually need the digit.</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">SUB</span><span style="color: #0000FF;">,</span><span style="color: #000000;">9</span><span style="color: #0000FF;">)</span>  <span style="color: #000080;font-style:italic;">-- (==&gt; ..nop+add*8)</span>
+-- Logically this intersperses -/nop/+ between each digit, but you do not actually need the digit.
+sequence s = repeat(SUB,9)  -- (==> ..nop+add*8)
 
- <span style="color: #004080;">bool</span> <span style="color: #000000;">done</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">false</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">maxl</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">maxr</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">count</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
- <span style="color: #008080;">while</span> <span style="color: #008080;">not</span> <span style="color: #000000;">done</span> <span style="color: #008080;">do</span>
-     <span style="color: #000000;">count</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">evaluate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">),</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">getd_index</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">solns</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">?{}:</span><span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">getd_by_index</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">)))</span>
-     <span style="color: #000000;">solns</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">solns</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">))</span>
-     <span style="color: #7060A8;">setd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">,</span><span style="color: #000000;">solns</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">></span><span style="color: #000000;">0</span> <span style="color: #008080;">and</span> <span style="color: #000000;">maxl</span><span style="color: #0000FF;"><</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">solns</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">maxl</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">solns</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">maxr</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">r</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">to</span> <span style="color: #000000;">1</span> <span style="color: #008080;">by</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">and</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">NOP</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">done</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">true</span>
-             <span style="color: #008080;">exit</span>
-         <span style="color: #008080;">elsif</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]!=</span><span style="color: #000000;">ADD</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-             <span style="color: #008080;">exit</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">SUB</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
+bool done = false
+integer maxl = 0, maxr, count = 0
+while not done do
+    count += 1
+    integer r = evaluate(s), k = getd_index(r)
+    sequence solns = iff(k=0?{}:deep_copy(getd_by_index(k)))
+    solns = append(solns,deep_copy(s))
+    setd(r,solns)
+    if r>0 and maxl<length(solns) then
+        maxl = length(solns)
+        maxr = r
+    end if
+    for i=length(s) to 1 by -1 do
+        if i=1 and s[i]=NOP then
+            done = true
+            exit
+        elsif s[i]!=ADD then
+            s[i] += 1
+            exit
+        end if
+        s[i] = SUB
+    end for
+end while
 
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d solutions considered (dictionary size: %d)\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">count</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">dict_size</span><span style="color: #0000FF;">()})</span>
+printf(1,"%d solutions considered (dictionary size: %d)\n",{count,dict_size()})
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">s100</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">getd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">100</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"There are %d sums to 100:\n"</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s100</span><span style="color: #0000FF;">)})</span>
- <span style="color: #7060A8;">papply</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s100</span><span style="color: #0000FF;">,</span><span style="color: #000000;">show</span><span style="color: #0000FF;">)</span>
+sequence s100 = getd(100)
+printf(1,"There are %d sums to 100:\n",{length(s100)})
+papply(s100,show)
 
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"The positive sum of %d has the maximum number of solutions: %d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">maxr</span><span style="color: #0000FF;">,</span><span style="color: #000000;">maxl</span><span style="color: #0000FF;">})</span>
+printf(1,"The positive sum of %d has the maximum number of solutions: %d\n",{maxr,maxl})
 
- <span style="color: #004080;">integer</span> <span style="color: #000000;">prev</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">missing</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">key</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000080;font-style:italic;">/*data*/</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000080;font-style:italic;">/*pkey*/</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000080;font-style:italic;">/*user_data=-2*/</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">key</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">prev</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">prev</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">key</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">1</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #7060A8;">traverse_dict_partial_key</span><span style="color: #0000FF;">(</span><span style="color: #000000;">missing</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"The lowest positive sum that cannot be expressed: %d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">prev</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">})</span>
+integer prev = 0
+function missing(integer key, sequence /*data*/, integer /*pkey*/, object /*user_data=-2*/)
+    if key!=prev+1 then
+        return 0
+    end if
+    prev = key
+    return 1
+end function
+traverse_dict_partial_key(missing,1)
+printf(1,"The lowest positive sum that cannot be expressed: %d\n",{prev+1})
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">highest</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">top10</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">key</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000080;font-style:italic;">/*data*/</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000080;font-style:italic;">/*user_data*/</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">highest</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">key</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">highest</span><span style="color: #0000FF;">)<</span><span style="color: #000000;">10</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #000080;font-style:italic;">--DEV named params on builtins need pre-loading...:
- --traverse_dict(top10,rev:=1)</span>
- <span style="color: #7060A8;">traverse_dict</span><span style="color: #0000FF;">(</span><span style="color: #000000;">top10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"The 10 highest sums: %v\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">highest</span><span style="color: #0000FF;">})</span>
-<!--
+sequence highest = {}
+function top10(integer key, sequence /*data*/, object /*user_data*/)
+    highest &= key
+    return length(highest)<10
+end function
+traverse_dict(top10,rev:=1)
+printf(1,"The 10 highest sums: %v\n",{highest})

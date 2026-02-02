@@ -1,8 +1,9 @@
-func checkDivZero a b .
+func divZero a b .
    r = a / b
-   if r = number "nan" or r = number "inf" or r = number "-inf"
-      return 1
-   .
+   if r <> r or abs r = 1 / 0 : return 1
+   return 0
 .
-print checkDivZero 5 7
-print checkDivZero -1 0
+print divZero 5 7
+print divZero -2 0
+print divZero 3 0
+print divZero 0 0

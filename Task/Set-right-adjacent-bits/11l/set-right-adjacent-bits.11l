@@ -23,7 +23,7 @@ L(b_str) bits_s.split(‘ ’)
 
 print("SAME Input & Width.\n")
 bits_s = ‘01’(10.<0).step(-1).map(x -> ‘0’ * x).join(‘1’)
-L(n) 4
+L(n) 0.<4
    first = 1B
    L(b_str) bits_s.split(‘ ’)
       V b = _to_list(b_str)

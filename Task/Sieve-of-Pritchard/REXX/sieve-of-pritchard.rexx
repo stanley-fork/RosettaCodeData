@@ -1,18 +1,20 @@
--- 12 Apr 2025
-include Settings
+-- 24 Aug 2025
+include Setting
 
 call Time('r')
 say 'SIEVE OF PRITCHARD'
 say version
 say
 call Pritchard 150,1
+call Timer 'r'
 call Pritchard 1e6,0
+call Timer 'r'
 call Eratosthenes 1e6
+call Timer 'r'
 exit
 
 Pritchard:
-procedure
-call Time('r')
+procedure expose Memo.
 arg xx,yy
 say 'Primes up to' xx 'by Pritchard...'
 memb. = 0; memb.1 = 1; mcpy. = 0; prim. = 0; nwpr. = 0
@@ -77,19 +79,13 @@ end
 if yy then
    say
 say nn 'found'
-say Format(Time('e'),,3) 'seconds'
-say
 return nn
 
 Eratosthenes:
 procedure
-call Time('r')
 arg xx
 say 'Primes up to' xx 'by Eratosthenes...'
 say Primes(xx) 'found'
-say Format(Time('e'),,3) 'seconds'
 return
 
-include Sequences
-include Functions
-include Abend
+include Math

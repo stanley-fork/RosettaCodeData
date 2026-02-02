@@ -3,11 +3,11 @@ V perms = [‘ABCD’, ‘CABD’, ‘ACDB’, ‘DACB’, ‘BCDA’, ‘ACBD�
            ‘DCBA’, ‘BACD’, ‘BADC’, ‘BDAC’, ‘CBDA’, ‘DBCA’, ‘DCAB’]
 
 V missing = ‘’
-L(i) 4
+L(i) 0.<4
    V cnt = [0] * 4
    L(j) 0 .< perms.len
       cnt[perms[j][i].code - ‘A’.code]++
-   L(j) 4
+   L(j) 0.<4
       I cnt[j] != factorial(4-1)
          missing ‘’= Char(code' ‘A’.code + j)
          L.break

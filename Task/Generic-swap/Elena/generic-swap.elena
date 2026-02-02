@@ -8,14 +8,14 @@ swap(ref object v1, ref object v2)
     v2 := tmp
 }
 
-public program()
+public Program()
 {
     var n := 2;
     var s := "abc";
 
-    console.printLine(n," ",s);
+    Console.printLine(n," ",s);
 
     swap(ref n, ref s);
 
-    console.printLine(n," ",s)
+    Console.printLine(n," ",s)
 }

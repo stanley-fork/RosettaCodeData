@@ -10,7 +10,7 @@ F lychrel(BigInt =n)
    V r = rev(n)
    V res = (1B, n)
    [BigInt] seen
-   L(i) 1000
+   L(i) 0.<1000
       n += r
       r = rev(n)
       I n == r

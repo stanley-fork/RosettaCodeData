@@ -21,6 +21,6 @@ display(4).sprites.push hand
 
 // main loop
 while true
-	hand.rotation = 90 - floor(time) % 60 * 6
-	wait
+    hand.rotation = 90 - floor(time) % 60 * 6
+    wait
 end while

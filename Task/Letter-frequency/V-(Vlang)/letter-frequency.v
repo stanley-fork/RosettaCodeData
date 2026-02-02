@@ -6,7 +6,7 @@ struct LetterFreq {
 }
 
 fn main(){
-    file := os.read_file('unixdict.txt')!
+    file := os.read_file('unixdict.txt')?
     mut freq := map[rune]int{}
     for c in file {
         freq[c]++

@@ -1,71 +1,66 @@
-(phixonline)-->
- <span style="color: #000080;font-style:italic;">--
- -- demo\rosetta\Compiler\interp.exw
- -- ================================
- --</span>
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #000000;">parse</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
+-- demo\rosetta\Compiler\interp.exw
+with javascript_semantics
+include parse.e
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">vars</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{},</span>
-          <span style="color: #000000;">vals</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
+sequence vars = {},
+         vals = {}
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">var_idx</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">inode</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">inode</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]!=</span><span style="color: #000000;">tk_Identifier</span> <span style="color: #008080;">then</span> <span style="color: #0000FF;">?</span><span style="color: #000000;">9</span><span style="color: #0000FF;">/</span><span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">ident</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">inode</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #000000;">ident</span><span style="color: #0000FF;">,</span><span style="color: #000000;">vars</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">vars</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">vars</span><span style="color: #0000FF;">,</span><span style="color: #000000;">ident</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">vals</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">vals</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">vars</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">n</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function var_idx(sequence inode)
+    if inode[1]!=tk_Identifier then ?9/0 end if
+    string ident = inode[2]
+    integer n = find(ident,vars)
+    if n=0 then
+        vars = append(vars,ident)
+        vals = append(vals,0)
+        n = length(vars)
+    end if
+    return n
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">!=</span><span style="color: #004600;">NULL</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">ntype</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-         <span style="color: #004080;">object</span> <span style="color: #000000;">t2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">],</span>
-                <span style="color: #000000;">t3</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">3</span><span style="color: #0000FF;">?</span><span style="color: #000000;">t</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]:</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">switch</span> <span style="color: #000000;">ntype</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Sequence</span><span style="color: #0000FF;">:</span>       <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_assign</span><span style="color: #0000FF;">:</span>         <span style="color: #000000;">vals</span><span style="color: #0000FF;">[</span><span style="color: #000000;">var_idx</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Identifier</span><span style="color: #0000FF;">:</span>     <span style="color: #008080;">return</span> <span style="color: #000000;">vals</span><span style="color: #0000FF;">[</span><span style="color: #000000;">var_idx</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)]</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Integer</span><span style="color: #0000FF;">:</span>        <span style="color: #008080;">return</span> <span style="color: #000000;">t2</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_String</span><span style="color: #0000FF;">:</span>         <span style="color: #008080;">return</span> <span style="color: #000000;">t2</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_lt</span><span style="color: #0000FF;">:</span>             <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;"><</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_add</span><span style="color: #0000FF;">:</span>            <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">+</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_sub</span><span style="color: #0000FF;">:</span>            <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">-</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_while</span><span style="color: #0000FF;">:</span>          <span style="color: #008080;">while</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span> <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Prints</span><span style="color: #0000FF;">:</span>         <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">))</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_Printi</span><span style="color: #0000FF;">:</span>         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">))</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_putc</span><span style="color: #0000FF;">:</span>           <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%c"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">))</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_and</span><span style="color: #0000FF;">:</span>            <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_or</span><span style="color: #0000FF;">:</span>             <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">or</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_le</span><span style="color: #0000FF;">:</span>             <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;"><=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_ge</span><span style="color: #0000FF;">:</span>             <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">>=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_ne</span><span style="color: #0000FF;">:</span>             <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">!=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_gt</span><span style="color: #0000FF;">:</span>             <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">></span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_mul</span><span style="color: #0000FF;">:</span>            <span style="color: #008080;">return</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span> <span style="color: #0000FF;">*</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_div</span><span style="color: #0000FF;">:</span>            <span style="color: #008080;">return</span> <span style="color: #7060A8;">trunc</span><span style="color: #0000FF;">(</span><span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)/</span><span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">))</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_mod</span><span style="color: #0000FF;">:</span>            <span style="color: #008080;">return</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">),</span><span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">))</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_if</span><span style="color: #0000FF;">:</span>             <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t3</span><span style="color: #0000FF;">[</span><span style="color: #008080;">iff</span><span style="color: #0000FF;">(</span><span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)?</span><span style="color: #000000;">2</span><span style="color: #0000FF;">:</span><span style="color: #000000;">3</span><span style="color: #0000FF;">)])</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_not</span><span style="color: #0000FF;">:</span>            <span style="color: #008080;">return</span> <span style="color: #008080;">not</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">tk_neg</span><span style="color: #0000FF;">:</span>            <span style="color: #008080;">return</span> <span style="color: #0000FF;">-</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t2</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">else</span>
-                 <span style="color: #000000;">error</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"unknown node type"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #004600;">NULL</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function interp(object t)
+    if t!=NULL then
+        integer ntype = t[1]
+        object t2 = t[2],
+               t3 = iff(length(t)=3?t[3]:0)
+        switch ntype do
+            case tk_Sequence:       {} = interp(t2) {} = interp(t3)
+            case tk_assign:         vals[var_idx(t2)] = interp(t3)
+            case tk_Identifier:     return vals[var_idx(t)]
+            case tk_Integer:        return t2
+            case tk_String:         return t2
+            case tk_lt:             return interp(t2) < interp(t3)
+            case tk_add:            return interp(t2) + interp(t3)
+            case tk_sub:            return interp(t2) - interp(t3)
+            case tk_while:          while interp(t2) do {} = interp(t3) end while
+            case tk_Prints:         puts(1,interp(t2))
+            case tk_Printi:         printf(1,"%d",interp(t2))
+            case tk_putc:           printf(1,"%c",interp(t2))
+            case tk_and:            return interp(t2) and interp(t3)
+            case tk_or:             return interp(t2) or interp(t3)
+            case tk_le:             return interp(t2) <= interp(t3)
+            case tk_ge:             return interp(t2) >= interp(t3)
+            case tk_ne:             return interp(t2) != interp(t3)
+            case tk_gt:             return interp(t2) > interp(t3)
+            case tk_mul:            return interp(t2) * interp(t3)
+            case tk_div:            return trunc(interp(t2)/interp(t3))
+            case tk_mod:            return remainder(interp(t2),interp(t3))
+            case tk_if:             {} = interp(t3[iff(interp(t2)?2:3)])
+            case tk_not:            return not interp(t2)
+            case tk_neg:            return - interp(t2)
+            else
+                error("unknown node type")
+        end switch
+    end if
+    return NULL
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">main</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">cl</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">open_files</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">toks</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">lex</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">object</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">parse</span><span style="color: #0000FF;">()</span>
-     <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">interp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">close_files</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure main(sequence cl)
+    open_files(cl)
+    toks = lex()
+    object t = parse()
+    {} = interp(t)
+    close_files()
+end procedure
 
- <span style="color: #000080;font-style:italic;">--main(command_line())</span>
- <span style="color: #000000;">main</span><span style="color: #0000FF;">({</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"primes.c"</span><span style="color: #0000FF;">})</span>
-<!--
+--main(command_line())
+main({0,0,"primes.c"})

@@ -1,3 +1,7 @@
-F ← ⊂⟨0◌|+1⟩>⊙(-1⧻),,⊗⊃⊢(↘1). # Generator function (prepends).
-⇌⍥F999 [0]                    # Generate 1000 terms and flip.
-⊃(&p↙¯)(&p↙∘)10               # Print first and last 10 terms.
+# Generate Van Eck sequence.
+F ← (
+  ◡<⊙⊙◌⊃(⋅⧻|⊸˜⨂)°⊂. # Check where/if first digit already appeared.
+  ⊂⨬(⋅⋅0|⋅+₁)       # If new, prepend zero, else last index it was in.
+)
+⇌⍥F999 [0]      # Generate 1000 terms and reverse.
+⊃(&p↙¯)(&p↙∘)10 # Print first and last 10 terms.

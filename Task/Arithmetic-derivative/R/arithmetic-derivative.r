@@ -1,31 +1,21 @@
 library(gmp) #for big number factorization
 
-arithmetic_derivative<-function(x){
-  if (x==0|x==1|x==-1){
-    D=0
+arith_deriv <- function(x){
+  if(x %in% c(0, 1, -1)) return(0)
+  n <- abs(x)
+  facs <- as.numeric(factorize(n))
+  nfacs <- length(facs)
+  if(nfacs==1) return(sign(x))
+  d <- sum(facs[1:2])
+  if(nfacs>2){
+    c_prod <- cumprod(facs)
+    for(i in 3:nfacs) d <- d*facs[i]+c_prod[i-1]
   }
-  else{
-    n=ifelse(x<0,-x,x)
-    prime_decomposition <-as.numeric(factorize(n))
-    if (length(prime_decomposition)==1){
-      D<- 1
-    }
-    else{
-      D<-sum(prime_decomposition[c(1,2)])
-      if (length(prime_decomposition)>2){
-        cumulative_prod <-cumprod(prime_decomposition)
-        for (i in 3:length(prime_decomposition)){
-          D<- D * prime_decomposition[i]  + cumulative_prod[i-1]
-        }
-      }
-    }
-
-  }
-  sign(x)*D
+  sign(x)*d
 }
 
-print(t(matrix(sapply(-99:100,arithmetic_derivative),nrow=10)))
+t(matrix(sapply(-99:100, arith_deriv), nrow=10))
 
-for (k in 1:20){
-  x <- 10**k
-  cat(paste0("D(",x,")/7 = ",arithmetic_derivative(x)/7,"\n"),sep = "")}
+pows <- 10^(1:20)
+derivs <- sapply(pows, arith_deriv)
+writeLines(paste0("D(", pows, ")/7 = ", derivs/7))

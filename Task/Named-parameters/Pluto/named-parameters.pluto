@@ -1,4 +1,4 @@
-local function print_name(forename, surname = "Trump").
+local function print_name(forename, surname = "Trump")
     print($"{forename} {surname}")
 end
 

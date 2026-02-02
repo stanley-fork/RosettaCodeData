@@ -1,18 +1,18 @@
 <cffunction name="double">
     <cfargument name="number" type="numeric" required="true">
-	<cfset answer = number * 2>
+    <cfset answer = number * 2>
     <cfreturn answer>
 </cffunction>
 
 <cffunction name="halve">
     <cfargument name="number" type="numeric" required="true">
-	<cfset answer = int(number / 2)>
+    <cfset answer = int(number / 2)>
     <cfreturn answer>
 </cffunction>
 
 <cffunction name="even">
     <cfargument name="number" type="numeric" required="true">
-	<cfset answer = number mod 2>
+    <cfset answer = number mod 2>
     <cfreturn answer>
 </cffunction>
 

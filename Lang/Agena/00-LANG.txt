@@ -20,6 +20,9 @@ The syntax looks like very simplified [[ALGOL 68]] with elements taken from [[Lu
 == How has it been implemented ? ==
 Agena is based on the [[ANSI]] [[C]] source code of [[Lua]], a popular and widely used Open Source programming language.
 
+== Todo ==
+[[Tasks not implemented in Agena]]
+
 == See Also ==
 [[ALGOL 68]]<br/>
 [[Lua]]<br/>

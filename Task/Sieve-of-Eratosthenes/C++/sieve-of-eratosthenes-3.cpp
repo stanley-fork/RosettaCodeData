@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
     if (limit < 1 or ss.fail()) {
       cerr << "USAGE:\n  sieve LIMIT\n\nwhere LIMIT in the range [1, "
-	   << numeric_limits<int>::max() << ")" << endl;
+      << numeric_limits<int>::max() << ")" << endl;
       return 2;
     }
   }

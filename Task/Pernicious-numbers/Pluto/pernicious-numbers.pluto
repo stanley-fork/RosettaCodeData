@@ -1,13 +1,12 @@
 do  -- find some pernicious numbers - numbers with a prime population count
 
-    local fmt = require( "fmt" )      -- RC Pluto formatting library
     local int = require( "int" )      -- RC Pluto integer library, inc. prime utilities
 
     -- returns the population count (number of set bits) of n
     local function populationCount( n : number ) : number
         local v, count = math.abs( n ), 0
         while v > 0 do
-            if v & 1 == 1 then ++ count end
+            if v & 1 == 1 then count += 1 end
             v >>= 1
         end
         return count
@@ -23,15 +22,15 @@ do  -- find some pernicious numbers - numbers with a prime population count
         local p25, pCount = 2, 0  -- 0 and 1 aren't pernicious, so we start at 2
         while pCount < 25 do
             if isPernicious( p25 ) then
-                ++ pCount
-                fmt.write( " %d", p25 )
+                pCount += 1
+                io.write( $" {p25}" )
             end
-            ++ p25
+            p25 += 1
         end
         print()
         -- find the pernicious numbers between 888 888 877 and 888 888 888
         for p = 888888877, 888888888 do
-            if isPernicious( p ) then fmt.write( " %d", p ) end
+            if isPernicious( p ) then io.write( $" {p}" ) end
         end
         print()
     end

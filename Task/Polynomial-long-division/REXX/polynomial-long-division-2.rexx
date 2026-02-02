@@ -1,5 +1,5 @@
--- 30 Jul 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'POLYNOMIAL LONG DIVISION'
 say version

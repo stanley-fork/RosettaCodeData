@@ -30,7 +30,7 @@ Hailstone(int n,Map<int,int> lengths)
     }
 }
 
-public program()
+public Program()
 {
     int longestChain := 0;
     int longestNumber := 0;

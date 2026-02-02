@@ -1,20 +1,18 @@
-(phixonline)-->
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">10</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d: %v\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">factors</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
+for i=0 to 10 do
+    printf(1,"%d: %v\n",{i,factors(i,-1)})
+end for
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">candidates</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
- <span style="color: #004080;">integer</span> <span style="color: #000000;">maxd</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">20000</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">factors</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">,-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">maxd</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">maxd</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">candidates</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">i</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #000000;">candidates</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">i</span><span style="color: #0000FF;">}</span>
-             <span style="color: #000000;">maxd</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">k</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d divisors: %v\n"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">maxd</span><span style="color: #0000FF;">,</span><span style="color: #000000;">candidates</span><span style="color: #0000FF;">})</span>
-<!--
+sequence candidates = {}
+integer maxd = 0
+for i=1 to 20000 do
+    integer k = length(factors(i,-1))
+    if k>=maxd then
+        if k=maxd then
+            candidates &= i
+        else
+            candidates = {i}
+            maxd = k
+        end if
+    end if
+end for
+printf(1,"%d divisors: %v\n", {maxd,candidates})

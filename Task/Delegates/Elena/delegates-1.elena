@@ -33,7 +33,7 @@ class Delegator
         <= operate(theDelegate);
 }
 
-public program()
+public Program()
 {
     var delegator := new Delegator();
 

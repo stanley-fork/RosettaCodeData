@@ -1,296 +1,294 @@
-(notonline)-->
- <span style="color: #7060A8;">requires</span><span style="color: #0000FF;">(</span><span style="color: #000000;">64</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">enum</span> <span style="color: #000000;">X</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">Y</span>            <span style="color: #000080;font-style:italic;">-- rational ec point</span>
- <span style="color: #008080;">enum</span> <span style="color: #000000;">A</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">B</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">N</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">G</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">R</span>  <span style="color: #000080;font-style:italic;">-- elliptic curve parameters
-                     -- also signature pair(A,B)</span>
+requires(64)
+enum X, Y            -- rational ec point
+enum A, B, N, G, R  -- elliptic curve parameters
+                    -- also signature pair(A,B)
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">mxN</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1073741789</span>   <span style="color: #000080;font-style:italic;">-- maximum modulus</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">mxr</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1073807325</span>   <span style="color: #000080;font-style:italic;">-- max order G = mxN + 65536</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">inf</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">2147483647</span>  <span style="color: #000080;font-style:italic;">-- symbolic infinity</span>
+constant mxN = 1073741789   -- maximum modulus
+constant mxr = 1073807325   -- max order G = mxN + 65536
+constant inf = -2147483647  -- symbolic infinity
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">},</span><span style="color: #000000;">0</span><span style="color: #0000FF;">}</span>    <span style="color: #000080;font-style:italic;">-- single global curve</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">zerO</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">inf</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">}</span>         <span style="color: #000080;font-style:italic;">-- point at infinity zerO</span>
+sequence e = {0,0,0,{0,0},0}    -- single global curve
+constant zerO = {inf,0}         -- point at infinity zerO
 
- <span style="color: #004080;">bool</span> <span style="color: #000000;">inverr</span> <span style="color: #000080;font-style:italic;">-- impossible inverse mod N</span>
+bool inverr -- impossible inverse mod N
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">exgcd</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">v</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">u</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- return mod(v^-1, u)</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">q</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">v</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #000000;">v</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">u</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+function exgcd(atom v, u)
+-- return mod(v^-1, u)
+atom q, t, r = 0, s = 1
+    if v<0 then v += u end if
 
-     <span style="color: #008080;">while</span> <span style="color: #000000;">v</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">q</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">u</span><span style="color: #0000FF;">/</span><span style="color: #000000;">v</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">u</span><span style="color: #0000FF;">-</span><span style="color: #000000;">q</span><span style="color: #0000FF;">*</span><span style="color: #000000;">v</span>
-         <span style="color: #000000;">u</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">v</span>
-         <span style="color: #000000;">v</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">-</span><span style="color: #000000;">q</span><span style="color: #0000FF;">*</span><span style="color: #000000;">s</span>
-         <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
+    while v do
+        q = floor(u/v)
+        t = u-q*v
+        u = v
+        v = t
+        t = r-q*s
+        r = s
+        s = t
+    end while
 
-     <span style="color: #008080;">if</span> <span style="color: #000000;">u</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">" impossible inverse mod N, gcd = %d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">u</span><span style="color: #0000FF;">})</span>
-         <span style="color: #000000;">inverr</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">true</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+    if u!=1 then
+        printf(1," impossible inverse mod N, gcd = %d\n",{u})
+        inverr = true
+    end if
 
-     <span style="color: #008080;">return</span> <span style="color: #000000;">r</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+    return r
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- return mod(a, N)</span>
-     <span style="color: #000000;">a</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">a</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #000000;">a</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">a</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function modn(atom a)
+-- return mod(a, N)
+    a = mod(a,e[N])
+    if a<0 then a += e[N] end if
+    return a
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">modr</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- return mod(a, r)</span>
-     <span style="color: #000000;">a</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">a</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #000000;">a</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">a</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function modr(atom a)
+-- return mod(a, r)
+    a = mod(a,e[R])
+    if a<0 then a += e[R] end if
+    return a
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">disc</span><span style="color: #0000FF;">()</span>
- <span style="color: #000080;font-style:italic;">-- return the discriminant of E</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">a</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">A</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">b</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">B</span><span style="color: #0000FF;">],</span>
-          <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">*</span><span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">*</span><span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">*</span><span style="color: #000000;">a</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(-</span><span style="color: #000000;">16</span><span style="color: #0000FF;">*(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">+</span><span style="color: #000000;">27</span><span style="color: #0000FF;">*</span><span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">*</span><span style="color: #000000;">b</span><span style="color: #0000FF;">)))</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function disc()
+-- return the discriminant of E
+    atom a = e[A], b = e[B],
+         c = 4*modn(a*modn(a*a))
+    return modn(-16*(c+27*modn(b*b)))
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">isO</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- return true if P = zerO</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">inf</span> <span style="color: #008080;">and</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function isO(sequence p)
+-- return true if P = zerO
+    return (p[X]=inf and p[Y]=0)
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">ison</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- return true if P is on curve E</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">if</span> <span style="color: #008080;">not</span> <span style="color: #000000;">isO</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">B</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]*</span><span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">A</span><span style="color: #0000FF;">]+</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]*</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]))</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]*</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">=</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function ison(sequence p)
+-- return true if P is on curve E
+    atom r = 0, s = 0
+    if not isO(p) then
+        r = modn(e[B]+p[X]*modn(e[A]+p[X]*p[X]))
+        s = modn(p[Y]*p[Y])
+    end if
+    return (r=s)
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">pprint</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- print point P with prefix f</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">isO</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s (0)\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">f</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">y</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">y</span><span style="color: #0000FF;">></span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">y</span> <span style="color: #008080;">then</span> <span style="color: #000000;">y</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s (%d,%d)\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">f</span><span style="color: #0000FF;">,</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">],</span><span style="color: #000000;">y</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure pprint(string f, sequence p)
+-- print point P with prefix f
+    if isO(p) then
+        printf(1,"%s (0)\n",{f})
+    else
+        atom y = p[Y]
+        if y>e[N]-y then y -= e[N] end if
+        printf(1,"%s (%d,%d)\n",{f,p[X],y})
+    end if
+end procedure
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">padd</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">q</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- full ec point addition</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">la</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span>
+function padd(sequence p, q)
+-- full ec point addition
+atom la, t
 
-     <span style="color: #008080;">if</span> <span style="color: #000000;">isO</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">q</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">isO</span><span style="color: #0000FF;">(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">p</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+    if isO(p) then return q end if
+    if isO(q) then return p end if
 
-     <span style="color: #008080;">if</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]!=</span><span style="color: #000000;">q</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]</span> <span style="color: #008080;">then</span> <span style="color: #000080;font-style:italic;">--                   R := P + Q</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">q</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]</span>
-         <span style="color: #000000;">la</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">*</span><span style="color: #000000;">exgcd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">q</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]))</span>
+    if p[X]!=q[X] then --                   R := P + Q
+        t = p[Y]-q[Y]
+        la = modn(t*exgcd(p[X]-q[X], e[N]))
 
-     <span style="color: #008080;">else</span> <span style="color: #000080;font-style:italic;">--                                 P = Q, R := 2P</span>
-         <span style="color: #008080;">if</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]=</span><span style="color: #000000;">q</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">and</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]!=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">3</span><span style="color: #0000FF;">*</span><span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]*</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">])+</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">A</span><span style="color: #0000FF;">])</span>
-             <span style="color: #000000;">la</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">*</span><span style="color: #000000;">exgcd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]))</span>
-         <span style="color: #008080;">else</span>
-             <span style="color: #008080;">return</span> <span style="color: #000000;">zerO</span> <span style="color: #000080;font-style:italic;">--                  P = -Q, R := O</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+    else --                                 P = Q, R := 2P
+        if (p[Y]=q[Y]) and (p[Y]!=0) then
+            t = modn(3*modn(p[X]*p[X])+e[A])
+            la = modn(t*exgcd(2*p[Y], e[N]))
+        else
+            return zerO --                  P = -Q, R := O
+        end if
+    end if
 
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">la</span><span style="color: #0000FF;">*</span><span style="color: #000000;">la</span><span style="color: #0000FF;">-</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">q</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">])</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">zerO</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">r</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">la</span><span style="color: #0000FF;">*(</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]-</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">p</span><span style="color: #0000FF;">[</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">])</span>
-     <span style="color: #000000;">r</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">inverr</span> <span style="color: #008080;">then</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">zerO</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">r</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+    t = modn(la*la-p[X]-q[X])
+    sequence r = deep_copy(zerO)
+    r[Y] = modn(la*(p[X]-t)-p[Y])
+    r[X] = t
+    if inverr then r = zerO end if
+    return r
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">pmul</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">p</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">atom</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- R:= multiple kP</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">zerO</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">q</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">p</span>
+function pmul(sequence p, atom k)
+-- R:= multiple kP
+    sequence s = zerO, q = p
 
-     <span style="color: #008080;">while</span> <span style="color: #000000;">k</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">and_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">padd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">q</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">inverr</span> <span style="color: #008080;">then</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">zerO</span><span style="color: #0000FF;">;</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">/</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">q</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">padd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">q</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">q</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">s</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+    while k do
+        if and_bits(k,1) then
+            s = padd(s, q)
+        end if
+        if inverr then s = zerO; exit end if
+        k = floor(k/2)
+        q = padd(q, q)
+    end while
+    return s
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">ellinit</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- initialize elliptic curve</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">a</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">b</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span>
-     <span style="color: #000000;">inverr</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">false</span>
-     <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span>
+function ellinit(sequence i)
+-- initialize elliptic curve
+atom a = i[1], b = i[2]
+    inverr = false
+    e[N] = i[3]
 
-     <span style="color: #008080;">if</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]<</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">or</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]></span><span style="color: #000000;">mxN</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+    if (e[N]<5) or (e[N]>mxN) then return 0 end if
 
-     <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">A</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">B</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">][</span><span style="color: #000000;">X</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">[</span><span style="color: #000000;">4</span><span style="color: #0000FF;">])</span>
-     <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">][</span><span style="color: #000000;">Y</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modn</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">[</span><span style="color: #000000;">5</span><span style="color: #0000FF;">])</span>
-     <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">[</span><span style="color: #000000;">6</span><span style="color: #0000FF;">]</span>
+    e[A] = modn(a)
+    e[B] = modn(b)
+    e[G][X] = modn(i[4])
+    e[G][Y] = modn(i[5])
+    e[R] = i[6]
 
-     <span style="color: #008080;">if</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">]<</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">or</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">]></span><span style="color: #000000;">mxr</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+    if (e[R]<5) or (e[R]>mxr) then return 0 end if
 
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"E: y^2 = x^3 + %dx + %d (mod %d)\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">,</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">N</span><span style="color: #0000FF;">]})</span>
-     <span style="color: #000000;">pprint</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"base point G"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">])</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"order(G, E) = %d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">]})</span>
+    printf(1,"E: y^2 = x^3 + %dx + %d (mod %d)\n",{a,b,e[N]})
+    pprint("base point G", e[G])
+    printf(1,"order(G, E) = %d\n",{e[R]})
 
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+    return -1
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">signature</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- signature primitive</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">u</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">u1</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">V</span>
+function signature(atom s, f)
+-- signature primitive
+atom c, d, u, u1
+sequence V
 
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"signature computation\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">while</span> <span style="color: #004600;">true</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">while</span> <span style="color: #004600;">true</span> <span style="color: #008080;">do</span>
- <span style="color: #000080;font-style:italic;">--          u = rand(e[R]-1)</span>
-             <span style="color: #000000;">u</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">571533488</span>       <span style="color: #000080;font-style:italic;">-- match FreeBASIC output
- --          u = 605163545       -- match C output</span>
-             <span style="color: #000000;">V</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">pmul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">u</span><span style="color: #0000FF;">)</span>
-             <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">V</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">])</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
+    printf(1,"signature computation\n")
+    while true do
+        while true do
+--          u = rand(e[R]-1)
+            u = 571533488       -- match FreeBASIC output
+--          u = 605163545       -- match C output
+            V = pmul(e[G], u)
+            c = modr(V[X])
+            if c!=0 then exit end if
+        end while
 
-         <span style="color: #000000;">u1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">exgcd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">u</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">])</span>
-         <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">u1</span><span style="color: #0000FF;">*(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">+</span><span style="color: #000000;">modr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">*</span><span style="color: #000000;">c</span><span style="color: #0000FF;">)))</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"one-time u = %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">u</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">pprint</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"V = uG"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">V</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+        u1 = exgcd(u, e[R])
+        d = modr(u1*(f+modr(s*c)))
+        if d!=0 then exit end if
+    end while
+    printf(1,"one-time u = %d\n",u)
+    pprint("V = uG", V)
+    return {c,d}
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">verify</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">W</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">atom</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">sequence</span> <span style="color: #000000;">sg</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- verification primitive</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">sg</span><span style="color: #0000FF;">[</span><span style="color: #000000;">A</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">sg</span><span style="color: #0000FF;">[</span><span style="color: #000000;">B</span><span style="color: #0000FF;">],</span>
-      <span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">c1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">h1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">h2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">h</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">V</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">V2</span>
+function verify(sequence W, atom f, sequence sg)
+-- verification primitive
+atom c = sg[A], d = sg[B],
+     t, c1, h1, h2, h
+sequence V, V2
 
-    <span style="color: #000080;font-style:italic;">--domain check</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">></span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;"><</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">])</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span> <span style="color: #008080;">and</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">d</span><span style="color: #0000FF;">></span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">d</span><span style="color: #0000FF;"><</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">if</span> <span style="color: #008080;">not</span> <span style="color: #000000;">t</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+   --domain check
+    t = (c>0) and (c<e[R])
+    t = t and (d>0) and (d<e[R])
+    if not t then return 0 end if
 
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\nsignature verification\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">h</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">exgcd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">d</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">])</span>
-     <span style="color: #000000;">h1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">*</span><span style="color: #000000;">h</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">h2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">*</span><span style="color: #000000;">h</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"h1,h2 = %d,%d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">h1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">h2</span><span style="color: #0000FF;">})</span>
-     <span style="color: #000000;">V</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">pmul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">h1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">V2</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">pmul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">W</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">h2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">pprint</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"h1G"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">V</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">pprint</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"h2W"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">V2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">V</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">padd</span><span style="color: #0000FF;">(</span><span style="color: #000000;">V</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">V2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">pprint</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"+ ="</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">V</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">isO</span><span style="color: #0000FF;">(</span><span style="color: #000000;">V</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">0</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">c1</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">modr</span><span style="color: #0000FF;">(</span><span style="color: #000000;">V</span><span style="color: #0000FF;">[</span><span style="color: #000000;">X</span><span style="color: #0000FF;">])</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"c' = %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">c1</span><span style="color: #0000FF;">)</span>
+    printf(1,"\nsignature verification\n")
+    h = exgcd(d, e[R])
+    h1 = modr(f*h)
+    h2 = modr(c*h)
+    printf(1,"h1,h2 = %d,%d\n",{h1,h2})
+    V = pmul(e[G], h1)
+    V2 = pmul(W, h2)
+    pprint("h1G", V)
+    pprint("h2W", V2)
+    V = padd(V, V2)
+    pprint("+ =", V)
+    if isO(V) then return 0 end if
+    c1 = modr(V[X])
+    printf(1,"c' = %d\n",c1)
 
-     <span style="color: #008080;">return</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">c1</span><span style="color: #0000FF;">=</span><span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+    return (c1=c)
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">errmsg</span><span style="color: #0000FF;">()</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"invalid parameter set\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"_____________________\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure errmsg()
+    printf(1,"invalid parameter set\n")
+    printf(1,"_____________________\n")
+end procedure
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">ec_dsa</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- digital signature on message hash f, error bit d</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">t</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">sg</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">W</span>
+procedure ec_dsa(atom f, d)
+-- digital signature on message hash f, error bit d
+atom i, s, t
+sequence sg, W
 
-    <span style="color: #000080;font-style:italic;">--parameter check</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">(</span><span style="color: #000000;">disc</span><span style="color: #0000FF;">()=</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span> <span style="color: #008080;">or</span> <span style="color: #000000;">isO</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">])</span>
-     <span style="color: #000000;">W</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">pmul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">])</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span> <span style="color: #008080;">or</span> <span style="color: #008080;">not</span> <span style="color: #000000;">isO</span><span style="color: #0000FF;">(</span><span style="color: #000000;">W</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">t</span> <span style="color: #008080;">or</span> <span style="color: #008080;">not</span> <span style="color: #000000;">ison</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">])</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">t</span> <span style="color: #008080;">then</span> <span style="color: #000000;">errmsg</span><span style="color: #0000FF;">()</span> <span style="color: #008080;">return</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+   --parameter check
+    t = (disc()=0)
+    t = t or isO(e[G])
+    W = pmul(e[G], e[R])
+    t = t or not isO(W)
+    t = t or not ison(e[G])
+    if t then errmsg() return end if
 
-     <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\nkey generation\n"</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">--  s = rand(e[R] - 1)</span>
-     <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">509100772</span>       <span style="color: #000080;font-style:italic;">-- match FreeBASIC output
- --  s = 1343570         -- match C output</span>
-     <span style="color: #000000;">W</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">pmul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">G</span><span style="color: #0000FF;">],</span> <span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"private key s = %d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">s</span><span style="color: #0000FF;">})</span>
-     <span style="color: #000000;">pprint</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"public key W = sG"</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">W</span><span style="color: #0000FF;">)</span>
+    puts(1,"\nkey generation\n")
+--  s = rand(e[R] - 1)
+    s = 509100772       -- match FreeBASIC output
+--  s = 1343570         -- match C output
+    W = pmul(e[G], s)
+    printf(1,"private key s = %d\n",{s})
+    pprint("public key W = sG", W)
 
-    <span style="color: #000080;font-style:italic;">--next highest power of 2 - 1</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">e</span><span style="color: #0000FF;">[</span><span style="color: #000000;">R</span><span style="color: #0000FF;">]</span>
-     <span style="color: #000000;">i</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">i</span><span style="color: #0000FF;"><</span><span style="color: #000000;">32</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">or_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">/</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)))</span>
-         <span style="color: #000000;">i</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">2</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">></span><span style="color: #000000;">t</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">/</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\naligned hash %x\n\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">f</span><span style="color: #0000FF;">})</span>
+   --next highest power of 2 - 1
+    t = e[R]
+    i = 1
+    while i<32 do
+        t = or_bits(t,floor(t/power(2,i)))
+        i *= 2
+    end while
+    while f>t do
+        f = floor(f/2)
+    end while
+    printf(1,"\naligned hash %x\n\n",{f})
 
-     <span style="color: #000000;">sg</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">signature</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">inverr</span> <span style="color: #008080;">then</span> <span style="color: #000000;">errmsg</span><span style="color: #0000FF;">()</span> <span style="color: #008080;">return</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"signature c,d = %d,%d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">sg</span><span style="color: #0000FF;">)</span>
+    sg = signature(s, f)
+    if inverr then errmsg() return end if
+    printf(1,"signature c,d = %d,%d\n",sg)
 
-     <span style="color: #008080;">if</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">></span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">while</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">></span><span style="color: #000000;">t</span> <span style="color: #008080;">do</span>
-             <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">d</span><span style="color: #0000FF;">/</span><span style="color: #000000;">2</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-         <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">xor_bits</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"corrupted hash %x\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">f</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
+    if d>0 then
+        while d>t do
+            d = floor(d/2)
+        end while
+        f = xor_bits(f,d)
+        printf(1,"corrupted hash %x\n",{f})
+    end if
 
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">verify</span><span style="color: #0000FF;">(</span><span style="color: #000000;">W</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">f</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">sg</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">inverr</span> <span style="color: #008080;">then</span> <span style="color: #000000;">errmsg</span><span style="color: #0000FF;">()</span> <span style="color: #008080;">return</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">t</span> <span style="color: #008080;">then</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Valid\n_____\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"invalid\n_______\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+    t = verify(W, f, sg)
+    if inverr then errmsg() return end if
+    if t then
+        printf(1,"Valid\n_____\n")
+    else
+        printf(1,"invalid\n_______\n")
+    end if
+end procedure
 
- <span style="color: #000080;font-style:italic;">--Test vectors: elliptic curve domain parameters,
- --short Weierstrass model y^2 = x^3 + ax + b (mod N)</span>
+--Test vectors: elliptic curve domain parameters,
+--short Weierstrass model y^2 = x^3 + ax + b (mod N)
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">tests</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span>
- <span style="color: #000080;font-style:italic;">--                  a,   b,  modulus N, base point G, order(G, E), cofactor</span>
-                   <span style="color: #0000FF;">{</span><span style="color: #000000;">355</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">671</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1073741789</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">13693</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">10088</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1073807281</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span>  <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">7</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">67096021</span><span style="color: #0000FF;">,</span>  <span style="color: #000000;">6580</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">779</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">16769911</span><span style="color: #0000FF;">},</span> <span style="color: #000080;font-style:italic;">--   4</span>
-                   <span style="color: #0000FF;">{</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">3</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">877073</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">878159</span><span style="color: #0000FF;">},</span>
-                   <span style="color: #0000FF;">{</span>  <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>  <span style="color: #000000;">14</span><span style="color: #0000FF;">,</span>      <span style="color: #000000;">22651</span><span style="color: #0000FF;">,</span>    <span style="color: #000000;">63</span><span style="color: #0000FF;">,</span>    <span style="color: #000000;">30</span><span style="color: #0000FF;">,</span>        <span style="color: #000000;">151</span><span style="color: #0000FF;">},</span> <span style="color: #000080;font-style:italic;">-- 151</span>
-                   <span style="color: #0000FF;">{</span>  <span style="color: #000000;">3</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">2</span><span style="color: #0000FF;">,</span>          <span style="color: #000000;">5</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">2</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span>          <span style="color: #000000;">5</span><span style="color: #0000FF;">},</span>
+constant tests = {
+--                  a,   b,  modulus N, base point G, order(G, E), cofactor
+                  {355, 671, 1073741789, 13693, 10088, 1073807281},
+                  {  0,   7,   67096021,  6580,   779,   16769911}, --   4
+                  { -3,   1,     877073,     0,     1,     878159},
+                  {  0,  14,      22651,    63,    30,        151}, -- 151
+                  {  3,   2,          5,     2,     1,          5},
 
-                     <span style="color: #000080;font-style:italic;">--ecdsa may fail if...
-                     --the base point is of composite order</span>
-                   <span style="color: #0000FF;">{</span>  <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">7</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">67096021</span><span style="color: #0000FF;">,</span>  <span style="color: #000000;">2402</span><span style="color: #0000FF;">,</span>  <span style="color: #000000;">6067</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">33539822</span><span style="color: #0000FF;">},</span> <span style="color: #000080;font-style:italic;">--   2
-                     --the given order is a multiple of the true order</span>
-                   <span style="color: #0000FF;">{</span>  <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">7</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">67096021</span><span style="color: #0000FF;">,</span>  <span style="color: #000000;">6580</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">779</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">67079644</span><span style="color: #0000FF;">},</span> <span style="color: #000080;font-style:italic;">--   1
-                     --the modulus is not prime (deceptive example)</span>
-                   <span style="color: #0000FF;">{</span>  <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>   <span style="color: #000000;">7</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">877069</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">97123</span><span style="color: #0000FF;">,</span>     <span style="color: #000000;">877069</span><span style="color: #0000FF;">},</span>
-                     <span style="color: #000080;font-style:italic;">--fails if the modulus divides the discriminant</span>
-                   <span style="color: #0000FF;">{</span> <span style="color: #000000;">39</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">387</span><span style="color: #0000FF;">,</span>      <span style="color: #000000;">22651</span><span style="color: #0000FF;">,</span>    <span style="color: #000000;">95</span><span style="color: #0000FF;">,</span>    <span style="color: #000000;">27</span><span style="color: #0000FF;">,</span>      <span style="color: #000000;">22651</span><span style="color: #0000FF;">}}</span>
+                    --ecdsa may fail if...
+                    --the base point is of composite order
+                  {  0,   7,   67096021,  2402,  6067,   33539822}, --   2
+                    --the given order is a multiple of the true order
+                  {  0,   7,   67096021,  6580,   779,   67079644}, --   1
+                    --the modulus is not prime (deceptive example)
+                  {  0,   7,     877069,     3, 97123,     877069},
+                    --fails if the modulus divides the discriminant
+                  { 39, 387,      22651,    95,    27,      22651}}
 
- <span style="color: #000080;font-style:italic;">--Digital signature on message hash f,
- --set d &gt; 0 to simulate corrupted data</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">f</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">#789ABCDE</span><span style="color: #0000FF;">,</span>
-      <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
+--Digital signature on message hash f,
+--set d > 0 to simulate corrupted data
+atom f = #789ABCDE,
+     d = 0
 
- <span style="color: #000080;font-style:italic;">--for i=1 to length(tests) do</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-     <span style="color: #008080;">if</span> <span style="color: #008080;">not</span> <span style="color: #000000;">ellinit</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">ec_dsa</span><span style="color: #0000FF;">(</span><span style="color: #000000;">f</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+--for i=1 to length(tests) do
+for i=1 to 1 do
+    if not ellinit(tests[i]) then exit end if
+    ec_dsa(f, d)
+end for

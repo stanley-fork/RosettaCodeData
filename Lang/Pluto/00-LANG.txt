@@ -31,6 +31,12 @@ Here is a list of custom libraries used on Rosetta Code:
 |-
 |13 || [[:Category:Pluto-uchar|uchar]] || 14 || [[:Category:Pluto-gchar|gchar]]
 |-
+|15 || [[:Category:Pluto-matrix|matrix]] || 16 || [[:Category:Pluto-poly|poly]]
+|-
+|17 || [[:Category:Pluto-audio|audio]] || 18 || [[:Category:Pluto-bitmap|bitmap]]
+|-
+|19 || [[:Category:Pluto-lsystem|lsystem]] || 20 || [[:Category:Pluto-bignum|bignum]]
+|-
 |}
 
 == To do ==

@@ -6,7 +6,7 @@ NR==1 {
 }
 {
     sum = 0
-    for (i=1; i<=NF; i++) {	
+    for (i=1; i<=NF; i++) {
         sum += $i
     }
     print $0, sum

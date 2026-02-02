@@ -1,5 +1,5 @@
--- 28 Jul 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 numeric digits 20
 
 say 'CUBAN PRIMES'

@@ -1,3 +1,4 @@
-A ← map:⊚⧻.⊜□≠@\n.&fras"unixdict.txt"
-▽:⟜≡(↧⊃(<⇌.|has⇌))⊙◌°map⟜¤A
-&p$"Found _ semordnilaps:"⊸⧻
+A       ← map:⊚⧻.⊜□≠@\n.&fras"unixdict.txt"
+Earlier ← >0˜⨂0≡≤⇌. # Would this sort before its reverse?
+˜▽⟜≡(↧⊃(Earlier|has⇌)°□)⊙◌°map⟜¤A
+&p$"Found _ semordnilaps:\n_"⊸⧻⍆

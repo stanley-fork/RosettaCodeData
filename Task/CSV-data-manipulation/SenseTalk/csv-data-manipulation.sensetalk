@@ -14,7 +14,7 @@ insert "SUM" into item 1 of csvData -- add a new column heading
 
 // Go through all of the data rows to add the sum
 repeat with rowNum= 2 to the number of items in csvData
-	insert the sum of item rowNum of csvData into item rowNum of csvData
+   insert the sum of item rowNum of csvData into item rowNum of csvData
 end repeat
 
 put csvData -- see the modified data as a list of lists

@@ -2,12 +2,12 @@
 
 ;; converts sieve->list for integers in [nmin .. nmax[
 (define (s-range sieve nmin nmax (base 0))
-	(for/list ([ i (in-range nmin nmax)]) #:when (bit-vector-ref sieve i) (+ i base)))
-	
+   (for/list ([ i (in-range nmin nmax)]) #:when (bit-vector-ref sieve i) (+ i base)))
+
 ;; next prime in sieve > p, or #f
 (define (s-next-prime sieve p ) ;;
-		(bit-vector-scan-1 sieve (1+ p)))
-		
+      (bit-vector-scan-1 sieve (1+ p)))
+
 
 ;; returns a bit-vector - sieve- all numbers in [0..n[
 (define (eratosthenes n)
@@ -15,7 +15,7 @@
   (bit-vector-set! primes 0 #f)
   (bit-vector-set! primes 1 #f)
   (for ([p (1+ (sqrt n))])
-  		 #:when (bit-vector-ref primes  p)
+       #:when (bit-vector-ref primes  p)
          (for ([j (in-range (* p p) n p)])
     (bit-vector-set! primes j #f)))
    primes)

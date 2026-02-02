@@ -1,40 +1,38 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #000080;font-style:italic;">-- returns inf/-nan for n&gt;85, and needs the rounding for n&gt;=14, accurate to n=29</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">catalan1</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">factorial</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)/(</span><span style="color: #7060A8;">factorial</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)*</span><span style="color: #7060A8;">factorial</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">))+</span><span style="color: #000000;">0.5</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+-- returns inf/-nan for n>85, and needs the rounding for n>=14, accurate to n=29
+function catalan1(integer n)
+    return round(factorial(2*n)/(factorial(n+1)*factorial(n)))
+end function
 
- <span style="color: #000080;font-style:italic;">-- returns inf for n&gt;519, accurate to n=30:</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">catalan2</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- NB: very slow!</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #008080;">not</span> <span style="color: #000000;">n</span>
-     <span style="color: #000000;">n</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">catalan2</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">catalan2</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+-- returns inf for n>519, accurate to n=30:
+function catalan2(integer n) -- NB: very slow!
+atom res = not n
+    n -= 1
+    for i=0 to n do
+        res += catalan2(i)*catalan2(n-i)
+    end for
+    return res
+end function
 
- <span style="color: #000080;font-style:italic;">-- returns inf for n&gt;514, accurate to n=30:</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">catalan3</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #008080;">return</span> <span style="color: #000000;">1</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">*(</span><span style="color: #000000;">2</span><span style="color: #0000FF;">*</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)/(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">+</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)*</span><span style="color: #000000;">catalan3</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+-- returns inf for n>514, accurate to n=30:
+function catalan3(integer n)
+    if n=0 then return 1 end if
+    return 2*(2*n-1)/(1+n)*catalan3(n-1)
+end function
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">4</span><span style="color: #0000FF;">),</span><span style="color: #000000;">16</span><span style="color: #0000FF;">),</span>
-          <span style="color: #000000;">times</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">4</span> <span style="color: #008080;">do</span>
-     <span style="color: #004080;">atom</span> <span style="color: #000000;">t0</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">time</span><span style="color: #0000FF;">()</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">to</span> <span style="color: #000000;">15</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">switch</span> <span style="color: #000000;">t</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">:</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">catalan1</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">:</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">3</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">catalan2</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">:</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">4</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">catalan3</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-             <span style="color: #008080;">case</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">:</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">][</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">;</span> <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%2d: %10d %10d %10d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">switch</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">t</span><span style="color: #0000FF;">=</span><span style="color: #000000;">4</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">times</span><span style="color: #0000FF;">[</span><span style="color: #000000;">t</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">elapsed</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">time</span><span style="color: #0000FF;">()-</span><span style="color: #000000;">t0</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"times:%8s %10s %10s\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">times</span><span style="color: #0000FF;">)</span>
-<!--
+sequence res = repeat(repeat(0,4),16),
+         times = repeat(0,3)
+for t=1 to 4 do
+    atom t1 = time()
+    for i=0 to 15 do
+        switch t do
+            case 1: res[i+1][2] = catalan1(i)
+            case 2: res[i+1][3] = catalan2(i)
+            case 3: res[i+1][4] = catalan3(i)
+            case 4: res[i+1][1] = i; printf(1,"%2d: %10d %10d %10d\n",res[i+1])
+        end switch
+    end for
+    if t=4 then exit end if
+    times[t] = elapsed(time()-t1)
+end for
+printf(1,"times:%8s %10s %10s\n",times)

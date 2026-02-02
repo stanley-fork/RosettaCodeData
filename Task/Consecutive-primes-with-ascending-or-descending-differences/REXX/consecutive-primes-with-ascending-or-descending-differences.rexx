@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'CONSECUTIVE PRIMES'
 say version
@@ -58,6 +58,4 @@ call charout ,prim.last
 say; say
 return
 
-include Sequences
-include Functions
-include Abend
+include Math

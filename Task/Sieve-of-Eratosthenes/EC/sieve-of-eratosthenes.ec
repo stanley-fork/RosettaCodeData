@@ -1,43 +1,84 @@
-public class FindPrime
+class BitArray : private Array<byte>
 {
-   Array<int> primeList { [ 2 ], minAllocSize = 64 };
-   int index;
+   uint64 bitSize;
 
-   index = 3;
-
-   bool HasPrimeFactor(int x)
+   property uint64 size
    {
-      int max = (int)floor(sqrt((double)x));
-
-      for(i : primeList)
+      set
       {
-         if(i > max) break;
-         if(x % i == 0) return true;
+         bitSize = value;
+         Array::size = (uint)((value + 7) >> 3);
       }
-      return false;
+      get { return bitSize; }
    }
 
-   public int GetPrime(int x)
+   bool check(uint64 n)
    {
-      if(x > primeList.count - 1)
-      {
-         for (; primeList.count != x; index += 2)
-            if(!HasPrimeFactor(index))
-            {
-               if(primeList.count >= primeList.minAllocSize) primeList.minAllocSize *= 2;
-               primeList.Add(index);
-            }
-      }
-      return primeList[x-1];
+      uint b = (uint)(n >> 3), s = (uint)(n & 7);
+      return (bool)this[b] & (1 << s);
+   }
+
+   void explore(uint64 n)
+   {
+      uint b = (uint)(n >> 3), s = (uint)n & 7;
+      this[b] |= (1 << s);
    }
 }
 
-class PrimeApp : Application
+class EratosthenesSieve
 {
-   FindPrime fp { };
+   BitArray isComposite { };
+
+   uint64 limit;
+
+   void sieve(uint64 limit)
+   {
+      this.limit = limit;
+
+      if(limit >= 2)
+      {
+         uint64 i, j, m = (uint64)(sqrt((double)limit) + 0.1);
+
+         isComposite.size = limit + 1;
+         isComposite.explore(0);
+         isComposite.explore(1);
+
+         for(i = 2; i <= m; i++)
+            if(!isComposite.check(i))
+               for(j = i * i; j <= limit; j += i)
+                  isComposite.explore(j);
+      }
+      else
+         isComposite.Free();
+   }
+
+   void printPrimes()
+   {
+      if(!isComposite.count)
+         PrintLn("No primes found within limit (", limit, ").");
+      else
+      {
+         uint64 i, count = 0;
+
+         for(i = 2; i <= limit; i++)
+            if(!isComposite.check(i))
+            {
+               Print(i, " ");
+               count++;
+            }
+         PrintLn("");
+         PrintLn(count, " primes found up to ", limit);
+      }
+   }
+}
+
+class SieveOfEratosthenesApp : Application
+{
+   EratosthenesSieve sieve { };
+
    void Main()
    {
-      int num = argc > 1 ? atoi(argv[1]) : 1;
-      PrintLn(fp.GetPrime(num));
+      sieve.sieve(argc > 1 ? (uint64)strtoull(argv[1], null, 10) : 100);
+      sieve.printPrimes();
    }
 }

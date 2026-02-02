@@ -36,7 +36,7 @@ end fn = isInOrder
 
 //
 // faro out shuffle
-// the deck is halves then both halves interweaved 1 by 1
+// the deck is halved then both halves interweaved 1 by 1
 
 local fn faroShuffle(src as Int, des as Int, n as Int)
   Int  i

@@ -5,7 +5,7 @@ object SubstitutionCipher {
 
     fun encode(s: String): String {
         val sb = StringBuilder()
-        for (c in s) sb.append(key[c.toInt() - 32])
+        for (c in s) sb.append(key[c.code - 32])
         return sb.toString()
     }
 

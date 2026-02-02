@@ -1,4 +1,4 @@
-words = tolower(readLines("http://wiki.puzzlers.org/pub/wordlists/unixdict.txt"))
+words = tolower(readLines("https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt"))
 ie.npc = sum(grepl("(?<!c)ie", words, perl = T))
 ei.npc = sum(grepl("(?<!c)ei", words, perl = T))
 ie.pc = sum(grepl("cie", words, fixed = T))

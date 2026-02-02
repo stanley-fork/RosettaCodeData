@@ -12,7 +12,7 @@ class Folder(){
 def spiral(n:Int) = {
   def dup(n:Int) = (1 to n).flatMap(i=>List(i,i)).toList
   val folds = n :: dup(n-1).reverse  //define fold part lengths
-	
+
   var array = new Array[Array[Int]](n,n)
   val fold = new Folder()
 

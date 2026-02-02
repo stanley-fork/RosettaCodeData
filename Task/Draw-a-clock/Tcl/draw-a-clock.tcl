@@ -13,9 +13,9 @@ proc updateClock t {
     set m [expr {$m + $s/60.0}]
     set h [expr {($h % 12 + $m/60.0) * 5}]
     foreach tag {hour minute second} value [list $h $m $s] len {50 80 80} {
-	.c coords $tag 100 100 \
-	    [expr {100 + $len*sin($value/30.0*3.14159)}] \
-	    [expr {100 - $len*cos($value/30.0*3.14159)}]
+    .c coords $tag 100 100 \
+        [expr {100 + $len*sin($value/30.0*3.14159)}] \
+        [expr {100 - $len*cos($value/30.0*3.14159)}]
     }
 }
 
@@ -26,8 +26,8 @@ proc ticker {} {
     set t [clock seconds]
     after 250 ticker
     if {$t != $time} {
-	set time $t
-	updateClock $t
+    set time $t
+    updateClock $t
     }
 }
 ticker

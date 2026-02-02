@@ -2,15 +2,14 @@ repeat
    s$ = input
    until s$ = ""
    if substr s$ 1 1 = ">"
-      if stat = 1
-         print ""
-      .
+      if stat = 1 : print ""
       stat = 1
       print s$
    else
       write s$
    .
 .
+print ""
 input_data
 >Rosetta_Example_1
 THERECANBENOSPACE

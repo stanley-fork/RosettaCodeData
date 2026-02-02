@@ -2,14 +2,14 @@
 110 DEF NGames = 10000
 120 RANDOMIZE
 130 LET NWins = 0
-140 FOR Game = 0 TO NGames
+140 FOR Game = 1 TO NGames
 150    IF IsGameWon(0) <> 0 THEN LET NWins = NWins + 1
 160 NEXT Game
 170 PRINT "NOT switching doors wins car in ";
 180 PRINT USING "##.#": NWins / NGames * 100;
 190 PRINT "% of games."
 200 LET NWins = 0
-210 FOR Game = 0 TO NGames
+210 FOR Game = 1 TO NGames
 220    IF IsGameWon(1) <> 0 THEN LET NWins = NWins + 1
 230 NEXT Game
 240 PRINT "But switching doors wins car in ";

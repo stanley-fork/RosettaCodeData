@@ -2,7 +2,7 @@ knight: "knight"
 socks: "socks"
 brooms: "brooms"
 
-print drop knight.                      ; strip first character
+print drop knight                       ; strip first character
 print slice knight 1 (size knight)-1    ; alternate way to strip first character
 
 print chop socks                        ; strip last character

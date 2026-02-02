@@ -1,16 +1,16 @@
 import extensions;
 
-public program()
+public Program()
 {
-   var a := console.readLine().toInt();
-   var b := console.readLine().toInt();
+   var a := Console.readLine().toInt();
+   var b := Console.readLine().toInt();
 
    if (a < b)
-       { console.printLine(a," is less than ",b) };
+       { Console.printLine(a," is less than ",b) };
 
    if (a == b)
-       { console.printLine(a," equals ",b) };
+       { Console.printLine(a," equals ",b) };
 
    if (a > b)
-       { console.printLine(a," is greater than ",b) }
+       { Console.printLine(a," is greater than ",b) }
 }

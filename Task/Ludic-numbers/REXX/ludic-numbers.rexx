@@ -1,5 +1,5 @@
--- 22 Mar 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'LUDIC NUMBERS'
 say version
@@ -47,6 +47,4 @@ end
 say; say
 return
 
-include Sequences
-include Functions
-include Abend
+include Math

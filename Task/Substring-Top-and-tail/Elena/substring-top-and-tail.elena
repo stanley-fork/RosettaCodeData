@@ -1,10 +1,10 @@
 import extensions;
 
-public program()
+public Program()
 {
     var testString := "test";
 
-    console.printLine(testString.Substring(1));
-    console.printLine(testString.Substring(0, testString.Length - 1));
-    console.printLine(testString.Substring(1, testString.Length - 2))
+    Console.printLine(testString.Substring(1));
+    Console.printLine(testString.Substring(0, testString.Length - 1));
+    Console.printLine(testString.Substring(1, testString.Length - 2))
 }

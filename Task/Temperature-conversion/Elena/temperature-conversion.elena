@@ -9,25 +9,25 @@ convertKelvinToRankine(x)
 convertKelvinToCelsius(x)
     = x - 273.15r;
 
-public program()
+public Program()
 {
-    console.print("Enter a Kelvin Temperature: ");
+    Console.print("Enter a Kelvin Temperature: ");
     var inputVal := console.readLine();
     real kelvinTemp := 0.0r;
     try
     {
-        kelvinTemp := realConvertor.convert(inputVal)
+        kelvinTemp := RealConvertor.convert(inputVal)
     }
     catch(Exception e)
     {
-        console.printLine("Invalid input value: ", inputVal);
+        Console.printLine("Invalid input value: ", inputVal);
 
         AbortException.raise()
     };
 
-    console.printLine("Kelvin: ", kelvinTemp);
-    console.printLine("Fahrenheit: ", convertKelvinToFahrenheit(kelvinTemp));
-    console.printLine("Rankine: ", convertKelvinToRankine(kelvinTemp));
-    console.printLine("Celsius: ", convertKelvinToCelsius(kelvinTemp));
-    console.readChar()
+    Console.printLine("Kelvin: ", kelvinTemp);
+    Console.printLine("Fahrenheit: ", convertKelvinToFahrenheit(kelvinTemp));
+    Console.printLine("Rankine: ", convertKelvinToRankine(kelvinTemp));
+    Console.printLine("Celsius: ", convertKelvinToCelsius(kelvinTemp));
+    Console.readChar()
 }

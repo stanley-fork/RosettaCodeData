@@ -1,43 +1,41 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">seasons</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"Chaos"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Discord"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Confusion"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Bureaucracy"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"The Aftermath"</span><span style="color: #0000FF;">},</span>
-          <span style="color: #000000;">weekday</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"Sweetmorn"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Boomtime"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Pungenday"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Prickle-Prickle"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Setting Orange"</span><span style="color: #0000FF;">},</span>
-          <span style="color: #000000;">apostle</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"Mungday"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Mojoday"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Syaday"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Zaraday"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Maladay"</span><span style="color: #0000FF;">},</span>
-          <span style="color: #000000;">holiday</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"Chaoflux"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Discoflux"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Confuflux"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Bureflux"</span><span style="color: #0000FF;">,</span> <span style="color: #008000;">"Afflux"</span><span style="color: #0000FF;">}</span>
+with javascript_semantics
+constant seasons = {"Chaos", "Discord", "Confusion", "Bureaucracy", "The Aftermath"},
+         weekday = {"Sweetmorn", "Boomtime", "Pungenday", "Prickle-Prickle", "Setting Orange"},
+         apostle = {"Mungday", "Mojoday", "Syaday", "Zaraday", "Maladay"},
+         holiday = {"Chaoflux", "Discoflux", "Confuflux", "Bureflux", "Afflux"}
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">discordianDate</span><span style="color: #0000FF;">(</span><span style="color: #004080;">sequence</span> <span style="color: #000000;">dt</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,</span><span style="color: #000000;">m</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">dt</span><span style="color: #0000FF;">,</span>
-             <span style="color: #000000;">leap</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">is_leap_year</span><span style="color: #0000FF;">(</span><span style="color: #000000;">y</span><span style="color: #0000FF;">),</span>
-             <span style="color: #000000;">doy</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">day_of_year</span><span style="color: #0000FF;">(</span><span style="color: #000000;">y</span><span style="color: #0000FF;">,</span><span style="color: #000000;">m</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">1</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">dyear</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">y</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1166</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">leap</span> <span style="color: #008080;">and</span> <span style="color: #000000;">m</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">and</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">=</span><span style="color: #000000;">29</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #008000;">"St. Tib's Day, in the YOLD "</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">dyear</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">leap</span> <span style="color: #008080;">and</span> <span style="color: #000000;">doy</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">60</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">doy</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">dsday</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">doy</span><span style="color: #0000FF;">,</span><span style="color: #000000;">73</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span>
-             <span style="color: #000000;">dseason</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">doy</span><span style="color: #0000FF;">/</span><span style="color: #000000;">73</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">dsday</span><span style="color: #0000FF;">=</span><span style="color: #000000;">5</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">apostle</span><span style="color: #0000FF;">[</span><span style="color: #000000;">dseason</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">&</span> <span style="color: #008000;">", in the YOLD "</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">dyear</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #000000;">dsday</span><span style="color: #0000FF;">=</span><span style="color: #000000;">50</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">holiday</span><span style="color: #0000FF;">[</span><span style="color: #000000;">dseason</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">&</span> <span style="color: #008000;">", in the YOLD "</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">dyear</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">dseas</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">seasons</span><span style="color: #0000FF;">[</span><span style="color: #000000;">dseason</span><span style="color: #0000FF;">],</span>
-            <span style="color: #000000;">dwday</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">weekday</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">doy</span><span style="color: #0000FF;">,</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%s, day %d of %s in the YOLD %s"</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">dwday</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dsday</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dseas</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">dyear</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function discordianDate(sequence dt)
+    integer {y,m,d} = dt,
+            leap = is_leap_year(y),
+            doy = day_of_year(y,m,d)-1
+    string dyear = sprintf("%d",y+1166)
+    if leap and m=2 and d=29 then
+        return "St. Tib's Day, in the YOLD " & dyear
+    end if
+    if leap and doy>=60 then
+        doy -= 1
+    end if
+    integer dsday = remainder(doy,73)+1,
+            dseason = floor(doy/73+1)
+    if dsday=5 then
+        return apostle[dseason] & ", in the YOLD " & dyear
+    elsif dsday=50 then
+        return holiday[dseason] & ", in the YOLD " & dyear
+    end if
+    string dseas = seasons[dseason],
+           dwday = weekday[remainder(doy,5)+1]
+    return sprintf("%s, day %d of %s in the YOLD %s", {dwday, dsday, dseas, dyear})
+end function
 
- <span style="color: #000080;font-style:italic;">-- test code</span>
+-- test code
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">dt</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">2015</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">timedate</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
- <span style="color: #004080;">atom</span> <span style="color: #000000;">oneday</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">timedelta</span><span style="color: #0000FF;">(</span><span style="color: #000000;">days</span><span style="color: #0000FF;">:=</span><span style="color: #000000;">1</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">set_timedate_formats</span><span style="color: #0000FF;">({</span><span style="color: #008000;">"DD/MM/YYYY"</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">5</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s: %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">format_timedate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dt</span><span style="color: #0000FF;">),</span><span style="color: #000000;">discordianDate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dt</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #000000;">dt</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">adjust_timedate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dt</span><span style="color: #0000FF;">,</span><span style="color: #000000;">oneday</span><span style="color: #0000FF;">*</span><span style="color: #000000;">72</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s: %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">format_timedate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dt</span><span style="color: #0000FF;">),</span><span style="color: #000000;">discordianDate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dt</span><span style="color: #0000FF;">)})</span>
-     <span style="color: #000000;">dt</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">adjust_timedate</span><span style="color: #0000FF;">(</span><span style="color: #000000;">dt</span><span style="color: #0000FF;">,</span><span style="color: #000000;">oneday</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+sequence dt = {2015,1,1,0,0,0,0,0}
+include timedate.e
+atom oneday = timedelta(days:=1)
+set_timedate_formats({"DD/MM/YYYY"})
+for i=1 to 5 do
+    printf(1,"%s: %s\n",{format_timedate(dt),discordianDate(dt)})
+    dt = adjust_timedate(dt,oneday*72)
+    printf(1,"%s: %s\n",{format_timedate(dt),discordianDate(dt)})
+    dt = adjust_timedate(dt,oneday)
+end for

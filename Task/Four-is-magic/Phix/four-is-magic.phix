@@ -1,80 +1,77 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #000080;font-style:italic;">--&lt;adapted from demo\rosetta\number_names.exw, which alas outputs ",", "and", uses "minus" instead of "negative", etc...&gt;</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">twenties</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"zero"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"one"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"two"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"three"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"four"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"five"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"six"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"seven"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"eight"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"nine"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"ten"</span><span style="color: #0000FF;">,</span>
-     <span style="color: #008000;">"eleven"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"twelve"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"thirteen"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"fourteen"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"fifteen"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"sixteen"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"seventeen"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"eighteen"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"nineteen"</span><span style="color: #0000FF;">},</span>
-          <span style="color: #000000;">decades</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #008000;">"twenty"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"thirty"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"forty"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"fifty"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"sixty"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"seventy"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"eighty"</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"ninety"</span><span style="color: #0000FF;">}</span>
+with javascript_semantics
+constant twenties = {"zero","one","two","three","four","five","six","seven","eight","nine","ten",
+    "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"},
+         decades = {"twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"}
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">hundred</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;"><</span><span style="color: #000000;">20</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">twenties</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">20</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">decades</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">/</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">decades</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">/</span><span style="color: #000000;">10</span><span style="color: #0000FF;">),</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">&</span> <span style="color: #008000;">'-'</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">twenties</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function hundred(integer n)
+    if n<20 then
+        return twenties[mod(n,20)+1]
+    elsif mod(n,10)=0 then
+        return decades[mod(floor(n/10),10)-1]
+    end if
+    return decades[mod(floor(n/10),10)-1] & '-' & twenties[mod(n,10)+1]
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">thousand</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;"><</span><span style="color: #000000;">100</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">hundred</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">100</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">twenties</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">/</span><span style="color: #000000;">100</span><span style="color: #0000FF;">),</span><span style="color: #000000;">20</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]&</span><span style="color: #008000;">" hundred"</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">twenties</span><span style="color: #0000FF;">[</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">/</span><span style="color: #000000;">100</span><span style="color: #0000FF;">),</span><span style="color: #000000;">20</span><span style="color: #0000FF;">)+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">&</span> <span style="color: #008000;">" hundred "</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">hundred</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">100</span><span style="color: #0000FF;">))</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function thousand(integer n)
+    if n<100 then
+        return hundred(n)
+    elsif mod(n,100)=0 then
+        return twenties[mod(floor(n/100),20)+1]&" hundred"
+    end if
+    return twenties[mod(floor(n/100),20)+1] & " hundred " & hundred(mod(n,100))
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">orders</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{{</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">12</span><span style="color: #0000FF;">),</span><span style="color: #008000;">"trillion"</span><span style="color: #0000FF;">},</span>
-                    <span style="color: #0000FF;">{</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">9</span><span style="color: #0000FF;">),</span><span style="color: #008000;">"billion"</span><span style="color: #0000FF;">},</span>
-                    <span style="color: #0000FF;">{</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">6</span><span style="color: #0000FF;">),</span><span style="color: #008000;">"million"</span><span style="color: #0000FF;">},</span>
-                    <span style="color: #0000FF;">{</span><span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">,</span><span style="color: #000000;">3</span><span style="color: #0000FF;">),</span><span style="color: #008000;">"thousand"</span><span style="color: #0000FF;">}}</span>
+constant orders = {{power(10,12),"trillion"},
+                   {power(10,9),"billion"},
+                   {power(10,6),"million"},
+                   {power(10,3),"thousand"}}
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">triplet</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">orders</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #0000FF;">{</span><span style="color: #004080;">atom</span> <span style="color: #000000;">order</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">string</span> <span style="color: #000000;">name</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">orders</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span>
-         <span style="color: #004080;">atom</span> <span style="color: #000000;">high</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">/</span><span style="color: #000000;">order</span><span style="color: #0000FF;">),</span>
-              <span style="color: #000000;">low</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">order</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">high</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">thousand</span><span style="color: #0000FF;">(</span><span style="color: #000000;">high</span><span style="color: #0000FF;">)&</span><span style="color: #008000;">' '</span><span style="color: #0000FF;">&</span><span style="color: #000000;">name</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">low</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">low</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #000000;">high</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-             <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">" "</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">or</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">=</span><span style="color: #008000;">""</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">thousand</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function triplet(integer n)
+    string res = ""
+    for i=1 to length(orders) do
+        {atom order, string name} = orders[i]
+        atom high = floor(n/order),
+             low = mod(n,order)
+        if high!=0 then
+            res &= thousand(high)&' '&name
+        end if
+        n = low
+        if low=0 then exit end if
+        if length(res) and high!=0 then
+            res &= " "
+        end if
+    end for
+    if n!=0 or res="" then
+        res &= thousand(floor(n))
+    end if
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">spell</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;"><</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">"negative "</span>
-         <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">n</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">triplet</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #000080;font-style:italic;">--&lt;/adapted from number_names.exw&gt;</span>
+function spell(integer n)
+    string res = ""
+    if n<0 then
+        res = "negative "
+        n = -n
+    end if
+    res &= triplet(n)
+    return res
+end function
+--</adapted from number_names.exw>
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">fourIsMagic</span><span style="color: #0000FF;">(</span><span style="color: #004080;">atom</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">spell</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">upper</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">s</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">4</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">s</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">spell</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">" is "</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">&</span> <span style="color: #008000;">", "</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">s</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #000000;">t</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">" is magic.\n"</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">t</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function fourIsMagic(atom n)
+    string s = spell(n)
+    s[1] = upper(s[1])
+    string t = s
+    while n!=4 do
+        n = length(s)
+        s = spell(n)
+        t &= " is " & s & ", " & s
+    end while
+    t &= " is magic.\n"
+    return t
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">tests</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{-</span><span style="color: #000000;">7</span><span style="color: #0000FF;">,</span> <span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">2</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">3</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">4</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">23</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">1e9</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">20140</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">100</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">130</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">151</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">999999</span><span style="color: #0000FF;">}</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">puts</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #000000;">fourIsMagic</span><span style="color: #0000FF;">(</span><span style="color: #000000;">tests</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]))</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+constant tests = {-7, -1, 0, 1, 2, 3, 4, 23, 1e9, 20140, 100, 130, 151, 999999}
+for i=1 to length(tests) do
+    puts(1,fourIsMagic(tests[i]))
+end for

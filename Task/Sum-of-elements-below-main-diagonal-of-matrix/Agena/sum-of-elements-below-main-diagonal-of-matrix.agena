@@ -2,7 +2,7 @@ scope # sum the elements below the main diagonal of a matrix
 
     # returns the sum of the elements below the main diagonal
     #         of m, m must be a square matrix
-    local procedure lowerSum( m :: sequence ) :: number
+    local proc lowerSum( m :: sequence ) :: number
         local sum := 0;
         for r from 2 to size m do
             if size m[ r ] <> size m then

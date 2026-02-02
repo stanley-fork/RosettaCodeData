@@ -88,10 +88,10 @@ Intel $8B85080000008B008B9D0C0000000103.
 And yes, that is 80x86 machine code in Intel hex format. It decompiles to
 
 <syntaxhighlight lang="asm">
-mov eax, [ebp+8]	; $8B8508000000 -> load the current stack address + 8 into the accumulator
-mov eax, [eax]  	; $8B00 -> load memory pointed to by accumulator into accumulator
-mov ebx, [ebp+12]	; $8B9D0C000000-> load the current stack address + 12 into working register
-add [ebx],eax     	; $0103 -> add accumulator to memory pointed to by working register
+mov eax, [ebp+8]	; $8B8508000000 -> Load the value at (EBP + 8) into EAX (1st function argument)
+mov eax, [eax]  	; $8B00 -> Dereference EAX (load the value from the address stored in EAX)
+mov ebx, [ebp+12]	; $8B9D0C000000-> Load the value at (EBP + 12) into EBX (2nd function argument)
+add [ebx],eax     	; $0103 -> Add EAX to the value stored at the address in EBX
 </syntaxhighlight>
 
 So the language has stacked pointers (all parameters are passed by reference) to the two numbers via a number to another number and then it calls this code which gets the first number, and adds it to the second. Hopefully this example shows how high level and low level Plain English is at the same time.
@@ -252,3 +252,211 @@ https://forums.parallax.com/discussion/163792/plain-english-programming a long r
 
 ==Todo==
 [[Reports:Tasks_not_implemented_in_PlainEnglish]]
+
+=Plain English Sources=
+[https://en.WikipediA.org/wiki/Integrated_development_environment <abbr title="Integrated Development Environment">IDE</abbr>]
+and Compiler.
+==Creators==
+* Gerry Rzeppa (Father)  
+[https://www.quora.com/profile/Gerry-Rzeppa Quora Profile]  
+[https://www.linkedin.com/in/gerry-rzeppa-17b8051b/ LinkedIn Profile]  
+[https://twitter.com/gerryrzeppa Twitter Profile]  
+[https://github.com/GerryRzeppa GitHub Profile]  
+* Dan Rzeppa (Son)
+[https://github.com/danrzeppa GitHub Profile]  
+
+==Contributors==
+* Elender Góis Gallas (Plain Portuguese Creator)  
+[https://www.quora.com/profile/Elender-G%C3%B3is-Gallas-%E3%82%A8%E3%83%AC%E3%83%B3%E3%83%87-%E3%82%AC%E3%83%A9%E3%82%B9 Quora Profile]  
+[https://www.linkedin.com/in/elender/ LinkedIn Profile]  
+[https://twitter.com/elenderg Twitter Profile]  
+[https://github.com/elenderg GitHub Profile]  
+* Pablo Cayuela (Plain Spanish Creator)
+[https://www.linkedin.com/in/pablo-cayuela-a42b019/ LinkedIn Profile]
+
+==Copyright Owner==
+* The Osmosian Order
+** [http://www.Osmosian.com/ The Osmosian Order of Plain English Programmers] Brochure
+*** [http://www.osmosian.com/manifesto.pdf The Osmosian Manifesto]
+** [https://OsmosianPlainEnglishProgramming.blog/ Wordpress Blog] <br />In chronological order:
+*** 2018
+**** 05
+***** 01 [https://OsmosianPlainEnglishProgramming.blog/2018/05/01/a-solution-to-the-fatal-flaw-in-relational-database-systems/ A Solution to the Fatal Flaw in Relational Database Systems]
+***** 02 [https://OsmosianPlainEnglishProgramming.blog/2018/05/02/plain-english-programming-fractal-forests/ Fractal Forests]
+***** 02 [https://OsmosianPlainEnglishProgramming.blog/2018/05/02/plain-english-programming-is-a-picture-worth-1000-words/ Plain English Programming — Is a Picture Worth 1000 Words?]
+***** 03 [https://OsmosianPlainEnglishProgramming.blog/2018/05/03/plain-english-programming-robotics/ Robotics]
+***** 03 [https://OsmosianPlainEnglishProgramming.blog/2018/05/03/plain-english-programming-a-wysiwyg-document-editor/ A WYSIWYG Document Editor]
+***** 04 [https://OsmosianPlainEnglishProgramming.blog/2018/05/04/plain-english-programming-musings-on-the-a-in-ai/ Musings on the “A” in “AI”]
+***** 04 [https://OsmosianPlainEnglishProgramming.blog/2018/05/04/plain-english-programming-a-simple-merge-sort/ Robotics]
+***** 05 [https://OsmosianPlainEnglishProgramming.blog/2018/05/05/plain-english-programming-smoothing-polygons/ Plain English Programming — Smoothing Polygons]
+***** 05 [https://OsmosianPlainEnglishProgramming.blog/2018/05/05/plain-english-programming-kobayashi-maru-primes/ Kobayashi Maru Primes]
+***** 06 [https://OsmosianPlainEnglishProgramming.blog/2018/05/06/plain-english-programming-nested-ifs/ Plain English Programming — Nested IFs]
+***** 06 [https://OsmosianPlainEnglishProgramming.blog/2018/05/06/plain-english-programming-the-malevolent-mathemagician/ Plain English Programming — The Malevolent Mathemagician]
+***** 07 [https://OsmosianPlainEnglishProgramming.blog/2018/05/07/plain-english-programming-parsing-with-riders/ Parsing with Riders]
+***** 07 [https://OsmosianPlainEnglishProgramming.blog/2018/05/07/plain-english-programming-jackson-pollocks-alphabet-soup/ Plain English Programming — Jackson Pollock’s Alphabet Soup]
+***** 08 [https://OsmosianPlainEnglishProgramming.blog/2018/05/08/plain-english-programming-random-numbers/ Random Numbers]
+***** 08 [https://OsmosianPlainEnglishProgramming.blog/2018/05/08/plain-english-programming-sierpinski-koch/ Sierpinski & Koch]
+***** 09 [https://OsmosianPlainEnglishProgramming.blog/2018/05/09/plain-english-programming-the-travelling-salesman/ The Travelling Salesman]
+***** 09 [https://OsmosianPlainEnglishProgramming.blog/2018/05/09/plain-english-programming-a-jigsaw-puzzle/ A Jigsaw Puzzle]
+***** 10 [https://OsmosianPlainEnglishProgramming.blog/2018/05/10/plain-english-programming-anagrams/ Anagrams]
+***** 11 [https://OsmosianPlainEnglishProgramming.blog/2018/05/11/plain-english-programming-the-amazing-multimaze/ The Amazing MultiMaze]
+***** 12 [https://OsmosianPlainEnglishProgramming.blog/2018/05/12/plain-english-programming-painting-like-monet/ Painting Like Monet]
+***** 13 [https://OsmosianPlainEnglishProgramming.blog/2018/05/13/plain-english-programming-bresenhams-circle-drawing-algorithm/ Bresenham’s Circle Drawing Algorithm]
+***** 14 [https://OsmosianPlainEnglishProgramming.blog/2018/05/14/plain-english-programming-hiding-in-plain-sight/ Hiding in Plain Sight]
+***** 14 [https://OsmosianPlainEnglishProgramming.blog/2018/05/14/plain-english-programming-sudoku-solver/ Sudoku Solver]
+***** 15 [https://OsmosianPlainEnglishProgramming.blog/2018/05/15/plain-english-programming-teaching-kids/ Teaching Kids to Program]
+***** 16 [https://OsmosianPlainEnglishProgramming.blog/2018/05/16/the-journey-begins/ Plain English Programming]
+==<abbr title="Integrated Development Environment">IDE</abbr> including Compiler==
+===Creator supplied===
+*[http://www.osmosian.com/cal-3040.zip cal-3040] 2006/08/14
+**[http://www.osmosian.com/ebnf EBNF]
+**[http://www.osmosian.com/instructions.pdf instructions]
+*[http://www.osmosian.com/cal-4700.zip cal-4700] 2017/01/27
+
+===GitHub===
+*[https://GitHub.com/GerryRzeppa/osmosian /GerryRzeppa/osmosian] cal-3040
+*[https://GitHub.com/Folds/osmosian /Folds/osmosian] cal-3040 (Unauthorized)
+*[https://GitHub.com/elenderg/Portugues-Puro /elenderg/Portugues-Puro] cal-4700 Translated to Portuguese
+
+==Forums==
+===[https://www.AnandTech.com/ AnandTech]===
+*[https://forums.anandtech.com/threads/natural-language-programming.2358744/ Natural Language Programming: Good Idea? Yes Maybe No]
+*[https://forums.anandtech.com/threads/conversational-storytelling-with-javascript.2410448/ Conversational Storytelling with JavaScript]
+*[https://forums.anandtech.com/threads/natural-language-programming-english-and-or-español.2559516/ Natural Language Programming -- English and/or Español]
+*[https://forums.anandtech.com/threads/learning-programming.2406202/#post-36858285 Learning programming]
+*[https://forums.anandtech.com/threads/official-free-tools-thread.199156/page-4#post-36861957 Official Free Tools Thread | Plain English contribution]
+*[https://news.yCombinator.com/item?id=8719957 Plain English Programming (2013)]
+*[https://news.yCombinator.com/item?id=19355965 Do You Approve the Plain English?]
+===[https://Forum.Arduino.cc/ Arduino]===
+*[https://forum.arduino.cc/t/plain-english-programming/371096/15 Plain English Programming]
+===[https://groups.google.com/g/comp.compilers/ comp.compilers]===
+*[https://groups.google.com/g/comp.compilers/c/p30I_zVRlps/m/9UshbYjqZzwJ Writing A Plain English Compiler]
+*[https://groups.google.com/g/comp.compilers/c/4t3_Dq6foFA/m/CYfdnKMBkAsJ Re: A Plain English Compiler]
+===[https://www.GeeksForGeeks.org/ GeeksForGeeks]===
+*[https://www.geeksforgeeks.org/the-malevolent-mathemagician-natural-language-programming/ The Malevolent Mathemagician | Natural Language Programming]
+*[https://www.geeksforgeeks.org/creating-wysiwyg-document-editor/ Creating WYSIWYG Document Editor | Natural Language Programming]
+*[https://www.geeksforgeeks.org/a-kobayashi-maru-approach-to-finding-primes/ A Kobayashi Maru Approach to Finding Primes]
+*[https://www.geeksforgeeks.org/natural-language-programming-sorting/ Sorting | Natural Language Programming]
+*[https://www.geeksforgeeks.org/natural-language-programming-teaching-kids/ Natural Language Programming — Teaching Kids]
+*[https://www.geeksforgeeks.org/natural-language-programming/ Natural Language Programming]
+===[https://IntFiction.org/ Interactive Fiction Community Forum]===
+*[https://intfiction.org/t/writer-wanted-for-a-conversational-storytelling-project/6169 Writer wanted for a “Conversational Storytelling” project]
+*[https://intfiction.org/t/inform-system-developers-do-you-approve-the-plain-english-programming/42213 Inform system developers, do you approve the Plain English Programming?]
+===[https://Forums.Parallax.com/ Parallax Forums]===
+*[https://forums.parallax.com/discussion/163792/plain-english-programming Plain English Programming]
+===[https://www.PC-Control.co.uk/ PC Control Limited]===
+*[https://www.pc-control.co.uk/control/articles/article10.php Automated Maze solver using a servo hawk]
+**[https://www.pc-control.co.uk/control/articles/images/photo%2009%20-%20definitions.png photo 09 - definitions]
+**[https://www.pc-control.co.uk/control/articles/images/photo%2010%20-%20low-level%20helper%20routines.png photo 10 - low-level helper routines]
+**[https://www.pc-control.co.uk/control/articles/images/photo%2011%20-%20mid-level%20helper%20routines.png photo 11 - mid-level helper routines]
+**[https://www.pc-control.co.uk/control/articles/images/photo%2012%20-%20high-level%20helper%20routines.png photo 12 - high-level helper routines]
+**[https://www.pc-control.co.uk/control/articles/images/photo%2013%20-%20main%20routine.png photo 13 - main routine]
+**[https://www.pc-control.co.uk/control/articles/images/photo%2014%20-%20terminal%20output.png photo 14 - terminal output]
+===[https://www.Quora.com/ Quora]===
+*Jul 06, 2021 - [https://www.quora.com/What-can-a-beginner-programmer-use-as-a-programming-IDE-I-tried-using-Visual-Studio-Express-but-it-was-too-hard-to-use-and-understand-Is-there-anything-else-I-can-use/answer/Gerry-Rzeppa What can a beginner programmer use as a programming IDE? I tried using Visual Studio Express but it was too hard to use and understand. Is there anything else I can use?]
+**"To get started with Plain English, see here (it’s fast, friendly, and free):"
+**Reference to another Gerry Rzeppa Quora article: Jun 27, 2021 - [https://www.quora.com/Is-there-a-right-way-to-learn-to-code-1/answer/Gerry-Rzeppa Is there a right way to learn to code?]
+*Jul 06, 2021 - [https://www.quora.com/How-often-when-puzzling-out-a-solution-to-a-problem-do-you-think-or-say-aloud-Are-we-asking-the-right-question-questions/answer/Gerry-Rzeppa How often when puzzling out a solution to a problem, do you think or say aloud, “Are we asking the right question/questions?”]
+**"Almost every time."
+**Reference to another Gerry Rzeppa Quora article: May 11, 2021 [https://www.quora.com/What-IDE-has-impressed-you-with-its-ease-of-use-and-how-productive-were-you-with-it/answer/Gerry-Rzeppa What IDE has impressed you with its ease of use, and how productive were you with it?]
+*Jul 06, 2021 - [https://www.quora.com/What-are-the-best-examples-of-poetry-written-in-programming-languages/answer/Gerry-Rzeppa What are the best examples of poetry written in programming languages?]
+**A poem written in Plain English that, when run, makes the picture the poem describes.
+*Jul 05, 2021 - [https://www.quora.com/What-is-the-character-limit-for-one-line-of-code-you-go-by/answer/Gerry-Rzeppa What is the character limit for one line of code you go by?]
+**"... if handwritten code fits on the screen, it’s okay by me."
+*Jul 05, 2021 - [https://www.quora.com/How-is-a-one-dimensional-character-array-and-a-string-similar/answer/Gerry-Rzeppa How is a one-dimensional character array and a string similar?]
+
+**Strings
+**Substrings
+**String Riders
+*Jun 27, 2021 - [https://www.quora.com/Is-there-a-right-way-to-learn-to-code-1/answer/Gerry-Rzeppa Is there a right way to learn to code?]
+**A offering of the Plain English IDE and personal tutoring.
+*Jun 10, 2021 - [https://www.quora.com/Is-there-any-way-to-write-genuine-self-modifying-code-in-Windows/answer/Gerry-Rzeppa Is there any way to write genuine self-modifying code in Windows?]
+
+**Memory Map
+**Memory Pointers
+*Jun 10, 2021 - [https://www.quora.com/How-can-I-write-a-Python-program-where-a-bunch-of-students-will-be-assigned-thesis-themes-using-the-FIFO-method/answer/Gerry-Rzeppa How can I write a Python program where a bunch of students will be assigned thesis themes using the FIFO method?]
+** Use of path variable.
+** Iterative development.
+** Relation of item in a list and the name of the list.
+** Screen space management.
+** Use of "backwards".
+*Jun 09, 2021 - [https://www.quora.com/How-do-computers-execute-if-statements-to-the-core-machine-code-and-opcodes/answer/Gerry-Rzeppa How do computers execute if statements to the core machine code and opcodes?]
+
+** List command and explanation of display produced
+** Memory Map
+** Uses [https://defuse.ca/online-x86-assembler.htm Online x86 and x64 Intel Instruction Assembler] to disassemble code in the List output.
+** Offers free “How to Write a Plain English Compiler in Plain English” course via email.
+*Jun 08, 2021 - [https://www.quora.com/How-can-I-draw-the-flag-of-a-country-in-C-beginner/answer/Gerry-Rzeppa How can I draw the flag of a country in C#? (beginner)]
+** Make a box
+** Center the box
+** Draw and fill the box
+** Stroke
+*Jun 07, 2021 - [https://www.quora.com/Is-it-wise-to-ask-query-like-why-curly-braces-are-preferred-in-C-instead-of-opening-and-closing-bracket-when-writing-functions-or-we-just-need-to-memorize-that-as-a-random-rule-Is-there-any-book-which-deals-with/answer/Gerry-Rzeppa Is it wise to ask query like why curly braces are preferred in C instead of opening and closing bracket when writing functions, or we just need to memorize that as a random rule? Is there any book which deals with such miscellaneous things about C?]
+** “Arbitrary and unnecessary rule”
+*Jun 06, 2021 - [https://www.quora.com/How-would-I-go-about-creating-dots-and-boxes-in-Java/answer/Gerry-Rzeppa How would I go about creating dots and boxes in Java?]
+*Jun 06, 2021 - [https://www.quora.com/How-can-I-write-a-menu-driven-program-to-perform-following-operations-on-the-stack-using-array-a-i-Push-ii-Pop-iii-Peek/answer/Gerry-Rzeppa How can I write a menu-driven program to perform the following operations on the stack using array- a (i) Push (ii) Pop (iii) Peek?]
+*Jun 06, 2021 - [https://www.quora.com/How-do-I-make-a-countdown-and-when-it-finishes-it-shows-a-text-in-coding-I-want-to-add-a-picture-as-a-border-or-what-else-to-countdown/answer/Gerry-Rzeppa How do I make a countdown and when it finishes, it shows a text in coding? I want to add a picture as a border or what else to countdown.]
+*Jun 06, 2021 - [https://www.quora.com/What-is-recursion-Can-you-explain-the-main-principles-of-recursions-Can-you-do-the-code-algorithm-of-the-Fibonacci-series-using-recursion/answer/Gerry-Rzeppa What is recursion? Can you explain the main principles of recursions? Can you do the code/algorithm of the Fibonacci series using recursion?]
+*Jun 06, 2021 - [https://www.quora.com/How-do-you-find-the-intersection-point-between-a-line-and-a-rectangle-algorithm-geometry-line-intersection-development/answer/Gerry-Rzeppa What is recursion? How do you find the intersection point between a line and a rectangle (algorithm, geometry, line, intersection, development)?]
+*Jun 06, 2021 - [https://www.quora.com/How-do-you-handle-algorithms-to-create-polygons-no-Thiesen-Voronoi-Python-Shapely-Voronoi-development/answer/Gerry-Rzeppa How do you handle algorithms to create polygons (no Thiesen/Voronoi) (Python, Shapely, Voronoi, development)?]
+*Jun 04, 2021 - [https://www.quora.com/I-want-to-get-into-programming-What-languages-should-I-learn-first/answer/Gerry-Rzeppa I want to get into programming. What languages should I learn first?]
+*Jun 04, 2021 - [https://www.quora.com/How-do-I-make-a-programme-using-codes/answer/Gerry-Rzeppa How do I make a programme using codes?]
+*Jun 04, 2021 - [https://www.quora.com/Why-is-Hello-World-the-default-line-in-programming-languages/answer/Gerry-Rzeppa Why is "Hello World" the default line in programming languages?]
+*Jun 04, 2021 - [https://www.quora.com/Why-cant-I-find-any-real-photo-of-a-compiler-Is-it-too-small/answer/Gerry-Rzeppa Why can't I find any real photo of a compiler? Is it too small?]
+*Jun 03, 2021 - [https://www.quora.com/Why-must-the-starting-value-of-a-control-variable-be-less-than-the-ending-value-in-a-for-loop-expression/answer/Gerry-Rzeppa Why must the starting value of a control variable be less than the ending value in a for loop expression?]
+*Jun 03, 2021 - [https://www.quora.com/What-is-the-purpose-of-initialization-of-counter-variable-in-a-loop/answer/Gerry-Rzeppa What is the purpose of "initialization of counter variable" in a loop?]
+*Jun 03, 2021 - [https://www.quora.com/What-is-the-nature-of-a-variable-with-real-life-examples/answer/Gerry-Rzeppa What is the nature of a variable with real life examples?]
+*Jun 03, 2021 - [https://www.quora.com/Why-is-UML-a-significant-area-of-study/answer/Gerry-Rzeppa Why is UML a significant area of study?]
+*May 29, 2021 [https://www.quora.com/Is-it-easier-to-write-an-interpreter-than-a-compiler-Why/answer/Gerry-Rzeppa Is it easier to write an interpreter than a compiler? Why?]
+**"Yes. An interpreter can be written with less knowledge of the hardware and operating system."
+**Reference to another Gerry Rzeppa Quora article: May 18, 2021 [https://www.quora.com/How-do-I-make-programming-language/answer/Gerry-Rzeppa How do I make programming language?]
+*May 18, 2021 [https://www.quora.com/How-do-I-make-programming-language/answer/Gerry-Rzeppa How do I make programming language?]
+**Reference to another Gerry Rzeppa Quora article: Dec 22, 2020 [https://www.quora.com/How-do-you-start-writing-your-interpreter-from-scratch/answer/Gerry-Rzeppa How do you start writing your interpreter from scratch?]
+**Reference to another Gerry Rzeppa Quora article: Aug 30, 2020 [https://www.quora.com/What-is-a-compiler-and-the-stages-of-a-compiler/answer/Gerry-Rzeppa What is a compiler and the stages of a compiler?]
+*May 11, 2021 [https://www.quora.com/What-IDE-has-impressed-you-with-its-ease-of-use-and-how-productive-were-you-with-it/answer/Gerry-Rzeppa What IDE has impressed you with its ease of use, and how productive were you with it?]
+*Apr 28, 2021 - [https://www.quora.com/I-need-some-good-project-related-to-data-structure-I-am-a-2rd-year-computer-science-student-What-is-your-suggestion/answer/Gerry-Rzeppa I need some good project related to data structure. I am a 2rd year computer science student. What is your suggestion?]
+
+**Data types
+***Fundamental
+****byte
+****record
+***Pointers
+****Generic
+****Typed
+***Strings
+***Things
+****Stacks
+****Queues
+****Hashed Indices
+**Memory Map
+**WYSIWYG document editor
+*Apr 12, 2021 - [https://www.quora.com/What-is-the-relationship-between-a-compiler-algorithm-and-data-structure/answer/Gerry-Rzeppa What is the relationship between a compiler, algorithm, and data structure?]
+** "A compiler uses data structures and algorithms to translate high-level source code into low-level executable machine code."
+** Discussion of the Plain English compiler
+*Mar 29, 2021 - [https://www.quora.com/What-is-the-most-interesting-Python-algorithm-in-less-than-ten-lines-of-code/answer/Gerry-Rzeppa What is the most interesting Python algorithm in less than ten lines of code?]
+**Lindenmayer interpreter
+*Mar 27, 2021 - [https://www.quora.com/What-is-the-best-way-to-present-an-algorithm/answer/Gerry-Rzeppa What is the best way to present an algorithm?]
+**Three-step process
+*Mar 24, 2021 - [https://www.quora.com/Why-is-it-hard-to-understand-linked-lists-in-programming/answer/Gerry-Rzeppa Why is it hard to understand linked lists in programming?]
+**Discuss Plain English linked list.
+*Dec 22, 2020 [https://www.quora.com/How-do-you-start-writing-your-interpreter-from-scratch/answer/Gerry-Rzeppa How do you start writing your interpreter from scratch?]
+** “primitive” BASIC editor/interpreter
+*Oct 03, 2020 - [https://www.quora.com/In-procedural-programming-how-do-you-plan-your-code-without-UML/answer/Gerry-Rzeppa In procedural programming, how do you plan your code without UML?]
+**Osmosian maxim: “If it’s hard, it’s wrong.”
+**Pair Programming
+**"During the winter of 2005-2006, we wrote (and documented) 25,000 lines of Plain English code in just six months ..."
+**'“Just tell us what you need, sonny, and we’ll show you how to live without it.”'
+*Aug 30, 2020 [https://www.quora.com/What-is-a-compiler-and-the-stages-of-a-compiler/answer/Gerry-Rzeppa What is a compiler and the stages of a compiler?]
+**Structure of the Plain English compiler.
+*Jul 09, 2020 - [https://www.quora.com/Who-can-print-this-string-Hello-world-more-smartly-and-clearly/answer/Gerry-Rzeppa Who can print this string "Hello world" more smartly and clearly?]
+**Plain English program to print in a circle.
+**Español Llano (Plain Spanish) program to print in a circle.
+*Jun 08, 2020 - [https://www.quora.com/Why-do-some-programmers-write-their-own-compilers/answer/Gerry-Rzeppa Why do some programmers write their own compilers?]
+**'My elder son and I wrote our own Plain English compiler and IDE, in Plain English, originally, for three reasons. We wanted to know:'
+***'1. Is it easier to program when you don’t have to translate your natural-language thoughts into an alternate syntax?'
+***'2. Can natural languages be parsed in a relatively “sloppy” manner (as humans apparently parse them) and still provide a stable enough environment for productive programming?'
+***'3. Can low-level programs (like compilers) be conveniently and efficiently written in high level languages (like English)?
+**'Turns out the answers to all of three questions is, “Yes!”'
+
+==Successor Project (Trial)==
+*[https://www.indiegogo.com/projects/the-hybrid-programming-language#/ The Hybrid Programming Language] - Plain English with snippets of formulas and graphics where needed

@@ -17,4 +17,4 @@ app req respond = respond $
         x -> index x
 
 index x = responseBuilder status200 [("Content-Type", "text/plain")] $ mconcat $ map copyByteString
-    [ "Hello World!\n" ]
+    [ "Goodbye, world!\n" ]

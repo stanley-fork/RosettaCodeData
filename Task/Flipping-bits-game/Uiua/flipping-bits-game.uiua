@@ -1,19 +1,18 @@
-S ← 9
-Fr ← ⊙◌⍜⊡¬⊙.
-Fc ← ⊙◌⍉Fr⊙(⍉.)
-Shuffle ← ⍥(⟨Fr|Fc⟩<0.5⚂ ⌊×S⚂)×3S
-T ← Shuffle ↯S_S 0 # Target setup. Omit `Shuffle` for plain grid.
-D ← /+/+⌵-T
+# Could use `path`, but this is easily solved without it.
+# ⊢path(⊂⊃(≡Fr|≡Fc)⇡Size¤|=0Dist|÷Size Dist) Shuffle T
 
-# Could use A*, but this is easily solved without it.
-# ◌astar(⊂⊃(≡Fr|≡Fc)⇡S¤|÷S D|=0D)
-⟜[∘] Shuffle T # Shuffle and keep a copy for the output.
+Size    ← 8
+T       ← ↯Size_Size 0                     # Simple target setup.
+Fr      ← ⍜⊡¬⊙                             # Flip a row.
+Fc      ← ⍜⊙⍉Fr                            # Flip a col.
+Shuffle ← ⍥(⨬(Fr|Fc)<0.5⚂ ⌊×⚂Size)××2.Size # Apply random changes.
+Dist    ← /+/+⌵-T                          # Number of wrong cells.
+⟜[∘]Shuffle T                              # Shuffle and start a copy for the output.
 ◌⍢(
-
-  ⊂⊃(≡Fr|≡Fc)⇡S¤ # All neighbours.
-  ⊚=/↧.≡D.       # Find min dist, get indices that give that.
-  ⊡⊢             # Pick first one. ⊡(⊡⌊×⚂⧻.) to pick at random.
-  ⊙⊂.            # Save a copy of the new state.
-| ≠0D
+  ⊂⊃(≡Fr|≡Fc)⇡Size¤ # All neighbours.
+  ⊚=/↧.≡Dist.       # Find min dist, get indices that give that.
+  ⊡⊢                # Pick first one.
+  ⊙⊂.               # Save a copy of the new state.
+| ≠0Dist            # Repeat until found target.
 )
-⟜($"_ steps."-1⧻)⇌
+⟜($"_ steps."⧻)⇌

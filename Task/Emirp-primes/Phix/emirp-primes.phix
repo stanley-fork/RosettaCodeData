@@ -1,88 +1,87 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">emirps</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
+with javascript_semantics
+sequence emirps = {}
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">rev</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
-     <span style="color: #008080;">while</span> <span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">res</span><span style="color: #0000FF;">*</span><span style="color: #000000;">10</span><span style="color: #0000FF;">+</span><span style="color: #7060A8;">remainder</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">/</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function rev(integer n)
+    integer res = 0
+    while n do
+        res = res*10+remainder(n,10)
+        n = floor(n/10)
+    end while
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">emirp</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">is_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">r</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">rev</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">!=</span><span style="color: #000000;">n</span> <span style="color: #008080;">and</span> <span style="color: #7060A8;">is_prime</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>
-             <span style="color: #008080;">return</span> <span style="color: #004600;">true</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">return</span> <span style="color: #004600;">false</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function emirp(integer n)
+    if is_prime(n) then
+        integer r = rev(n)
+        if r!=n and is_prime(r) then
+            return true
+        end if
+    end if
+    return false
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">usage</span><span style="color: #0000FF;">()</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"use a single command line argument, with no spaces, eg \"1-20\" (first 20), \n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\"7700..8000\" (between 7700 and 8000), or \"10000\" (the 10,000th).\n"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #0000FF;">{}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">wait_key</span><span style="color: #0000FF;">()</span>
-     <span style="color: #7060A8;">abort</span><span style="color: #0000FF;">(</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure usage()
+    printf(1,"use a single command line argument, with no spaces, eg \"1-20\" (first 20), \n")
+    printf(1,"\"7700..8000\" (between 7700 and 8000), or \"10000\" (the 10,000th).\n")
+    {} = wait_key()
+    abort(0)
+end procedure
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">main</span><span style="color: #0000FF;">(</span><span style="color: #004080;">string</span> <span style="color: #000000;">arg3</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">args</span>
-     <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">m</span>
-     <span style="color: #008080;">if</span> <span style="color: #7060A8;">find</span><span style="color: #0000FF;">(</span><span style="color: #008000;">'-'</span><span style="color: #0000FF;">,</span><span style="color: #000000;">arg3</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span>      <span style="color: #000080;font-style:italic;">-- nth to mth emirp range</span>
-         <span style="color: #000000;">args</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">scanf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">arg3</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d-%d"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span> <span style="color: #000000;">usage</span><span style="color: #0000FF;">()</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #0000FF;">{{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">m</span><span style="color: #0000FF;">}}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">args</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">while</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">emirps</span><span style="color: #0000FF;">)<</span><span style="color: #000000;">m</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">emirp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000000;">emirps</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">k</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000000;">k</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"emirps %d to %d: %v\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">m</span><span style="color: #0000FF;">,</span><span style="color: #000000;">emirps</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">..</span><span style="color: #000000;">m</span><span style="color: #0000FF;">]})</span>
-     <span style="color: #008080;">elsif</span> <span style="color: #7060A8;">match</span><span style="color: #0000FF;">(</span><span style="color: #008000;">".."</span><span style="color: #0000FF;">,</span><span style="color: #000000;">arg3</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000080;font-style:italic;">-- emirps between n amd m</span>
-         <span style="color: #000000;">args</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">scanf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">arg3</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d..%d"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span> <span style="color: #000000;">usage</span><span style="color: #0000FF;">()</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #0000FF;">{{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">m</span><span style="color: #0000FF;">}}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">args</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">while</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">emirps</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">0</span> <span style="color: #008080;">or</span> <span style="color: #000000;">emirps</span><span style="color: #0000FF;">[$]<</span><span style="color: #000000;">m</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">emirp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000000;">emirps</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">k</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000000;">k</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-         <span style="color: #004080;">sequence</span> <span style="color: #000000;">s</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">emirps</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">emirps</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]></span><span style="color: #000000;">n</span> <span style="color: #008080;">then</span>
-                 <span style="color: #008080;">for</span> <span style="color: #000000;">j</span><span style="color: #0000FF;">=</span><span style="color: #000000;">i</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">emirps</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-                     <span style="color: #008080;">if</span> <span style="color: #000000;">emirps</span><span style="color: #0000FF;">[</span><span style="color: #000000;">j</span><span style="color: #0000FF;">]></span><span style="color: #000000;">m</span> <span style="color: #008080;">then</span>
-                         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"emirps between %d and %d: %v\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">m</span><span style="color: #0000FF;">,</span><span style="color: #000000;">emirps</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">..</span><span style="color: #000000;">j</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">]})</span>
-                         <span style="color: #008080;">exit</span>
-                     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-                 <span style="color: #008080;">exit</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">else</span>                        <span style="color: #000080;font-style:italic;">-- nth emirp</span>
-         <span style="color: #000000;">args</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">scanf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">arg3</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%d"</span><span style="color: #0000FF;">)</span>
-         <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">args</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span> <span style="color: #000000;">usage</span><span style="color: #0000FF;">()</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #0000FF;">{{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">}}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">args</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">k</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">while</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">emirps</span><span style="color: #0000FF;">)<</span><span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">emirp</span><span style="color: #0000FF;">(</span><span style="color: #000000;">k</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">then</span> <span style="color: #000000;">emirps</span> <span style="color: #0000FF;">&=</span> <span style="color: #000000;">k</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #000000;">k</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-         <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"emirp %d: %d\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">emirps</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">]})</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure main(string arg3)
+    sequence args
+    integer n,m
+    emirps = {}
+    if find('-',arg3) then      -- nth to mth emirp range
+        args = scanf(arg3,"%d-%d")
+        if length(args)!=1 then usage() end if
+        {{n,m}} = args
+        integer k = 1
+        while length(emirps)<m do
+            if emirp(k) then emirps &= k end if
+            k += 1
+        end while
+        printf(1,"emirps %d to %d: %v\n",{n,m,emirps[n..m]})
+    elsif match("..",arg3) then -- emirps between n amd m
+        args = scanf(arg3,"%d..%d")
+        if length(args)!=1 then usage() end if
+        {{n,m}} = args
+        integer k = 1
+        while length(emirps)=0 or emirps[$]<m do
+            if emirp(k) then emirps &= k end if
+            k += 1
+        end while
+        sequence s = {}
+        for i=1 to length(emirps) do
+            if emirps[i]>n then
+                for j=i to length(emirps) do
+                    if emirps[j]>m then
+                        printf(1,"emirps between %d and %d: %v\n",{n,m,emirps[i..j-1]})
+                        exit
+                    end if
+                end for
+                exit
+            end if
+        end for
+    else                        -- nth emirp
+        args = scanf(arg3,"%d")
+        if length(args)!=1 then usage() end if
+        {{n}} = args
+        integer k = 1
+        while length(emirps)<n do
+            if emirp(k) then emirps &= k end if
+            k += 1
+        end while
+        printf(1,"%,d%s emirp: %d\n",{n,ord(n),emirps[n]})
+    end if
+end procedure
 
- <span style="color: #004080;">sequence</span> <span style="color: #000000;">cl</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">command_line</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">if</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">2</span> <span style="color: #008080;">then</span>
-     <span style="color: #000000;">main</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"1-20"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">main</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"7700..8000"</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">main</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"10000"</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">elsif</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">3</span> <span style="color: #008080;">then</span>
-     <span style="color: #000000;">main</span><span style="color: #0000FF;">(</span><span style="color: #000000;">cl</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">])</span>
- <span style="color: #008080;">else</span>
-     <span style="color: #000000;">usage</span><span style="color: #0000FF;">()</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-<!--
+sequence cl = command_line()
+if length(cl)=2 then
+    main("1-20")
+    main("7700..8000")
+    main("10000")
+elsif length(cl)=3 then
+    main(cl[3])
+else
+    usage()
+end if

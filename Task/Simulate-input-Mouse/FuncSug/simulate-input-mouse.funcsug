@@ -1,4 +1,4 @@
-displayNewMessage(`Don't click the button. It will be clicked by the program.`)
+displayNewMessage("Don't click the button. It will be clicked by the program.")
 waitSeconds(2)
 displayNewMessage(`<button id="mybutton">Don't click me!</button>`)
 

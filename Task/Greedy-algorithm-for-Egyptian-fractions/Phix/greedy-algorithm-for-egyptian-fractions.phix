@@ -1,80 +1,78 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">include</span> <span style="color: #004080;">mpfr</span><span style="color: #0000FF;">.</span><span style="color: #000000;">e</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">egyptian</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">num</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">denom</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">mpz</span> <span style="color: #000000;">n</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">num</span><span style="color: #0000FF;">),</span>
-         <span style="color: #000000;">d</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">(</span><span style="color: #000000;">denom</span><span style="color: #0000FF;">),</span>
-         <span style="color: #000000;">t</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_init</span><span style="color: #0000FF;">()</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">result</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{}</span>
-     <span style="color: #008080;">while</span> <span style="color: #7060A8;">mpz_cmp_si</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">)!=</span><span style="color: #000000;">0</span> <span style="color: #008080;">do</span>
-         <span style="color: #7060A8;">mpz_cdiv_q</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">result</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">append</span><span style="color: #0000FF;">(</span><span style="color: #000000;">result</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"1/"</span><span style="color: #0000FF;">&</span><span style="color: #7060A8;">mpz_get_str</span><span style="color: #0000FF;">(</span><span style="color: #000000;">t</span><span style="color: #0000FF;">))</span>
-         <span style="color: #7060A8;">mpz_neg</span><span style="color: #0000FF;">(</span><span style="color: #000000;">d</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpz_mod</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">,</span><span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpz_neg</span><span style="color: #0000FF;">(</span><span style="color: #000000;">d</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-         <span style="color: #7060A8;">mpz_mul</span><span style="color: #0000FF;">(</span><span style="color: #000000;">d</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">,</span><span style="color: #000000;">t</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">while</span>
-     <span style="color: #0000FF;">{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">mpz_free</span><span style="color: #0000FF;">({</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">})</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">result</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+with javascript_semantics
+include mpfr.e
+function egyptian(integer num, denom)
+    mpz n = mpz_init(num),
+        d = mpz_init(denom),
+        t = mpz_init()
+    sequence result = {}
+    while mpz_cmp_si(n,0)!=0 do
+        mpz_cdiv_q(t, d, n)
+        result = append(result,"1/"&mpz_get_str(t))
+        mpz_neg(d,d)
+        mpz_mod(n,d,n)
+        mpz_neg(d,d)
+        mpz_mul(d,d,t)
+    end while
+    {n,d} = mpz_free({n,d})
+    return result
+end function
 
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">efrac</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">num</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">denom</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">fraction</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d/%d"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">num</span><span style="color: #0000FF;">,</span><span style="color: #000000;">denom</span><span style="color: #0000FF;">}),</span>
-            <span style="color: #000000;">prefix</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">num</span><span style="color: #0000FF;">>=</span><span style="color: #000000;">denom</span> <span style="color: #008080;">then</span>
-         <span style="color: #004080;">integer</span> <span style="color: #000000;">whole</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">floor</span><span style="color: #0000FF;">(</span><span style="color: #000000;">num</span><span style="color: #0000FF;">/</span><span style="color: #000000;">denom</span><span style="color: #0000FF;">)</span>
-         <span style="color: #000000;">num</span> <span style="color: #0000FF;">-=</span> <span style="color: #000000;">whole</span><span style="color: #0000FF;">*</span><span style="color: #000000;">denom</span>
-         <span style="color: #000000;">prefix</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"[%d] + "</span><span style="color: #0000FF;">,</span><span style="color: #000000;">whole</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #004080;">string</span> <span style="color: #000000;">e</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #000000;">egyptian</span><span style="color: #0000FF;">(</span><span style="color: #000000;">num</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">denom</span><span style="color: #0000FF;">),</span><span style="color: #008000;">" + "</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%s -&gt; %s%s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">fraction</span><span style="color: #0000FF;">,</span><span style="color: #000000;">prefix</span><span style="color: #0000FF;">,</span><span style="color: #000000;">e</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+procedure efrac(integer num, denom)
+    string fraction = sprintf("%d/%d",{num,denom}),
+           prefix = ""
+    if num>=denom then
+        integer whole = floor(num/denom)
+        num -= whole*denom
+        prefix = sprintf("[%d] + ",whole)
+    end if
+    string e = join(egyptian(num, denom)," + ")
+    printf(1,"%s -> %s%s\n",{fraction,prefix,e})
+end procedure
 
- <span style="color: #000000;">efrac</span><span style="color: #0000FF;">(</span><span style="color: #000000;">43</span><span style="color: #0000FF;">,</span><span style="color: #000000;">48</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">efrac</span><span style="color: #0000FF;">(</span><span style="color: #000000;">5</span><span style="color: #0000FF;">,</span><span style="color: #000000;">121</span><span style="color: #0000FF;">)</span>
- <span style="color: #000000;">efrac</span><span style="color: #0000FF;">(</span><span style="color: #000000;">2014</span><span style="color: #0000FF;">,</span><span style="color: #000000;">59</span><span style="color: #0000FF;">)</span>
+efrac(43,48)
+efrac(5,121)
+efrac(2014,59)
 
- <span style="color: #004080;">integer</span> <span style="color: #000000;">maxt</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span><span style="color: #0000FF;">,</span>
-         <span style="color: #000000;">maxd</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">0</span>
- <span style="color: #004080;">string</span> <span style="color: #000000;">maxts</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span><span style="color: #0000FF;">,</span>
-        <span style="color: #000000;">maxds</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span><span style="color: #0000FF;">,</span>
-        <span style="color: #000000;">maxda</span> <span style="color: #0000FF;">=</span> <span style="color: #008000;">""</span>
+integer maxt = 0,
+        maxd = 0
+string maxts = "",
+       maxds = "",
+       maxda = ""
 
- <span style="color: #008080;">for</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">=</span><span style="color: #000000;">98</span> <span style="color: #008080;">to</span> <span style="color: #000000;">998</span> <span style="color: #008080;">by</span> <span style="color: #000000;">900</span> <span style="color: #008080;">do</span>   <span style="color: #000080;font-style:italic;">-- (iterates just twice!)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">sieve</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">repeat</span><span style="color: #0000FF;">(</span><span style="color: #004600;">false</span><span style="color: #0000FF;">,</span><span style="color: #000000;">r</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span><span style="color: #0000FF;">),</span><span style="color: #000000;">r</span><span style="color: #0000FF;">)</span> <span style="color: #000080;font-style:italic;">-- to eliminate duplicates</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">r</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">for</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">=</span><span style="color: #000000;">n</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">r</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span> <span style="color: #008080;">do</span>
-             <span style="color: #008080;">if</span> <span style="color: #000000;">sieve</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">][</span><span style="color: #000000;">d</span><span style="color: #0000FF;">]=</span><span style="color: #004600;">false</span> <span style="color: #008080;">then</span>
-                 <span style="color: #004080;">string</span> <span style="color: #000000;">term</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">sprintf</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"%d/%d"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">})</span>
-                 <span style="color: #004080;">sequence</span> <span style="color: #000000;">terms</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">egyptian</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">nterms</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">)</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">nterms</span><span style="color: #0000FF;">></span><span style="color: #000000;">maxt</span> <span style="color: #008080;">then</span>
-                     <span style="color: #000000;">maxt</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">nterms</span>
-                     <span style="color: #000000;">maxts</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">term</span>
-                 <span style="color: #008080;">elsif</span> <span style="color: #000000;">nterms</span><span style="color: #0000FF;">=</span><span style="color: #000000;">maxt</span> <span style="color: #008080;">then</span>
-                     <span style="color: #000000;">maxts</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">", "</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">term</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #004080;">integer</span> <span style="color: #000000;">mlen</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">terms</span><span style="color: #0000FF;">[$])-</span><span style="color: #000000;">2</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">mlen</span><span style="color: #0000FF;">></span><span style="color: #000000;">maxd</span> <span style="color: #008080;">then</span>
-                     <span style="color: #000000;">maxd</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">mlen</span>
-                     <span style="color: #000000;">maxds</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">term</span>
-                     <span style="color: #000000;">maxda</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">terms</span><span style="color: #0000FF;">[$]</span>
-                 <span style="color: #008080;">elsif</span> <span style="color: #000000;">mlen</span><span style="color: #0000FF;">=</span><span style="color: #000000;">maxd</span> <span style="color: #008080;">then</span>
-                     <span style="color: #000000;">maxds</span> <span style="color: #0000FF;">&=</span> <span style="color: #008000;">", "</span> <span style="color: #0000FF;">&</span> <span style="color: #000000;">term</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                 <span style="color: #008080;">if</span> <span style="color: #000000;">n</span><span style="color: #0000FF;"><</span><span style="color: #000000;">r</span><span style="color: #0000FF;">/</span><span style="color: #000000;">2</span> <span style="color: #008080;">then</span>
-                     <span style="color: #008080;">for</span> <span style="color: #000000;">k</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #000000;">9999</span> <span style="color: #008080;">do</span>
-                         <span style="color: #008080;">if</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">*</span><span style="color: #000000;">k</span> <span style="color: #0000FF;">></span> <span style="color: #000000;">r</span><span style="color: #0000FF;">+</span><span style="color: #000000;">1</span> <span style="color: #008080;">then</span> <span style="color: #008080;">exit</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-                         <span style="color: #000000;">sieve</span><span style="color: #0000FF;">[</span><span style="color: #000000;">n</span><span style="color: #0000FF;">*</span><span style="color: #000000;">k</span><span style="color: #0000FF;">][</span><span style="color: #000000;">d</span><span style="color: #0000FF;">*</span><span style="color: #000000;">k</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #004600;">true</span>
-                     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-                 <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-             <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-         <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"\nfor proper fractions with 1 to %d digits\n"</span><span style="color: #0000FF;">,{</span><span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">sprint</span><span style="color: #0000FF;">(</span><span style="color: #000000;">r</span><span style="color: #0000FF;">))})</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Largest number of terms is %d for %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">maxt</span><span style="color: #0000FF;">,</span><span style="color: #000000;">maxts</span><span style="color: #0000FF;">})</span>
-     <span style="color: #000000;">maxda</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">maxda</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">..$]</span> <span style="color: #000080;font-style:italic;">-- (strip the "1/")</span>
-     <span style="color: #000000;">maxda</span><span style="color: #0000FF;">[</span><span style="color: #000000;">6</span><span style="color: #0000FF;">..-</span><span style="color: #000000;">6</span><span style="color: #0000FF;">]=</span><span style="color: #008000;">"..."</span>  <span style="color: #000080;font-style:italic;">-- (show only first/last 5 digits)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"Largest size for denominator is %d digits (%s) for %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">maxd</span><span style="color: #0000FF;">,</span><span style="color: #000000;">maxda</span><span style="color: #0000FF;">,</span><span style="color: #000000;">maxds</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+for r=98 to 998 by 900 do   -- (iterates just twice!)
+    sequence sieve = repeat(repeat(false,r+1),r) -- to eliminate duplicates
+    for n=1 to r do
+        for d=n+1 to r+1 do
+            if sieve[n][d]=false then
+                string term = sprintf("%d/%d",{n,d})
+                sequence terms = egyptian(n,d)
+                integer nterms = length(terms)
+                if nterms>maxt then
+                    maxt = nterms
+                    maxts = term
+                elsif nterms=maxt then
+                    maxts &= ", " & term
+                end if
+                integer mlen = length(terms[$])-2
+                if mlen>maxd then
+                    maxd = mlen
+                    maxds = term
+                    maxda = terms[$]
+                elsif mlen=maxd then
+                    maxds &= ", " & term
+                end if
+                if n<r/2 then
+                    for k=2 to 9999 do
+                        if d*k > r+1 then exit end if
+                        sieve[n*k][d*k] = true
+                    end for
+                end if
+            end if
+        end for
+    end for
+    printf(1,"\nfor proper fractions with 1 to %d digits\n",{length(sprint(r))})
+    printf(1,"Largest number of terms is %d for %s\n",{maxt,maxts})
+    maxda = maxda[3..$] -- (strip the "1/")
+    maxda[6..-6]="..."  -- (show only first/last 5 digits)
+    printf(1,"Largest size for denominator is %d digits (%s) for %s\n",{maxd,maxda,maxds})
+end for

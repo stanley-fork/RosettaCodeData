@@ -1,5 +1,5 @@
--- 8 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'ARITHMETIC NUMBERS'
 say version
@@ -30,7 +30,4 @@ end
 say Format(Time('e'),,3) 'seconds'
 return
 
-include Numbers
-include Functions
-include Special
-include Abend
+include Math

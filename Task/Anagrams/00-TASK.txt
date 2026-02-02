@@ -1,7 +1,7 @@
 When two or more words are composed of the same characters, but in a different order, they are called [[wp:Anagram|anagrams]]. 
 
 ;Task
-Using the word list at &nbsp; http://wiki.puzzlers.org/pub/wordlists/unixdict.txt, 
+Using the word list at &nbsp; http://wiki.puzzlers.org/pub/wordlists/unixdict.txt or [https://raw.githubusercontent.com/thundergnat/rc-run/refs/heads/master/rc/resources/unixdict.txt here], 
 <br>find the sets of words that share the same characters that contain the most words in them.
 
 ;Related tasks

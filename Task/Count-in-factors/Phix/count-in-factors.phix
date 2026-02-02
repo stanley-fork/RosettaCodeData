@@ -1,10 +1,22 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">procedure</span> <span style="color: #000000;">factorise</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">)</span>
-     <span style="color: #004080;">sequence</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">prime_factors</span><span style="color: #0000FF;">(</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #004600;">true</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">join</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">apply</span><span style="color: #0000FF;">(</span><span style="color: #000000;">res</span><span style="color: #0000FF;">,</span><span style="color: #7060A8;">sprint</span><span style="color: #0000FF;">),</span><span style="color: #008000;">" x "</span><span style="color: #0000FF;">)</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"%2d: %s\n"</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">n</span><span style="color: #0000FF;">,</span><span style="color: #000000;">res</span><span style="color: #0000FF;">})</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">procedure</span>
+with javascript_semantics
+procedure factorise(integer n)
+    sequence res = prime_factors(n,true,-1)
+    printf(1,"%2d: %s\n",{n,join(res," x ",fmt:="%d")})
+end procedure
 
- <span style="color: #7060A8;">papply</span><span style="color: #0000FF;">(</span><span style="color: #7060A8;">tagset</span><span style="color: #0000FF;">(</span><span style="color: #000000;">10</span><span style="color: #0000FF;">)&{</span><span style="color: #000000;">2144</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1000000000</span><span style="color: #0000FF;">},</span><span style="color: #000000;">factorise</span><span style="color: #0000FF;">)</span>
-<!--
+papply(tagset(10)&{2144,1_000_000_000},factorise)
+
+-- And this is how you deal with larger numbers - you'd have to cap maxprime
+-- for anything larger, and in fact I had to do just that for this to work on
+-- 32-bit (295593 found by binary chop), and of course some numbers will get
+-- incredibly slow, or you could try using mpz_pollard_rho() instead.
+puts(1,"\n")
+include mpfr.e
+for i=0 to 35 by 5 do
+    string s = "1"&repeat('0',i)
+    if even(i) then s[$] = '1' end if
+    integer maxprime = iff(machine_bits()=32?295593:
+                           floor(sqrt(power(10,i))))
+    sequence res = mpz_prime_factors(s,maxprime)
+    printf(1,"%s: %s\n",{s,mpz_factorstring(res)})
+end for

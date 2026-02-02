@@ -1,3 +1,6 @@
+REM https://github.com/Eva-Broccoli/OPL-Rosetta-Code/blob/main/Armtintg.opl
+REM While OPL has an INT() function, it is not necessary here because OPL always uses the simplest arithmetic possible for the numbers involved. If all numbers involved are integers, integer arithmetic is used.
+REM For remainder, positive numbers are rounded down; negative numbers are rounded up.
 PROC main:
   LOCAL a%,b%
   PRINT "Please enter a number:",

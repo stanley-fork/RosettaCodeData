@@ -28,7 +28,7 @@ extension wrapOp
                 {
                     currentWidth := word.Length + 1;
 
-                    ^ newLineConstant + word + " "
+                    ^ NewLineConstant + word + " "
                 }
                 else
                 {
@@ -41,10 +41,10 @@ extension wrapOp
     }
 }
 
-public program()
+public Program()
 {
-    console.printLine(new StringWriter("-", 72));
-    console.printLine(text.wrap(72));
-    console.printLine(new StringWriter("-", 80));
-    console.printLine(text.wrap(80));
+    Console.printLine(new StringWriter("-", 72));
+    Console.printLine(text.wrap(72));
+    Console.printLine(new StringWriter("-", 80));
+    Console.printLine(text.wrap(80));
 }

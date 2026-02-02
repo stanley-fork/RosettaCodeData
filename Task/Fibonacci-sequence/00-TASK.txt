@@ -2,23 +2,27 @@ The '''Fibonacci sequence''' is a sequence &nbsp; <big> F<sub>n</sub> </big> &nb
 
       <big><big> F<sub>0</sub> = 0 </big></big>
       <big><big> F<sub>1</sub> = 1 </big></big>
-      <big><big> F<sub>n</sub> = F<sub>n-1</sub> + F<sub>n-2</sub>, if n>1 </big></big>
+      <big><big> F<sub>n</sub> = F<sub>n-1</sub> + F<sub>n-2</sub> , if n > 1 </big></big>
 
 
 ;Task:
 Write a function to generate the &nbsp; <big> n<sup>th</sup> </big> &nbsp; Fibonacci number. 
 
-Solutions can be iterative or recursive (though recursive solutions are generally considered too slow and are mostly used as an exercise in recursion).
+Solutions can be iterative, recursive (though recursive solutions are generally considered too slow and are mostly used as an exercise in recursion), or use [https://en.wikipedia.org/wiki/Fibonacci_sequence#Binet's_formula Binet's algebraic formula].
 
-The sequence is sometimes extended into negative numbers by using a straightforward inverse of the positive definition:
+The sequence is sometimes extended for negative numbers by using an alternating inverse of the positive values. Rewriting the definition as
 
-      <big><big> F<sub>n</sub> = F<sub>n+2</sub> - F<sub>n+1</sub>, if n<0   </big></big>
+      <big><big> F<sub>n</sub> = F<sub>n+2</sub> - F<sub>n+1</sub> , if n < 0 </big></big>
 
-support for negative &nbsp; &nbsp; <big> n </big> &nbsp; &nbsp; in the solution is optional.
+leads to
+
+      <big><big> F<sub>-n</sub> = (-1)<sup>n+1</sup> F<sub>n</sub> </big></big>.
+
+Support for negative <big> n </big> in the solution is optional.
 
 
 ;Related tasks:
-* &nbsp; [[Fibonacci n-step number sequences‎]]
+* &nbsp; [[Fibonacci n-step number sequences]]
 * &nbsp; [[Leonardo numbers]]
 
 

@@ -1,19 +1,19 @@
-function lis(arr::Vector)
-    if length(arr) == 0 return copy(arr) end
-    L = Vector{typeof(arr)}(length(arr))
-    L[1] = [arr[1]]
+function lis(arr::Vector{T}) where T
+    isempty(arr) && return copy(arr)
+    allsequences = Vector{Vector{T}}(undef, length(arr))
+    allsequences[begin] = [arr[begin]]
 
-    for i in 2:length(arr)
-        nextL = []
-        for j in 1:i
-            if arr[j] < arr[i] && length(L[j]) ≥ length(nextL)
-                nextL = L[j]
+    for i in firstindex(arr)+1:lastindex(arr)
+        nextseq = T[]
+        for j in firstindex(arr):i
+            if arr[j] < arr[i] && length(allsequences[j]) ≥ length(nextseq)
+                nextseq = allsequences[j]
             end
         end
-        L[i] = vcat(nextL, arr[i])
+        allsequences[i] = push!(nextseq, arr[i])
     end
-
-    return L[indmax(length.(L))]
+    _, idx = findmax(length, allsequences)
+    return allsequences[idx]
 end
 
 @show lis([3, 2, 6, 4, 5, 1])

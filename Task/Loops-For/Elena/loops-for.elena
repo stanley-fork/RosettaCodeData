@@ -1,12 +1,12 @@
 import extensions;
 
-public program()
+public Program()
 {
     for(int i := 0; i < 5; i += 1)
     {
         for(int j := 0; j <= i; j += 1)
-            { console.write("*") };
+            { Console.write("*") };
 
-        console.writeLine()
+        Console.writeLine()
     }
 }

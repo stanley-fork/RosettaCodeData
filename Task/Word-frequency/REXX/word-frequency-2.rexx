@@ -1,51 +1,85 @@
-/*REXX program   reads  and  displays  a  count  of words a file.  Word case is ignored.*/
-Call time 'R'
-abc='abcdefghijklmnopqrstuvwxyz'
-abcABC=abc||translate(abc)
-parse arg fID_top                                /*obtain optional arguments from the CL*/
-Parse Var fid_top fid ',' top
-if fID=='' then fID= 'mis.TXT'                   /* Use default if not specified        */
-if top=='' then top= 10                          /* Use default if not specified        */
-occ.=0                                           /* occurrences of word (stem) in file  */
-wn=0
-Do While lines(fid)>0                            /*loop whilst there are lines in file. */
-  line=linein(fID)
-  line=translate(line,abc||abc,abcABC||xrange('00'x,'ff'x)) /*use only lowercase letters*/
-  Do While line<>''
-    Parse Var line word line                       /* take a word                         */
-    If occ.word=0 Then Do                          /* not yet in word list                */
-      wn=wn+1
-      word.wn=word
-      End
-    occ.word=occ.word+1
-    End
-  End
-Say 'We found' wn 'different words'
-say right('word',40) ' rank   count '            /* header                              */
-say right('----',40) '------ -------'            /* separator.                          */
-tops=0
-Do Until tops>=top | tops>=wn                    /*process enough words to satisfy  TOP.*/
-  max_occ=0
-  tl=''                                          /*initialize (possibly) a list of words*/
-  Do wi=1 To wn                                  /*process the list of words in the file*/
-    word=word.wi                                 /* take a word from the list           */
-    Select
-      When occ.word>max_occ Then Do              /* most occurrences so far             */
-        tl=word                                  /* candidate for output                */
-        max_occ=occ.word                         /* current maximum occurrences         */
-        End
-      When occ.word=max_occ Then Do              /* tied                                */
-        tl=tl word                               /* add to output candidate             */
-        End
-      Otherwise                                  /* no candidate (yet)                  */
-        Nop
-      End
-    End
-    do d=1 for words(tl)
-      word=word(tl,d)
-      say right(word,40) right(tops+1,4) right(occ.word,8)
-      occ.word=0                                /*nullify this word count for next time*/
-      End
-    tops=tops+words(tl)                         /*correctly handle the tied rankings.  */
-  end
-Say time('E') 'seconds elapsed'
+-- 9 Nov 2025
+include Setting
+arg file top
+if file='' | file='.' then
+   file='Miserables.txt'
+if top='' then
+   top=10
+
+say 'WORD FREQUENCY'
+say version
+say
+call CountWords(file)
+call SaveCount
+call ShowCount(top)
+call ShowWord(top)
+call Timer
+exit
+
+CountWords:
+procedure expose Dict. List.
+parse arg file
+-- Init
+abc=Xrange('a','z'); all=Xrange('00'x,'FF'x)
+Dict.=0; List.=0; n=0
+-- Process file
+do while Lines(file)
+-- Convert to lower case and filter only a-z
+   line=Translate(Lower(Linein(file)),abc,abc||all)
+   do i=1 to Words(line)
+      w=Word(line,i)
+-- Not in dictionary? Add to list
+      if Dict.w=0 then do
+         n+=1; List.Dict.n=w
+      end
+-- Count in dictionary
+      Dict.w+=1
+   end i
+end
+List.Dict.0=n; List.Count.0=n
+say n 'different words found'
+say
+return
+
+SaveCount:
+procedure expose Dict. List.
+-- Move counts to list
+do i=1 to List.Dict.0
+   w=List.Dict.i; List.Count.i=Dict.w
+end
+return
+
+ShowCount:
+procedure expose List.
+arg top
+call Sort 'List.Count.','List.Dict.'
+say 'Frequency by count'
+say 'word             rank count'
+say '---------------------------'
+n=0
+do i=List.Dict.0 by -1 to 1
+   n+=1
+   if n<=top then
+      say Left(List.Dict.i,15) Right(n,5) Right(List.Count.i,5)
+   List.Rank.i=n
+end
+say
+return
+
+ShowWord:
+procedure expose List.
+arg top
+call Sort 'List.Dict.','List.Rank. List.Count.'
+say 'Frequency by word'
+say 'word             rank count'
+say '---------------------------'
+do i=1 to top
+   say Left(List.Dict.i,15) Right(List.Rank.i,5) Right(List.Count.i,5)
+end
+say
+return
+
+-- Timer
+include Timer
+-- Sort
+include Utility

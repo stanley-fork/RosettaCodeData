@@ -54,7 +54,7 @@ fn print_feature_plausibility(feature_plausibility: Option<bool>, feature_name: 
 }
 
 fn main() {
-    let mut res = get(" http://wiki.puzzlers.org/pub/wordlists/unixdict.txt").unwrap();
+    let mut res = get(" https://web.archive.org/web/20240920144647if_/http://wiki.puzzlers.org/pub/wordlists/unixdict.txt").unwrap();
     let texts = res.text().unwrap();
 
     let mut feature_count: Feature<u64> = Default::default();

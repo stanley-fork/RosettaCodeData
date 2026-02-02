@@ -1,5 +1,5 @@
--- 19 May 2025
-include Settings
+-- 23 Aug 2025
+include Setting
 
 say 'LITERALS INTEGER'
 say version
@@ -40,7 +40,7 @@ say left("'5051 5253'X",l) '=' '5051 5253'X
 say left("'50 51 52 53'X",l) '=' '50 51 52 53'X
 say
 say 'Binary...'
-say 'Blanks to separate words, bytes and nibbles are allowed'
+say 'Blanks to highlight words, bytes and nibbles are allowed'
 l = 42
 say left("'1010000010100010101001001010011'B",l) '=' '1010000010100010101001001010011'B
 say left("'01010000010100010101001001010011'B",l) '=' '01010000010100010101001001010011'B
@@ -49,5 +49,4 @@ say left("'01010000 01010001 01010010 01010011'B",l) '=' '01010000 01010001 0101
 say left("'0101 0000 0101 0001 0101 0010 0101 0011'B",l) '=' '0101 0000 0101 0001 0101 0010 0101 0011'B
 exit
 
-include Helper
-include Abend
+include Math

@@ -8,7 +8,7 @@ extension op
         = (self.selectBy::(x => x * x).summarize(Real.new()) / self.Length).sqrt();
 }
 
-public program()
+public Program()
 {
     Console.printLine(new Range(1, 10).RootMeanSquare)
 }

@@ -11,14 +11,11 @@ exit /b
 setlocal enabledelayedexpansion
 for /l %%n in (%~1,1,%~2) do (
     set curr_num=%%n
-    if        !curr_num:~-2!==11 (set "out=%%nth"
-    ) else if !curr_num:~-2!==12 (set "out=%%nth"
-    ) else if !curr_num:~-2!==13 (set "out=%%nth"
-    ) else if !curr_num:~-1!==1  (set "out=%%nst"
-    ) else if !curr_num:~-1!==2  (set "out=%%nnd"
-    ) else if !curr_num:~-1!==3  (set "out=%%nrd"
-    ) else                       (set "out=%%nth")
+    if !curr_num:~-1!==1  (set "out=%%nst"
+    ) else if !curr_num:~-1!==2  (set "out=%%n'nd"
+    ) else if !curr_num:~-1!==3  (set "out=%%n'rd"
+    ) else                       (set "out=%%n'th")
     set "range_output=!range_output! !out!"
 )
-echo."!range_output:~1!"
+echo:"!range_output:~1!"
 goto :EOF

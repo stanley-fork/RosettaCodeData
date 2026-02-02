@@ -1,91 +1,86 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
+with javascript_semantics
 
- <span style="color: #008080;">type</span> <span style="color: #000000;">church</span><span style="color: #0000FF;">(</span><span style="color: #004080;">object</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- eg {r_add,1,{a,b}}</span>
-     <span style="color: #008080;">return</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">and</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">)=</span><span style="color: #000000;">3</span>
-        <span style="color: #008080;">and</span> <span style="color: #004080;">integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">[</span><span style="color: #000000;">1</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">and</span> <span style="color: #004080;">integer</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">])</span>
-        <span style="color: #008080;">and</span> <span style="color: #004080;">sequence</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">and</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">[</span><span style="color: #000000;">3</span><span style="color: #0000FF;">])=</span><span style="color: #000000;">2</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">type</span>
+type church(object c)
+-- eg {r_add,1,{a,b}}
+    return sequence(c) and length(c)=3
+       and integer(c[1]) and integer(c[2])
+       and sequence(c[3]) and length(c[3])=2
+end type
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">succ</span><span style="color: #0000FF;">(</span><span style="color: #000000;">church</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- eg {r_add,1,{a,b}} =&gt; {r_add,2,{a,b}}  aka  a+b -&gt; a+b+b</span>
-     <span style="color: #000000;">c</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">c</span><span style="color: #0000FF;">[</span><span style="color: #000000;">2</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">1</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">c</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function succ(church c)
+-- eg {add,1,{a,b}} => {add,2,{a,b}} aka a+b => a+b+b
+    c = deep_copy(c)
+    c[2] += 1
+    return c
+end function
 
- <span style="color: #000080;font-style:italic;">-- three normal integer-handling routines...</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">add</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">a</span> <span style="color: #0000FF;">+=</span> <span style="color: #000000;">b</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">a</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">r_add</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">routine_id</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"add"</span><span style="color: #0000FF;">)</span>
+-- three normal integer-handling routines...
+function add(integer n, a, b)
+    for i=1 to n do
+        a += b
+    end for
+    return a
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">mul</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">a</span> <span style="color: #0000FF;">*=</span> <span style="color: #000000;">b</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">a</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">r_mul</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">routine_id</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"mul"</span><span style="color: #0000FF;">)</span>
+function mul(integer n, a, b)
+    for i=1 to n do
+        a *= b
+    end for
+    return a
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">pow</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">a</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #000000;">n</span> <span style="color: #008080;">do</span>
-         <span style="color: #000000;">a</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">power</span><span style="color: #0000FF;">(</span><span style="color: #000000;">a</span><span style="color: #0000FF;">,</span><span style="color: #000000;">b</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">a</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
- <span style="color: #008080;">constant</span> <span style="color: #000000;">r_pow</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">routine_id</span><span style="color: #0000FF;">(</span><span style="color: #008000;">"pow"</span><span style="color: #0000FF;">)</span>
+function pow(integer n, a, b)
+    for i=1 to n do
+        a = power(a,b)
+    end for
+    return a
+end function
 
- <span style="color: #000080;font-style:italic;">-- ...and three church constructors to match
- --    (no maths here, just pure static data)</span>
- <span style="color: #008080;">function</span> <span style="color: #000000;">addch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">church</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">church</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">r_add</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">}}</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+-- ...and three church constructors to match
+--    (no maths here, just pure static data)
+function addch(church c, d)
+    church res = {add,1,{c,d}}
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">mulch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">church</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">church</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">r_mul</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">}}</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function mulch(church c, d)
+    church res = {mul,1,{c,d}}
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">powch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">church</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">,</span> <span style="color: #000000;">d</span><span style="color: #0000FF;">)</span>
-     <span style="color: #000000;">church</span> <span style="color: #000000;">res</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">r_pow</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">c</span><span style="color: #0000FF;">,</span><span style="color: #000000;">d</span><span style="color: #0000FF;">}}</span>
-     <span style="color: #008080;">return</span> <span style="color: #000000;">res</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function powch(church c, d)
+    church res = {pow,1,{c,d}}
+    return res
+end function
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">church</span> <span style="color: #000000;">c</span><span style="color: #0000FF;">)</span>
- <span style="color: #000080;font-style:italic;">-- note this is where the bulk of any processing happens</span>
-     <span style="color: #0000FF;">{</span><span style="color: #004080;">integer</span> <span style="color: #000000;">rid</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">integer</span> <span style="color: #000000;">n</span><span style="color: #0000FF;">,</span> <span style="color: #004080;">object</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">}</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">c</span>
-     <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">1</span> <span style="color: #008080;">to</span> <span style="color: #7060A8;">length</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span> <span style="color: #008080;">do</span>
-         <span style="color: #008080;">if</span> <span style="color: #000000;">church</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">then</span> <span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">]</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">[</span><span style="color: #000000;">i</span><span style="color: #0000FF;">])</span> <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
- <span style="color: #000080;font-style:italic;">--  return call_func(rid,n&x)</span>
-     <span style="color: #000000;">x</span> <span style="color: #0000FF;">=</span> <span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">({</span><span style="color: #000000;">n</span><span style="color: #0000FF;">})&</span><span style="color: #7060A8;">deep_copy</span><span style="color: #0000FF;">(</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">return</span> <span style="color: #7060A8;">call_func</span><span style="color: #0000FF;">(</span><span style="color: #000000;">rid</span><span style="color: #0000FF;">,</span><span style="color: #000000;">x</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function tointch(church c)
+-- note this is where the bulk of any processing happens
+    {integer rid, integer n, object x} = c
+    x = deep_copy(x)
+    for i=1 to length(x) do
+        if church(x[i]) then x[i] = tointch(x[i]) end if
+    end for
+--  return call_func(rid,n&x)
+    x = deep_copy({n})&deep_copy(x)
+    return call_func(rid,x)
+end function
 
- <span style="color: #008080;">constant</span> <span style="color: #000000;">church</span> <span style="color: #000000;">zero</span> <span style="color: #0000FF;">=</span> <span style="color: #0000FF;">{</span><span style="color: #000000;">r_add</span><span style="color: #0000FF;">,</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,{</span><span style="color: #000000;">0</span><span style="color: #0000FF;">,</span><span style="color: #000000;">1</span><span style="color: #0000FF;">}}</span>
+constant church zero = {add,0,{0,1}}
 
- <span style="color: #008080;">function</span> <span style="color: #000000;">inttoch</span><span style="color: #0000FF;">(</span><span style="color: #004080;">integer</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
-     <span style="color: #008080;">if</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">0</span> <span style="color: #008080;">then</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">zero</span>
-     <span style="color: #008080;">else</span>
-         <span style="color: #008080;">return</span> <span style="color: #000000;">succ</span><span style="color: #0000FF;">(</span><span style="color: #000000;">inttoch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">i</span><span style="color: #0000FF;">-</span><span style="color: #000000;">1</span><span style="color: #0000FF;">))</span>
-     <span style="color: #008080;">end</span> <span style="color: #008080;">if</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">function</span>
+function inttoch(integer i)
+    if i=0 then
+        return zero
+    else
+        return succ(inttoch(i-1))
+    end if
+end function
 
- <span style="color: #000000;">church</span> <span style="color: #000000;">three</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">succ</span><span style="color: #0000FF;">(</span><span style="color: #000000;">succ</span><span style="color: #0000FF;">(</span><span style="color: #000000;">succ</span><span style="color: #0000FF;">(</span><span style="color: #000000;">zero</span><span style="color: #0000FF;">))),</span>
-        <span style="color: #000000;">four</span> <span style="color: #0000FF;">=</span> <span style="color: #000000;">succ</span><span style="color: #0000FF;">(</span><span style="color: #000000;">three</span><span style="color: #0000FF;">)</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"three        -&gt; %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">three</span><span style="color: #0000FF;">))</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"four         -&gt; %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">four</span><span style="color: #0000FF;">))</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"three + four -&gt; %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">addch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">three</span><span style="color: #0000FF;">,</span><span style="color: #000000;">four</span><span style="color: #0000FF;">)))</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"three * four -&gt; %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">mulch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">three</span><span style="color: #0000FF;">,</span><span style="color: #000000;">four</span><span style="color: #0000FF;">)))</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"three ^ four -&gt; %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">powch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">three</span><span style="color: #0000FF;">,</span><span style="color: #000000;">four</span><span style="color: #0000FF;">)))</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"four ^ three -&gt; %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">powch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">four</span><span style="color: #0000FF;">,</span><span style="color: #000000;">three</span><span style="color: #0000FF;">)))</span>
- <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"5 -&gt; five    -&gt; %d\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">tointch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">inttoch</span><span style="color: #0000FF;">(</span><span style="color: #000000;">5</span><span style="color: #0000FF;">)))</span>
-<!--
+church three = succ(succ(succ(zero))),
+       four = succ(three)
+printf(1,"three        -> %d\n",tointch(three))
+printf(1,"four         -> %d\n",tointch(four))
+printf(1,"three + four -> %d\n",tointch(addch(three,four)))
+printf(1,"three * four -> %d\n",tointch(mulch(three,four)))
+printf(1,"three ^ four -> %d\n",tointch(powch(three,four)))
+printf(1,"four ^ three -> %d\n",tointch(powch(four,three)))
+printf(1,"5 -> five    -> %d\n",tointch(inttoch(5)))

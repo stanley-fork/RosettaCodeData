@@ -1,8 +1,8 @@
 /*
 hand coded recursive descent parser
-expr	: term ( ( PLUS | MINUS )  term )* ;
-term	: factor ( ( MULT | DIV ) factor )* ;
-factor	: NUMBER | '(' expr ')';
+expr    : term ( ( PLUS | MINUS )  term )* ;
+term    : factor ( ( MULT | DIV ) factor )* ;
+factor  : NUMBER | '(' expr ')';
 */
 
 calcLexer := makeCalcLexer()

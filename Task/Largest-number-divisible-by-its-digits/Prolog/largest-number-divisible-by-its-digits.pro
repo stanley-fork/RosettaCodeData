@@ -18,8 +18,8 @@
 %  check actually slows us down very slightly instead of speeding us up.
 
 :- dynamic
-	trial/1.       % temporarily store digit combinations here.
-	
+   trial/1.       % temporarily store digit combinations here.
+
 gcd(X, X, X).  % Calculate greatest common divisor
 gcd(M, N, X) :- N > M, B is N-M, gcd(M,B,X).
 gcd(M, N, X) :- N < M, A is M-N, gcd(A,N,X).
@@ -31,7 +31,7 @@ lcm([A|T], LCM) :- lcm(T, B), !, lcm(A,B,LCM).
 
 mkint(_, Val, [], Val).     % Result = Val where list is empty
 mkint(Radix, Val, [H|T], Int) :-  % (((I0*10+I1)*10+I2)*10+In)...
-	V0 is Val*Radix+H, !, mkint(Radix, V0, T, Int).
+   V0 is Val*Radix+H, !, mkint(Radix, V0, T, Int).
 
 % Turn a list of digits into an integer number using Radix.
 mkint(Radix, [H|T], Int) :- mkint(Radix, H, T, Int).

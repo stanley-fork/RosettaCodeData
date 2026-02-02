@@ -1,11 +1,38 @@
-/*REXX program  sums  the  decimal digits  of natural numbers in any base up to base 36.*/
-parse arg z                                      /*obtain optional argument from the CL.*/
-if z='' | z=","  then z= '1 1234 fe f0e +F0E -666.00 11111112222222333333344444449'
-        do j=1  for words(z);     _=word(z, j)   /*obtain a number from the list.       */
-        say right(sumDigs(_), 9)    ' is the sum of the digits for the number '    _
-        end   /*j*/
-exit                                             /*stick a fork in it,  we're all done. */
-/*──────────────────────────────────────────────────────────────────────────────────────*/
-sumDigs: procedure;  arg x;  @=123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ;  $=0
-                        do k=1  to length(x);   $=$ + pos( substr(x, k, 1), @);  end /*k*/
-         return $
+-- 24 Aug 2025
+include Setting
+
+say 'SUM DIGITS OF AN INTEGER'
+say version
+say
+call Task 1
+call Task 1234
+call Task 'fe'
+call Task 'f0e'
+call Task '1E9'
+call Task 100101001
+call Task 885145624
+call Task 'AF771ED0A'
+call Task 'ashlh2837'
+call Task '123,456,789'
+call Task 12345.6789
+call Task 'AF12 BE34'
+call Task 'Rosetta Code 2007'
+call Task '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+exit
+
+Task:
+procedure
+arg xx
+say 'Digital sum of' xx 'is' DigitSum(xx)
+return
+
+DigitSum:
+procedure
+arg xx
+rr=0
+do i = 1 to Length(xx)
+   rr=rr+Pos(SubStr(xx,i,1),'123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+end
+return rr
+
+include Math

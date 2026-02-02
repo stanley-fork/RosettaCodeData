@@ -1,6 +1,4 @@
-(phixonline)-->
- <span style="color: #008080;">with</span> <span style="color: #008080;">javascript_semantics</span>
- <span style="color: #008080;">for</span> <span style="color: #000000;">i</span><span style="color: #0000FF;">=</span><span style="color: #000000;">2</span> <span style="color: #008080;">to</span> <span style="color: #000000;">32</span> <span style="color: #008080;">by</span> <span style="color: #000000;">10</span> <span style="color: #008080;">do</span>
-     <span style="color: #7060A8;">printf</span><span style="color: #0000FF;">(</span><span style="color: #000000;">1</span><span style="color: #0000FF;">,</span><span style="color: #008000;">"decimal:%3d hex:%3x octal:%3o binary:%7b\n"</span><span style="color: #0000FF;">,</span><span style="color: #000000;">i</span><span style="color: #0000FF;">)</span>
- <span style="color: #008080;">end</span> <span style="color: #008080;">for</span>
-<!--
+with javascript_semantics
+for i=2 to 32 by 10 do
+    printf(1,"decimal:%3d hex:%3x octal:%3o binary:%7b base32:%3A\n",{i,i,i,i,{32,i}})
+end for
